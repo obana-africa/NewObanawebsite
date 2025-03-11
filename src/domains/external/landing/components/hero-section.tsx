@@ -44,7 +44,7 @@ const HeroSection: React.FC = () => {
 					<div className="w-full md:w-1/2 mb-10 md:mb-0 md:pr-8">
 						<h2 className="mb-2">Enabling SMEs scale</h2>
 
-						<h3 className="bg-white text-primary inline-block px-4 py-2 rounded-md">
+						<h3 className="bg-primary-light text-primary inline-block px-4 py-2 rounded-md">
 							<span
 								className={`animate-fade-in duration-700 ${
 									isAnimating ? "opacity-50" : "opacity-100"

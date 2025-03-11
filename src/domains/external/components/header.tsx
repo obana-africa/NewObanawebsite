@@ -61,12 +61,7 @@ const Header: React.FC = () => {
 	};
 
 	const toggleServiceDropdown = (): void => {
-		// setServiceDropdownOpen(!serviceDropdownOpen);
-		if (serviceDropdownOpen) {
-			setServiceDropdownOpen(false);
-		} else {
-			setServiceDropdownOpen(true);
-		}
+		setServiceDropdownOpen(!serviceDropdownOpen);
 	};
 
 	return (
@@ -75,7 +70,7 @@ const Header: React.FC = () => {
 				isScrolled ? "bg-white shadow-md" : "bg-white"
 			}`}
 		>
-			<div className="container mx-auto px-4 md:px-6 text-sm">
+			<div className="container mx-auto px-4 md:px-6">
 				<div className="flex items-center justify-between py-4 ">
 					<div className="flex-shrink-0 ">
 						<Link href="/" className="flex items-center ">
@@ -200,8 +195,8 @@ const Header: React.FC = () => {
 
 			<div
 				ref={menuRef}
-				className={`fixed top-0 right-0 h-full w-3/4 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50 ${
-					isOpen ? "translate-x-0" : "translate-x-full"
+				className={`fixed top-0 -left-1 h-full w-3/4 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50 ${
+					isOpen ? "translate-x-0" : "-translate-x-full"
 				}`}
 				aria-hidden={!isOpen}
 			>
@@ -239,7 +234,7 @@ const Header: React.FC = () => {
 								className={`${isOpen ? "animate-fadeIn " + item.delay : ""}`}
 							>
 								<button
-									className="flex items-center justify-between w-full py-3  text-gray-800"
+									className="flex items-center justify-between w-full py-3 text-gray-800"
 									onClick={toggleServiceDropdown}
 									type="button"
 									aria-expanded={serviceDropdownOpen}
@@ -253,19 +248,23 @@ const Header: React.FC = () => {
 								</button>
 
 								<div
-									className={`ml-4 mt-1 mb-2 transition-all duration-300 ${
+									className={`ml-4 mt-1 mb-2 transition-all duration-300  border-b border-primary-light ${
 										serviceDropdownOpen
 											? "max-h-40 opacity-100"
 											: "max-h-0 opacity-0 overflow-hidden"
 									}`}
 								>
 									{[
+										{ href: "#", label: "Product Sourcing" },
+										{ href: "#", label: "Logistics" },
 										{
-											href: "/services/inventory",
-											label: "Inventory Management",
+											href: "#",
+											label: "Inventory Financing",
 										},
-										{ href: "/services/sourcing", label: "Product Sourcing" },
-										{ href: "/services/logistics", label: "Logistics" },
+										{
+											href: "/services/sales",
+											label: "Sales Partners",
+										},
 									].map((service, idx) => (
 										<Link
 											key={`service-${idx}`}

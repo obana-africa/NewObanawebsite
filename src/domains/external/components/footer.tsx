@@ -76,7 +76,7 @@ const Footer = () => {
 						<div className="grid grid-cols-2 gap-4 mt-8 md:hidden">
 							<div>
 								<h3 className="text-lg font-medium mb-4">Our Services</h3>
-								<ul className="space-y-2 text-sm">
+								<ul className="space-y-2 ">
 									{serviceLinks.map((link, index) => (
 										<li key={index}>
 											<Link href={link.href} className="hover:underline">
@@ -94,7 +94,7 @@ const Footer = () => {
 										<li key={index}>
 											<Link
 												href={link.href}
-												className="text-sm hover:underline"
+												className=" hover:underline"
 											>
 												{link.title}
 											</Link>
@@ -109,7 +109,7 @@ const Footer = () => {
 							<ul className="space-y-2">
 								{serviceLinks.map((link, index) => (
 									<li key={index}>
-										<Link href={link.href} className="text-sm hover:underline">
+										<Link href={link.href} className=" hover:underline">
 											{link.title}
 										</Link>
 									</li>
@@ -122,7 +122,7 @@ const Footer = () => {
 							<ul className="space-y-2">
 								{companyLinks.map((link, index) => (
 									<li key={index}>
-										<Link href={link.href} className="text-sm hover:underline">
+										<Link href={link.href} className=" hover:underline">
 											{link.title}
 										</Link>
 									</li>
@@ -132,7 +132,7 @@ const Footer = () => {
 
 						<div className="mt-8 md:mt-0">
 							<h3 className="text-lg font-medium mb-4">Newsletter</h3>
-							<p className="mb-4 text-sm">
+							<p className="mb-4 ">
 								Subscribe to our weekly Newsletter and receive updates via
 								email.
 							</p>
@@ -140,7 +140,7 @@ const Footer = () => {
 								<input
 									type="email"
 									placeholder="Enter your mail here..."
-									className="px-4 py-2 w-full rounded-l-full text-primary-dark focus:outline-none text-sm"
+									className="px-4 py-2 w-full rounded-l-full text-primary-dark focus:outline-none "
 								/>
 								<button
 									type="submit"
@@ -155,10 +155,10 @@ const Footer = () => {
 					<div className="border-t border-gray-600 my-8"></div>
 
 					<div className="flex flex-col md:flex-row justify-between items-center">
-						<p className="text-sm mb-4 md:mb-0">
+						<p className=" mb-4 md:mb-0">
 							Copyright ©ObanaAfrica. All Right Reserved.
 						</p>
-						<div className="flex gap-4 text-sm">
+						<div className="flex gap-4 ">
 							{policyLinks.map((link, index) => (
 								<Link key={index} href={link.href} className="hover:underline">
 									{link.title}
