@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "@/domains/external/components/header";
 
 import { Bricolage_Grotesque, Inter } from "next/font/google";
+import Footer from "@/domains/external/components/footer";
 
 const bricolage = Bricolage_Grotesque({
 	subsets: ["latin"],
@@ -36,7 +37,7 @@ export default function RootLayout({
 			<body className={`${bricolage.variable} ${inter.variable}`}>
 				<Header />
 				<main>{children}</main>
-				{/* <Footer /> */}
+				<Footer />
 			</body>
 		</html>
 	);

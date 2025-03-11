@@ -61,7 +61,12 @@ const Header: React.FC = () => {
 	};
 
 	const toggleServiceDropdown = (): void => {
-		setServiceDropdownOpen(!serviceDropdownOpen);
+		// setServiceDropdownOpen(!serviceDropdownOpen);
+		if (serviceDropdownOpen) {
+			setServiceDropdownOpen(false);
+		} else {
+			setServiceDropdownOpen(true);
+		}
 	};
 
 	return (
@@ -200,7 +205,7 @@ const Header: React.FC = () => {
 				}`}
 				aria-hidden={!isOpen}
 			>
-				<div className="p-4 flex justify-between items-center border-b">
+				<div className="p-4 flex justify-between items-center ">
 					<div className="relative h-8 w-24">
 						<Image
 							src={logoImage}
@@ -234,7 +239,7 @@ const Header: React.FC = () => {
 								className={`${isOpen ? "animate-fadeIn " + item.delay : ""}`}
 							>
 								<button
-									className="flex items-center justify-between w-full py-3 border-b border-gray-100 text-gray-800"
+									className="flex items-center justify-between w-full py-3  text-gray-800"
 									onClick={toggleServiceDropdown}
 									type="button"
 									aria-expanded={serviceDropdownOpen}
@@ -276,7 +281,7 @@ const Header: React.FC = () => {
 							<Link
 								key={`link-${index}`}
 								href={item.href || "#"}
-								className={`py-3 border-b border-gray-100 text-gray-800 hover:bg-primary hover:text-white hover:pl-2 transition-all duration-200 ${
+								className={`py-3 border-b border-primary-light text-gray-800 hover:bg-primary hover:text-white hover:pl-2 transition-all duration-200 ${
 									isOpen ? "animate-fadeIn " + item.delay : ""
 								}`}
 							>

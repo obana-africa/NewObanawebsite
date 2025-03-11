@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
 import Button from "@/components/ui/button";
+import RotatingGlobe from "./hero-globe";
 
 const HeroSection: React.FC = () => {
 	const solutions = [
@@ -31,7 +31,14 @@ const HeroSection: React.FC = () => {
 	}, [solutions.length]);
 
 	return (
-		<section className="bg-primary text-white pt-32 pb-16 md:pt-20 md:pb-20">
+		<section className="bg-primary text-white pt-32 pb-16 md:pt-20 md:pb-20 relative overflow-hidden">
+			<div
+				className="absolute top-[151px] left-[804px] w-[182px] h-[56px] opacity-28 blur-[50px] bg-white rounded-full"
+				style={{
+					transform: "translate(-50%, -50%)",
+				}}
+			></div>
+
 			<div className="container mx-auto px-4 md:px-6">
 				<div className="flex flex-col md:flex-row items-center">
 					<div className="w-full md:w-1/2 mb-10 md:mb-0 md:pr-8">
@@ -39,7 +46,7 @@ const HeroSection: React.FC = () => {
 
 						<h3 className="bg-white text-primary inline-block px-4 py-2 rounded-md">
 							<span
-								className={` animate-fade-in duration-700  ${
+								className={`animate-fade-in duration-700 ${
 									isAnimating ? "opacity-50" : "opacity-100"
 								}`}
 							>
@@ -47,7 +54,7 @@ const HeroSection: React.FC = () => {
 							</span>
 						</h3>
 
-						<h2 className="mb-6  md:leading-12">
+						<h2 className="mb-6 md:leading-12">
 							by aggregating solutions to their business needs under one
 							platform
 						</h2>
@@ -61,44 +68,17 @@ const HeroSection: React.FC = () => {
 						<Button
 							variant="primary"
 							animation="ripple"
-							className="bg-white hover:bg-secondary !text-primary text-lg font-medium shadow  shadow-lg shadow-white/50"
+							className="bg-white hover:bg-secondary !text-primary text-lg font-medium shadow-lg shadow-white/50 relative overflow-hidden"
 							href="/get-started"
 						>
-							Get Started
+							<span className="relative z-10">Get Started</span>
 						</Button>
+						<div className="absolute -bottom-8 -left-8 w-32 h-32 bg-white opacity-20 blur-[50px] rounded-full transition-all duration-500 hover:opacity-30 hover:blur-[60px]"></div>
 					</div>
 
 					<div className="w-full md:w-1/2 flex justify-center">
 						<div className="relative w-full max-w-lg aspect-square">
-							<Image
-								src="/africa-map.png"
-								alt="Africa Map Globe with Connected Points"
-								fill
-								style={{ objectFit: "contain" }}
-								priority
-							/>
-
-							<div className="absolute" style={{ top: "20%", right: "20%" }}>
-								<div className="relative bg-white rounded-full w-8 h-8 flex items-center justify-center overflow-hidden">
-									<Image
-										src="/flags/kenya.png"
-										alt="Kenya Flag"
-										fill
-										style={{ objectFit: "cover" }}
-									/>
-								</div>
-							</div>
-
-							<div className="absolute" style={{ top: "40%", left: "20%" }}>
-								<div className="relative bg-white rounded-full w-8 h-8 flex items-center justify-center overflow-hidden">
-									<Image
-										src="/flags/nigeria.png"
-										alt="Nigeria Flag"
-										fill
-										style={{ objectFit: "cover" }}
-									/>
-								</div>
-							</div>
+							<RotatingGlobe />
 						</div>
 					</div>
 				</div>
