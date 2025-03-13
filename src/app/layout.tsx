@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/domains/external/components/header";
-
+import Header from "@/components/external/components/header";
 import { Bricolage_Grotesque, Inter } from "next/font/google";
-import Footer from "@/domains/external/components/footer";
+import Footer from "@/components/external/components/footer";
+import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
 
 const bricolage = Bricolage_Grotesque({
 	subsets: ["latin"],
