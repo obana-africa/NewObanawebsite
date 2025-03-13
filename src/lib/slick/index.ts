@@ -30,7 +30,7 @@ export const logoSlickSettings = {
 		{
 			breakpoint: 600,
 			settings: {
-				slidesToShow: 3,
+				slidesToShow: 2,
 				slidesToScroll: 1,
 				initialSlide: 2,
 			},
@@ -38,7 +38,7 @@ export const logoSlickSettings = {
 		{
 			breakpoint: 480,
 			settings: {
-				slidesToShow: 3,
+				slidesToShow: 2,
 				slidesToScroll: 1,
 			},
 		},
