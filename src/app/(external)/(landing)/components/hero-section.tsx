@@ -59,7 +59,7 @@ const HeroSection: React.FC = () => {
 							platform
 						</h2>
 
-						<p className="mb-8 text-lg">
+						<p className="mb-8 text-md sm:text-lg">
 							We help SMEs in Nigeria and Sub-Saharan Africa (beginning from
 							Nigeria) scale by providing a seamless, tech-driven supply chain
 							and delivering cost-effective and convenient solutions that

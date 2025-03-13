@@ -36,7 +36,7 @@ const FeatureBox: React.FC<FeatureBoxProps> = ({
 	return (
 		<div className="relative w-full px-2 sm:px-4 mb-6 md:mb-0">
 			<div
-				className="relative mx-auto w-full max-w-[550px] min-h-[300px] sm:min-h-[400px] bg-white z-10 rounded-[10px] border border-primary p-4 sm:p-6 md:p-8 transition-all duration-300 shadow hover:shadow hover:shadow-lg"
+				className="relative mx-auto w-full max-w-[550px] min-h-[360px] sm:min-h-[400px] bg-white z-10 rounded-[10px] border border-primary p-4 sm:p-6 md:p-8 transition-all duration-300 shadow hover:shadow hover:shadow-lg"
 				onMouseEnter={() => setIsHovered(true)}
 				onMouseLeave={() => setIsHovered(false)}
 			>
@@ -58,7 +58,7 @@ const FeatureBox: React.FC<FeatureBoxProps> = ({
 			</div>
 
 			<div
-				className={`absolute mx-auto top-[13px] right-[13px] sm:right-[40px] md:right-[80px] w-full max-w-[550px] h-[300px] sm:h-[400px] rounded-[10px] -z-10 pointer-events-none transition-bg duration-700 ${
+				className={`absolute mx-auto top-[13px] right-[13px] sm:right-[40px] md:right-[80px] w-full max-w-[550px] h-[370px] sm:h-[400px] rounded-[10px] -z-10 pointer-events-none transition-bg duration-700 ${
 					isHovered ? " bg-secondary" : "opacity-100 bg-primary "
 				}`}
 			/>
@@ -74,7 +74,7 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({
 }) => {
 	return (
 		<div className="w-full relative py-12 px-2 overflow-x-hidden">
-			<div className="absolute -top-20 -right-5 ">
+			<div className="absolute -top-48 -right-20 md:-top-20 md:-right-5 ">
 				<Image
 					src={imageSrc}
 					alt="Shipping boxes with globe"
@@ -84,8 +84,9 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({
 			</div>
 
 			<div className="container mx-auto px-4 md:px-6">
-				<div className="mb-12 flex items-start md:items-center justify-center flex-col w-[33ch] max-w-full sm:w-full">
-					<h2 className="text-primary">{title}</h2>
+				<div className="mb-12 flex items-start md:items-center justify-center flex-col w-[33ch] max-w-full sm:w-full z-20">
+					<h2 className="text-primary hidden sm:block">{title}</h2>
+					<h1 className="text-primary block sm:hidden">{title}</h1>
 					<Seperator />
 					<h5 className="text-primary">{subtitle}</h5>
 				</div>

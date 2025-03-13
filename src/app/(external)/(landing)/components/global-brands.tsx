@@ -40,7 +40,7 @@ const logoImages = [
 
 const GlobalBrands = () => {
 	return (
-		<div className="w-full py-12 bg-secondary relative overflow-hidden z-10">
+		<div className="w-full pt-10 md:py-12 bg-secondary relative overflow-hidden z-10">
 			<div
 				className="absolute w-[182px] h-[56px] opacity-30 blur-[50px] bg-[#222] rounded-full"
 				style={{
@@ -51,7 +51,7 @@ const GlobalBrands = () => {
 			></div>
 
 			<div className="container mx-auto px-4 mb-8 flex flex-col items-center relative z-10">
-				<h5 className="text-center mb-2">
+				<h5 className="text-center mb-2 font-bold sm:font-normal">
 					Over 100 global brands and growing every day
 				</h5>
 
