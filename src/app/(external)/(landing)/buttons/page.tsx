@@ -1,4 +1,4 @@
-import ButtonExample from "@/domains/external/landing/components/button-example";
+import ButtonExample from "@/app/(external)/(landing)/components/button-example";
 
 export default function Home() {
 	return (
