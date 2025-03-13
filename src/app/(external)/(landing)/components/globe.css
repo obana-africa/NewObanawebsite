@@ -51,9 +51,33 @@
 	opacity: 0;
 }
 .dots6 {
+	animation: spins 20s infinite 10s linear;
+	position: relative;
+	top: 30px;
+	opacity: 0;
+}
+.dots7 {
 	animation: spins 20s infinite 12s linear;
 	position: relative;
 	top: 50px;
+	opacity: 0;
+}
+.dots8 {
+	animation: spins 20s infinite 14s linear;
+	position: relative;
+	top: -80px;
+	opacity: 0;
+}
+.dots9 {
+	animation: spins 20s infinite 12s linear;
+	position: relative;
+	top: 40px;
+	opacity: 0;
+}
+.dots10 {
+	animation: spins 20s infinite 42s linear;
+	position: relative;
+	top: -250px;
 	opacity: 0;
 }
 @keyframes spins {
