@@ -29,6 +29,9 @@ import sirerra from "@/app/assets/images/landing-page/sirerra-leone.svg";
 import cotedovire from "@/app/assets/images/landing-page/cotedovire.svg";
 import burkina from "@/app/assets/images/landing-page/burkina.svg";
 import cameroon from "@/app/assets/images/landing-page/cameroon.svg";
+import senegal from "@/app/assets/images/landing-page/senegal.svg";
+import cabo from "@/app/assets/images/landing-page/cabo.svg";
+import algeria from "@/app/assets/images/landing-page/algeria.svg";
 import "./globe.css";
 
 const RotatingGlobe = () => {
@@ -85,7 +88,7 @@ const RotatingGlobe = () => {
 						priority
 					/>
 				</div>
-				<div className="w-16 h-8 lg:w-20 lg:h-10 circle dots1">
+				<div className="w-16 h-8 lg:w-20 lg:h-10 circle dots6">
 					<Image
 						src={cameroon}
 						alt="hero1"
@@ -95,9 +98,39 @@ const RotatingGlobe = () => {
 						priority
 					/>
 				</div>
-				<div className="w-16 h-8 lg:w-20 lg:h-10 circle dots3">
+				<div className="w-16 h-8 lg:w-20 lg:h-10 circle dots7">
 					<Image
 						src={burkina}
+						alt="hero1"
+						width={100}
+						height={50}
+						style={{ objectFit: "contain" }}
+						priority
+					/>
+				</div>
+				<div className="w-16 h-8 lg:w-20 lg:h-10 circle dots8">
+					<Image
+						src={senegal}
+						alt="hero1"
+						width={100}
+						height={50}
+						style={{ objectFit: "contain" }}
+						priority
+					/>
+				</div>
+				<div className="w-16 h-8 lg:w-20 lg:h-10 circle dots9">
+					<Image
+						src={cabo}
+						alt="hero1"
+						width={100}
+						height={50}
+						style={{ objectFit: "contain" }}
+						priority
+					/>
+				</div>
+				<div className="w-16 h-8 lg:w-20 lg:h-10 circle dots10">
+					<Image
+						src={algeria}
 						alt="hero1"
 						width={100}
 						height={50}
