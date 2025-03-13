@@ -40,8 +40,8 @@ const HeroSection: React.FC = () => {
 			></div>
 
 			<div className="container mx-auto px-4 md:px-6">
-				<div className="flex flex-col md:flex-row items-center">
-					<div className="w-full md:w-1/2 mb-10 md:mb-0 md:pr-8">
+				<div className="flex flex-col-reverse md:flex-row items-center -mt-10  sm:mt-0">
+					<div className="w-full md:w-1/2 mb-0 md:mb-0 md:pr-8 -mt-10  sm:mt-0">
 						<h2 className="mb-2">Enabling SMEs scale</h2>
 
 						<h3 className="bg-primary-light text-primary inline-block px-4 py-2 rounded-md">
