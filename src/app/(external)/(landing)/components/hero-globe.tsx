@@ -23,6 +23,12 @@ import React from "react";
 
 import Image from "next/image";
 import nigeria from "@/app/assets/images/landing-page/nigeria.svg";
+import uganda from "@/app/assets/images/landing-page/uganda.svg";
+import togo from "@/app/assets/images/landing-page/togo.svg";
+import sirerra from "@/app/assets/images/landing-page/sirerra-leone.svg";
+import cotedovire from "@/app/assets/images/landing-page/cotedovire.svg";
+import burkina from "@/app/assets/images/landing-page/burkina.svg";
+import cameroon from "@/app/assets/images/landing-page/cameroon.svg";
 import "./globe.css";
 
 const RotatingGlobe = () => {
@@ -31,63 +37,70 @@ const RotatingGlobe = () => {
 			<div className="sphere overflow-hidden">
 				<div className="w-16 h-8 lg:w-20 lg:h-10 circle dots">
 					<Image
-						src="https://res.cloudinary.com/greenmouse-tech/image/upload/v1678109146/BOG/hero1_twfxri.png"
+						src={uganda}
 						alt="hero1"
-						fill
+						width={100}
+						height={50}
 						style={{ objectFit: "contain" }}
 						priority
 					/>
 				</div>
 				<div className="w-16 h-8 lg:w-20 lg:h-10 circle dots2">
 					<Image
-						src="https://res.cloudinary.com/greenmouse-tech/image/upload/v1678109146/BOG/hero3_w2h66q.png"
+						src={togo}
 						alt="hero1"
-						fill
+						width={100}
+						height={50}
 						style={{ objectFit: "contain" }}
 						priority
 					/>
 				</div>
 				<div className="w-16 h-8 lg:w-20 lg:h-10 circle dots3">
 					<Image
-						src="https://res.cloudinary.com/greenmouse-tech/image/upload/v1678109146/BOG/hero1_twfxri.png"
+						src={cotedovire}
 						alt="hero1"
-						fill
+						width={100}
+						height={50}
 						style={{ objectFit: "contain" }}
 						priority
 					/>
 				</div>
 				<div className="w-16 h-8 lg:w-20 lg:h-10 circle dots4">
 					<Image
-						src="https://res.cloudinary.com/greenmouse-tech/image/upload/v1678109146/BOG/hero4_ebkb4v.png"
+						src={sirerra}
 						alt="hero1"
-						fill
+						width={100}
+						height={50}
 						style={{ objectFit: "contain" }}
 						priority
 					/>
 				</div>
 				<div className="w-16 h-8 lg:w-20 lg:h-10 circle dots5">
 					<Image
-						src="https://res.cloudinary.com/greenmouse-tech/image/upload/v1678109146/BOG/hero2_gsfuqg.png"
+						src={nigeria}
 						alt="hero1"
-						fill
+						width={100}
+						height={50}
 						style={{ objectFit: "contain" }}
 						priority
 					/>
 				</div>
-				<div className="w-16 h-8 lg:w-20 lg:h-10 circle dots5">
+				<div className="w-16 h-8 lg:w-20 lg:h-10 circle dots1">
 					<Image
-						src="https://res.cloudinary.com/greenmouse-tech/image/upload/v1678109146/BOG/hero3_w2h66q.png"
+						src={cameroon}
 						alt="hero1"
-						fill
+						width={100}
+						height={50}
 						style={{ objectFit: "contain" }}
 						priority
 					/>
 				</div>
 				<div className="w-16 h-8 lg:w-20 lg:h-10 circle dots3">
 					<Image
-						src={nigeria}
+						src={burkina}
 						alt="hero1"
-						fill
+						width={100}
+						height={50}
 						style={{ objectFit: "contain" }}
 						priority
 					/>
