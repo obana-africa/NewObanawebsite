@@ -40,7 +40,7 @@ const Home: NextPage = () => {
 		},
 	];
 	return (
-		<div className="min-h-screen">
+		<div className=" min-h-screen">
 			<main>
 				<HeroSection />
 				<GlobalBrands />

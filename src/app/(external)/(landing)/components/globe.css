@@ -65,7 +65,7 @@
 .dots8 {
 	animation: spins 20s infinite 14s linear;
 	position: relative;
-	top: -80px;
+	top: -100px;
 	opacity: 0;
 }
 .dots9 {

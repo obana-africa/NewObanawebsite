@@ -41,7 +41,7 @@ const HeroSection: React.FC = () => {
 
 			<div className="container mx-auto px-4 md:px-6">
 				<div className="flex flex-col-reverse md:flex-row items-center -mt-10  sm:mt-0">
-					<div className="w-full md:w-1/2 mb-0 md:mb-0 md:pr-8 -mt-10  sm:mt-0">
+					<div className=" w-full md:w-[60%]  mb-0 md:mb-0 md:pr-8 -mt-5  sm:mt-0">
 						<h2 className="mb-2">Enabling SMEs scale</h2>
 
 						<h3 className="bg-primary-light text-primary inline-block px-4 py-2 rounded-md">
@@ -54,7 +54,7 @@ const HeroSection: React.FC = () => {
 							</span>
 						</h3>
 
-						<h2 className="mb-6 md:leading-12">
+						<h2 className="mb-6 md:leading-12 w-full 2xl:w-[85%]">
 							by aggregating solutions to their business needs under one
 							platform
 						</h2>
@@ -76,7 +76,7 @@ const HeroSection: React.FC = () => {
 						<div className="absolute -bottom-8 -left-8 w-32 h-32 bg-white opacity-20 blur-[50px] rounded-full transition-all duration-500 hover:opacity-30 hover:blur-[60px]"></div>
 					</div>
 
-					<div className="w-full md:w-1/2 flex justify-center">
+					<div className="w-full md:w-[40%] flex justify-center">
 						<div className="relative w-full max-w-lg aspect-square">
 							<RotatingGlobe />
 						</div>
