@@ -23,6 +23,11 @@
 	position: relative;
 	top: 55px;
 }
+.dots1 {
+	animation: spins 20s infinite linear;
+	position: relative;
+	top: -135px;
+}
 .dots2 {
 	animation: spins 20s infinite 4s linear;
 	position: relative;
