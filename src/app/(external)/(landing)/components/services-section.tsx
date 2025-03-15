@@ -1,29 +1,11 @@
 "use client";
-import React, { ReactNode, useState } from "react";
+import React, {  useState } from "react";
 import Image from "next/image";
 import Seperator from "@/components/external/components/seperator";
 import Button from "@/components/ui/button";
+import { FeatureBoxProps, ServiceSectionProps } from "../types";
 
-interface FeatureBoxProps {
-	icon: ReactNode;
-	title: string;
-	description: string;
-	buttonText?: string;
-}
 
-interface Feature {
-	icon: ReactNode;
-	title: string;
-	description: string;
-	buttonText?: string;
-}
-
-interface ServiceSectionProps {
-	title?: string;
-	subtitle?: string;
-	features: Feature[];
-	imageSrc?: string;
-}
 
 const FeatureBox: React.FC<FeatureBoxProps> = ({
 	icon,
