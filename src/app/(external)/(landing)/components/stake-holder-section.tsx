@@ -35,7 +35,7 @@ const StakeholderSection: React.FC<StakeholderSectionProps> = ({
 	globeImage,
 }) => {
 	return (
-		<section className="container mx-auto px-4 py-12">
+		<section className="container mx-auto px-4 pt-10 md:py-12">
 			<div className="bg-secondary rounded-lg px-4 md:px-16 pt-10 pb-16 relative overflow-hidden">
 				<div className="absolute -top-20 -right-40 rotate-230">
 					<Image src={globeImage} alt="Globe" width={300} height={180} />

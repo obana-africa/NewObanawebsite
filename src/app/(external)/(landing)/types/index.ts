@@ -36,3 +36,13 @@ export type StakeholderSectionProps = {
   }[];
   globeImage: string;
 };
+
+export interface ImageBoxProps {
+  number: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  image: any;
+  imageAlt: string;
+  title: string;
+  description: string;
+  className?: string;
+}

@@ -6,6 +6,8 @@ import shipbox from "@/app/assets/images/landing-page/shipping-boxes-globe.svg";
 import StakeholderSection from "./components/stake-holder-section";
 import { serviceFeatures } from "./data/services";
 import { stakeholders } from "./data/stakeholders";
+import WhyObanaSection from "./components/why-obana";
+import CtaSection from "./components/cta-section";
 
 const Home: NextPage = () => {
 	return (
@@ -19,6 +21,8 @@ const Home: NextPage = () => {
 					stakeholders={stakeholders}
 					globeImage={shipbox}
 				/>
+				<WhyObanaSection />
+				<CtaSection />
 			</main>
 		</div>
 	);
