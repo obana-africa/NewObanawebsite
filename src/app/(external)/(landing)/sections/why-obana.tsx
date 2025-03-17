@@ -41,7 +41,7 @@ const ImageBox: React.FC<ImageBoxProps> = ({
 
 const WhyObanaSection: React.FC = () => {
 	return (
-		<section className="relative px-4 py-4 md:py-4">
+		<section className="relative px-4 py-4 md:py-4 overflow-hidden">
 			<div
 				className="absolute top-[50px] right-[150px] w-[182px] h-[36px] opacity-30 blur-[50px] bg-[#222] rounded-full"
 				style={{

@@ -1,13 +1,14 @@
 import type { NextPage } from "next";
-import HeroSection from "./components/hero-section";
-import GlobalBrands from "./components/global-brands";
-import ServiceSection from "./components/services-section";
+import HeroSection from "./sections/hero-section";
+import GlobalBrands from "./sections/brands-section";
+import ServiceSection from "./sections/services-section";
 import shipbox from "@/app/assets/images/landing-page/shipping-boxes-globe.svg";
-import StakeholderSection from "./components/stake-holder-section";
+import StakeholderSection from "./sections/stakeholder-section";
 import { serviceFeatures } from "./data/services";
 import { stakeholders } from "./data/stakeholders";
-import WhyObanaSection from "./components/why-obana";
-import CtaSection from "./components/cta-section";
+import WhyObanaSection from "./sections/why-obana";
+import CtaSection from "./sections/cta-section";
+import Testimonials from "./sections/testimonials-section";
 
 const Home: NextPage = () => {
 	return (
@@ -23,6 +24,7 @@ const Home: NextPage = () => {
 				/>
 				<WhyObanaSection />
 				<CtaSection />
+				<Testimonials title="What Our Eco System Partners Says" />
 			</main>
 		</div>
 	);

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Button from "@/components/ui/button";
-import RotatingGlobe from "./hero-globe";
+import RotatingGlobe from "../components/hero-globe";
 
 const HeroSection: React.FC = () => {
 	const solutions = [
