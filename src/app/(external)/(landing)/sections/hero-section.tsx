@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Button from "@/components/ui/button";
-import RotatingGlobe from "./hero-globe";
+import RotatingGlobe from "../components/hero-globe";
 
 const HeroSection: React.FC = () => {
 	const solutions = [
@@ -31,7 +31,7 @@ const HeroSection: React.FC = () => {
 	}, [solutions.length]);
 
 	return (
-		<section className="bg-primary text-white pt-32 pb-16 md:pt-20 md:pb-20 relative overflow-hidden">
+		<section className="bg-primary text-white pt-32 pb-16 md:pt-16 md:pb-8 relative overflow-hidden">
 			<div
 				className="absolute top-[151px] left-[804px] w-[182px] h-[56px] opacity-28 blur-[50px] bg-white rounded-full"
 				style={{
@@ -73,7 +73,8 @@ const HeroSection: React.FC = () => {
 						>
 							<span className="relative z-10">Get Started</span>
 						</Button>
-						<div className="absolute -bottom-8 -left-8 w-32 h-32 bg-white opacity-20 blur-[50px] rounded-full transition-all duration-500 hover:opacity-30 hover:blur-[60px]"></div>
+
+						<div className="absolute bottom-0 -left-8 w-32 h-32 bg-white opacity-20 blur-[50px] rounded-full transition-all duration-500 hover:opacity-30 hover:blur-[60px]"></div>
 					</div>
 
 					<div className="w-full md:w-[40%] flex justify-center">
