@@ -134,7 +134,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ title }) => {
 								}
 							}}
 							disabled={isAnimating}
-							className="absolute left-4 md:left-[600px] top-1/3 -translate-y-1/2 z-30 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition disabled:opacity-50 cursor-pointer"
+							className="absolute left-4 2xl:left-[600px] top-1/3 -translate-y-1/2 z-30 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition disabled:opacity-50 cursor-pointer"
 							aria-label="Previous testimonial"
 						>
 							<svg
@@ -163,7 +163,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ title }) => {
 								}
 							}}
 							disabled={isAnimating}
-							className="absolute right-4 md:right-[600px] top-1/3 -translate-y-1/2 z-30 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition disabled:opacity-50 cursor-pointer"
+							className="absolute right-4 2xl:right-[600px] top-1/3 -translate-y-1/2 z-30 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition disabled:opacity-50 cursor-pointer"
 							aria-label="Next testimonial"
 						>
 							<svg
