@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Button from "@/components/ui/button";
 import RotatingGlobe from "../components/hero-globe";
+import { useModal } from "@/contexts/modal-context";
 
 const HeroSection: React.FC = () => {
 	const solutions = [
@@ -15,6 +16,7 @@ const HeroSection: React.FC = () => {
 
 	const [currentSolutionIndex, setCurrentSolutionIndex] = useState(0);
 	const [isAnimating, setIsAnimating] = useState(false);
+	const { openGetStartedModal } = useModal();
 
 	useEffect(() => {
 		const intervalId = setInterval(() => {
@@ -29,6 +31,10 @@ const HeroSection: React.FC = () => {
 
 		return () => clearInterval(intervalId);
 	}, [solutions.length]);
+
+	const handleGetStarted = (): void => {
+		openGetStartedModal();
+	};
 
 	return (
 		<section className="bg-primary text-white pt-32 pb-16 md:pt-16 md:pb-8 relative overflow-hidden">
@@ -69,7 +75,7 @@ const HeroSection: React.FC = () => {
 							variant="primary"
 							animation="ripple"
 							className="bg-white hover:bg-secondary !text-primary text-lg font-medium shadow-lg shadow-white/50 relative overflow-hidden"
-							href="/get-started"
+							onClick={handleGetStarted}
 						>
 							<span className="relative z-10">Get Started</span>
 						</Button>

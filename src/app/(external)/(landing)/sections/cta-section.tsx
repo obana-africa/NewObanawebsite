@@ -1,8 +1,14 @@
 "use client";
 import Button from "@/components/ui/button";
+import { useModal } from "@/contexts/modal-context";
 import React from "react";
 
 const CtaSection = () => {
+	const { openGetStartedModal } = useModal();
+
+	const handleGetStarted = (): void => {
+		openGetStartedModal();
+	};
 	return (
 		<section className="container mx-auto px-4 pt-10 md:py-12">
 			<div className="bg-primary rounded-lg px-4 md:px-16 py-8 md:py-12 relative overflow-hidden">
@@ -34,7 +40,7 @@ const CtaSection = () => {
 						variant="primary"
 						animation="ripple"
 						className="bg-white hover:bg-secondary !text-primary  font-bold relative overflow-hidden w-40"
-						href="/get-started"
+						onClick={handleGetStarted}
 					>
 						<span className="relative z-10">Get Started</span>
 					</Button>

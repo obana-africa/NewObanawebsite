@@ -5,6 +5,7 @@ import { Bricolage_Grotesque, Inter } from "next/font/google";
 import Footer from "@/components/external/components/footer";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
+import { ModalProvider } from "@/contexts/modal-context";
 
 const bricolage = Bricolage_Grotesque({
 	subsets: ["latin"],
@@ -36,9 +37,11 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${bricolage.variable} ${inter.variable}`}>
-				<Header />
-				<main>{children}</main>
-				<Footer />
+				<ModalProvider>
+					<Header />
+					<main>{children}</main>
+					<Footer />
+				</ModalProvider>
 			</body>
 		</html>
 	);
