@@ -13,6 +13,7 @@ export interface Feature {
 	title: string;
 	description: string;
 	buttonText?: string;
+	href?: string;
 }
 
 export interface ServiceSectionProps {

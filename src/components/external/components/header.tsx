@@ -132,7 +132,7 @@ const Header: React.FC = () => {
 									}`}
 								>
 									<Link
-										href="#"
+										href="https://shop.obana.africa/login"
 										className="block px-4 py-2 text-gray-800 hover:bg-blue-50 font-light hover:bg-primary hover:text-white hover:font-semibold"
 									>
 										Product Sourcing
@@ -144,13 +144,13 @@ const Header: React.FC = () => {
 										Logistics
 									</Link>
 									<Link
-										href="/services/sourcing"
+										href="https://vendor.obana.africa/"
 										className="block px-4 py-2 text-gray-800 hover:bg-blue-50 font-light hover:bg-primary hover:text-white hover:font-semibold"
 									>
 										Inventory Financing
 									</Link>
 									<Link
-										href="#"
+										href="https://salesforce.obana.africa/"
 										className="block px-4 py-2 text-gray-800 hover:bg-blue-50 font-light hover:bg-primary hover:text-white hover:font-semibold"
 									>
 										Sales Partners
@@ -271,14 +271,17 @@ const Header: React.FC = () => {
 										}`}
 									>
 										{[
-											{ href: "#", label: "Product Sourcing" },
+											{
+												href: "https://shop.obana.africa/login",
+												label: "Product Sourcing",
+											},
 											{ href: "#", label: "Logistics" },
 											{
-												href: "#",
+												href: "https://vendor.obana.africa/",
 												label: "Inventory Financing",
 											},
 											{
-												href: "/services/sales",
+												href: "https://salesforce.obana.africa/",
 												label: "Sales Partners",
 											},
 										].map((service, idx) => (
