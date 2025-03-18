@@ -74,10 +74,10 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 	};
 
 	return (
-		<div className="fixed inset-0 bg-primary/80 z-50 flex items-center justify-center">
+		<div className="fixed inset-0 bg-primary/80 z-50 flex items-center justify-center overflow-auto">
 			<div
 				ref={modalRef}
-				className="bg-white w-full max-w-[700px] mx-4 rounded-lg shadow-lg overflow-hidden h-[600px]"
+				className="bg-white w-full max-w-[700px] mx-4 rounded-lg shadow-lg overflow-hidden "
 			>
 				<div className="flex justify-end p-4">
 					<button
@@ -91,7 +91,7 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 				<div className="flex-1 p-6 flex flex-col items-center space-y-8">
 					<div className="flex flex-col items-center justify-center gap-4">
 						<Image src={logoImage} alt="Logo" width={120} height={40} />
-						<p>
+						<p className="text-center">
 							Obana | Sub-Sahara Africa&apos;s Sourcing Marketplace Platform.
 						</p>
 					</div>
