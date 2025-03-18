@@ -26,7 +26,7 @@ export const serviceFeatures = [
 		description:
 			"Work with 3rd party partners to review and qualify SMEs that require financing for their inventory purchase to ensure they have the right assortment to grow their business and cash flow to ensure required working capital",
 		buttonText: "Get Started",
-		href: "https://vendor.obana.africa/",
+		href: "#",
 	},
 	{
 		icon: sales,
