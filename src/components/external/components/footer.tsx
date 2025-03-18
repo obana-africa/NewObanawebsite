@@ -16,8 +16,8 @@ const Footer = () => {
 		{ title: "Inventory Financing", href: "/inventory-financing" },
 		{ title: "Logistics Support", href: "/logistics-support" },
 		{ title: "Request for a quote", href: "/request-quote" },
-		{ title: "Sign up as a Vendor", href: "/vendor-signup" },
-		{ title: "Join our Sales Team", href: "/join-sales" },
+		{ title: "Sign up as a Vendor", href: "https://vendor.obana.africa/" },
+		{ title: "Join our Sales Team", href: "https://salesforce.obana.africa/" },
 	];
 
 	const companyLinks = [

@@ -5,6 +5,7 @@ export interface FeatureBoxProps {
 	title: string;
 	description: string;
 	buttonText?: string;
+	href?: string;
 }
 
 export interface Feature {

@@ -1,47 +1,33 @@
-import test from "@/app/assets/images/landing-page/testtest.png";
-import testt from "@/app/assets/images/landing-page/test-pic.jpg";
+import mitchel from "@/app/assets/images/landing-page/mitchel.jpg";
+import adenike from "@/app/assets/images/landing-page/adenike.jpg";
 
 export const testimonials = [
 	{
-		name: "John Chinweuba",
-		role: "Importer",
+		name: "Mitchel Ahisu",
+		role: " Sales Partner  ",
 		message:
-			'"This platform made it incredibly easy for me to source goods from overseas. Delivery was fast and reliable!"',
-		image: testt,
+			'"I was able help entrepreneurs access quality products hassle-free while building my own success on the Platform"',
+		image: mitchel,
 	},
 	{
-		name: "Sarah Johnson",
-		role: "Exporter",
+		name: "Adenike Folorunsho",
+		role: "Sales Partner",
 		message:
-			'"The customs clearance process was seamless. My shipments now arrive on time consistently."',
-		image: test,
+			'"Being an Obana.africa Sales Partner has empowered me to earn, grow, and connect businesses to limitless sourcing opportunities."',
+		image: adenike,
 	},
 	{
-		name: "Michael Chen",
-		role: "Logistics Manager",
+		name: "Mitchel Ahisu",
+		role: " Sales Partner  ",
 		message:
-			'"Their tracking system is exceptional. I can monitor all my shipments in real-time with complete visibility.Their tracking system is exceptional. I can monitor all my shipments in real-time with complete visibility."',
-		image: test,
+			'"I was able help entrepreneurs access quality products hassle-free while building my own success on the Platform"',
+		image: mitchel,
 	},
 	{
-		name: "John Chinweuba",
-		role: "Importer",
+		name: "Adenike Folorunsho",
+		role: "Sales Partner",
 		message:
-			'"This platform made it incredibly easy for me to source goods from overseas. Delivery was fast and reliable!"',
-		image: testt,
-	},
-	{
-		name: "Priya Patel",
-		role: "Supply Chain Director",
-		message:
-			'"We\'ve reduced our shipping costs by 15% since partnering with this platform. Highly recommended!"',
-		image: test,
-	},
-	{
-		name: "Robert Kiyosaki",
-		role: "E-commerce Seller",
-		message:
-			'"Customer service is top-notch. They resolved my issue within hours when a shipment was delayed."',
-		image: test,
+			'"Being an Obana.africa Sales Partner has empowered me to earn, grow, and connect businesses to limitless sourcing opportunities."',
+		image: adenike,
 	},
 ];

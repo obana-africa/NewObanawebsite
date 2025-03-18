@@ -12,6 +12,7 @@ const FeatureBox: React.FC<FeatureBoxProps> = ({
 	title,
 	description,
 	buttonText = "Get Started",
+	href,
 }) => {
 	const [isHovered, setIsHovered] = useState<boolean>(false);
 
@@ -33,6 +34,7 @@ const FeatureBox: React.FC<FeatureBoxProps> = ({
 						variant="primary"
 						animation="ripple"
 						className="border border-primary"
+						href={href}
 					>
 						{buttonText} &gt;
 					</Button>

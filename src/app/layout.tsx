@@ -20,12 +20,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-	title: "Obana - Enabling SMEs Scale",
-	description:
-		"We help SMEs in Nigeria and Sub-Saharan Africa scale by providing a seamless, tech-driven supply chain and delivering cost-effective solutions.",
+	title: "Obana",
+	description: "Obana | Sub-Sahara Africa's Sourcing Marketplace Platform.",
 	icons: {
-		icon: "/favicon.ico",
-		apple: "/apple-icon.png",
+		icon: "/favicon.png",
 	},
 };
 
