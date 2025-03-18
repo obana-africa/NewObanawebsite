@@ -53,6 +53,10 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 		);
 	};
 
+	const handleCloseDescription = () => {
+		setActiveDescription(null);
+	};
+
 	const navigateTo = (url: string) => {
 		window.open(url, "_blank");
 		onClose();
@@ -60,11 +64,11 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 
 	const descriptions = {
 		vendor:
-			"Vendors are manufacturers, businesses, or wholesalers that sell products—such as Fashion, Beauty, and Lifestyle items—in bulk to buyers.",
+			"Vendors are manufacturers, businesses, or wholesalers that sell products—such as Fashion, Beauty, and Lifestyle items—in bulk to buyers.",
 		customer:
-			"Customers are business owners or retailers who purchase Fashion, Beauty, and Lifestyle products in bulk to resell and meet market demand.",
+			"Customers are business owners or retailers who purchase Fashion, Beauty, and Lifestyle products in bulk to resell and meet market demand.",
 		partner:
-			"A sales partner is an individual that connects buyers with the right sources for products or services and earns a commission on every successful sale.",
+			"A sales partner is an individual that connects buyers with the right sources for products or services and earns a commission on every successful sale.",
 	};
 
 	const urls = {
@@ -108,7 +112,10 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 							>
 								{activeDescription === "vendor" ? (
 									<>
-										<div className="bg-blue-100 text-sm rounded-lg text-start p-3 mb-4 text-gray-800">
+										<div
+											className="bg-blue-100 text-sm rounded-lg text-start p-3 mb-4 text-gray-800 cursor-pointer"
+											onClick={handleCloseDescription}
+										>
 											{descriptions.vendor}
 										</div>
 										<Button
@@ -147,7 +154,10 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 							>
 								{activeDescription === "customer" ? (
 									<>
-										<div className="bg-blue-100 text-sm rounded-lg text-start p-3 mb-4 text-gray-800">
+										<div
+											className="bg-blue-100 text-sm rounded-lg text-start p-3 mb-4 text-gray-800 cursor-pointer"
+											onClick={handleCloseDescription}
+										>
 											{descriptions.customer}
 										</div>
 										<Button
@@ -186,7 +196,10 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 							>
 								{activeDescription === "partner" ? (
 									<>
-										<div className="bg-blue-100 text-sm rounded-lg text-start p-3 mb-4 text-gray-800">
+										<div
+											className="bg-blue-100 text-sm rounded-lg text-start p-3 mb-4 text-gray-800 cursor-pointer"
+											onClick={handleCloseDescription}
+										>
 											{descriptions.partner}
 										</div>
 										<Button
