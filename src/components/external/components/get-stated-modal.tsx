@@ -60,11 +60,11 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 
 	const descriptions = {
 		vendor:
-			"Do you create fashion, beauty, or lifestyle products and sell in bulk to wholesalers, retailers, or businesses, we've got the perfect logistics solution for you!",
+			"Vendors are manufacturers, businesses, or wholesalers that sell products—such as Fashion, Beauty, and Lifestyle items—in bulk to buyers.",
 		customer:
-			"Do you own or run a business selling fashion, beauty, or lifestyle products—whether in small or large quantities—we've got you covered!",
+			"Customers are business owners or retailers who purchase Fashion, Beauty, and Lifestyle products in bulk to resell and meet market demand.",
 		partner:
-			"Do you facilitate transactions by connecting buyers with sellers—whether through referrals, networking, or direct sales—we make it easier for you to succeed!",
+			"A sales partner is an individual that connects buyers with the right sources for products or services and earns a commission on every successful sale.",
 	};
 
 	const urls = {
