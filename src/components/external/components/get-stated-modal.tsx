@@ -53,6 +53,10 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 		);
 	};
 
+	const navigateTo = (url: string) => {
+		window.location.href = url;
+	};
+
 	const descriptions = {
 		vendor:
 			"Do you create fashion, beauty, or lifestyle products and sell in bulk to wholesalers, retailers, or businesses, we've got the perfect logistics solution for you!",
@@ -60,6 +64,12 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 			"Do you own or run a business selling fashion, beauty, or lifestyle products—whether in small or large quantities—we've got you covered!",
 		partner:
 			"Do you facilitate transactions by connecting buyers with sellers—whether through referrals, networking, or direct sales—we make it easier for you to succeed!",
+	};
+
+	const urls = {
+		vendor: "https://vendor.obana.africa/",
+		customer: "https://shop.obana.africa/",
+		partner: "https://salesforce.obana.africa/",
 	};
 
 	return (
@@ -96,20 +106,32 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 											: "max-h-0 opacity-0"
 									}`}
 								>
-									<div className="bg-blue-100 text-sm rounded-lg transform transition-transform duration-500 ease-in-out text-start">
+									<div
+										className="bg-blue-100 text-sm rounded-lg transform transition-transform duration-500 ease-in-out text-start p-3 cursor-pointer"
+										onClick={() => handleDescriptionToggle("vendor")}
+									>
 										{descriptions.vendor}
 									</div>
+									<Button
+										onClick={() => navigateTo(urls.vendor)}
+										variant="primary"
+										animation="ripple"
+										icon={<ChevronsRight />}
+										iconPosition="right"
+										className="rounded-sm w-full mt-3 !bg-[#3D6188] py-2"
+									>
+										Go to Vendor Portal
+									</Button>
 								</div>
 								<Button
 									onClick={() => handleDescriptionToggle("vendor")}
-									href="https://vendor.obana.africa/"
 									variant="primary"
 									animation="ripple"
 									icon={<ChevronsRight />}
 									iconPosition="right"
 									className={`rounded-sm w-[350px] transition-all duration-300 ${
 										activeDescription === "vendor"
-											? "border-blue-500 !bg-[#3D6188] shadow-lg py-3"
+											? "border-blue-500 !bg-[#3D6188] shadow-lg py-3 !hidden"
 											: "border-primary py-2"
 									}`}
 								>
@@ -133,20 +155,32 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 											: "max-h-0 opacity-0"
 									}`}
 								>
-									<div className="bg-blue-100 text-sm rounded-lg transform transition-transform duration-500 ease-in-out text-start">
+									<div
+										className="bg-blue-100 text-sm rounded-lg transform transition-transform duration-500 ease-in-out text-start p-3 cursor-pointer"
+										onClick={() => handleDescriptionToggle("customer")}
+									>
 										{descriptions.customer}
 									</div>
+									<Button
+										onClick={() => navigateTo(urls.customer)}
+										variant="primary"
+										animation="ripple"
+										icon={<ChevronsRight />}
+										iconPosition="right"
+										className="rounded-sm w-full mt-3 !bg-[#3D6188] py-2"
+									>
+										Go to Customer Portal
+									</Button>
 								</div>
 								<Button
 									onClick={() => handleDescriptionToggle("customer")}
-									href="https://shop.obana.africa/"
 									variant="primary"
 									animation="ripple"
 									icon={<ChevronsRight />}
 									iconPosition="right"
 									className={`rounded-sm w-[350px] transition-all duration-300 ${
 										activeDescription === "customer"
-											? "border-blue-500 !bg-[#3D6188] shadow-lg py-3"
+											? "border-blue-500 !bg-[#3D6188] shadow-lg py-3 !hidden"
 											: "border-primary py-2"
 									}`}
 								>
@@ -170,20 +204,32 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 											: "max-h-0 opacity-0"
 									}`}
 								>
-									<div className="bg-blue-100 text-sm rounded-lg transform transition-transform duration-500 ease-in-out text-start">
+									<div
+										className="bg-blue-100 text-sm rounded-lg transform transition-transform duration-500 ease-in-out text-start p-3 cursor-pointer"
+										onClick={() => handleDescriptionToggle("partner")}
+									>
 										{descriptions.partner}
 									</div>
+									<Button
+										onClick={() => navigateTo(urls.partner)}
+										variant="primary"
+										animation="ripple"
+										icon={<ChevronsRight />}
+										iconPosition="right"
+										className="rounded-sm w-full mt-3 !bg-[#3D6188] py-2"
+									>
+										Go to Partner Portal
+									</Button>
 								</div>
 								<Button
 									onClick={() => handleDescriptionToggle("partner")}
-									href="https://salesforce.obana.africa/"
 									variant="primary"
 									animation="ripple"
 									icon={<ChevronsRight />}
 									iconPosition="right"
 									className={`rounded-sm w-[350px] transition-all duration-300 ${
 										activeDescription === "partner"
-											? "border-blue-500 !bg-[#3D6188] shadow-lg py-3"
+											? "border-blue-500 !bg-[#3D6188] shadow-lg py-3 !hidden"
 											: "border-primary py-2"
 									}`}
 								>
