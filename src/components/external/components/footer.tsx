@@ -13,17 +13,17 @@ import {
 
 const Footer = () => {
 	const serviceLinks = [
-		{ title: "Inventory Financing", href: "/inventory-financing" },
-		{ title: "Logistics Support", href: "/logistics-support" },
-		{ title: "Request for a quote", href: "/request-quote" },
+		{ title: "Inventory Financing", href: "https://shop.obana.africa/login" },
+		{ title: "Logistics Support", href: "#" },
+		{ title: "Request for a quote", href: "#" },
 		{ title: "Sign up as a Vendor", href: "https://vendor.obana.africa/" },
 		{ title: "Join our Sales Team", href: "https://salesforce.obana.africa/" },
 	];
 
 	const companyLinks = [
-		{ title: "About Us", href: "/about" },
-		{ title: "Contact Us", href: "/contact" },
-		{ title: "FAQs", href: "/faqs" },
+		{ title: "About Us", href: "#" },
+		{ title: "Contact Us", href: "#" },
+		{ title: "FAQs", href: "#" },
 	];
 
 	const socialLinks = [
@@ -35,8 +35,8 @@ const Footer = () => {
 	];
 
 	const policyLinks = [
-		{ title: "Terms & Conditions", href: "/terms" },
-		{ title: "Privacy Policy", href: "/privacy" },
+		{ title: "Terms & Conditions", href: "#" },
+		{ title: "Privacy Policy", href: "#" },
 	];
 
 	return (

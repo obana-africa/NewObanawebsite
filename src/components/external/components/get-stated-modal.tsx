@@ -54,7 +54,8 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 	};
 
 	const navigateTo = (url: string) => {
-		window.location.href = url;
+		window.open(url, "_blank");
+		onClose();
 	};
 
 	const descriptions = {
@@ -68,7 +69,7 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 
 	const urls = {
 		vendor: "https://vendor.obana.africa/",
-		customer: "https://shop.obana.africa/",
+		customer: "https://shop.obana.africa/login",
 		partner: "https://salesforce.obana.africa/",
 	};
 
@@ -88,153 +89,129 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 				</div>
 
 				<div className="flex-1 p-6 flex flex-col items-center space-y-8">
-					<Image src={logoImage} alt="Logo" width={120} height={40} />
+					<div className="flex flex-col items-center justify-center gap-4">
+						<Image src={logoImage} alt="Logo" width={120} height={40} />
+						<p>
+							Obana | Sub-Sahara Africa&apos;s Sourcing Marketplace Platform.
+						</p>
+					</div>
 
 					<div className="w-full flex flex-col items-center space-y-6">
+						{/* Vendor Option */}
 						<div className="w-full flex flex-col items-center">
 							<div
-								className={`text-center mb-4 ${
+								className={`text-center mb-4 w-full transition-all duration-300 ${
 									activeDescription === "vendor"
 										? "p-6 rounded-md bg-primary max-w-[400px] text-white"
-										: ""
+										: "max-w-[350px]"
 								}`}
 							>
-								<div
-									className={`overflow-hidden transition-all duration-500 ease-in-out ${
-										activeDescription === "vendor"
-											? "max-h-40 opacity-100 mb-4"
-											: "max-h-0 opacity-0"
-									}`}
-								>
-									<div
-										className="bg-blue-100 text-sm rounded-lg transform transition-transform duration-500 ease-in-out text-start p-3 cursor-pointer"
-										onClick={() => handleDescriptionToggle("vendor")}
-									>
-										{descriptions.vendor}
-									</div>
+								{activeDescription === "vendor" ? (
+									<>
+										<div className="bg-blue-100 text-sm rounded-lg text-start p-3 mb-4 text-gray-800">
+											{descriptions.vendor}
+										</div>
+										<Button
+											onClick={() => navigateTo(urls.vendor)}
+											variant="primary"
+											animation="ripple"
+											icon={<ChevronsRight />}
+											iconPosition="right"
+											className="rounded-sm w-full !bg-[#3D6188] py-2"
+										>
+											Continue As A Vendor
+										</Button>
+									</>
+								) : (
 									<Button
-										onClick={() => navigateTo(urls.vendor)}
+										onClick={() => handleDescriptionToggle("vendor")}
 										variant="primary"
 										animation="ripple"
 										icon={<ChevronsRight />}
 										iconPosition="right"
-										className="rounded-sm w-full mt-3 !bg-[#3D6188] py-2"
+										className="rounded-sm w-full transition-all duration-300 border-primary py-2"
 									>
-										Go to Vendor Portal
+										Continue As A Vendor
 									</Button>
-								</div>
-								<Button
-									onClick={() => handleDescriptionToggle("vendor")}
-									variant="primary"
-									animation="ripple"
-									icon={<ChevronsRight />}
-									iconPosition="right"
-									className={`rounded-sm w-[350px] transition-all duration-300 ${
-										activeDescription === "vendor"
-											? "border-blue-500 !bg-[#3D6188] shadow-lg py-3 !hidden"
-											: "border-primary py-2"
-									}`}
-								>
-									Continue As A Vendor
-								</Button>
+								)}
 							</div>
 						</div>
 
 						<div className="w-full flex flex-col items-center">
 							<div
-								className={`text-center mb-4 ${
+								className={`text-center mb-4 w-full transition-all duration-300 ${
 									activeDescription === "customer"
 										? "p-6 rounded-md bg-primary max-w-[400px] text-white"
-										: ""
+										: "max-w-[350px]"
 								}`}
 							>
-								<div
-									className={`overflow-hidden transition-all duration-500 ease-in-out ${
-										activeDescription === "customer"
-											? "max-h-40 opacity-100 mb-4"
-											: "max-h-0 opacity-0"
-									}`}
-								>
-									<div
-										className="bg-blue-100 text-sm rounded-lg transform transition-transform duration-500 ease-in-out text-start p-3 cursor-pointer"
-										onClick={() => handleDescriptionToggle("customer")}
-									>
-										{descriptions.customer}
-									</div>
+								{activeDescription === "customer" ? (
+									<>
+										<div className="bg-blue-100 text-sm rounded-lg text-start p-3 mb-4 text-gray-800">
+											{descriptions.customer}
+										</div>
+										<Button
+											onClick={() => navigateTo(urls.customer)}
+											variant="primary"
+											animation="ripple"
+											icon={<ChevronsRight />}
+											iconPosition="right"
+											className="rounded-sm w-full !bg-[#3D6188] py-2"
+										>
+											Continue As A Customer
+										</Button>
+									</>
+								) : (
 									<Button
-										onClick={() => navigateTo(urls.customer)}
+										onClick={() => handleDescriptionToggle("customer")}
 										variant="primary"
 										animation="ripple"
 										icon={<ChevronsRight />}
 										iconPosition="right"
-										className="rounded-sm w-full mt-3 !bg-[#3D6188] py-2"
+										className="rounded-sm w-full transition-all duration-300 border-primary py-2"
 									>
-										Go to Customer Portal
+										Continue As A Customer
 									</Button>
-								</div>
-								<Button
-									onClick={() => handleDescriptionToggle("customer")}
-									variant="primary"
-									animation="ripple"
-									icon={<ChevronsRight />}
-									iconPosition="right"
-									className={`rounded-sm w-[350px] transition-all duration-300 ${
-										activeDescription === "customer"
-											? "border-blue-500 !bg-[#3D6188] shadow-lg py-3 !hidden"
-											: "border-primary py-2"
-									}`}
-								>
-									Continue As A Customer
-								</Button>
+								)}
 							</div>
 						</div>
 
 						<div className="w-full flex flex-col items-center">
 							<div
-								className={`text-center mb-4 ${
+								className={`text-center mb-4 w-full transition-all duration-300 ${
 									activeDescription === "partner"
 										? "p-6 rounded-md bg-primary max-w-[400px] text-white"
-										: ""
+										: "max-w-[350px]"
 								}`}
 							>
-								<div
-									className={`overflow-hidden transition-all duration-500 ease-in-out ${
-										activeDescription === "partner"
-											? "max-h-40 opacity-100 mb-4"
-											: "max-h-0 opacity-0"
-									}`}
-								>
-									<div
-										className="bg-blue-100 text-sm rounded-lg transform transition-transform duration-500 ease-in-out text-start p-3 cursor-pointer"
-										onClick={() => handleDescriptionToggle("partner")}
-									>
-										{descriptions.partner}
-									</div>
+								{activeDescription === "partner" ? (
+									<>
+										<div className="bg-blue-100 text-sm rounded-lg text-start p-3 mb-4 text-gray-800">
+											{descriptions.partner}
+										</div>
+										<Button
+											onClick={() => navigateTo(urls.partner)}
+											variant="primary"
+											animation="ripple"
+											icon={<ChevronsRight />}
+											iconPosition="right"
+											className="rounded-sm w-full !bg-[#3D6188] py-2"
+										>
+											Continue As A Sales Partner
+										</Button>
+									</>
+								) : (
 									<Button
-										onClick={() => navigateTo(urls.partner)}
+										onClick={() => handleDescriptionToggle("partner")}
 										variant="primary"
 										animation="ripple"
 										icon={<ChevronsRight />}
 										iconPosition="right"
-										className="rounded-sm w-full mt-3 !bg-[#3D6188] py-2"
+										className="rounded-sm w-full transition-all duration-300 border-primary py-2"
 									>
-										Go to Partner Portal
+										Continue As A Sales Partner
 									</Button>
-								</div>
-								<Button
-									onClick={() => handleDescriptionToggle("partner")}
-									variant="primary"
-									animation="ripple"
-									icon={<ChevronsRight />}
-									iconPosition="right"
-									className={`rounded-sm w-[350px] transition-all duration-300 ${
-										activeDescription === "partner"
-											? "border-blue-500 !bg-[#3D6188] shadow-lg py-3 !hidden"
-											: "border-primary py-2"
-									}`}
-								>
-									Continue As A Sales Partner
-								</Button>
+								)}
 							</div>
 						</div>
 					</div>

@@ -83,6 +83,7 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({
 							title={feature.title}
 							description={feature.description}
 							buttonText={feature.buttonText}
+							href={feature.href}
 						/>
 					))}
 				</div>
