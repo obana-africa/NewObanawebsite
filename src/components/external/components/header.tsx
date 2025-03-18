@@ -67,7 +67,7 @@ const Header: React.FC = () => {
 	};
 
 	const handleGetStarted = (): void => {
-		console.log("OPEN MODAL")
+		console.log("OPEN MODAL");
 		openGetStartedModal();
 	};
 
@@ -157,6 +157,12 @@ const Header: React.FC = () => {
 									</Link>
 								</div>
 							</div>
+							<Link
+								href="#"
+								className="text-gray-800 hover:text-blue-900 font-medium"
+							>
+								RFQ
+							</Link>
 
 							<Link
 								href="#"
@@ -169,12 +175,6 @@ const Header: React.FC = () => {
 								className="text-gray-800 hover:text-blue-900 font-medium"
 							>
 								FAQ
-							</Link>
-							<Link
-								href="#"
-								className="text-gray-800 hover:text-blue-900 font-medium"
-							>
-								RFQ
 							</Link>
 						</nav>
 
