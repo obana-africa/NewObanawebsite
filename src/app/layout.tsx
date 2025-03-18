@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 	title: "Obana - Enabling SMEs Scale",
 	description: "Obana | Sub-Sahara Africa's Sourcing Marketplace Platform.",
 	icons: {
-		icon: "/favicon.png",
+		icon: "/favicon.png?v=1",
 	},
 };
 
