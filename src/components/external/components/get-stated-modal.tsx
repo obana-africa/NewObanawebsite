@@ -69,7 +69,7 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 
 	const urls = {
 		vendor: "https://vendor.obana.africa/",
-		customer: "https://shop.obana.africa/login",
+		customer: "https://shop.obana.africa/",
 		partner: "https://salesforce.obana.africa/",
 	};
 

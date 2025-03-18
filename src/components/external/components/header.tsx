@@ -132,7 +132,7 @@ const Header: React.FC = () => {
 									}`}
 								>
 									<Link
-										href="https://shop.obana.africa/login"
+										href="https://shop.obana.africa"
 										className="block px-4 py-2 text-gray-800 hover:bg-blue-50 font-light hover:bg-primary hover:text-white hover:font-semibold"
 									>
 										Product Sourcing
@@ -272,7 +272,7 @@ const Header: React.FC = () => {
 									>
 										{[
 											{
-												href: "https://shop.obana.africa/login",
+												href: "https://shop.obana.africa",
 												label: "Product Sourcing",
 											},
 											{ href: "#", label: "Logistics" },
