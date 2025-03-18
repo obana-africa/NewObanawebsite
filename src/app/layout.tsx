@@ -20,7 +20,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-	title: "Obana",
+	title: "Obana - Enabling SMEs Scale",
 	description: "Obana | Sub-Sahara Africa's Sourcing Marketplace Platform.",
 	icons: {
 		icon: "/favicon.png",
