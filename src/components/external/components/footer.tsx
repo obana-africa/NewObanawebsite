@@ -13,7 +13,7 @@ import {
 
 const Footer = () => {
 	const serviceLinks = [
-		{ title: "Inventory Financing", href: "https://shop.obana.africa/login" },
+		{ title: "Inventory Financing", href: "https://shop.obana.africa/" },
 		{ title: "Logistics Support", href: "#" },
 		{ title: "Request for a quote", href: "#" },
 		{ title: "Sign up as a Vendor", href: "https://vendor.obana.africa/" },
