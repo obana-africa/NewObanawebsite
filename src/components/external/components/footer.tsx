@@ -13,30 +13,42 @@ import {
 
 const Footer = () => {
 	const serviceLinks = [
-		{ title: "Inventory Financing", href: "https://shop.obana.africa/" },
-		{ title: "Logistics Support", href: "#" },
-		{ title: "Request for a quote", href: "#" },
+		{ title: "Inventory Financing", href: "" },
+		{ title: "Logistics Support", href: "" },
+		{ title: "Request for a quote", href: "" },
 		{ title: "Sign up as a Vendor", href: "https://vendor.obana.africa/" },
 		{ title: "Join our Sales Team", href: "https://salesforce.obana.africa/" },
 	];
 
 	const companyLinks = [
-		{ title: "About Us", href: "#" },
-		{ title: "Contact Us", href: "#" },
-		{ title: "FAQs", href: "#" },
+		{ title: "About Us", href: "" },
+		{ title: "Contact Us", href: "" },
+		{ title: "FAQs", href: "" },
 	];
 
 	const socialLinks = [
-		{ icon: <Facebook size={20} />, href: "https://facebook.com" },
-		{ icon: <Instagram size={20} />, href: "https://instagram.com" },
-		{ icon: <Twitter size={20} />, href: "https://twitter.com" },
-		{ icon: <Linkedin size={20} />, href: "https://linkedin.com" },
-		{ icon: <Youtube size={20} />, href: "https://youtube.com" },
+		{
+			icon: <Facebook size={20} />,
+			href: "https://web.facebook.com/obanaafrica",
+		},
+		{
+			icon: <Instagram size={20} />,
+			href: "https://www.instagram.com/obana.africa/",
+		},
+		{ icon: <Twitter size={20} />, href: "https://x.com/obana_africa" },
+		{
+			icon: <Linkedin size={20} />,
+			href: "https://www.linkedin.com/company/obana-africa",
+		},
+		{
+			icon: <Youtube size={20} />,
+			href: "https://www.youtube.com/@Obana.africa",
+		},
 	];
 
 	const policyLinks = [
-		{ title: "Terms & Conditions", href: "#" },
-		{ title: "Privacy Policy", href: "#" },
+		{ title: "Terms & Conditions", href: "" },
+		{ title: "Privacy Policy", href: "" },
 	];
 
 	return (
