@@ -116,7 +116,7 @@ const Header: React.FC = () => {
 									aria-expanded={serviceDropdownOpen}
 									aria-haspopup="true"
 								>
-									Our Service
+									Our Services
 									{serviceDropdownOpen ? (
 										<ChevronUp className="ml-1 h-4 w-4" />
 									) : (
@@ -259,7 +259,7 @@ const Header: React.FC = () => {
 										type="button"
 										aria-expanded={serviceDropdownOpen}
 									>
-										<span>Our Service</span>
+										<span>Our Services</span>
 										{serviceDropdownOpen ? (
 											<ChevronUp className="h-4 w-4" />
 										) : (
