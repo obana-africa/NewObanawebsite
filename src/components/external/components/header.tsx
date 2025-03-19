@@ -165,7 +165,7 @@ const Header: React.FC = () => {
 							</Link>
 
 							<Link
-								href="#"
+								href="https://blog.obana.africa"
 								className="text-gray-800 hover:text-blue-900 font-medium"
 							>
 								Blog
@@ -239,7 +239,11 @@ const Header: React.FC = () => {
 							{ href: "/", label: "Home", delay: "delay-[100ms]" },
 							{ href: "#", label: "About Us", delay: "delay-[100ms]" },
 							{ isDropdown: true, delay: "delay-[100ms]" },
-							{ href: "#", label: "Blog", delay: "delay-[100ms]" },
+							{
+								href: "https://blog.obana.africa",
+								label: "Blog",
+								delay: "delay-[100ms]",
+							},
 							{ href: "#", label: "FAQ", delay: "delay-[100ms]" },
 							{ href: "#", label: "RFQ", delay: "delay-[100ms]" },
 							{ href: "#", label: "Contact Us", delay: "delay-[100ms]" },
