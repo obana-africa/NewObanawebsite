@@ -14,7 +14,7 @@ const FeatureBox: React.FC<FeatureBoxProps> = ({
 	buttonText = "Get Started",
 	href,
 }) => {
-	const [isHovered, setIsHovered] = useState<boolean>(false);
+	const [isHovered, setIsHovered] = useState<boolean>(false); 
 
 	return (
 		<div className="relative w-full px-2 sm:px-4 mb-6 md:mb-0">
