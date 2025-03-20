@@ -44,6 +44,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ title }) => {
 				clearInterval(timerRef.current);
 			}
 		};
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [currentIndex]);
 
 	const testimonialPositions = getTestimonialPositions(

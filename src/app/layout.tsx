@@ -6,6 +6,7 @@ import Footer from "@/components/external/components/footer";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import { ModalProvider } from "@/contexts/modal-context";
+import { Toaster } from "sonner";
 
 const bricolage = Bricolage_Grotesque({
 	subsets: ["latin"],
@@ -39,6 +40,7 @@ export default function RootLayout({
 					<Header />
 					<main>{children}</main>
 					<Footer />
+					<Toaster richColors duration={5000} />
 				</ModalProvider>
 			</body>
 		</html>

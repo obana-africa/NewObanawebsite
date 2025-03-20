@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -10,8 +12,22 @@ import {
 	Youtube,
 	SendHorizonal,
 } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { emailSchema } from "@/schemas";
+import { EmailFormData } from "@/types";
+import { toast } from "sonner";
 
 const Footer = () => {
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+		reset,
+	} = useForm<EmailFormData>({
+		resolver: zodResolver(emailSchema),
+	});
+
 	const serviceLinks = [
 		{ title: "Inventory Financing", href: "" },
 		{ title: "Logistics Support", href: "" },
@@ -50,6 +66,12 @@ const Footer = () => {
 		{ title: "Terms & Conditions", href: "" },
 		{ title: "Privacy Policy", href: "" },
 	];
+
+	const onSubmit = (data: EmailFormData) => {
+		console.log("Form submitted:", data);
+		toast.success("Thank you for subscribing!");
+		reset();
+	};
 
 	return (
 		<footer className="bg-primary text-white pt-4 pb-4 md:pt-6 md:pb-6 relative overflow-hidden">
@@ -104,10 +126,7 @@ const Footer = () => {
 								<ul className="space-y-2">
 									{companyLinks.map((link, index) => (
 										<li key={index}>
-											<Link
-												href={link.href}
-												className=" hover:underline"
-											>
+											<Link href={link.href} className=" hover:underline">
 												{link.title}
 											</Link>
 										</li>
@@ -148,19 +167,29 @@ const Footer = () => {
 								Subscribe to our weekly Newsletter and receive updates via
 								email.
 							</p>
-							<div className="flex bg-white rounded-2xl">
-								<input
-									type="email"
-									placeholder="Enter your mail here..."
-									className="px-4 py-2 w-full rounded-l-full text-primary-dark focus:outline-none "
-								/>
-								<button
-									type="submit"
-									className="bg-primary cursor-pointer text-white px-3 py-2 rounded-r-full border border-white flex items-center justify-center"
-								>
-									<SendHorizonal className="h-5 w-5 transform -rotate-45" />
-								</button>
-							</div>
+							<form onSubmit={handleSubmit(onSubmit)}>
+								<div className="flex bg-white rounded-2xl">
+									<input
+										type="email"
+										placeholder="Enter your mail here..."
+										className={`px-4 py-2 w-full rounded-l-full text-primary-dark focus:outline-none ${
+											errors.email ? "border border-red-500" : ""
+										}`}
+										{...register("email")}
+									/>
+									<button
+										type="submit"
+										className="bg-primary cursor-pointer text-white px-3 py-2 rounded-r-full border border-white flex items-center justify-center"
+									>
+										<SendHorizonal className="h-5 w-5 transform -rotate-45" />
+									</button>
+								</div>
+								{errors.email && (
+									<p className="text-error text-sm mt-1">
+										{errors.email.message}
+									</p>
+								)}
+							</form>
 						</div>
 					</div>
 
