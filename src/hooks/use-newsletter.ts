@@ -28,12 +28,14 @@ const useNewsletter = () => {
 		},
 		onSuccess: (data) => {
 			toast.dismiss("newsletter-subscription");
-			toast.success(data.message || "Thank you for subscribing!");
+			toast.success(data.message && "Thank you for subscribing!");
 		},
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		onError: (error: any) => {
 			toast.dismiss("newsletter-subscription");
-			toast.error(error.message || "Failed to subscribe. Please try again.");
+			toast.error(
+				error.message && "Failed to subscribe. Please try again later."
+			);
 		},
 	});
 

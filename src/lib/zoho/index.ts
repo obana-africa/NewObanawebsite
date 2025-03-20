@@ -6,13 +6,13 @@ interface SubscribeToNewsletterParams {
 }
 
 interface ZohoResponse {
+	status: string;
+	message: string;
 	response: {
-		status: string;
 		message: string;
 	};
 }
 
-// Create a function to get a configured axios instance
 const getCampaignInstance = async () => {
 	const ZOHO_CAMPAIGNS_ENDPOINT = process.env.ZOHO_CAMPAIGNS_ENDPOINT;
 
@@ -23,6 +23,7 @@ const getCampaignInstance = async () => {
 	}
 
 	const token = await getAccessToken();
+	console.log("Zoho Token:", token);
 
 	return axios.create({
 		baseURL: ZOHO_CAMPAIGNS_ENDPOINT,
@@ -47,30 +48,36 @@ export const subscribeToNewsletter = async ({
 		);
 	}
 
-	// Get a fresh instance for each request
 	const campaignInstance = await getCampaignInstance();
 
 	try {
-		const response = await campaignInstance.post("/json/listsubscribe", {
-			resfmt: "JSON",
-			listkey: listId,
-			contactinfo: { "Contact Email": email },
+		const response = await campaignInstance.post("/json/listsubscribe", null, {
+			params: {
+				resfmt: "JSON",
+				listkey: listId,
+				contactinfo: JSON.stringify({ "Contact Email": email }),
+				source: "Website", 
+			},
 		});
 
 		const data: ZohoResponse = response.data;
+		// console.log("API Response:", data);
 
-		if (data.response.status === "success") {
-			return { success: true, message: data.response.message };
+		if (data.status === "success") {
+			return { success: true, message: data.message };
 		} else {
 			throw new Error(data.response.message);
 		}
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	} catch (error: any) {
-		if (error.response?.status === 401) {
+		console.error("API Error:", error.response?.data || error.message);
+		if (error?.status === 401) {
 			throw new Error(
 				"Authentication failed with Zoho. Please try again later."
 			);
 		}
-		throw error;
+		throw new Error(
+			error.response?.data?.response?.message || "Something went wrong"
+		);
 	}
 };

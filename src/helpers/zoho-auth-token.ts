@@ -13,10 +13,9 @@ interface ZohoTokenResponse {
 }
 
 let accessTokenExpiry = Date.now();
+const accessToken = process.env.ZOHO_API_TOKEN;
 
 export async function getAccessToken() {
-	const accessToken = process.env.ZOHO_API_TOKEN;
-
 	if (accessToken && Date.now() < accessTokenExpiry) {
 		return accessToken;
 	}
@@ -47,7 +46,7 @@ export async function getAccessToken() {
 		accessTokenExpiry = Date.now() + data.expires_in * 1000;
 
 		return data.access_token;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	} catch (error: any) {
 		throw new Error(`Error refreshing Zoho access token: ${error.message}`);
 	}
