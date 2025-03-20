@@ -1,24 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/external/components/header";
-import { Bricolage_Grotesque, Inter } from "next/font/google";
-import Footer from "@/components/external/components/footer";
+import RootLayoutClient from "./root-layout-client";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-import { ModalProvider } from "@/contexts/modal-context";
-import { Toaster } from "sonner";
-
-const bricolage = Bricolage_Grotesque({
-	subsets: ["latin"],
-	display: "swap",
-	variable: "--font-bricolage",
-});
-
-const inter = Inter({
-	subsets: ["latin"],
-	display: "swap",
-	variable: "--font-inter",
-});
 
 export const metadata: Metadata = {
 	title: "Obana - Enabling SMEs Scale",
@@ -33,16 +17,5 @@ export default function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	return (
-		<html lang="en">
-			<body className={`${bricolage.variable} ${inter.variable}`}>
-				<ModalProvider>
-					<Header />
-					<main>{children}</main>
-					<Footer />
-					<Toaster richColors duration={5000} />
-				</ModalProvider>
-			</body>
-		</html>
-	);
+	return <RootLayoutClient>{children}</RootLayoutClient>;
 }

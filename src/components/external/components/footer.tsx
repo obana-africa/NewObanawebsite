@@ -16,7 +16,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { emailSchema } from "@/schemas";
 import { EmailFormData } from "@/types";
-import { toast } from "sonner";
+import useNewsletter from "@/hooks/use-newsletter";
 
 const Footer = () => {
 	const {
@@ -27,6 +27,13 @@ const Footer = () => {
 	} = useForm<EmailFormData>({
 		resolver: zodResolver(emailSchema),
 	});
+
+	const { subscribe } = useNewsletter();
+
+	const onSubmit = (data: EmailFormData) => {
+		subscribe(data.email);
+		reset();
+	};
 
 	const serviceLinks = [
 		{ title: "Inventory Financing", href: "" },
@@ -66,12 +73,6 @@ const Footer = () => {
 		{ title: "Terms & Conditions", href: "" },
 		{ title: "Privacy Policy", href: "" },
 	];
-
-	const onSubmit = (data: EmailFormData) => {
-		console.log("Form submitted:", data);
-		toast.success("Thank you for subscribing!");
-		reset();
-	};
 
 	return (
 		<footer className="bg-primary text-white pt-4 pb-4 md:pt-6 md:pb-6 relative overflow-hidden">
@@ -173,7 +174,7 @@ const Footer = () => {
 										type="email"
 										placeholder="Enter your mail here..."
 										className={`px-4 py-2 w-full rounded-l-full text-primary-dark focus:outline-none ${
-											errors.email ? "border border-red-500" : ""
+											errors.email ? "border border-error" : ""
 										}`}
 										{...register("email")}
 									/>
