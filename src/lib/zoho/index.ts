@@ -23,14 +23,41 @@ const getCampaignInstance = async () => {
 	}
 
 	const token = await getAccessToken();
-	console.log("Zoho Token:", token);
+	// console.log("Zoho Token:", token);
 
-	return axios.create({
+	const instance = axios.create({
 		baseURL: ZOHO_CAMPAIGNS_ENDPOINT,
 		headers: {
 			Authorization: `Zoho-oauthtoken ${token}`,
 		},
 	});
+
+	instance.interceptors.response.use(
+		(response) => response,
+		async (error) => {
+			const originalRequest = error.config;
+
+			if (error.response?.status === 401 && !originalRequest._retry) {
+				originalRequest._retry = true;
+
+				try {
+					const newToken = await getAccessToken();
+					console.log("Refreshed token:", newToken);
+
+					originalRequest.headers.Authorization = `Zoho-oauthtoken ${newToken}`;
+
+					return instance(originalRequest);
+				} catch (refreshError) {
+					console.error("Failed to refresh token:", refreshError);
+					throw refreshError;
+				}
+			}
+
+			return Promise.reject(error);
+		}
+	);
+
+	return instance;
 };
 
 export const subscribeToNewsletter = async ({
@@ -56,7 +83,7 @@ export const subscribeToNewsletter = async ({
 				resfmt: "JSON",
 				listkey: listId,
 				contactinfo: JSON.stringify({ "Contact Email": email }),
-				source: "Website", 
+				source: "Website",
 			},
 		});
 
@@ -68,9 +95,8 @@ export const subscribeToNewsletter = async ({
 		} else {
 			throw new Error(data.response.message);
 		}
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	} catch (error: any) {
-		console.error("API Error:", error.response?.data || error.message);
 		if (error?.status === 401) {
 			throw new Error(
 				"Authentication failed with Zoho. Please try again later."
