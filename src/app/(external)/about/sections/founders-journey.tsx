@@ -1,11 +1,9 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import founder from "@/app/assets/images/about-page/founder.png";
 import fazsion from "@/app/assets/images/about-page/fazsion.png";
 import Seperator from "@/components/external/components/seperator";
-import AOS from "aos";
-import "aos/dist/aos.css";
 
 interface FoundersJourneyProps {
 	founderFirstImage?: string;
@@ -16,14 +14,6 @@ const FoundersJourney: React.FC<FoundersJourneyProps> = ({
 	founderFirstImage,
 	founderSecondImage,
 }) => {
-	useEffect(() => {
-		AOS.init({
-			duration: 800,
-			once: false,
-			mirror: true,
-		});
-	}, []);
-
 	return (
 		<div className=" overflow-x-hidden">
 			<FoundersJourneyOne founderImage={founderFirstImage} />
@@ -43,11 +33,11 @@ const FoundersJourneyTwo: React.FC<{ founderImage?: string }> = ({
 				<div className="flex flex-col-reverse justify-between md:flex-row-reverse gap-6 md:gap-16">
 					<div
 						className="w-full md:w-3/5"
-						data-aos="fade-left"
-						data-aos-delay="100"
+						// data-aos="fade-left"
+						// data-aos-delay="100"
 					>
-						<div className="mt-4 md:mt-6 space-y-4 md:space-y-8 text-[#222] text-sm md:text-base lg:text-md leading-6">
-							<p>
+						<div className="mt-4 md:mt-6 space-y-4 md:space-y-8 text-[#222]  md:text-base lg:text-md leading-6">
+							<p data-aos="fade-left">
 								In 2016, Fazsion Wholesale was officially launched. Working in
 								collaboration with the sales team, the company successfully
 								acquired over 1,000 SMEs within two years, generating an average
@@ -58,7 +48,7 @@ const FoundersJourneyTwo: React.FC<{ founderImage?: string }> = ({
 								marketplace that would empower local businesses.
 							</p>
 
-							<p>
+							<p data-aos="fade-right">
 								Fast forward to 2024, he was part of the team that founded{" "}
 								<span className="font-bold">Trade Enablers, </span> a company
 								providing e-commerce as a service for B2B and B2C transactions,
@@ -66,7 +56,7 @@ const FoundersJourneyTwo: React.FC<{ founderImage?: string }> = ({
 								commerce. ₦800 million in revenue
 							</p>
 
-							<p>
+							<p data-aos="fade-left">
 								Later In 2024, he took a bold step forward by founding
 								<span className="font-bold"> Obana.Africa, </span> an innovative
 								platform designed to enlarge the scope of B2B offerings for
@@ -79,7 +69,7 @@ const FoundersJourneyTwo: React.FC<{ founderImage?: string }> = ({
 								Fazsion.ng
 							</p>
 
-							<p>
+							<p data-aos="fade-left">
 								Today, Obana Africa stands as a transformative force, connecting
 								businesses, enhancing trade, and unlocking endless opportunities
 								for SMEs across Africa.
@@ -89,8 +79,9 @@ const FoundersJourneyTwo: React.FC<{ founderImage?: string }> = ({
 
 					<div
 						className="w-full md:w-2/5 flex justify-center items-center"
+						// data-aos="fade-right"
+						// data-aos-delay="100"
 						data-aos="fade-right"
-						data-aos-delay="200"
 					>
 						<div className="relative w-full max-w-sm md:max-w-md lg:max-w-lg">
 							<Image
@@ -119,15 +110,18 @@ const FoundersJourneyOne: React.FC<{ founderImage?: string }> = ({
 				<div className="flex flex-col-reverse justify-between md:flex-row gap-6 md:gap-16">
 					<div
 						className="w-full md:w-3/5"
-						data-aos="fade-right"
-						data-aos-delay="100"
+						// data-aos="fade-right"
+						// data-aos-delay="100"
 					>
-						<h2 className="text-primary text-2xl md:text-3xl lg:text-4xl font-bold inline-block">
+						<h2
+							className="text-primary text-2xl md:text-3xl lg:text-4xl font-bold inline-block"
+							data-aos="fade-right"
+						>
 							Our founder&apos;s journey
 						</h2>
 						<Seperator />
-						<div className="mt-4 md:mt-6 space-y-4 md:space-y-8 text-[#222] text-sm md:text-base lg:text-md leading-6">
-							<p>
+						<div className="mt-4 md:mt-6 space-y-4 md:space-y-8 text-[#222]  md:text-base lg:text-md leading-6">
+							<p data-aos="fade-right">
 								In 2012, our founder began his journey as a pioneer staff at{" "}
 								<span className="font-bold">Jumia</span>, serving as a Category
 								Manager for Fashion. Jumia, one of Africa&apos;s leading
@@ -138,7 +132,7 @@ const FoundersJourneyOne: React.FC<{ founderImage?: string }> = ({
 								within the online retail industry.
 							</p>
 
-							<p>
+							<p data-aos="fade-left">
 								In 2013, he moved to{" "}
 								<span className="font-bold">Konga.com</span>, another major
 								e-commerce platform in Nigeria, where he took charge of
@@ -153,7 +147,7 @@ const FoundersJourneyOne: React.FC<{ founderImage?: string }> = ({
 								locally.
 							</p>
 
-							<p>
+							<p data-aos="fade-right">
 								By 2015, he co-founded{" "}
 								<span className="font-bold">Fazsion.ng</span>, initially
 								envisioned as a cross-border retail e-commerce platform,
@@ -166,8 +160,9 @@ const FoundersJourneyOne: React.FC<{ founderImage?: string }> = ({
 
 					<div
 						className="w-full md:w-2/5 flex justify-center items-center"
+						// data-aos="fade-right"
+						// data-aos-delay="100"
 						data-aos="fade-left"
-						data-aos-delay="200"
 					>
 						<div className="relative w-full max-w-sm md:max-w-md lg:max-w-lg hidden md:block">
 							<Image

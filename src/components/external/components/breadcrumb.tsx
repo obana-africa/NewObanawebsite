@@ -29,7 +29,11 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
 			></div>
 
 			<div className="container mx-auto px-4 md:px-6">
-				<div className="w-full md:w-[60%]">
+				<div
+					className="w-full md:w-[60%]"
+					data-aos="fade-left"
+					data-aos-delay="100"
+				>
 					<h2 className="mb-4 hidden md:block">{heading}</h2>
 					<h1 className="mb-4  md:hidden">{heading}</h1>
 					<p className="mb-0 text-md 2xl:text-lg md:w-[50ch]">{subheading}</p>

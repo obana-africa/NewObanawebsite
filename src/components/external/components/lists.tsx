@@ -1,0 +1,174 @@
+"use client";
+import { ListItemProps, NormalListProps } from "@/types";
+import React from "react";
+
+const ListItem: React.FC<ListItemProps> = ({
+	children,
+	icon,
+	className = "",
+	iconClassName = "",
+	contentClassName = "",
+	aosAnimation,
+	aosDuration,
+	aosDelay,
+	customIcon,
+}) => {
+	return (
+		<li
+			className={`flex items-start gap-2 mb-2 ${className}`}
+			data-aos={aosAnimation}
+			data-aos-duration={aosDuration}
+			data-aos-delay={aosDelay}
+		>
+			{customIcon ? (
+				<span className={` flex-shrink-0 ${iconClassName}`}>{customIcon}</span>
+			) : icon ? (
+				<span className={` flex-shrink-0 ${iconClassName}`}>{icon}</span>
+			) : null}
+			<span className={`flex-1 ${contentClassName}`}>{children}</span>
+		</li>
+	);
+};
+
+const NormalList: React.FC<NormalListProps> = ({
+	items,
+	listType = "ul",
+	listClassName = "",
+	itemClassName = "",
+	iconClassName = "",
+	contentClassName = "",
+	bulletColor = "#3B82F6",
+	bulletSize = "6px",
+	bulletStyle = "circle",
+	customIcon,
+	aosAnimation = "",
+	aosDuration = "800",
+	aosDelay = "0",
+	aosDelayIncrement = 100,
+}) => {
+	const getBulletStyle = () => {
+		if (bulletStyle === "custom" || customIcon) {
+			return { listStyle: "none" };
+		}
+
+		if (bulletStyle === "none") {
+			return { listStyle: "none" };
+		}
+
+		return {
+			listStyle: "none",
+		};
+	};
+
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const renderCustomBullet = (index: number) => {
+		if (customIcon) {
+			return customIcon;
+		}
+
+		if (bulletStyle === "circle") {
+			return (
+				<div
+					style={{
+						width: bulletSize,
+						height: bulletSize,
+						backgroundColor: bulletColor,
+						borderRadius: "50%",
+						marginTop: "8px",
+					}}
+				/>
+			);
+		}
+
+		if (bulletStyle === "disc") {
+			return (
+				<div
+					style={{
+						width: bulletSize,
+						height: bulletSize,
+						backgroundColor: bulletColor,
+						borderRadius: "50%",
+						border: `1px solid ${bulletColor}`,
+						marginTop: "8px",
+					}}
+				/>
+			);
+		}
+
+		if (bulletStyle === "square") {
+			return (
+				<div
+					style={{
+						width: bulletSize,
+						height: bulletSize,
+						backgroundColor: bulletColor,
+						marginTop: "8px",
+					}}
+				/>
+			);
+		}
+
+		return null;
+	};
+
+	const getDelay = (index: number) => {
+		if (typeof aosDelay === "function") {
+			return aosDelay(index);
+		}
+
+		if (aosDelayIncrement) {
+			return (parseInt(aosDelay) + index * aosDelayIncrement).toString();
+		}
+
+		return aosDelay;
+	};
+
+	const ListTag = listType === "ol" ? "ol" : "ul";
+
+	return (
+		<ListTag
+			className={`${listClassName}`}
+			style={getBulletStyle()}
+			data-aos={aosAnimation}
+			data-aos-duration={aosDuration}
+		>
+			{items.map((item, index) => {
+				if (typeof item === "string") {
+					return (
+						<ListItem
+							key={index}
+							className={itemClassName}
+							customIcon={renderCustomBullet(index)}
+							iconClassName={iconClassName}
+							contentClassName={contentClassName}
+							aosAnimation={aosAnimation}
+							aosDuration={aosDuration}
+							aosDelay={getDelay(index)}
+						>
+							{item}
+						</ListItem>
+					);
+				} else {
+					return (
+						<ListItem
+							key={index}
+							className={`${itemClassName} ${item.className || ""}`}
+							customIcon={item.customIcon || renderCustomBullet(index)}
+							iconClassName={`${iconClassName} ${item.iconClassName || ""}`}
+							contentClassName={`${contentClassName} ${
+								item.contentClassName || ""
+							}`}
+							aosAnimation={item.aosAnimation || aosAnimation}
+							aosDuration={item.aosDuration || aosDuration}
+							aosDelay={item.aosDelay || getDelay(index)}
+						>
+							{item.children}
+						</ListItem>
+					);
+				}
+			})}
+		</ListTag>
+	);
+};
+
+export default NormalList;

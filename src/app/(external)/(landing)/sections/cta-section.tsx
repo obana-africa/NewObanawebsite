@@ -25,25 +25,36 @@ const CtaSection = () => {
 					}}
 				></div>
 				<div className="flex flex-col items-center mx-auto w-full md:w-[1090px]">
-					<h3 className="font-bold text-center text-white md:leading-12 mb-6 hidden md:block">
+					<h3
+						className="font-bold text-center text-white md:leading-12 mb-6 hidden md:block"
+						data-aos="fade-up"
+						data-aos-delay="100"
+						data-aos-duration="1000"
+					>
 						We provide seamless sourcing, secure payments, reliable logistics,
 						and business growth opportunities—all designed to help you succeed
 						effortlessly
 					</h3>
-					<h4 className="font-bold text-center text-white md:leading-12 mb-6 block md:hidden">
+					<h4
+						className="font-bold text-center text-white md:leading-12 mb-6 block md:hidden"
+						data-aos="fade-up"
+						data-aos-delay="100"
+						data-aos-duration="1000"
+					>
 						We provide seamless sourcing, secure payments, reliable logistics,
 						and business growth opportunities—all designed to help you succeed
 						effortlessly
 					</h4>
-
-					<Button
-						variant="primary"
-						animation="ripple"
-						className="bg-white hover:bg-secondary !text-primary  font-bold relative overflow-hidden w-40"
-						onClick={handleGetStarted}
-					>
-						<span className="relative z-10">Get Started</span>
-					</Button>
+					<div data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000">
+						<Button
+							variant="primary"
+							animation="ripple"
+							className="bg-white hover:bg-secondary !text-primary  font-bold relative overflow-hidden w-40"
+							onClick={handleGetStarted}
+						>
+							<span className="relative z-10">Get Started</span>
+						</Button>
+					</div>
 				</div>
 			</div>
 		</section>

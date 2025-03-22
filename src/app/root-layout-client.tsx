@@ -10,6 +10,9 @@ import Footer from "@/components/external/components/footer";
 // import "slick-carousel/slick/slick.css";
 import { ModalProvider } from "@/contexts/modal-context";
 import { Toaster } from "sonner";
+import Aos from "aos";
+import { useEffect } from "react";
+import "aos/dist/aos.css";
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -27,8 +30,6 @@ const queryClient = new QueryClient({
 	},
 });
 
-
-
 const bricolage = Bricolage_Grotesque({
 	subsets: ["latin"],
 	display: "swap",
@@ -41,23 +42,32 @@ const inter = Inter({
 	variable: "--font-inter",
 });
 
-
-
 export default function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	useEffect(() => {
+		Aos.init({
+			once: false,
+			mirror: true,
+			offset: 100,
+			duration: 1000,
+			delay: 100,
+			// easing: "ease-in-sine",
+		});
+	}, []);
 	return (
 		<html lang="en">
 			<body className={`${bricolage.variable} ${inter.variable}`}>
 				<QueryClientProvider client={queryClient}>
-				<ModalProvider>
-					<Header />
-					<main>{children}</main>
-					<Footer />
-					<Toaster richColors duration={5000} />
-				</ModalProvider></QueryClientProvider>
+					<ModalProvider>
+						<Header />
+						<main>{children}</main>
+						<Footer />
+						<Toaster richColors duration={5000} />
+					</ModalProvider>
+				</QueryClientProvider>
 			</body>
 		</html>
 	);
