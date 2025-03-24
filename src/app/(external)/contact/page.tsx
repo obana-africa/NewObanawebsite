@@ -9,7 +9,7 @@ const Page = () => {
 		<div className=" min-h-screen ">
 			<main>
 				<Breadcrumb
-					heading="About Us"
+					heading="Contact Us"
 					icon={clock}
 					iconSubheading="Available 24/7 for emergency road service"
 				/>
