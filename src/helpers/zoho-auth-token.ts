@@ -1,70 +1,100 @@
 import axios from "axios";
 
-const ZOHO_AUTH_URL = process.env.ZOHO_AUTH_URL || "";
-const ZOHO_REFRESH_TOKEN = process.env.ZOHO_REFRESH_TOKEN;
-const ZOHO_CLIENT_ID = process.env.ZOHO_CLIENT_ID;
-const ZOHO_CLIENT_SECRET = process.env.ZOHO_CLIENT_SECRET;
-
 interface ZohoTokenResponse {
 	access_token: string;
 	expires_in: number;
 	error?: string;
 }
 
-let accessToken: string | null = null;
-let accessTokenExpiry: number = Date.now();
-// console.log("accessTokenExpiry token:", accessTokenExpiry);
+interface ZohoAuthConfig {
+	authUrl: string;
+	refreshToken: string;
+	clientId: string;
+	clientSecret: string;
+}
 
+class ZohoTokenManager {
+	private accessToken: string | null = null;
+	private accessTokenExpiry: number = 0;
+	private config: ZohoAuthConfig;
+	private tokenType: string;
 
-
-export async function getAccessToken(retries = 3) {
-	if (accessToken && Date.now() < accessTokenExpiry) {
-		console.log("Using cached access token:", accessToken);
-		return accessToken;
+	constructor(config: ZohoAuthConfig, tokenType: string = "API") {
+		this.config = config;
+		this.tokenType = tokenType;
 	}
 
-	let lastError: Error | null = null;
+	async getAccessToken(retries: number = 3): Promise<string> {
+		if (this.accessToken && Date.now() < this.accessTokenExpiry) {
+			console.log(`Using cached ${this.tokenType} access token`);
+			return this.accessToken;
+		}
 
-	for (let i = 0; i < retries; i++) {
-		try {
-			const response = await axios.post(
-				ZOHO_AUTH_URL,
-				new URLSearchParams({
-					refresh_token: ZOHO_REFRESH_TOKEN || "",
-					client_id: ZOHO_CLIENT_ID || "",
-					client_secret: ZOHO_CLIENT_SECRET || "",
-					grant_type: "refresh_token",
-				}),
-				{
-					headers: {
-						"Content-Type": "application/x-www-form-urlencoded",
-					},
+		let lastError: Error | null = null;
+
+		for (let attempt = 1; attempt <= retries; attempt++) {
+			try {
+				const response = await axios.post(
+					this.config.authUrl,
+					new URLSearchParams({
+						refresh_token: this.config.refreshToken,
+						client_id: this.config.clientId,
+						client_secret: this.config.clientSecret,
+						grant_type: "refresh_token",
+					}),
+					{
+						headers: {
+							"Content-Type": "application/x-www-form-urlencoded",
+						},
+					}
+				);
+
+				const data = response.data as ZohoTokenResponse;
+
+				if (response.status !== 200) {
+					throw new Error(`Failed to refresh token: ${data.error}`);
 				}
-			);
 
-			const data = response.data as ZohoTokenResponse;
-			// console.log("Zoho Token Response:", data);
+				this.accessToken = data.access_token;
+				this.accessTokenExpiry = Date.now() + data.expires_in * 1000 - 30000;
 
-			if (response.status !== 200) {
-				throw new Error(`Failed to refresh Zoho access token: ${data.error}`);
-			}
-
-			accessToken = data.access_token;
-			accessTokenExpiry = Date.now() + data.expires_in * 1000;
-
-			console.log("New access token generated:", accessToken);
-			return accessToken;
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		} catch (error: any) {
-			lastError = error;
-			console.error(`Attempt ${i + 1} failed:`, error.message);
-			if (i < retries - 1) {
-				// Wait for 2 seconds before retrying (exponential backoff can also be used)
-				await new Promise((resolve) => setTimeout(resolve, 2000));
+				console.log(`New ${this.tokenType} access token generated`);
+				return this.accessToken;
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			} catch (error: any) {
+				lastError = error;
+				console.error(`Attempt ${attempt} failed:`, error.message);
+				if (attempt < retries) {
+					await new Promise((resolve) => setTimeout(resolve, 2000 * attempt)); 
+				}
 			}
 		}
-	}
 
-	console.error("All retry attempts failed:", lastError?.message);
-	throw new Error(`Error refreshing Zoho access token: ${lastError?.message}`);
+		throw new Error(
+			`All retry attempts failed for ${this.tokenType} token: ${lastError?.message}`
+		);
+	}
 }
+
+const apiTokenManager = new ZohoTokenManager(
+	{
+		authUrl: process.env.ZOHO_AUTH_URL || "",
+		refreshToken: process.env.ZOHO_REFRESH_TOKEN || "",
+		clientId: process.env.ZOHO_CLIENT_ID || "",
+		clientSecret: process.env.ZOHO_CLIENT_SECRET || "",
+	},
+	"API"
+);
+
+const mailTokenManager = new ZohoTokenManager(
+	{
+		authUrl: process.env.ZOHO_AUTH_URL || "",
+		refreshToken: process.env.MAIL_REFRESH_TOKEN || "",
+		clientId: process.env.ZOHO_MAIL_CLIENT_ID || "",
+		clientSecret: process.env.ZOHO_MAIL_CLIENT_SECRET || "",
+	},
+	"Mail"
+);
+
+export const getAccessToken = () => apiTokenManager.getAccessToken();
+export const getMailAccessToken = () => mailTokenManager.getAccessToken();

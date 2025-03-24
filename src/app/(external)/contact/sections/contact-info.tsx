@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Phone, Mail, MapPin } from "lucide-react";
+import { Mail, MapPin, MessageCircle } from "lucide-react";
 
 interface ContactInfoProps {
 	whatsappNumber?: string;
@@ -14,7 +14,7 @@ interface ContactInfoProps {
 }
 
 const ContactInfo: React.FC<ContactInfoProps> = ({
-	whatsappNumber = "+234 809 653 5511",
+	whatsappNumber = "+2348096535511",
 	email = "contact@obana.africa",
 	address = "77 oebi road, ikeja lagos",
 	bgColor = "bg-secondary",
@@ -22,18 +22,38 @@ const ContactInfo: React.FC<ContactInfoProps> = ({
 	iconBgColor = "bg-primary",
 	iconColor = "text-white",
 }) => {
+	const handleWhatsAppClick = () => {
+		window.open(`https://wa.me/${whatsappNumber.replace(/\D/g, "")}`, "_blank");
+	};
+
+	const handleEmailClick = () => {
+		window.open(`mailto:${email}`, "_blank");
+	};
+
+	const handleAddressClick = () => {
+		window.open(
+			`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+				address
+			)}`,
+			"_blank"
+		);
+	};
+
 	return (
-		<section className="container mx-auto  mt-10 md:py-12">
+		<section className="container mx-auto mt-10 md:py-12">
 			<div className={`${bgColor} py-12 px-4 w-[85%] mx-auto mt-12`}>
 				<div className="container mx-auto">
 					<div className="flex flex-col md:flex-row justify-between items-center gap-8 mx-24 mt-16">
 						<div
-							className="flex flex-col items-center text-center md:-mt-40"
+							className="flex flex-col items-center text-center md:-mt-40 "
 							data-aos="fade-up"
 							data-aos-delay="100"
 						>
-							<div className={`${iconBgColor} p-4 rounded-md mb-4`}>
-								<Phone className={`size-8 ${iconColor}`} />
+							<div
+								className={`${iconBgColor} p-4 rounded-md mb-4 cursor-pointer hover:scale-105 transition-transform`}
+								onClick={handleWhatsAppClick}
+							>
+								<MessageCircle className={`size-8 ${iconColor}`} />
 							</div>
 							<h3 className={`text-lg font-semibold mb-2 ${textColor}`}>
 								WhatsApp No.
@@ -42,11 +62,12 @@ const ContactInfo: React.FC<ContactInfoProps> = ({
 						</div>
 
 						<div
-							className="flex flex-col items-center text-center  md:-mt-40"
+							className="flex flex-col items-center text-center md:-mt-40 "
 							data-aos="fade-up"
 							data-aos-delay="200"
+					
 						>
-							<div className={`${iconBgColor} p-4 rounded-md mb-4`}>
+							<div className={`${iconBgColor} p-4 rounded-md mb-4 cursor-pointer hover:scale-105 transition-transform`}		onClick={handleEmailClick}>
 								<Mail className={`size-8 ${iconColor}`} />
 							</div>
 							<h3 className={`text-lg font-semibold mb-2 ${textColor}`}>
@@ -56,11 +77,12 @@ const ContactInfo: React.FC<ContactInfoProps> = ({
 						</div>
 
 						<div
-							className="flex flex-col items-center text-center  md:-mt-40"
+							className="flex flex-col items-center text-center md:-mt-40 "
 							data-aos="fade-up"
 							data-aos-delay="300"
+					
 						>
-							<div className={`${iconBgColor} p-4 rounded-md mb-4`}>
+							<div className={`${iconBgColor} p-4 rounded-md mb-4 cursor-pointer hover:scale-105 transition-transform`}		onClick={handleAddressClick}>
 								<MapPin className={`size-8 ${iconColor}`} />
 							</div>
 							<h3 className={`text-lg font-semibold mb-2 ${textColor}`}>

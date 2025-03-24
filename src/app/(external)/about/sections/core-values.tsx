@@ -29,7 +29,7 @@ const CoreValues: React.FC<CoreValuesProps> = ({
 							description={feature.description}
 							buttonText={feature.buttonText}
 							href={feature.href}
-							data-aos={index % 2 === 0 ? "fade-right" : "fade-left"}
+							data-aos={index % 2 === 0 ? "fade-up" : "fade-up"}
 							data-aos-delay={100 + index * 100}
 							data-aos-duration="800"
 						/>

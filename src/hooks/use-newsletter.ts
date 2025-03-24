@@ -34,7 +34,7 @@ const useNewsletter = () => {
 		onError: (error: any) => {
 			toast.dismiss("newsletter-subscription");
 			toast.error(
-				error.message && "Failed to subscribe. Please try again later."
+				error.message && "Failed to subscribe. Please use a correct email."
 			);
 		},
 	});

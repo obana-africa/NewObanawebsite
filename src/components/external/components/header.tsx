@@ -183,7 +183,7 @@ const Header: React.FC = () => {
 								variant="primary"
 								animation="ripple"
 								className="bg-secondary !text-primary "
-								// href=""
+								href="/contact"
 							>
 								Contact Us
 							</Button>
@@ -246,7 +246,7 @@ const Header: React.FC = () => {
 							},
 							{ href: "#", label: "FAQ", delay: "delay-[100ms]" },
 							{ href: "#", label: "RFQ", delay: "delay-[100ms]" },
-							{ href: "#", label: "Contact Us", delay: "delay-[100ms]" },
+							{ href: "/contact", label: "Contact Us", delay: "delay-[100ms]" },
 						].map((item, index) =>
 							item.isDropdown ? (
 								<div

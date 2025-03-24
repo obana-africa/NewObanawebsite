@@ -51,9 +51,9 @@ export default function RootLayout({
 		Aos.init({
 			once: false,
 			mirror: true,
-			offset: 100,
+			offset: 30,
 			duration: 1000,
-			delay: 100,
+			delay: 20,
 			// easing: "ease-in-sine",
 		});
 	}, []);
