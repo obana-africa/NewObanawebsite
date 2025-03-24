@@ -101,8 +101,8 @@ const WhyObanaSection: React.FC = () => {
 							title="Source Inventory"
 							description="We assist in finding and procuring the right inventory to meet your business needs efficiently."
 							data-aos="zoom-in"
-							data-aos-delay="300"
-							data-aos-duration="800"
+							data-aos-delay="100"
+							data-aos-duration="300"
 						/>
 
 						<div
@@ -114,8 +114,8 @@ const WhyObanaSection: React.FC = () => {
 						<div
 							className="absolute top-5 -right-32 rotate-4 hidden md:block"
 							data-aos="fade-left"
-							data-aos-delay="500"
-							data-aos-duration="1000"
+							data-aos-delay="300"
+							data-aos-duration="600"
 						>
 							<Image src={arrow} alt="arrow-right" width={220} height={180} />
 						</div>
@@ -129,8 +129,8 @@ const WhyObanaSection: React.FC = () => {
 							title="Sales Partners"
 							description="We connect businesses with trusted partners to drive sales and expand market reach."
 							data-aos="zoom-in"
-							data-aos-delay="700"
-							data-aos-duration="800"
+							data-aos-delay="500"
+							data-aos-duration="300"
 						/>
 
 						<div
@@ -142,8 +142,8 @@ const WhyObanaSection: React.FC = () => {
 						<div
 							className="absolute -top-20 -right-[7rem] -rotate-z-[45deg] hidden md:block"
 							// data-aos="fade-left"
-							data-aos-delay="900"
-							data-aos-duration="1000"
+							data-aos-delay="700"
+							data-aos-duration="600"
 						>
 							<Image src={arrow} alt="arrow-right" width={200} height={180} />
 						</div>

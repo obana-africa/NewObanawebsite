@@ -2,10 +2,11 @@ import React from "react";
 import Breadcrumb from "@/components/external/components/breadcrumb";
 import clock from "@/app/assets/images/contact-page/clock.svg";
 import ContactInfo from "./sections/contact-info";
+import ContactFormWithMap from "./sections/contact-form-and-map";
 
 const Page = () => {
 	return (
-		<div className=" min-h-screen">
+		<div className=" min-h-screen ">
 			<main>
 				<Breadcrumb
 					heading="About Us"
@@ -16,8 +17,16 @@ const Page = () => {
 				<ContactInfo
 					whatsappNumber="+234 809 653 5511"
 					email="contact@obana.africa"
-					address="77 oebi road, ikeja lagos"
+					address="77 opebi road, ikeja lagos"
 					iconBgColor="bg-primary"
+				/>
+				<ContactFormWithMap
+					googleMapsApiKey={
+						process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ||
+						"AIzaSyCbnbwk3CFlQ2X5KOOpYoDce2NjjBS8C1Q"
+					}
+					address="77 opebi road, ikeja, lagos"
+					defaultLocation={{ lat: 6.601838, lng: 3.351486 }}
 				/>
 			</main>
 		</div>

@@ -86,8 +86,6 @@ const HeroSection: React.FC = () => {
 							animation="ripple"
 							className="bg-white hover:bg-secondary !text-primary text-lg font-medium shadow-lg shadow-white/50 relative overflow-hidden"
 							onClick={handleGetStarted}
-							data-aos="zoom-in"
-							data-aos-delay="50"
 						>
 							<span className="relative z-10">Get Started</span>
 						</Button>

@@ -15,7 +15,7 @@ const FoundersJourney: React.FC<FoundersJourneyProps> = ({
 	founderSecondImage,
 }) => {
 	return (
-		<div className=" overflow-x-hidden">
+		<div className=" overflow-hidden">
 			<FoundersJourneyOne founderImage={founderFirstImage} />
 			<FoundersJourneyTwo founderImage={founderSecondImage} />
 		</div>
@@ -37,7 +37,7 @@ const FoundersJourneyTwo: React.FC<{ founderImage?: string }> = ({
 						// data-aos-delay="100"
 					>
 						<div className="mt-4 md:mt-6 space-y-4 md:space-y-8 text-[#222]  md:text-base lg:text-md leading-6">
-							<p data-aos="fade-left">
+							<p data-aos="fade-up">
 								In 2016, Fazsion Wholesale was officially launched. Working in
 								collaboration with the sales team, the company successfully
 								acquired over 1,000 SMEs within two years, generating an average
@@ -48,7 +48,7 @@ const FoundersJourneyTwo: React.FC<{ founderImage?: string }> = ({
 								marketplace that would empower local businesses.
 							</p>
 
-							<p data-aos="fade-right">
+							<p data-aos="fade-up">
 								Fast forward to 2024, he was part of the team that founded{" "}
 								<span className="font-bold">Trade Enablers, </span> a company
 								providing e-commerce as a service for B2B and B2C transactions,
@@ -56,7 +56,7 @@ const FoundersJourneyTwo: React.FC<{ founderImage?: string }> = ({
 								commerce. ₦800 million in revenue
 							</p>
 
-							<p data-aos="fade-left">
+							<p data-aos="fade-up">
 								Later In 2024, he took a bold step forward by founding
 								<span className="font-bold"> Obana.Africa, </span> an innovative
 								platform designed to enlarge the scope of B2B offerings for
@@ -69,7 +69,7 @@ const FoundersJourneyTwo: React.FC<{ founderImage?: string }> = ({
 								Fazsion.ng
 							</p>
 
-							<p data-aos="fade-left">
+							<p data-aos="fade-up">
 								Today, Obana Africa stands as a transformative force, connecting
 								businesses, enhancing trade, and unlocking endless opportunities
 								for SMEs across Africa.

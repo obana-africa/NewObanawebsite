@@ -14,7 +14,8 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	iconPosition?: "left" | "right";
 	children?: React.ReactNode;
 	animation?: "none" | "ripple";
-	href?: string; // Add href support
+	href?: string; 
+	type?: "button" | "submit" | "reset";
 }
 
 interface RippleState {
