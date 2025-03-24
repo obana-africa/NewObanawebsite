@@ -13,7 +13,11 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({
 }) => {
 	return (
 		<div className="w-full relative py-12 px-2 overflow-x-hidden">
-			<div className="absolute -top-48 -right-20 md:-top-20 md:-right-5 ">
+			<div
+				className="absolute -top-48 -right-20 md:-top-20 md:-right-5 "
+				data-aos="zoom-in"
+				data-aos-delay="100"
+			>
 				<Image
 					src={imageSrc}
 					alt="Shipping boxes with globe"
@@ -23,7 +27,11 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({
 			</div>
 
 			<div className="container mx-auto px-4 md:px-6">
-				<div className="mb-12 flex items-start md:items-center justify-center flex-col w-[33ch] max-w-full sm:w-full z-20">
+				<div
+					className="mb-12 flex items-start md:items-center justify-center flex-col w-[33ch] max-w-full sm:w-full z-20"
+					data-aos="fade-up"
+					data-aos-delay="100"
+				>
 					<h2 className="text-primary hidden sm:block">{title}</h2>
 					<h1 className="text-primary block sm:hidden">{title}</h1>
 					<Seperator />
@@ -39,6 +47,9 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({
 							description={feature.description}
 							buttonText={feature.buttonText}
 							href={feature.href}
+							data-aos={index % 2 === 0 ? "fade-right" : "fade-left"}
+							data-aos-delay={100 + index * 100}
+							data-aos-duration="800"
 						/>
 					))}
 				</div>

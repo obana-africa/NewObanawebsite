@@ -6,6 +6,8 @@ export interface FeatureBoxProps {
 	description: string;
 	buttonText?: string;
 	href?: string;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	[x: string]: any;
 }
 
 export interface Feature {
@@ -22,11 +24,20 @@ export interface ServiceSectionProps {
 	features: Feature[];
 	imageSrc?: string;
 }
+export interface CoreValuesProps {
+	title?: string;
+	subtitle?: string;
+	coreValues: Feature[];
+	imageSrc?: string;
+}
 
 export type StakeholderBoxProps = {
 	label: string;
 	description: React.ReactNode;
 	rightIcon: string;
+	
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	[x: string]: any;
 };
 
 export type StakeholderSectionProps = {

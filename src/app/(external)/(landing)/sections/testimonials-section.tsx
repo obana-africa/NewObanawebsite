@@ -59,7 +59,12 @@ const Testimonials: React.FC<TestimonialsProps> = ({ title }) => {
 			</div>
 
 			<div className="container mx-auto px-4 md:px-6">
-				<div className="mb-4 flex mx-auto text-center items-center justify-center flex-col w-full md:w-[70ch] max-w-full z-20">
+				<div
+					className="mb-4 flex mx-auto text-center items-center justify-center flex-col w-full md:w-[70ch] max-w-full z-20"
+					data-aos="fade-up"
+					data-aos-delay="100"
+					data-aos-duration="1000"
+				>
 					<h2 className="text-primary hidden sm:block leading-12 mb-2">
 						{title}
 					</h2>
@@ -108,7 +113,12 @@ const Testimonials: React.FC<TestimonialsProps> = ({ title }) => {
 										</div>
 
 										{position.isCurrent && (
-											<div className="mt-4 text-center max-w-full md:max-w-[55ch] p-4">
+											<div
+												className="mt-4 text-center max-w-full md:max-w-[55ch] p-4"
+												data-aos="fade-up"
+												data-aos-delay="100"
+												data-aos-duration="900"
+											>
 												<h3 className="text-xl md:text-2xl font-bold text-primary mb-1">
 													{testimonials[position.index].name}
 												</h3>
