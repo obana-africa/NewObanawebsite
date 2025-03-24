@@ -102,7 +102,7 @@ const Header: React.FC = () => {
 								Home
 							</Link>
 							<Link
-								href="#"
+								href="/about"
 								className="text-gray-800 hover:text-blue-900 font-medium"
 							>
 								About Us
@@ -237,7 +237,7 @@ const Header: React.FC = () => {
 					<nav className="flex flex-col p-4 ">
 						{[
 							{ href: "/", label: "Home", delay: "delay-[100ms]" },
-							{ href: "#", label: "About Us", delay: "delay-[100ms]" },
+							{ href: "/about", label: "About Us", delay: "delay-[100ms]" },
 							{ isDropdown: true, delay: "delay-[100ms]" },
 							{
 								href: "https://blog.obana.africa",
