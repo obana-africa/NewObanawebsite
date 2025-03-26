@@ -7,7 +7,7 @@ import StakeholderSection from "./sections/stakeholder-section";
 import { serviceFeatures } from "./data/services";
 import { stakeholders } from "./data/stakeholders";
 import WhyObanaSection from "./sections/why-obana";
-import CtaSection from "./sections/cta-section";
+import CtaSection from "../../../components/external/components/cta-section";
 import Testimonials from "./sections/testimonials-section";
 
 const Home: NextPage = () => {

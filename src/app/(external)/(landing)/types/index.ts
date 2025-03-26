@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 export interface FeatureBoxProps {
-	icon: ReactNode;
+	icon?: ReactNode;
 	title: string;
 	description: string;
 	buttonText?: string;
@@ -17,6 +17,10 @@ export interface Feature {
 	buttonText?: string;
 	href?: string;
 }
+export interface Benefit {
+	title: string;
+	description: string;
+}
 
 export interface ServiceSectionProps {
 	title?: string;
@@ -27,7 +31,8 @@ export interface ServiceSectionProps {
 export interface CoreValuesProps {
 	title?: string;
 	subtitle?: string;
-	coreValues: Feature[];
+	coreValues?: Feature[];
+	inventoryBenefits?: Benefit[];
 	imageSrc?: string;
 }
 
@@ -35,7 +40,7 @@ export type StakeholderBoxProps = {
 	label: string;
 	description: React.ReactNode;
 	rightIcon: string;
-	
+
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	[x: string]: any;
 };

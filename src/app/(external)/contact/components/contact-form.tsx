@@ -10,6 +10,7 @@ import Button from "@/components/ui/button";
 import { toast } from "sonner";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useContactForm } from "@/hooks/use-contactform";
+import { contactFormSchema } from "@/schemas";
 
 const PhoneInput = dynamic(
 	() => import("react-phone-input-2").then((mod) => mod.default),
@@ -21,15 +22,7 @@ const PhoneInput = dynamic(
 	}
 );
 
-const formSchema = z.object({
-	firstName: z.string().min(1, "First name is required"),
-	lastName: z.string().min(1, "Last name is required"),
-	phone: z.string().min(6, "Valid phone number is required"),
-	email: z.string().email("Invalid email address"),
-	message: z.string().min(10, "Message must be at least 10 characters"),
-});
-
-type FormValues = z.infer<typeof formSchema>;
+type FormValues = z.infer<typeof contactFormSchema>;
 
 interface ContactFormProps {
 	primary: string;
@@ -47,7 +40,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ primary }) => {
 		reset,
 		formState: { errors },
 	} = useForm<FormValues>({
-		resolver: zodResolver(formSchema),
+		resolver: zodResolver(contactFormSchema),
 		defaultValues: {
 			firstName: "",
 			lastName: "",
@@ -62,7 +55,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ primary }) => {
 			toast.error("Please complete the reCAPTCHA");
 			return;
 		}
-    console.log("data:", data);
+		console.log("data:", data);
 
 		try {
 			const success = await submitForm({ ...data, recaptcha: recaptchaValue });
@@ -70,7 +63,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ primary }) => {
 				reset();
 				setRecaptchaValue(null);
 			}
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		} catch (error) {
 			toast.error("There was an error submitting the form");
 		}
