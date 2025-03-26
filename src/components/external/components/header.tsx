@@ -159,7 +159,7 @@ const Header: React.FC = () => {
 										Logistics
 									</Link>
 									<Link
-										href="#"
+										href="/inventory"
 										className="block px-4 py-2 text-gray-800 hover:bg-blue-50 font-light hover:bg-primary hover:text-white hover:font-semibold"
 									>
 										Inventory Financing
@@ -296,7 +296,7 @@ const Header: React.FC = () => {
 											},
 											{ href: "#", label: "Logistics" },
 											{
-												href: "#",
+												href: "/inventory",
 												label: "Inventory Financing",
 											},
 											{
