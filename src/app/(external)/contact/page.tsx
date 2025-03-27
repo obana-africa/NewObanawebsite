@@ -21,10 +21,7 @@ const Page = () => {
 					iconBgColor="bg-primary"
 				/>
 				<ContactFormWithMap
-					googleMapsApiKey={
-						process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ||
-						"AIzaSyCbnbwk3CFlQ2X5KOOpYoDce2NjjBS8C1Q"
-					}
+					googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""}
 					address="77 opebi road, ikeja, lagos"
 					defaultLocation={{ lat: 6.601838, lng: 3.351486 }}
 				/>
