@@ -23,7 +23,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
 }) => {
 	return (
 		<section
-			className={`${bgColor} ${textColor} relative top-12 pt-20 pb-16 h-full overflow-hidden`}
+			className={`${bgColor} ${textColor} relative top-12 pt-20 pb-16 h-full z-20 overflow-hidden`}
 		>
 			<div
 				className="absolute top-[50px] right-[800px] w-[150px] h-[50px] opacity-50 blur-[40px] bg-white rounded-full"
