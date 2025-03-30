@@ -43,7 +43,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
 					<p className="mb-0 text-md 2xl:text-lg md:w-[50ch]">{subheading}</p>
 
 					{iconSubheading && (
-						<div className="flex items-center justify-start  w-[50ch]   border-1 rounded-full border-white/80 p-2">
+						<div className="flex items-center justify-start  w-[50ch]   md:border-1 rounded-full border-white/80 p-2">
 							{icon && (
 								<div className="mr-3">
 									<Image

@@ -24,7 +24,7 @@ const FAQComponent: React.FC = () => {
 	};
 
 	return (
-		<section className="container mx-auto px-4 md:px-6 py-8 md:py-16 mt-10">
+		<section className="container mx-auto px-4 md:px-6 py-8 md:py-16 mt-10 hidden sm:block">
 			<div className="flex flex-col md:flex-row gap-0 md:gap-6 relative">
 				<div className="w-full md:w-1/4 mb-6 md:mb-0">
 					<nav className="space-y-3">
