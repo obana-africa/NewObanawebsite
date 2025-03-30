@@ -41,9 +41,9 @@ const ContactInfo: React.FC<ContactInfoProps> = ({
 
 	return (
 		<section className="container mx-auto mt-10 md:py-12">
-			<div className={`${bgColor} py-12 px-4 w-[85%] mx-auto mt-12`}>
+			<div className={`${bgColor} py-4 md:py-12 md:px-4 w-[70%] md:w-[85%] mx-auto mt-20 md:mt-12`}>
 				<div className="container mx-auto">
-					<div className="flex flex-col md:flex-row justify-between items-center gap-8 mx-24 mt-16">
+					<div className="flex flex-col md:flex-row justify-between items-center gap-8 md:mx-24 md:mt-16">
 						<div
 							className="flex flex-col items-center text-center md:-mt-40 "
 							data-aos="fade-up"
@@ -65,9 +65,11 @@ const ContactInfo: React.FC<ContactInfoProps> = ({
 							className="flex flex-col items-center text-center md:-mt-40 "
 							data-aos="fade-up"
 							data-aos-delay="200"
-					
 						>
-							<div className={`${iconBgColor} p-4 rounded-md mb-4 cursor-pointer hover:scale-105 transition-transform`}		onClick={handleEmailClick}>
+							<div
+								className={`${iconBgColor} p-4 rounded-md mb-4 cursor-pointer hover:scale-105 transition-transform`}
+								onClick={handleEmailClick}
+							>
 								<Mail className={`size-8 ${iconColor}`} />
 							</div>
 							<h3 className={`text-lg font-semibold mb-2 ${textColor}`}>
@@ -80,9 +82,11 @@ const ContactInfo: React.FC<ContactInfoProps> = ({
 							className="flex flex-col items-center text-center md:-mt-40 "
 							data-aos="fade-up"
 							data-aos-delay="300"
-					
 						>
-							<div className={`${iconBgColor} p-4 rounded-md mb-4 cursor-pointer hover:scale-105 transition-transform`}		onClick={handleAddressClick}>
+							<div
+								className={`${iconBgColor} p-4 rounded-md mb-4 cursor-pointer hover:scale-105 transition-transform`}
+								onClick={handleAddressClick}
+							>
 								<MapPin className={`size-8 ${iconColor}`} />
 							</div>
 							<h3 className={`text-lg font-semibold mb-2 ${textColor}`}>

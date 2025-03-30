@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { faqSections } from "../data/question-answer";
+import Image from "next/image";
+import question from "@/app/assets/images/faqs/question.png";
 
 const FAQComponent: React.FC = () => {
 	const [activeSection, setActiveSection] = useState(faqSections[0].title);
@@ -22,8 +24,8 @@ const FAQComponent: React.FC = () => {
 	};
 
 	return (
-		<section className="container mx-auto px-4 md:px-6 py-8 md:py-16 mt-10">
-			<div className="flex flex-col md:flex-row gap-0 md:gap-6">
+		<section className="container mx-auto px-4 md:px-6 py-8 md:py-16 mt-10 hidden sm:block">
+			<div className="flex flex-col md:flex-row gap-0 md:gap-6 relative">
 				<div className="w-full md:w-1/4 mb-6 md:mb-0">
 					<nav className="space-y-3">
 						{faqSections.map((section) => (
@@ -48,7 +50,17 @@ const FAQComponent: React.FC = () => {
 						))}
 					</nav>
 				</div>
-
+				<div
+					className="absolute -top-[140px] -right-40   bg-white/10 rounded-lg "
+					data-aos="zoom-in"
+				>
+					<Image
+						src={question}
+						alt="Decorative square"
+						width={400}
+						height={300}
+					/>
+				</div>
 				<div
 					className="w-full md:w-3/4 bg-secondary p-6 md:p-8 rounded-lg shadow-sm"
 					data-aos="fade-left"

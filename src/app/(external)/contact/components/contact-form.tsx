@@ -5,7 +5,6 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import dynamic from "next/dynamic";
-import "react-phone-input-2/lib/style.css";
 import Button from "@/components/ui/button";
 import { toast } from "sonner";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -55,7 +54,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ primary }) => {
 			toast.error("Please complete the reCAPTCHA");
 			return;
 		}
-		console.log("data:", data);
+		// console.log("data:", data);
 
 		try {
 			const success = await submitForm({ ...data, recaptcha: recaptchaValue });
