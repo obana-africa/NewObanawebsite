@@ -66,19 +66,39 @@ export const faqSections: FAQSection[] = [
 		title: "Obana Shop Platform",
 		items: [
 			{
-				question: "How does the Obana Shop Platform work?",
+				question: "How do I become a seller on Obana Shop?",
 				answer:
-					"The Obana Shop Platform provides a comprehensive solution for managing online sales and vendor interactions.",
+					"You can register on the vendor app, submit your product details, and await approval. Once approved, your products will be listed for buyers.",
+			},
+			{
+				question: "What kind of products can be sold on Obana Shop?",
+				answer:
+					"Obana supports a wide range of products, including fashion, beauty, and lifestyle",
+			},
+			{
+				question: "Can I integrate my existing store with Obana?",
+				answer:
+					"Yes, vendors can sync their inventory with Obana’s shop platform for seamless order management.",
 			},
 		],
 	},
 	{
-		title: "Obana Sales Partners",
+		title: "Obana Sales Force App",
 		items: [
 			{
-				question: "Who are Obana Sales Partners?",
+				question: "What is the Obana Salesforce App?",
 				answer:
-					"Obana Sales Partners are authorized businesses that collaborate with Obana to expand sales channels.",
+					"The Salesforce app is designed for independent agents who promote and sell products from the Obana platform. They earn commissions on successful sales.",
+			},
+			{
+				question: "How do I join as a Salesforce agent?",
+				answer:
+					"You can sign up through the Salesforce app, get approved, and start selling products while tracking your earnings.",
+			},
+			{
+				question: "How do commissions work?",
+				answer:
+					"Each product has a set commission rate, which is credited to your account once a sale is completed.",
 			},
 		],
 	},
@@ -88,7 +108,17 @@ export const faqSections: FAQSection[] = [
 			{
 				question: "What is the Obana Vendor App?",
 				answer:
-					"The Obana Vendor App is a mobile application for vendors to manage their sales and inventory.",
+					"The vendor app allows suppliers to list and manage their products, track sales, and manage orders.",
+			},
+			{
+				question: "How do I upload products?",
+				answer:
+					"Vendors can add product details, including images, descriptions, pricing, and stock levels, through the vendor dashboard.",
+			},
+			{
+				question: "Is there a subscription fee for vendors?",
+				answer:
+					"Pricing models may vary. Some services may be free, while others require a commission or subscription",
 			},
 		],
 	},
@@ -96,9 +126,19 @@ export const faqSections: FAQSection[] = [
 		title: "Obana Logistics Platform",
 		items: [
 			{
-				question: "How does the Logistics Platform work?",
+				question: "What is the Obana Logistics Platform?",
 				answer:
-					"The Obana Logistics Platform helps businesses manage shipping, tracking, and delivery processes.",
+					"This platform connects sellers and logistics providers to ensure seamless order fulfillment.",
+			},
+			{
+				question: "Can I partner with Obana as a logistics provider?",
+				answer:
+					"Yes, logistics companies can register to offer delivery services within the Obana ecosystem.",
+			},
+			{
+				question: "How are delivery fees calculated?",
+				answer:
+					"Delivery fees are based on distance, package size, and selected courier service.",
 			},
 		],
 	},
@@ -108,7 +148,17 @@ export const faqSections: FAQSection[] = [
 			{
 				question: "What is the RFQ System?",
 				answer:
-					"The Request for Quotation (RFQ) System helps businesses streamline their procurement process.",
+					"The RFQ system allows buyers to request bulk quotes from multiple vendors for better pricing.",
+			},
+			{
+				question: "Who can use the RFQ feature?",
+				answer:
+					"Businesses looking to purchase in bulk can request quotes from verified vendors.",
+			},
+			{
+				question: "How long does it take to receive a quote?",
+				answer:
+					"Response times depend on vendor availability, but most quotes are processed within 24-48 hours.",
 			},
 		],
 	},
@@ -116,15 +166,39 @@ export const faqSections: FAQSection[] = [
 		title: "Obana Inventory Financing",
 		items: [
 			{
-				question: "What is Inventory Financing?",
+				question: "What is Obana Inventory Financing?",
 				answer:
-					"Obana's Inventory Financing helps businesses manage their inventory costs and cash flow.",
+					"Obana partners with inventory financing providers to offer businesses funding to stock up on products.",
+			},
+			{
+				question: "Who is eligible for financing?",
+				answer:
+					"Eligibility depends on business history, transaction volume, and approval from Obana’s finance team and inventory financing partners.",
+			},
+			{
+				question: "How do repayments work?",
+				answer: "Repayments are structured based on agreed terms.",
 			},
 		],
 	},
 	{
 		title: "Other Questions",
 		items: [
+			{
+				question: "Is Obana available in multiple countries?",
+				answer:
+					"Currently, Obana operates in select regions within Sub-Saharan Africa, with plans for expansion.",
+			},
+			{
+				question: "How do I get support?",
+				answer:
+					"Users can reach out through Obana’s help center, in-app support, or email customer service.",
+			},
+			{
+				question: "How do I track my orders?",
+				answer:
+					"Buyers can track orders via the shop platform, and vendors can manage shipments through the vendor app.",
+			},
 			{
 				question: "Have more questions?",
 				answer: "Contact our support team for additional assistance.",
