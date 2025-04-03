@@ -42,7 +42,7 @@ const FormFileUpload: React.FC<FormFileUploadProps> = ({
 				{label} {required && <span className="text-red-500">*</span>}
 			</label>
 			<div className="flex items-center gap-2">
-				<div className="border rounded-md p-2 flex-1 flex items-center">
+				<div className="border border-secondary-light rounded-md p-2 flex-1 flex items-center">
 					<input
 						type="file"
 						id={id}

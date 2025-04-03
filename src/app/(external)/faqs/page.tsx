@@ -6,7 +6,7 @@ import FAQComponent from "./components/faq-component";
 
 const Page = () => {
 	return (
-		<div className=" min-h-screen overflow-x-hidden">
+		<div className=" min-h-screen overflow-hidden">
 			<main>
 				<Breadcrumb
 					heading="FAQs"

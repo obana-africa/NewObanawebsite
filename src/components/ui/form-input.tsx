@@ -26,7 +26,7 @@ const FormInput: React.FC<FormInputProps> = ({
 				htmlFor={id}
 				className="block text-sm font-medium text-gray-700 mb-1"
 			>
-				{label} {required && <span className="text-red-500">*</span>}
+				{label} {required && <span className="text-error">*</span>}
 			</label>
 			<input
 				id={id}
@@ -36,7 +36,7 @@ const FormInput: React.FC<FormInputProps> = ({
 				className={`w-full p-3 border rounded-md ${
 					error
 						? "border-error"
-						: "border-accent focus:border-primary focus:outline-1"
+						: "border-secondary-light focus:border-primary focus:outline-1"
 				}`}
 			/>
 			{error && <p className="mt-1 text-sm text-error">{error}</p>}

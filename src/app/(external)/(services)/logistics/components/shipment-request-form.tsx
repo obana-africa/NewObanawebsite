@@ -5,6 +5,7 @@ import Button from "@/components/ui/button";
 import Image from "next/image";
 import below from "@/app/assets/images/rfq/below.png";
 import ImportForm from "./shipment-forms/import-form";
+import { toast } from "sonner";
 
 const shipmentTypes = [
 	{ id: "import", label: "Import" },
@@ -46,7 +47,7 @@ const ShipmentRequestForm: React.FC = () => {
 		setTimeout(() => {
 			console.log("Form submitted successfully:", data);
 			setIsSubmitting(false);
-			// Reset the form
+			toast.success("Shipment Booked successfully");
 			setShowForm(false);
 			setSelectedShipment(null);
 		}, 1500);

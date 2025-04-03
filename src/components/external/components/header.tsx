@@ -173,7 +173,7 @@ const Header: React.FC = () => {
 								</div>
 							</div>
 							<Link
-								href=""
+								href="/rfq"
 								className="text-gray-800 hover:text-blue-900 font-medium"
 							>
 								RFQ
@@ -260,7 +260,7 @@ const Header: React.FC = () => {
 								delay: "delay-[100ms]",
 							},
 							{ href: "/faqs", label: "FAQ", delay: "delay-[100ms]" },
-							{ href: "#", label: "RFQ", delay: "delay-[100ms]" },
+							{ href: "/rfq", label: "RFQ", delay: "delay-[100ms]" },
 							{ href: "/contact", label: "Contact Us", delay: "delay-[100ms]" },
 						].map((item, index) =>
 							item.isDropdown ? (
