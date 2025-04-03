@@ -29,7 +29,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
 				htmlFor={id}
 				className="block text-sm font-medium text-gray-700 mb-1"
 			>
-				{label} {required && <span className="text-red-500">*</span>}
+				{label} {required && <span className="text-error">*</span>}
 			</label>
 			<select
 				id={id}
@@ -37,16 +37,12 @@ const FormSelect: React.FC<FormSelectProps> = ({
 				className={`w-full p-3 border rounded-md ${
 					error
 						? "border-error"
-						: "border-accent focus:border-primary focus:outline-1"
+						: "border-secondary-light focus:border-primary focus:outline-1"
 				}`}
 			>
 				<option value="">Select</option>
 				{options.map((option) => (
-					<option
-						key={option.value}
-						value={option.value}
-						className="p-6"
-					>
+					<option key={option.value} value={option.value} className="p-6">
 						{option.label}
 					</option>
 				))}

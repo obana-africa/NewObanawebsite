@@ -37,8 +37,8 @@ const Footer = () => {
 
 	const serviceLinks = [
 		{ title: "Inventory Financing", href: "/inventory" },
-		{ title: "Logistics Support", href: "" },
-		{ title: "Request for a quote", href: "" },
+		{ title: "Logistics Support", href: "/logistics" },
+		{ title: "Request for a quote", href: "/rfq" },
 		{ title: "Sign up as a Vendor", href: "https://vendor.obana.africa/" },
 		{ title: "Join our Sales Team", href: "https://salesforce.obana.africa/" },
 	];
