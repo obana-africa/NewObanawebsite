@@ -48,9 +48,7 @@ const HeroSection: React.FC = () => {
 			<div className="container mx-auto px-4 md:px-6">
 				<div className="flex flex-col-reverse md:flex-row items-center -mt-10  sm:mt-0">
 					<div className=" w-full md:w-[60%]  mb-0 md:mb-0 md:pr-8 -mt-5  sm:mt-0">
-						<h2 className="mb-2" data-aos="fade-right" data-aos-delay="50">
-							Enabling SMEs scale
-						</h2>
+						<h2 className="mb-2">Enabling SMEs scale</h2>
 
 						<h3 className="bg-primary-light text-primary inline-block px-4 py-2 rounded-md">
 							<span
@@ -62,20 +60,12 @@ const HeroSection: React.FC = () => {
 							</span>
 						</h3>
 
-						<h2
-							className="mb-6 md:leading-12 w-full 2xl:w-[85%]"
-							data-aos="fade-right"
-							data-aos-delay="70"
-						>
+						<h2 className="mb-6 md:leading-12 w-full 2xl:w-[85%]">
 							by aggregating solutions to their business needs under one
 							platform
 						</h2>
 
-						<p
-							className="mb-8 text-md 2xl:text-lg "
-							data-aos="fade-right"
-							data-aos-delay="80"
-						>
+						<p className="mb-8 text-md 2xl:text-lg ">
 							We help SMEs in Nigeria and Sub-Saharan Africa (beginning from
 							Nigeria) scale by providing a seamless, tech-driven supply chain
 							and delivering cost-effective and convenient solutions that
@@ -96,8 +86,7 @@ const HeroSection: React.FC = () => {
 					<div className="w-full md:w-[40%] flex justify-center">
 						<div
 							className="relative w-full max-w-lg aspect-square"
-							data-aos="fade-left"
-							data-aos-delay="60"
+							// data-aos="fade-left"
 						>
 							<RotatingGlobe />
 						</div>

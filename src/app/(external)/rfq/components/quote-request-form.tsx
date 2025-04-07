@@ -18,11 +18,11 @@ const itemTypes = [
 
 const formMapping = {
 	production: "ProductionForm",
-	fabricSourcing: "ProductionForm",
+	fabricSourcing: "",
 	brandLabel: "LabelForm",
-	rawMaterial: "LabelForm",
-	brandTrademarking: "LabelForm",
-	smeIncubation: "ProductionForm",
+	rawMaterial: "",
+	brandTrademarking: "",
+	smeIncubation: "",
 };
 
 const QuoteRequestForm: React.FC = () => {
@@ -83,10 +83,25 @@ const QuoteRequestForm: React.FC = () => {
 				);
 			default:
 				return (
-					<div className="p-4 bg-yellow-100 rounded">
-						Form for {itemTypes.find((item) => item.id === selectedItem)?.label}{" "}
-						is not implemented yet.
-					</div>
+					<>
+						<div className="p-4  rounded text-center font-bold">
+							Our {itemTypes.find((item) => item.id === selectedItem)?.label} is
+							not Available yet.
+						</div>
+						<h2 className="font-['Bricolage_Grotesque'] font-bold text-primary  text-center mb-4">
+							Coming Soon
+						</h2>
+						<div className=" text-center">
+							<Button
+								onClick={handleBack}
+								variant="primary"
+								animation="ripple"
+								className="border border-primary "
+							>
+								Go Back
+							</Button>
+						</div>
+					</>
 				);
 		}
 	};

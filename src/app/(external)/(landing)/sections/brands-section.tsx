@@ -50,11 +50,7 @@ const GlobalBrands = () => {
 				}}
 			></div>
 
-			<div
-				className="container mx-auto px-4 mb-8 flex flex-col items-center relative z-10"
-				data-aos="fade-up"
-				data-aos-delay="60"
-			>
+			<div className="container mx-auto px-4 mb-8 flex flex-col items-center relative z-10">
 				<h5 className="text-center mb-2 font-bold sm:font-normal">
 					Over 100 global brands and growing every day
 				</h5>
@@ -62,11 +58,7 @@ const GlobalBrands = () => {
 				<Seperator />
 			</div>
 
-			<div
-				className="container mx-auto px-4 mt-8"
-				data-aos="fade-left"
-				data-aos-delay="60"
-			>
+			<div className="container mx-auto px-4 mt-8">
 				<Slider {...logoSlickSettings} className="brand-logo-slider">
 					{logoImages.map((image) => (
 						<div

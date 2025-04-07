@@ -153,7 +153,7 @@ const Header: React.FC = () => {
 										Product Sourcing
 									</Link>
 									<Link
-										href="#"
+										href="/logistics"
 										className="block px-4 py-2 text-gray-800 hover:bg-blue-50 font-light hover:bg-primary hover:text-white hover:font-semibold"
 									>
 										Logistics
@@ -294,7 +294,7 @@ const Header: React.FC = () => {
 												href: "https://shop.obana.africa",
 												label: "Product Sourcing",
 											},
-											{ href: "#", label: "Logistics" },
+											{ href: "/logistics", label: "Logistics" },
 											{
 												href: "/inventory",
 												label: "Inventory Financing",
