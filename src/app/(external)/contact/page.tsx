@@ -13,21 +13,13 @@ const Page = () => {
 					icon={clock}
 					iconSubheading="Available 24/7 for emergency road service"
 				/>
-				{/* <ContactInfo/> */}
 				<ContactInfo
 					whatsappNumber="+234 809 653 5511"
 					email="contact@obana.africa"
 					address="77 opebi road, ikeja lagos"
 					iconBgColor="bg-primary"
 				/>
-				<ContactFormWithMap
-					googleMapsApiKey={
-						process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ||
-						"AIzaSyCbnbwk3CFlQ2X5KOOpYoDce2NjjBS8C1Q"
-					}
-					address="77 opebi road, ikeja, lagos"
-					defaultLocation={{ lat: 6.601838, lng: 3.351486 }}
-				/>
+				<ContactFormWithMap />
 			</main>
 		</div>
 	);

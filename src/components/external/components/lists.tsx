@@ -12,20 +12,31 @@ const ListItem: React.FC<ListItemProps> = ({
 	aosDuration,
 	aosDelay,
 	customIcon,
+	nestedList,
 }) => {
 	return (
 		<li
-			className={`flex items-start gap-2 mb-2 ${className}`}
+			className={`flex flex-col items-start gap-2 mb-2 ${className}`}
 			data-aos={aosAnimation}
 			data-aos-duration={aosDuration}
 			data-aos-delay={aosDelay}
 		>
-			{customIcon ? (
-				<span className={` flex-shrink-0 ${iconClassName}`}>{customIcon}</span>
-			) : icon ? (
-				<span className={` flex-shrink-0 ${iconClassName}`}>{icon}</span>
-			) : null}
-			<span className={`flex-1 ${contentClassName}`}>{children}</span>
+			<div className="flex items-start w-full gap-2">
+				{customIcon ? (
+					<span className={`flex-shrink-0 ${iconClassName}`}>{customIcon}</span>
+				) : icon ? (
+					<span className={`flex-shrink-0 ${iconClassName}`}>{icon}</span>
+				) : null}
+				<span className={`flex-1 ${contentClassName}`}>{children}</span>
+			</div>
+			{nestedList && (
+				<div className="w-full pl-4">
+					<NormalList
+						{...nestedList}
+						listClassName={`ml-4 ${nestedList.listClassName || ""}`}
+					/>
+				</div>
+			)}
 		</li>
 	);
 };
@@ -45,9 +56,10 @@ const NormalList: React.FC<NormalListProps> = ({
 	aosDuration = "800",
 	aosDelay = "0",
 	aosDelayIncrement = 100,
+	hideBullets = false,
 }) => {
 	const getBulletStyle = () => {
-		if (bulletStyle === "custom" || customIcon) {
+		if (hideBullets || bulletStyle === "custom" || customIcon) {
 			return { listStyle: "none" };
 		}
 
@@ -64,6 +76,10 @@ const NormalList: React.FC<NormalListProps> = ({
 	const renderCustomBullet = (index: number) => {
 		if (customIcon) {
 			return customIcon;
+		}
+
+		if (hideBullets) {
+			return null;
 		}
 
 		if (bulletStyle === "circle") {
@@ -133,6 +149,7 @@ const NormalList: React.FC<NormalListProps> = ({
 			data-aos-duration={aosDuration}
 		>
 			{items.map((item, index) => {
+				// Handle string items
 				if (typeof item === "string") {
 					return (
 						<ListItem
@@ -148,24 +165,26 @@ const NormalList: React.FC<NormalListProps> = ({
 							{item}
 						</ListItem>
 					);
-				} else {
-					return (
-						<ListItem
-							key={index}
-							className={`${itemClassName} ${item.className || ""}`}
-							customIcon={item.customIcon || renderCustomBullet(index)}
-							iconClassName={`${iconClassName} ${item.iconClassName || ""}`}
-							contentClassName={`${contentClassName} ${
-								item.contentClassName || ""
-							}`}
-							aosAnimation={item.aosAnimation || aosAnimation}
-							aosDuration={item.aosDuration || aosDuration}
-							aosDelay={item.aosDelay || getDelay(index)}
-						>
-							{item.children}
-						</ListItem>
-					);
 				}
+
+				// Handle complex item objects
+				return (
+					<ListItem
+						key={index}
+						className={`${itemClassName} ${item.className || ""}`}
+						customIcon={item.customIcon || renderCustomBullet(index)}
+						iconClassName={`${iconClassName} ${item.iconClassName || ""}`}
+						contentClassName={`${contentClassName} ${
+							item.contentClassName || ""
+						}`}
+						aosAnimation={item.aosAnimation || aosAnimation}
+						aosDuration={item.aosDuration || aosDuration}
+						aosDelay={item.aosDelay || getDelay(index)}
+						nestedList={item.children}
+					>
+						{typeof item === "object" ? item.text : item}
+					</ListItem>
+				);
 			})}
 		</ListTag>
 	);

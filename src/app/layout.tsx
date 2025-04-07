@@ -3,6 +3,7 @@ import "./globals.css";
 import RootLayoutClient from "./root-layout-client";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
+import "react-phone-input-2/lib/style.css";
 
 export const metadata: Metadata = {
 	title: "Obana - Enabling SMEs Scale",

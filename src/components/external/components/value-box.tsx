@@ -21,7 +21,14 @@ const ValueBox: React.FC<FeatureBoxProps> = ({
 				onMouseEnter={() => setIsHovered(true)}
 				onMouseLeave={() => setIsHovered(false)}
 			>
-				<Image src={icon as string} alt="Feature icon" width={50} height={50} />
+				{icon && (
+					<Image
+						src={icon as string}
+						alt="Feature icon"
+						width={50}
+						height={50}
+					/>
+				)}
 				<h2 className="font-medium text-primary mb-2 hidden sm:block">
 					{title}
 				</h2>

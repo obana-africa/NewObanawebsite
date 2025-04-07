@@ -6,6 +6,7 @@ import { Menu, X, ChevronDown, ChevronUp } from "lucide-react";
 import Button from "@/components/ui/button";
 import logoImage from "@/app/assets/images/logos/obana-logo.svg";
 import { useModal } from "@/contexts/modal-context";
+import { usePathname } from "next/navigation";
 
 const Header: React.FC = () => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -13,6 +14,7 @@ const Header: React.FC = () => {
 	const [serviceDropdownOpen, setServiceDropdownOpen] =
 		useState<boolean>(false);
 	const { openGetStartedModal } = useModal();
+	const pathname = usePathname();
 
 	// References for click outside detection
 	const serviceDropdownRef = useRef<HTMLDivElement>(null);
@@ -30,6 +32,11 @@ const Header: React.FC = () => {
 		window.addEventListener("scroll", handleScroll);
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, []);
+
+	useEffect(() => {
+		setIsOpen(false);
+		setServiceDropdownOpen(false);
+	}, [pathname]);
 
 	// Handler for clicks outside dropdown and mobile menu
 	useEffect(() => {
@@ -58,8 +65,15 @@ const Header: React.FC = () => {
 		};
 	}, [isOpen]);
 
+	// const toggleMenu = (): void => {
+	// 	setIsOpen(!isOpen);
+	// };
+
 	const toggleMenu = (): void => {
 		setIsOpen(!isOpen);
+		if (isOpen) {
+			setServiceDropdownOpen(false);
+		}
 	};
 
 	const toggleServiceDropdown = (): void => {
@@ -69,6 +83,7 @@ const Header: React.FC = () => {
 	const handleGetStarted = (): void => {
 		console.log("OPEN MODAL");
 		openGetStartedModal();
+		setIsOpen(false);
 	};
 
 	return (
@@ -138,13 +153,13 @@ const Header: React.FC = () => {
 										Product Sourcing
 									</Link>
 									<Link
-										href="#"
+										href="/logistics"
 										className="block px-4 py-2 text-gray-800 hover:bg-blue-50 font-light hover:bg-primary hover:text-white hover:font-semibold"
 									>
 										Logistics
 									</Link>
 									<Link
-										href="#"
+										href="/inventory"
 										className="block px-4 py-2 text-gray-800 hover:bg-blue-50 font-light hover:bg-primary hover:text-white hover:font-semibold"
 									>
 										Inventory Financing
@@ -158,7 +173,7 @@ const Header: React.FC = () => {
 								</div>
 							</div>
 							<Link
-								href="#"
+								href="/rfq"
 								className="text-gray-800 hover:text-blue-900 font-medium"
 							>
 								RFQ
@@ -171,7 +186,7 @@ const Header: React.FC = () => {
 								Blog
 							</Link>
 							<Link
-								href="#"
+								href="/faqs"
 								className="text-gray-800 hover:text-blue-900 font-medium"
 							>
 								FAQ
@@ -244,8 +259,8 @@ const Header: React.FC = () => {
 								label: "Blog",
 								delay: "delay-[100ms]",
 							},
-							{ href: "#", label: "FAQ", delay: "delay-[100ms]" },
-							{ href: "#", label: "RFQ", delay: "delay-[100ms]" },
+							{ href: "/faqs", label: "FAQ", delay: "delay-[100ms]" },
+							{ href: "/rfq", label: "RFQ", delay: "delay-[100ms]" },
 							{ href: "/contact", label: "Contact Us", delay: "delay-[100ms]" },
 						].map((item, index) =>
 							item.isDropdown ? (
@@ -254,7 +269,7 @@ const Header: React.FC = () => {
 									className={`${isOpen ? "animate-fadeIn " + item.delay : ""}`}
 								>
 									<button
-										className="flex items-center justify-between w-full py-3 text-gray-800"
+										className="flex items-center justify-between w-full py-3 text-gray-800 border-b border-primary-light "
 										onClick={toggleServiceDropdown}
 										type="button"
 										aria-expanded={serviceDropdownOpen}
@@ -279,9 +294,9 @@ const Header: React.FC = () => {
 												href: "https://shop.obana.africa",
 												label: "Product Sourcing",
 											},
-											{ href: "#", label: "Logistics" },
+											{ href: "/logistics", label: "Logistics" },
 											{
-												href: "#",
+												href: "/inventory",
 												label: "Inventory Financing",
 											},
 											{

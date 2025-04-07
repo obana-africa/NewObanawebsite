@@ -36,9 +36,9 @@ const Footer = () => {
 	};
 
 	const serviceLinks = [
-		{ title: "Inventory Financing", href: "" },
-		{ title: "Logistics Support", href: "" },
-		{ title: "Request for a quote", href: "" },
+		{ title: "Inventory Financing", href: "/inventory" },
+		{ title: "Logistics Support", href: "/logistics" },
+		{ title: "Request for a quote", href: "/rfq" },
 		{ title: "Sign up as a Vendor", href: "https://vendor.obana.africa/" },
 		{ title: "Join our Sales Team", href: "https://salesforce.obana.africa/" },
 	];
@@ -46,7 +46,7 @@ const Footer = () => {
 	const companyLinks = [
 		{ title: "About Us", href: "/about" },
 		{ title: "Contact Us", href: "/contact" },
-		{ title: "FAQs", href: "" },
+		{ title: "FAQs", href: "/faqs" },
 	];
 
 	const socialLinks = [
