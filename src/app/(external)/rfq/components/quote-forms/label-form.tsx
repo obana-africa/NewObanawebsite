@@ -7,7 +7,6 @@ import FormSelect from "@/components/ui/form-select";
 import FormFileUpload from "@/components/ui/form-file-upload";
 import PhoneInput from "@/components/ui/phone-input";
 import Button from "@/components/ui/button";
-import { toast } from "sonner";
 
 interface LabelFormProps {
 	onBack: () => void;
@@ -62,8 +61,8 @@ const LabelForm: React.FC<LabelFormProps> = ({
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleFormSubmit = (data: any) => {
-		console.log("Label form data:", data);
-		toast.success("Form submitted successfully");
+		// console.log("Label form data:", data);
+		// toast.success("Form submitted successfully");
 		onSubmit(data);
 	};
 
