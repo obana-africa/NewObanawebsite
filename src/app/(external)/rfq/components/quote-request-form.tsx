@@ -7,14 +7,16 @@ import Button from "@/components/ui/button";
 import Image from "next/image";
 import below from "@/app/assets/images/rfq/below.png";
 import { useRfqForm } from "@/hooks/use-rfq-form";
+import { Info } from "lucide-react";
+import { Tooltip } from "@/components/ui/form-tooltip"; 
 
 const itemTypes = [
-	{ id: "production", label: "Production (Shoe/ Apparel)" },
-	{ id: "fabricSourcing", label: "Fabric Sourcing" },
-	{ id: "brandLabel", label: "Brand Label" },
-	{ id: "rawMaterial", label: "Raw Material Sourcing" },
-	{ id: "brandTrademarking", label: "Brand Trademarking" },
-	{ id: "smeIncubation", label: "SME Incubation" },
+	{ id: "production", label: "Production (Shoe/ Apparel)", hasForm: true },
+	{ id: "fabricSourcing", label: "Fabric Sourcing", hasForm: false },
+	{ id: "brandLabel", label: "Brand Label", hasForm: true },
+	{ id: "rawMaterial", label: "Raw Material Sourcing", hasForm: false },
+	{ id: "brandTrademarking", label: "Brand Trademarking", hasForm: false },
+	{ id: "smeIncubation", label: "SME Incubation", hasForm: false },
 ];
 
 const formMapping = {
@@ -50,7 +52,7 @@ const QuoteRequestForm: React.FC = () => {
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleSubmit = async (data: any) => {
-		console.log("Form submitted successfully:", data);
+		// console.log("Form submitted successfully:", data);
 		const success = await submitRfqForm({ ...data }, selectedItem || "");
 
 		if (success) {
@@ -108,7 +110,7 @@ const QuoteRequestForm: React.FC = () => {
 
 	const renderItemSelection = () => {
 		return (
-			<div className="space-y-6 p-6 mx-auto">
+			<div className="space-y-6 p-6 mx-auto" id="rfqform">
 				<h2 className="font-bold text-center text-primary">
 					Request For Quote
 				</h2>
@@ -121,16 +123,38 @@ const QuoteRequestForm: React.FC = () => {
 					<div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:place-items-center">
 						{itemTypes.map((item) => (
 							<div key={item.id} className="flex items-center">
-								<input
-									type="checkbox"
-									id={item.id}
-									checked={selectedItem === item.id}
-									onChange={() => handleItemSelect(item.id)}
-									className="mr-2 h-5 w-5 cursor-pointer"
-								/>
-								<label htmlFor={item.id} className="cursor-pointer">
-									{item.label}
-								</label>
+								{item.hasForm ? (
+									<>
+										<input
+											type="checkbox"
+											id={item.id}
+											checked={selectedItem === item.id}
+											onChange={() => handleItemSelect(item.id)}
+											className="mr-2 h-5 w-5 cursor-pointer"
+										/>
+										<label htmlFor={item.id} className="cursor-pointer">
+											{item.label}
+										</label>
+									</>
+								) : (
+									<div className="flex items-center">
+										<input
+											type="checkbox"
+											id={item.id}
+											disabled
+											className="mr-2 h-5 w-5 cursor-not-allowed opacity-50"
+										/>
+										<Tooltip content="Coming soon" side="top">
+											<label
+												htmlFor={item.id}
+												className="cursor-not-allowed opacity-50 flex items-center"
+											>
+												{item.label}
+												<Info className="w-4 h-4 ml-1 text-gray-500" />
+											</label>
+										</Tooltip>
+									</div>
+								)}
 							</div>
 						))}
 					</div>
