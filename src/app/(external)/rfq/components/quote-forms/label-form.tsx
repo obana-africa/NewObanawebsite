@@ -25,6 +25,7 @@ const LabelForm: React.FC<LabelFormProps> = ({
 		register,
 		handleSubmit,
 		control,
+		setValue,
 		formState: { errors },
 	} = useForm({
 		resolver: zodResolver(labelQuoteSchema),
@@ -38,7 +39,8 @@ const LabelForm: React.FC<LabelFormProps> = ({
 			moq: "",
 			targetPrice: "",
 			designRequirement: "",
-			labelDesign: null,
+			sampleProduct: null,
+			sampleProductUrl: "",
 		},
 	});
 
@@ -53,6 +55,10 @@ const LabelForm: React.FC<LabelFormProps> = ({
 		{ value: "polyester", label: "Polyester" },
 		{ value: "nylon", label: "Nylon" },
 	];
+
+	const handleFileUploadComplete = (url: string | null) => {
+		setValue("sampleProductUrl", url || "");
+	};
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleFormSubmit = (data: any) => {
@@ -149,7 +155,8 @@ const LabelForm: React.FC<LabelFormProps> = ({
 					<FormFileUpload
 						id="labelDesign"
 						label="Label Image/ Design"
-						register={register("labelDesign")}
+						onUploadComplete={handleFileUploadComplete}
+						accept="image/*"
 					/>
 
 					<FormInput

@@ -8,8 +8,8 @@ import FormFileUpload from "@/components/ui/form-file-upload";
 import Button from "@/components/ui/button";
 import PreviewComponent from "../preview";
 import LogisticsPartners from "../logistics-partners";
+import Image from "next/image";
 
-// Define the form data type for better type safety
 export interface FormDataType {
 	shipmentRoute: string;
 	pickUp: string;
@@ -37,10 +37,12 @@ const ImportForm: React.FC<ImportFormProps> = ({
 		"form" | "preview" | "logistics"
 	>("form");
 	const [formData, setFormData] = useState<FormDataType | null>(null);
+	const [imageUrl, setImageUrl] = useState<string | null>(null);
 
 	const {
 		register,
 		handleSubmit,
+		setValue,
 		formState: { errors },
 	} = useForm({
 		resolver: zodResolver(importShipmentSchema),
@@ -52,7 +54,7 @@ const ImportForm: React.FC<ImportFormProps> = ({
 			productType: "",
 			productWeight: "",
 			dimension: "",
-			shipmentImage: undefined,
+			shipmentImage: "",
 		},
 	});
 
@@ -74,8 +76,13 @@ const ImportForm: React.FC<ImportFormProps> = ({
 		{ value: "food", label: "Food Items" },
 	];
 
-	const handlePreview = (data: FormDataType) => {
-		setFormData(data);
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const handlePreview = (data: any) => {
+		const formDataWithImage = {
+			...data,
+			shipmentImageUrl: imageUrl,
+		};
+		setFormData(formDataWithImage);
 		setCurrentStep("preview");
 	};
 
@@ -85,6 +92,11 @@ const ImportForm: React.FC<ImportFormProps> = ({
 
 	const handleProceedToBook = () => {
 		setCurrentStep("logistics");
+	};
+
+	const handleFileUploadComplete = (url: string | null) => {
+		setImageUrl(url);
+		setValue("shipmentImage", url || "");
 	};
 
 	const handleContactSupport = () => {
@@ -148,7 +160,15 @@ const ImportForm: React.FC<ImportFormProps> = ({
 				},
 				{
 					label: "Shipment image",
-					value: formData?.shipmentImage ? "Uploaded" : "None",
+					value: formData?.shipmentImage ? (
+						<Image
+							src={formData.shipmentImage instanceof File ? URL.createObjectURL(formData.shipmentImage) : formData.shipmentImage}
+							alt="Shipment preview"
+							className="w-32 h-32 object-contain border rounded"
+						/>
+					) : (
+						"None"
+					),
 				},
 			],
 		},
@@ -208,12 +228,9 @@ const ImportForm: React.FC<ImportFormProps> = ({
 							<FormFileUpload
 								id="shipmentImage"
 								label="Upload shipment Image"
-								register={register("shipmentImage")}
-								error={
-									typeof errors.shipmentImage?.message === "string"
-										? errors.shipmentImage.message
-										: undefined
-								}
+								onUploadComplete={handleFileUploadComplete}
+								accept="image/*"
+								required
 							/>
 						</div>
 
