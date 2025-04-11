@@ -29,7 +29,6 @@ const formMapping = {
 const QuoteRequestForm: React.FC = () => {
 	const [selectedItem, setSelectedItem] = useState<string | null>(null);
 	const [showForm, setShowForm] = useState(false);
-	// const [isSubmitting, setIsSubmitting] = useState(false);
 	const { submitRfqForm, isSubmitting } = useRfqForm();
 
 	const handleItemSelect = (itemId: string) => {
