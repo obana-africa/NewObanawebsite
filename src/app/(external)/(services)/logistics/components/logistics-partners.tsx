@@ -159,7 +159,7 @@ const LogisticsPartners: React.FC<LogisticsPartnersProps> = ({
 
 				<div className="bg-blue-50 p-4 rounded-lg mb-6">
 					<p className="font-medium">
-						Your Selected Logistics Partner:{" "}
+						Your Selected Logistics Partner:
 						{partners.find((p) => p.id === selectedPartnerId)?.name}
 					</p>
 				</div>

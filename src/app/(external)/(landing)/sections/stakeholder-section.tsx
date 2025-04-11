@@ -41,18 +41,10 @@ const StakeholderSection: React.FC<StakeholderSectionProps> = ({
 	return (
 		<section className="container mx-auto px-4 pt-10 md:py-12">
 			<div className="bg-secondary rounded-lg px-4 md:px-16 pt-10 pb-16 relative overflow-hidden">
-				<div
-					className="absolute -top-20 -right-40 rotate-230"
-					data-aos="zoom-in"
-					data-aos-delay="100"
-				>
+				<div className="absolute -top-20 -right-40 rotate-230">
 					<Image src={globeImage} alt="Globe" width={300} height={180} />
 				</div>
-				<div
-					className="mb-10 relative z-10"
-					data-aos="fade-up"
-					data-aos-delay="100"
-				>
+				<div className="mb-10 relative z-10">
 					<h2 className="font-bold text-primary mb-2 w-[15ch] md:w-[20ch] md:leading-12">
 						{title}
 					</h2>
@@ -67,9 +59,9 @@ const StakeholderSection: React.FC<StakeholderSectionProps> = ({
 							label={stakeholder.label}
 							description={stakeholder.description}
 							rightIcon={stakeholder.rightIcon}
-							data-aos="fade-up"
-							data-aos-delay={100 + index * 150}
-							data-aos-duration="800"
+							// data-aos="fade-up"
+							// data-aos-delay={100 + index * 150}
+							// data-aos-duration="800"
 						/>
 					))}
 				</div>
@@ -81,17 +73,17 @@ const StakeholderSection: React.FC<StakeholderSectionProps> = ({
 							label={stakeholders[0].label}
 							description={stakeholders[0].description}
 							rightIcon={stakeholders[0].rightIcon}
-							data-aos="fade-right"
-							data-aos-delay="100"
-							data-aos-duration="800"
+							// data-aos="fade-right"
+							// data-aos-delay="100"
+							// data-aos-duration="800"
 						/>
 						<StakeholderBox
 							label={stakeholders[1].label}
 							description={stakeholders[1].description}
 							rightIcon={stakeholders[1].rightIcon}
-							data-aos="fade-left"
-							data-aos-delay="200"
-							data-aos-duration="800"
+							// data-aos="fade-left"
+							// data-aos-delay="200"
+							// data-aos-duration="800"
 						/>
 					</div>
 
@@ -105,17 +97,17 @@ const StakeholderSection: React.FC<StakeholderSectionProps> = ({
 							label={stakeholders[2].label}
 							description={stakeholders[2].description}
 							rightIcon={stakeholders[2].rightIcon}
-							data-aos="fade-right"
-							data-aos-delay="300"
-							data-aos-duration="800"
+							// data-aos="fade-right"
+							// data-aos-delay="300"
+							// data-aos-duration="800"
 						/>
 						<StakeholderBox
 							label={stakeholders[3].label}
 							description={stakeholders[3].description}
 							rightIcon={stakeholders[3].rightIcon}
-							data-aos="fade-left"
-							data-aos-delay="400"
-							data-aos-duration="800"
+							// data-aos="fade-left"
+							// data-aos-delay="400"
+							// data-aos-duration="800"
 						/>
 					</div>
 				</div>

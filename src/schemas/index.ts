@@ -31,6 +31,7 @@ export const productionQuoteSchema = baseQuoteSchema.extend({
 	style: z.string().optional(),
 	comment: z.string().optional(),
 	sampleProduct: z.any().optional(),
+	sampleProductUrl: z.string().optional(),
 });
 
 export const labelQuoteSchema = baseQuoteSchema.extend({
@@ -40,7 +41,8 @@ export const labelQuoteSchema = baseQuoteSchema.extend({
 	moq: z.string().optional(),
 	targetPrice: z.string().optional(),
 	designRequirement: z.string().optional(),
-	labelDesign: z.any().optional(),
+	sampleProduct: z.any().optional(),
+	sampleProductUrl: z.string().optional(),
 });
 
 export const importShipmentSchema = z

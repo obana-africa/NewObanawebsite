@@ -44,7 +44,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ title }) => {
 				clearInterval(timerRef.current);
 			}
 		};
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [currentIndex]);
 
 	const testimonialPositions = getTestimonialPositions(
@@ -61,9 +61,9 @@ const Testimonials: React.FC<TestimonialsProps> = ({ title }) => {
 			<div className="container mx-auto px-4 md:px-6">
 				<div
 					className="mb-4 flex mx-auto text-center items-center justify-center flex-col w-full md:w-[70ch] max-w-full z-20"
-					data-aos="fade-up"
-					data-aos-delay="100"
-					data-aos-duration="1000"
+					// data-aos="fade-up"
+					// data-aos-delay="100"
+					// data-aos-duration="1000"
 				>
 					<h2 className="text-primary hidden sm:block leading-12 mb-2">
 						{title}
@@ -115,9 +115,9 @@ const Testimonials: React.FC<TestimonialsProps> = ({ title }) => {
 										{position.isCurrent && (
 											<div
 												className="mt-4 text-center max-w-full md:max-w-[55ch] p-4"
-												data-aos="fade-up"
-												data-aos-delay="100"
-												data-aos-duration="900"
+												// data-aos="fade-up"
+												// data-aos-delay="100"
+												// data-aos-duration="900"
 											>
 												<h3 className="text-xl md:text-2xl font-bold text-primary mb-1">
 													{testimonials[position.index].name}
@@ -300,7 +300,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ title }) => {
 								}
 							}}
 							className={`mx-1 w-3 h-3 rounded-full ${
-								index === currentIndex ? "bg-blue-500" : "bg-gray-300"
+								index === currentIndex ? "bg-primary" : "bg-secondary-light"
 							} transition-colors duration-300`}
 							aria-label={`Go to testimonial ${index + 1}`}
 						/>

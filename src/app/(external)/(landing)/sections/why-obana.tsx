@@ -37,18 +37,8 @@ const ImageBox: React.FC<ImageBoxProps> = ({
 					/>
 				</div>
 			</div>
-			<h3
-				className="text-lg font-bold mb-2"
-				data-aos="fade-up"
-			>
-				{title}
-			</h3>
-			<p
-				className="md:max-w-[270px]"
-				data-aos="fade-up"
-			>
-				{description}
-			</p>
+			<h3 className="text-lg font-bold mb-2">{title}</h3>
+			<p className="md:max-w-[270px]">{description}</p>
 		</div>
 	);
 };
@@ -68,17 +58,13 @@ const WhyObanaSection: React.FC = () => {
 			</div>
 			<div className="container mx-auto px-4 md:px-6">
 				<div className="text-center text-primary mb-6 md:mb-20 mt-4 w-full md:w-[800px] mx-auto">
-					<h1
-						className="flex items-center justify-center text-3xl md:text-4xl font-bold mb-2"
-						data-aos="fade-up"
-						data-aos-delay="100"
-					>
+					<h1 className="flex items-center justify-center text-3xl md:text-4xl font-bold mb-2">
 						Why
 						<span className="bg-secondary ml-3 px-4 py-1 rounded-md">
 							Obana
 						</span>
 					</h1>
-					<h5 data-aos="fade-up" data-aos-delay="200">
+					<h5>
 						We provide seamless sourcing, secure payments, reliable logistics,
 						and business growth opportunities—all designed to help you succeed
 						effortlessly
@@ -100,9 +86,9 @@ const WhyObanaSection: React.FC = () => {
 							imageAlt="Source Inventory"
 							title="Source Inventory"
 							description="We assist in finding and procuring the right inventory to meet your business needs efficiently."
-							data-aos="zoom-in"
-							data-aos-delay="100"
-							data-aos-duration="300"
+							// data-aos="zoom-in"
+							// data-aos-delay="100"
+							// data-aos-duration="300"
 						/>
 
 						<div
@@ -113,9 +99,9 @@ const WhyObanaSection: React.FC = () => {
 						></div>
 						<div
 							className="absolute top-5 -right-32 rotate-4 hidden md:block"
-							data-aos="fade-left"
-							data-aos-delay="300"
-							data-aos-duration="600"
+							// data-aos="fade-left"
+							// data-aos-delay="300"
+							// data-aos-duration="600"
 						>
 							<Image src={arrow} alt="arrow-right" width={220} height={180} />
 						</div>
@@ -128,9 +114,9 @@ const WhyObanaSection: React.FC = () => {
 							imageAlt="Sales Partners"
 							title="Sales Partners"
 							description="We connect businesses with trusted partners to drive sales and expand market reach."
-							data-aos="zoom-in"
-							data-aos-delay="500"
-							data-aos-duration="300"
+							// data-aos="zoom-in"
+							// data-aos-delay="500"
+							// data-aos-duration="300"
 						/>
 
 						<div
@@ -142,8 +128,8 @@ const WhyObanaSection: React.FC = () => {
 						<div
 							className="absolute -top-20 -right-[7rem] -rotate-z-[45deg] hidden md:block"
 							// data-aos="fade-left"
-							data-aos-delay="700"
-							data-aos-duration="600"
+							// data-aos-delay="700"
+							// data-aos-duration="600"
 						>
 							<Image src={arrow} alt="arrow-right" width={200} height={180} />
 						</div>
@@ -156,9 +142,9 @@ const WhyObanaSection: React.FC = () => {
 							imageAlt="Logistics"
 							title="Logistics"
 							description="We provide efficient logistics solutions to ensure timely delivery and smooth operations, helping businesses scale without transportation barriers."
-							data-aos="zoom-in"
-							data-aos-delay="1100"
-							data-aos-duration="800"
+							// data-aos="zoom-in"
+							// data-aos-delay="1100"
+							// data-aos-duration="800"
 						/>
 
 						<div
@@ -169,9 +155,9 @@ const WhyObanaSection: React.FC = () => {
 						></div>
 						<div
 							className="absolute top-5 -right-40 rotate-4 hidden md:block"
-							data-aos="fade-left"
-							data-aos-delay="1300"
-							data-aos-duration="1000"
+							// data-aos="fade-left"
+							// data-aos-delay="1300"
+							// data-aos-duration="1000"
 						>
 							<Image src={arrow} alt="arrow-right" width={245} height={180} />
 						</div>
@@ -184,9 +170,9 @@ const WhyObanaSection: React.FC = () => {
 							imageAlt="Inventory Financing"
 							title="Inventory Financing"
 							description="We provide secure and efficient payment methods tailored for local transactions."
-							data-aos="zoom-in"
-							data-aos-delay="1500"
-							data-aos-duration="800"
+							// data-aos="zoom-in"
+							// data-aos-delay="1500"
+							// data-aos-duration="800"
 						/>
 					</div>
 				</div>

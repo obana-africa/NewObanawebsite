@@ -55,7 +55,7 @@ const PreviewComponent: React.FC<PreviewComponentProps> = ({
 				</div>
 			))}
 
-			<div className="flex justify-between mt-6">
+			<div className="flex flex-col md:flex-row gap-4 justify-between mt-6">
 				<Button
 					onClick={onContactSupport}
 					variant="primary"

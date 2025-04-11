@@ -8,7 +8,7 @@ import FormTextarea from "@/components/ui/form-textarea";
 import FormFileUpload from "@/components/ui/form-file-upload";
 import PhoneInput from "@/components/ui/phone-input";
 import Button from "@/components/ui/button";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 
 interface ProductionFormProps {
 	onBack: () => void;
@@ -26,6 +26,7 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 		register,
 		handleSubmit,
 		control,
+		setValue,
 		formState: { errors },
 	} = useForm({
 		resolver: zodResolver(productionQuoteSchema),
@@ -42,6 +43,7 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 			style: "",
 			comment: "",
 			sampleProduct: null,
+			sampleProductUrl: "",
 		},
 	});
 
@@ -56,18 +58,21 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 		{ value: "sports", label: "Sports Wear" },
 	];
 
+	const handleFileUploadComplete = (url: string | null) => {
+		setValue("sampleProductUrl", url || "");
+	};
+
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleFormSubmit = (data: any) => {
-		console.log("Production form data:", data);
-		toast.success("Form submitted successfully");
-		onSubmit(data);
+		onSubmit({
+			...data,
+			sampleProduct: data.sampleProductUrl || null,
+		});
 	};
 
 	return (
 		<div className="space-y-6">
-			<h2 className=" font-bold text-center text-primary">
-				Request For Quote
-			</h2>
+			<h2 className=" font-bold text-center text-primary">Request For Quote</h2>
 
 			<form onSubmit={handleSubmit(handleFormSubmit)}>
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -175,7 +180,8 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 					<FormFileUpload
 						id="sampleProduct"
 						label="Upload a sample product if you have"
-						register={register("sampleProduct")}
+						onUploadComplete={handleFileUploadComplete}
+						accept="image/*"
 					/>
 
 					<div className="col-span-1 md:col-span-2">

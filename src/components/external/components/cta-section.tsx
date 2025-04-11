@@ -60,17 +60,17 @@ const CtaSection: React.FC<CtaSectionProps> = ({
 						<>
 							<h3
 								className="font-bold text-center text-white md:leading-12 mb-4 hidden md:block"
-								data-aos="fade-up"
-								data-aos-delay="100"
-								data-aos-duration="1000"
+								// data-aos="fade-up"
+								// data-aos-delay="100"
+								// data-aos-duration="1000"
 							>
 								{topTitle}
 							</h3>
 							<h4
 								className="font-bold text-center text-white md:leading-12 mb-4 block md:hidden"
-								data-aos="fade-up"
-								data-aos-delay="100"
-								data-aos-duration="1000"
+								// data-aos="fade-up"
+								// data-aos-delay="100"
+								// data-aos-duration="1000"
 							>
 								{topTitle}
 							</h4>
@@ -80,23 +80,23 @@ const CtaSection: React.FC<CtaSectionProps> = ({
 						<>
 							<h3
 								className="font-bold text-center text-white md:leading-12 mb-6 hidden md:block"
-								data-aos="fade-up"
-								data-aos-delay="100"
-								data-aos-duration="1000"
+								// data-aos="fade-up"
+								// data-aos-delay="100"
+								// data-aos-duration="1000"
 							>
 								{title}
 							</h3>
 							<h4
 								className="font-bold text-center text-white md:leading-12 mb-6 block md:hidden"
-								data-aos="fade-up"
-								data-aos-delay="100"
-								data-aos-duration="1000"
+								// data-aos="fade-up"
+								// data-aos-delay="100"
+								// data-aos-duration="1000"
 							>
 								{title}
 							</h4>
 						</>
 					)}
-					<div data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000">
+					<div>
 						<Button
 							variant="primary"
 							animation="ripple"
