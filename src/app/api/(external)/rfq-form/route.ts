@@ -74,7 +74,7 @@ function isLabelForm(data: FormData): data is LabelFormData {
 
 function generateProductDetailsSection(data: FormData): string {
 	const priceInfo = data.targetPrice ? formatPrice(data.targetPrice) : null;
-	console.log("Price Info:", priceInfo);
+	// console.log("Price Info:", priceInfo);
 	if (isProductionForm(data)) {
 		return `
       <div style="margin-bottom: 20px;">

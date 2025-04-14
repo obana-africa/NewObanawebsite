@@ -72,7 +72,7 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleFormSubmit = (data: any) => {
-		console.log("Form Data:", data);
+		// console.log("Form Data:", data);
 		onSubmit({
 			...data,
 			sampleProduct: data.sampleProductUrl || null,
