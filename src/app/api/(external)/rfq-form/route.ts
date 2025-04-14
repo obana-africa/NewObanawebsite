@@ -18,7 +18,11 @@ interface ProductionFormData extends BaseFormData {
 	brandToSource?: string;
 	moq?: string;
 	sizeRange: string;
-	targetPrice?: string;
+	targetPrice?: {
+		amount: number;
+		currency: string;
+		symbol: string;
+	};
 	style?: string;
 }
 
@@ -27,9 +31,36 @@ interface LabelFormData extends BaseFormData {
 	materialType: string;
 	size: string;
 	moq?: string;
-	targetPrice?: string;
+	targetPrice?: {
+		amount: number;
+		currency: string;
+		symbol: string;
+	};
 	designRequirement?: string;
 }
+
+const formatPrice = (price?: {
+	amount: number;
+	currency: string;
+	symbol: string;
+}) => {
+	if (!price) return { currency: "", amount: "" };
+	return {
+		currency: price.currency,
+		amount: `${price.symbol}${price.amount.toLocaleString()}`,
+	};
+};
+
+const formatFormType = (formType: string) => {
+	switch (formType) {
+		case "production":
+			return "Production";
+		case "brandLabel":
+			return "Brand Label";
+		default:
+			return formType;
+	}
+};
 
 type FormData = ProductionFormData | LabelFormData;
 
@@ -42,6 +73,8 @@ function isLabelForm(data: FormData): data is LabelFormData {
 }
 
 function generateProductDetailsSection(data: FormData): string {
+	const priceInfo = data.targetPrice ? formatPrice(data.targetPrice) : null;
+	// console.log("Price Info:", priceInfo);
 	if (isProductionForm(data)) {
 		return `
       <div style="margin-bottom: 20px;">
@@ -60,9 +93,12 @@ function generateProductDetailsSection(data: FormData): string {
 						? `<p><strong>Minimum Order Quantity (MOQ):</strong> ${data.moq}</p>`
 						: ""
 				}
-        ${
-					data.targetPrice
-						? `<p><strong>Target Price:</strong> ${data.targetPrice}</p>`
+       ${
+					priceInfo
+						? `
+              <p><strong>Target Price Currency:</strong> ${priceInfo.currency}</p>
+              <p><strong>Target Price:</strong> ${priceInfo.amount}</p>
+            `
 						: ""
 				}
     `;
@@ -79,13 +115,11 @@ function generateProductDetailsSection(data: FormData): string {
 						: ""
 				}
         ${
-					data.targetPrice
-						? `<p><strong>Target Price:</strong> ${data.targetPrice}</p>`
-						: ""
-				}
-        ${
-					data.designRequirement
-						? `<p><strong>Design Requirement:</strong> ${data.designRequirement}</p>`
+					priceInfo
+						? `
+              <p><strong>Target Price Currency:</strong> ${priceInfo.currency}</p>
+              <p><strong>Target Price:</strong> ${priceInfo.amount}</p>
+            `
 						: ""
 				}
     `;
@@ -106,15 +140,17 @@ export async function POST(request: Request) {
 		const adminEmailData = {
 			fromAddress: "'OBANA RFQ FORM' <ochije.nnani@iconholding.africa>",
 			toAddress: process.env.ZOHO_MAIL_TO_ADDRESS,
-			subject: `New ${body.formType} RFQ Submission from ${body.name}`,
+			subject: `New ${formatFormType(body.formType)} RFQ Submission from ${
+				body.name
+			}`,
 			content: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px;">
           <div style="text-align: center; margin-bottom: 20px;">
             <img src="https://www.obana.africa/_next/static/media/obana-logo.77c735d1.svg" 
                  alt="Obana Office Logo" style="width: 100px;"/>
-            <h2 style="color: #333; margin-top: 10px;">New ${
+            <h2 style="color: #333; margin-top: 10px;">New ${formatFormType(
 							body.formType
-						} RFQ Submission</h2>
+						)} RFQ Submission</h2>
           </div>
           
           <div style="margin-bottom: 20px;">
@@ -164,15 +200,17 @@ export async function POST(request: Request) {
 		const customerEmailData = {
 			fromAddress: "'OBANA' <ochije.nnani@iconholding.africa>",
 			toAddress: body.email,
-			subject: `Thank you for your ${body.formType} RFQ submission`,
+			subject: `Thank you for your ${formatFormType(
+				body.formType
+			)} RFQ submission`,
 			content: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px;">
           <div style="text-align: center; margin-bottom: 20px;">
             <img src="https://www.obana.africa/_next/static/media/obana-logo.77c735d1.svg" 
                  alt="Obana Office Logo" style="width: 100px;"/>
-            <h2 style="color: #333; margin-top: 10px;">Thank you for your ${
+            <h2 style="color: #333; margin-top: 10px;">Thank you for your ${formatFormType(
 							body.formType
-						} RFQ submission!</h2>
+						)} RFQ submission!</h2>
           </div>
           
           <div style="margin-bottom: 20px;">
@@ -205,7 +243,6 @@ export async function POST(request: Request) {
 						}
             
          
-            </div>
             
             ${
 							body.comment
@@ -225,11 +262,15 @@ export async function POST(request: Request) {
 						} request and get back to you shortly.</p>
           </div>
           
-          <div style="text-align: center; margin-top: 30px; font-size: 12px; color: #777; border-top: 1px solid #eee; padding-top: 15px;">
+           <div style="text-align: center; margin-top: 30px; font-size: 12px; color: #777; border-top: 1px solid #eee; padding-top: 15px;">
             <p>obana.africa</p>
-            <p>📧 contact@obana.africa | 📞 +234 809 653 5511 | 🌐 obana.africa</p>
+            <p>
+                <a href="mailto:contact@obana.africa" style="color: #777; text-decoration: none;">📧 contact@obana.africa</a> | 
+                <a href="tel:+2348096535511" style="color: #777; text-decoration: none;">📞 +234 809 653 5511</a> | 
+                <a href="https://obana.africa" style="color: #777; text-decoration: none;">🌐 obana.africa</a>
+            </p>
             <p style="margin-top: 10px;">This is an automated message. Please do not reply directly to this email.</p>
-          </div>
+           </div>
         </div>
       `,
 		};

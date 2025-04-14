@@ -1,4 +1,4 @@
-import { z } from "zod";
+import {  z } from "zod";
 
 export const emailSchema = z.object({
 	email: z.string().email("Please enter a valid email address."),
@@ -27,7 +27,12 @@ export const productionQuoteSchema = baseQuoteSchema.extend({
 	brandToSource: z.string().optional(),
 	moq: z.string().optional(),
 	sizeRange: z.string().min(1, { message: "Size range is required" }),
-	targetPrice: z.string().optional(),
+	// targetPrice: z.any().optional(),
+	targetPrice: z.object({
+		amount: z.number().min(0, "Amount must be positive"),
+		currency: z.any(),
+		symbol: z.any(),
+	}),
 	style: z.string().optional(),
 	comment: z.string().optional(),
 	sampleProduct: z.any().optional(),
@@ -39,7 +44,11 @@ export const labelQuoteSchema = baseQuoteSchema.extend({
 	materialType: z.string().min(1, { message: "Material type is required" }),
 	size: z.string().min(1, { message: "Size is required" }),
 	moq: z.string().optional(),
-	targetPrice: z.string().optional(),
+	targetPrice: z.object({
+		amount: z.number().min(0, "Amount must be positive"),
+		currency: z.any(),
+		symbol: z.any(),
+	}),
 	designRequirement: z.string().optional(),
 	sampleProduct: z.any().optional(),
 	sampleProductUrl: z.string().optional(),

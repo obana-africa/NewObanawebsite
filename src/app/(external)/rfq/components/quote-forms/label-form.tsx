@@ -7,6 +7,7 @@ import FormSelect from "@/components/ui/form-select";
 import FormFileUpload from "@/components/ui/form-file-upload";
 import PhoneInput from "@/components/ui/phone-input";
 import Button from "@/components/ui/button";
+import { CurrencyInputField } from "@/components/ui/currency-input";
 
 interface LabelFormProps {
 	onBack: () => void;
@@ -36,7 +37,7 @@ const LabelForm: React.FC<LabelFormProps> = ({
 			materialType: "",
 			size: "",
 			moq: "",
-			targetPrice: "",
+			targetPrice: {},
 			designRequirement: "",
 			sampleProduct: null,
 			sampleProductUrl: "",
@@ -124,7 +125,7 @@ const LabelForm: React.FC<LabelFormProps> = ({
 					<FormInput
 						id="size"
 						label="Size"
-						placeholder="Height X Width in cm or inches"
+						placeholder="eg: XS - 4XL, 20 - 40 etc..."
 						register={register("size")}
 						error={errors.size?.message}
 						required
@@ -141,12 +142,19 @@ const LabelForm: React.FC<LabelFormProps> = ({
 						type="number"
 					/>
 
-					<FormInput
-						id="targetPrice"
-						label="What is your target sourcing price point?"
+					<CurrencyInputField
+						name="targetPrice"
+						control={control}
+						label="What is your target sourcing price point"
 						placeholder="Per unit"
-						register={register("targetPrice")}
-						error={errors.targetPrice?.message}
+						defaultValue={{ currency: "NGN", symbol: "₦" }}
+						required
+						className=""
+						error={
+							typeof errors.targetPrice?.message === "string"
+								? errors.targetPrice?.message
+								: undefined
+						}
 					/>
 				</div>
 

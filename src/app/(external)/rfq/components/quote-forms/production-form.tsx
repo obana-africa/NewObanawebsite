@@ -8,6 +8,7 @@ import FormTextarea from "@/components/ui/form-textarea";
 import FormFileUpload from "@/components/ui/form-file-upload";
 import PhoneInput from "@/components/ui/phone-input";
 import Button from "@/components/ui/button";
+import { CurrencyInputField } from "@/components/ui/currency-input";
 // import { toast } from "sonner";
 
 interface ProductionFormProps {
@@ -39,7 +40,7 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 			brandToSource: "",
 			moq: "",
 			sizeRange: "",
-			targetPrice: "",
+			targetPrice: {},
 			style: "",
 			comment: "",
 			sampleProduct: null,
@@ -52,10 +53,17 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 		{ value: "apparel", label: "Apparel" },
 	];
 
-	const itemDescriptions = [
-		{ value: "casual", label: "Casual Wear" },
-		{ value: "formal", label: "Formal Wear" },
-		{ value: "sports", label: "Sports Wear" },
+	const itemStyles = [
+		{ value: "Casual", label: "Casual" },
+		{ value: "Formal", label: "Formal" },
+		{ value: "Streetwear", label: "Streetwear" },
+		{ value: "Athleisure", label: "Athleisure" },
+		{ value: "Business Casual", label: "Business Casual" },
+		{ value: "Bohemian", label: "Bohemian" },
+		{ value: "Vintage", label: "Vintage" },
+		{ value: "Urban", label: "Urban" },
+		{ value: "Sportswear", label: "Sportswear" },
+		{ value: "Traditional/Cultural", label: "Traditional/Cultural" },
 	];
 
 	const handleFileUploadComplete = (url: string | null) => {
@@ -64,6 +72,7 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleFormSubmit = (data: any) => {
+		// console.log("Form Data:", data);
 		onSubmit({
 			...data,
 			sampleProduct: data.sampleProductUrl || null,
@@ -116,13 +125,21 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 				</div>
 
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-					<FormSelect
+					{/* <FormSelect
 						id="itemDescription"
 						label="Item Description"
 						options={itemDescriptions}
 						register={register("itemDescription")}
 						error={errors.itemDescription?.message}
 						required
+					/> */}
+
+					<FormInput
+						id="itemDescription"
+						label="Item Description"
+						placeholder="Item Description"
+						register={register("itemDescription")}
+						error={errors.itemDescription?.message}
 					/>
 
 					<FormSelect
@@ -151,7 +168,7 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 					<FormInput
 						id="sizeRange"
 						label="Suggested Size Range"
-						placeholder="Height X Width in cm or inches"
+						placeholder="eg: XS - 4XL, 20 - 40 etc..."
 						register={register("sizeRange")}
 						error={errors.sizeRange?.message}
 						required
@@ -159,18 +176,25 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 				</div>
 
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-					<FormInput
-						id="targetPrice"
+					<CurrencyInputField
+						name="targetPrice"
+						control={control}
 						label="What is your target sourcing price point"
 						placeholder="Per unit"
-						register={register("targetPrice")}
-						error={errors.targetPrice?.message}
+						defaultValue={{ currency: "NGN", symbol: "₦" }}
+						required
+						className=""
+						error={
+							typeof errors.targetPrice?.message === "string"
+								? errors.targetPrice?.message
+								: undefined
+						}
 					/>
 
-					<FormInput
+					<FormSelect
 						id="style"
 						label="What style do you want"
-						placeholder=""
+						options={itemStyles}
 						register={register("style")}
 						error={errors.style?.message}
 					/>
