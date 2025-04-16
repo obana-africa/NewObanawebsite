@@ -44,12 +44,6 @@ const LabelForm: React.FC<LabelFormProps> = ({
 		},
 	});
 
-	const labelTypes = [
-		{ value: "woven", label: "Woven" },
-		{ value: "printed", label: "Printed" },
-		{ value: "leather", label: "Leather" },
-	];
-
 	const materialTypes = [
 		{ value: "cotton", label: "Cotton" },
 		{ value: "polyester", label: "Polyester" },
@@ -102,13 +96,12 @@ const LabelForm: React.FC<LabelFormProps> = ({
 						required
 					/>
 
-					<FormSelect
+					<FormInput
 						id="labelType"
 						label="Label Type"
-						options={labelTypes}
+						placeholder="Your preferred Label Type"
 						register={register("labelType")}
 						error={errors.labelType?.message}
-						required
 					/>
 				</div>
 
@@ -151,9 +144,10 @@ const LabelForm: React.FC<LabelFormProps> = ({
 						required
 						className=""
 						error={
-							typeof errors.targetPrice?.message === "string"
-								? errors.targetPrice?.message
-								: undefined
+							errors.targetPrice?.amount?.message &&
+							typeof errors.targetPrice.amount.message === "object"
+								? JSON.stringify(errors.targetPrice.amount.message)
+								: errors.targetPrice?.amount?.message
 						}
 					/>
 				</div>

@@ -139,7 +139,7 @@ export async function POST(request: Request) {
 
 		const adminEmailData = {
 			fromAddress: "'OBANA RFQ FORM' <ochije.nnani@iconholding.africa>",
-			toAddress: process.env.ZOHO_MAIL_TO_ADDRESS,
+			toAddress: process.env.RFQ_MAIL_TO_ADDRESS,
 			subject: `New ${formatFormType(body.formType)} RFQ Submission from ${
 				body.name
 			}`,

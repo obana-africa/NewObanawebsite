@@ -9,6 +9,7 @@ import FormFileUpload from "@/components/ui/form-file-upload";
 import PhoneInput from "@/components/ui/phone-input";
 import Button from "@/components/ui/button";
 import { CurrencyInputField } from "@/components/ui/currency-input";
+import useBrandOptions from "@/hooks/use-active-brands";
 // import { toast } from "sonner";
 
 interface ProductionFormProps {
@@ -47,11 +48,7 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 			sampleProductUrl: "",
 		},
 	});
-
-	const productTypes = [
-		{ value: "shoes", label: "Shoes" },
-		{ value: "apparel", label: "Apparel" },
-	];
+	const { brands: brandOptions, error: brandsError } = useBrandOptions();
 
 	const itemStyles = [
 		{ value: "Casual", label: "Casual" },
@@ -114,44 +111,32 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 						required
 					/>
 
-					<FormSelect
+					<FormInput
 						id="productType"
 						label="Type of Product"
-						options={productTypes}
+						placeholder="Preffered Product Type"
 						register={register("productType")}
 						error={errors.productType?.message}
-						required
 					/>
 				</div>
 
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-					{/* <FormSelect
-						id="itemDescription"
-						label="Item Description"
-						options={itemDescriptions}
-						register={register("itemDescription")}
-						error={errors.itemDescription?.message}
-						required
-					/> */}
-
 					<FormInput
 						id="itemDescription"
 						label="Item Description"
 						placeholder="Item Description"
 						register={register("itemDescription")}
 						error={errors.itemDescription?.message}
+						required
 					/>
 
 					<FormSelect
 						id="brandToSource"
 						label="What brand do you want to source"
-						options={[
-							{ value: "nike", label: "Nike" },
-							{ value: "adidas", label: "Adidas" },
-							{ value: "puma", label: "Puma" },
-						]}
+						options={brandOptions}
 						register={register("brandToSource")}
-						error={errors.brandToSource?.message}
+						error={errors.brandToSource?.message || brandsError || undefined}
+						searchable
 					/>
 				</div>
 

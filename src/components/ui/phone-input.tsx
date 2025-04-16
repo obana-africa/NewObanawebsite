@@ -34,7 +34,7 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
 				htmlFor={name}
 				className="block text-sm font-medium text-gray-700 mb-1"
 			>
-				{label} {required && <span className="text-red-500">*</span>}
+				{label} {required && <span className="text-error">*</span>}
 			</label>
 			<Controller
 				name={name}
