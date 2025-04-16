@@ -8,7 +8,7 @@ import Image from "next/image";
 import below from "@/app/assets/images/rfq/below.png";
 import { useRfqForm } from "@/hooks/use-rfq-form";
 import { Info } from "lucide-react";
-import { Tooltip } from "@/components/ui/form-tooltip"; 
+import { Tooltip } from "@/components/ui/form-tooltip";
 
 const itemTypes = [
 	{ id: "production", label: "Production (Shoe/ Apparel)", hasForm: true },
@@ -32,6 +32,22 @@ const QuoteRequestForm: React.FC = () => {
 	const [selectedItem, setSelectedItem] = useState<string | null>(null);
 	const [showForm, setShowForm] = useState(false);
 	const { submitRfqForm, isSubmitting } = useRfqForm();
+
+	React.useEffect(() => {
+		const handlePopState = (event: PopStateEvent) => {
+			if (showForm) {
+				setShowForm(false);
+				event.preventDefault();
+				window.history.pushState(null, "", window.location.href);
+			}
+		};
+
+		window.addEventListener("popstate", handlePopState);
+
+		return () => {
+			window.removeEventListener("popstate", handlePopState);
+		};
+	}, [showForm]);
 
 	const handleItemSelect = (itemId: string) => {
 		if (selectedItem === itemId) {

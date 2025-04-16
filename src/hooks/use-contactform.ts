@@ -23,13 +23,18 @@ export const useContactForm = () => {
 				throw new Error(result.message || "Failed to submit form");
 			}
 
-			toast.success("Your message has been sent successfully!");
+			toast.success("Your message has been sent successfully!", {
+				duration: 60000, 
+			});
 			return true;
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (error: any) {
 			toast.error(
 				error.message ||
-					"There was an error submitting the form. Please try again."
+					"There was an error submitting the form. Please try again.",
+				{
+					duration: 30000,
+				}
 			);
 			console.error("Form submission error:", error);
 			return false;

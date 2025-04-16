@@ -9,6 +9,7 @@ import Button from "@/components/ui/button";
 import PreviewComponent from "../preview";
 import LogisticsPartners from "../logistics-partners";
 import Image from "next/image";
+import useNigerianStates from "@/hooks/use-nigerian-states";
 
 export interface FormDataType {
 	shipmentRoute: string;
@@ -38,6 +39,23 @@ const ImportForm: React.FC<ImportFormProps> = ({
 	>("form");
 	const [formData, setFormData] = useState<FormDataType | null>(null);
 	const [imageUrl, setImageUrl] = useState<string | null>(null);
+	const {
+		data: nigerianStates,
+		isLoading: statesLoading,
+		error,
+	} = useNigerianStates();
+
+	const defaultLocations = [
+		{ value: "lagos", label: "Lagos" },
+		{ value: "abuja", label: "Abuja" },
+		{ value: "kano", label: "Kano" },
+	];
+
+	const locations =
+		statesLoading || error ? defaultLocations : nigerianStates || [];
+
+	console.log("Locations:", locations);
+	console.log("Nigerian States:", nigerianStates);
 
 	const {
 		register,
@@ -62,12 +80,6 @@ const ImportForm: React.FC<ImportFormProps> = ({
 		{ value: "air", label: "Air Freight" },
 		{ value: "sea", label: "Sea Freight" },
 		{ value: "land", label: "Land Freight" },
-	];
-
-	const locations = [
-		{ value: "lagos", label: "Lagos" },
-		{ value: "abuja", label: "Abuja" },
-		{ value: "kano", label: "Kano" },
 	];
 
 	const productCategories = [
@@ -162,7 +174,11 @@ const ImportForm: React.FC<ImportFormProps> = ({
 					label: "Shipment image",
 					value: formData?.shipmentImage ? (
 						<Image
-							src={formData.shipmentImage instanceof File ? URL.createObjectURL(formData.shipmentImage) : formData.shipmentImage}
+							src={
+								formData.shipmentImage instanceof File
+									? URL.createObjectURL(formData.shipmentImage)
+									: formData.shipmentImage
+							}
 							alt="Shipment preview"
 							className="w-32 h-32 object-contain border rounded"
 						/>
@@ -200,6 +216,7 @@ const ImportForm: React.FC<ImportFormProps> = ({
 								register={register("pickUp")}
 								error={errors.pickUp?.message}
 								required
+								searchable
 							/>
 						</div>
 
@@ -242,6 +259,7 @@ const ImportForm: React.FC<ImportFormProps> = ({
 								register={register("destination")}
 								error={errors.destination?.message}
 								required
+								searchable={true}
 							/>
 
 							<FormInput
