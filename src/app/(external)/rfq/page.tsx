@@ -7,7 +7,7 @@ import QuoteRequestForm from "./components/quote-request-form";
 
 const Page = () => {
 	return (
-		<div className=" min-h-screen overflow-x-hidden">
+		<div className=" min-h-screen overflow-x-hidden" id="rfq-page">
 			<main>
 				<Breadcrumb
 					heading="RFQ (Request for quote)"

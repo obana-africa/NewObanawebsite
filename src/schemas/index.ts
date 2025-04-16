@@ -20,7 +20,7 @@ export const baseQuoteSchema = z.object({
 });
 
 export const productionQuoteSchema = baseQuoteSchema.extend({
-	productType: z.string().min(1, { message: "Product type is required" }),
+	productType: z.string().optional(),
 	itemDescription: z
 		.string()
 		.min(1, { message: "Item description is required" }),
@@ -29,7 +29,7 @@ export const productionQuoteSchema = baseQuoteSchema.extend({
 	sizeRange: z.string().min(1, { message: "Size range is required" }),
 	// targetPrice: z.any().optional(),
 	targetPrice: z.object({
-		amount: z.number().min(0, "Amount must be positive"),
+		amount: z.number().min(0, { message: "Amount must be positive" }),
 		currency: z.any(),
 		symbol: z.any(),
 	}),
@@ -40,12 +40,12 @@ export const productionQuoteSchema = baseQuoteSchema.extend({
 });
 
 export const labelQuoteSchema = baseQuoteSchema.extend({
-	labelType: z.string().min(1, { message: "Label type is required" }),
+	labelType: z.string().optional(),
 	materialType: z.string().min(1, { message: "Material type is required" }),
 	size: z.string().min(1, { message: "Size is required" }),
 	moq: z.string().optional(),
 	targetPrice: z.object({
-		amount: z.number().min(0, "Amount must be positive"),
+		amount: z.number().min(0, { message: "Amount must be positive" } ),
 		currency: z.any(),
 		symbol: z.any(),
 	}),

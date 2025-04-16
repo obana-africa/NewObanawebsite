@@ -30,6 +30,7 @@ const HowLogisticsWork = () => {
 
 							<Button
 								// onClick={handleGetStarted}
+								href="#logistics-form"
 								variant="primary"
 								animation="ripple"
 								className="border border-primary "
