@@ -54,7 +54,7 @@ export const labelQuoteSchema = baseQuoteSchema.extend({
 	sampleProductUrl: z.string().optional(),
 });
 
-export const importShipmentSchema = z
+export const domesticShipmentSchema = z
 	.object({
 		shipmentRoute: z
 			.string({

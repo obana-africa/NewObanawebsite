@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { importShipmentSchema } from "@/schemas";
 import FormInput from "@/components/ui/form-input";
 import FormSelect from "@/components/ui/form-select";
 import FormFileUpload from "@/components/ui/form-file-upload";
@@ -10,6 +9,7 @@ import PreviewComponent from "../preview";
 import LogisticsPartners from "../logistics-partners";
 import Image from "next/image";
 import useNigerianStates from "@/hooks/use-nigerian-states";
+import { domesticShipmentSchema } from "@/schemas";
 
 export interface FormDataType {
 	shipmentRoute: string;
@@ -20,16 +20,17 @@ export interface FormDataType {
 	productWeight: string;
 	dimension?: string;
 	shipmentImage?: File;
+	shipmentImageUrl?: string;
 }
 
-interface ImportFormProps {
+interface DomesticFormProps {
 	onBack: () => void;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	onSubmit: (data: any) => void;
 	isSubmitting: boolean;
 }
 
-const ImportForm: React.FC<ImportFormProps> = ({
+const DomesticForm: React.FC<DomesticFormProps> = ({
 	onBack,
 	onSubmit,
 	isSubmitting,
@@ -54,16 +55,13 @@ const ImportForm: React.FC<ImportFormProps> = ({
 	const locations =
 		statesLoading || error ? defaultLocations : nigerianStates || [];
 
-	console.log("Locations:", locations);
-	console.log("Nigerian States:", nigerianStates);
-
 	const {
 		register,
 		handleSubmit,
 		setValue,
 		formState: { errors },
 	} = useForm({
-		resolver: zodResolver(importShipmentSchema),
+		resolver: zodResolver(domesticShipmentSchema),
 		defaultValues: {
 			shipmentRoute: "",
 			pickUp: "",
@@ -92,6 +90,7 @@ const ImportForm: React.FC<ImportFormProps> = ({
 	const handlePreview = (data: any) => {
 		const formDataWithImage = {
 			...data,
+			shipmentImage: data.shipmentImage,
 			shipmentImageUrl: imageUrl,
 		};
 		setFormData(formDataWithImage);
@@ -119,6 +118,7 @@ const ImportForm: React.FC<ImportFormProps> = ({
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleFinalSubmit = (finalData: any) => {
 		// This now receives all the data including logistics partner and contact info
+		console.log("Final Data:", finalData);
 		onSubmit(finalData);
 		// You could navigate to a success page or other next step here
 	};
@@ -172,16 +172,16 @@ const ImportForm: React.FC<ImportFormProps> = ({
 				},
 				{
 					label: "Shipment image",
-					value: formData?.shipmentImage ? (
-						<Image
-							src={
-								formData.shipmentImage instanceof File
-									? URL.createObjectURL(formData.shipmentImage)
-									: formData.shipmentImage
-							}
-							alt="Shipment preview"
-							className="w-32 h-32 object-contain border rounded"
-						/>
+					value: formData?.shipmentImageUrl ? (
+						<div className="w-32 h-32 relative">
+							<Image
+								src={formData.shipmentImageUrl}
+								alt="Shipment preview"
+								fill
+								className="object-contain"
+								sizes="(max-width: 128px) 100vw, 128px"
+							/>
+						</div>
 					) : (
 						"None"
 					),
@@ -326,4 +326,4 @@ const ImportForm: React.FC<ImportFormProps> = ({
 	);
 };
 
-export default ImportForm;
+export default DomesticForm;
