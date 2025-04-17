@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const fetchNigerianStates = async () => {
 	const response = await fetch(
-		"http://api.geonames.org/searchJSON?country=NG&featureClass=P&maxRows=1000&username=simple001"
+		`/api/get-states?country=NG&featureClass=P&maxRows=1000&username=simple001`
 	);
 
 	if (!response.ok) {
