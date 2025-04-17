@@ -7,8 +7,10 @@ export interface PreviewComponentProps {
 	sections: {
 		title: string;
 		fields: {
-			label: string;
-			value: string | React.ReactNode;
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			label?: any;
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			value?: any;
 		}[];
 	}[];
 	onEdit: () => void;
@@ -39,17 +41,23 @@ const PreviewComponent: React.FC<PreviewComponentProps> = ({
 			</button>
 
 			{sections.map((section, sectionIndex) => (
-				<div key={sectionIndex} className="mb-6  p-4 rounded-md">
-					<h4 className="font-medium  mb-2">{section.title}</h4>
+				<div key={sectionIndex} className="mb-6 p-4 rounded-md">
+					<h4 className="font-medium mb-2">{section.title}</h4>
 					<div className="space-y-2">
 						{section.fields.map((field, fieldIndex) => (
-							<p
+							<div
 								key={fieldIndex}
-								className="flex justify-between border-b border-secondary-light pb-2"
+								className="flex justify-between items-center border-b border-secondary-light pb-2"
 							>
 								<span className="font-medium">{field.label}</span>
-								<span>{field.value}</span>
-							</p>
+								<div className="flex-shrink-0">
+									{typeof field.value === "string" ? (
+										<span>{field.value}</span>
+									) : (
+										field.value
+									)}
+								</div>
+							</div>
 						))}
 					</div>
 				</div>

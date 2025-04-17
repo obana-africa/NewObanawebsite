@@ -146,7 +146,7 @@ export async function POST(request: Request) {
 			content: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px;">
           <div style="text-align: center; margin-bottom: 20px;">
-            <img src="https://www.obana.africa/_next/static/media/obana-logo.77c735d1.svg" 
+            <img src="https://res.cloudinary.com/digm76oyr/image/upload/v1744893014/obana-logo.a86d1056_laai6x.png" 
                  alt="Obana Office Logo" style="width: 100px;"/>
             <h2 style="color: #333; margin-top: 10px;">New ${formatFormType(
 							body.formType

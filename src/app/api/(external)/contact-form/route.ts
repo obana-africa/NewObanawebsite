@@ -34,7 +34,7 @@ export async function POST(request: Request) {
 			subject: `New Contact Form Submission from ${firstName} ${lastName}`,
 			content: `
         <div style="font-family: Arial, sans-serif; text-align: center; border: 1px solid #ddd; padding: 20px; max-width: 600px; margin: auto;">
-      <img src="https://www.obana.africa/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fobana.africa.6c072a90.png&w=1920&q=75" alt="Obana Office Logo" style="width: 100px; margin-bottom: 20px;" />
+      <img src="https://res.cloudinary.com/digm76oyr/image/upload/v1744893014/obana-logo.a86d1056_laai6x.png" alt="Obana Office Logo" style="width: 100px; margin-bottom: 20px;" />
           <h2 style="color: #333;">New Contact Form Submission</h2>
           <p><strong>Name:</strong> ${firstName} ${lastName}</p>
           <p><strong>Email:</strong> ${email}</p>

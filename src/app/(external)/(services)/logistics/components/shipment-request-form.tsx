@@ -4,10 +4,10 @@ import React, { useState } from "react";
 import Button from "@/components/ui/button";
 import Image from "next/image";
 import below from "@/app/assets/images/rfq/below.png";
-import ImportForm from "./shipment-forms/import-form";
-import { toast } from "sonner";
+import DomesticForm from "./shipment-forms/domestic-form";
 import { Tooltip } from "@/components/ui/form-tooltip";
 import { Info } from "lucide-react";
+import { useLogistics } from "@/hooks/use-logistics";
 
 const shipmentTypes = [
 	{ id: "import", label: "Import", hasForm: false },
@@ -24,7 +24,9 @@ const formMapping = {
 const ShipmentRequestForm: React.FC = () => {
 	const [selectedShipment, setSelectedShipment] = useState<string | null>(null);
 	const [showForm, setShowForm] = useState(false);
-	const [isSubmitting, setIsSubmitting] = useState(false);
+	// const [isSubmitting, setIsSubmitting] = useState(false);
+
+	const { submitLogisticsForm, isSubmitting } = useLogistics();
 
 	React.useEffect(() => {
 		const handlePopState = (event: PopStateEvent) => {
@@ -60,15 +62,16 @@ const ShipmentRequestForm: React.FC = () => {
 	};
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const handleSubmit = (data: any) => {
-		setIsSubmitting(true);
-		setTimeout(() => {
-			console.log("Form submitted successfully:", data);
-			setIsSubmitting(false);
-			toast.success("Shipment Booked successfully");
+	const handleSubmit = async (data: any) => {
+		const success = await submitLogisticsForm(
+			{ ...data },
+			selectedShipment || ""
+		);
+
+		if (success) {
 			setShowForm(false);
 			setSelectedShipment(null);
-		}, 1500);
+		}
 	};
 
 	const renderForm = () => {
@@ -79,7 +82,7 @@ const ShipmentRequestForm: React.FC = () => {
 		switch (formType) {
 			case "DomesticForm":
 				return (
-					<ImportForm
+					<DomesticForm
 						onBack={handleBack}
 						onSubmit={handleSubmit}
 						isSubmitting={isSubmitting}
@@ -108,7 +111,7 @@ const ShipmentRequestForm: React.FC = () => {
 						Shipment Type
 					</div>
 
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:place-items-center">
+					<div className="grid grid-cols-1 md:grid-cols-3 gap-4 place-items-center">
 						{shipmentTypes.map((shipment) => (
 							<div key={shipment.id} className="flex items-center">
 								{shipment.hasForm ? (
