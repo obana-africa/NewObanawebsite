@@ -14,7 +14,14 @@ const useBrandOptions = () => {
 		const fetchBrands = async () => {
 			try {
 				const response = await fetch(
-					"https://tajiri-backend-qamx.onrender.com/requests/zoho/get-formated-brand?store_name=testShop&status=active"
+					"https://tajiri-backend-qamx.onrender.com/requests/zoho/get-formated-brand?store_name=testShop&status=active",
+					{
+						mode: "cors", 
+						headers: {
+							"Content-Type": "application/json",
+							Accept: "application/json",
+						},
+					}
 				);
 
 				if (!response.ok) {
@@ -28,6 +35,7 @@ const useBrandOptions = () => {
 					value: brand.name,
 					label: brand.name,
 				}));
+				// console.log('Brands',brandOptions)
 
 				setBrands(brandOptions);
 				setLoading(false);
