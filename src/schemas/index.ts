@@ -1,4 +1,4 @@
-import {  z } from "zod";
+import { z } from "zod";
 
 export const emailSchema = z.object({
 	email: z.string().email("Please enter a valid email address."),
@@ -45,7 +45,7 @@ export const labelQuoteSchema = baseQuoteSchema.extend({
 	size: z.string().min(1, { message: "Size is required" }),
 	moq: z.string().optional(),
 	targetPrice: z.object({
-		amount: z.number().min(0, { message: "Amount must be positive" } ),
+		amount: z.number().min(0, { message: "Amount must be positive" }),
 		currency: z.any(),
 		symbol: z.any(),
 	}),
@@ -55,6 +55,127 @@ export const labelQuoteSchema = baseQuoteSchema.extend({
 });
 
 export const domesticShipmentSchema = z
+	.object({
+		// shipmentRoute: z
+		// 	.string({
+		// 		required_error: "Shipment route is required",
+		// 	})
+		// 	.min(1, "Please select a shipment route"),
+
+		pickUp: z
+			.string({
+				required_error: "Pickup location is required",
+			})
+			.min(1, "Please select a pickup location"),
+
+		destination: z
+			.string({
+				required_error: "Destination is required",
+			})
+			.min(1, "Please select a destination"),
+
+		productCategory: z
+			.string({
+				required_error: "Product category is required",
+			})
+			.min(1, "Please select a product category"),
+
+		productType: z
+			.string({
+				required_error: "Product type is required",
+			})
+			.min(1, "Product type is required")
+			.max(100, "Product type must be less than 100 characters"),
+
+		productWeight: z
+			.string({
+				required_error: "Product weight is required",
+			})
+			.min(1, "Product weight is required")
+			.regex(/^\d*\.?\d*$/, "Must be a valid number"),
+
+		dimension: z
+			.string()
+			.max(50, "Dimension must be less than 50 characters")
+			.optional(),
+		shipmentImage: z.any().optional(),
+	})
+	.refine(
+		(data) => {
+			if (data.pickUp && data.destination) {
+				return data.pickUp !== data.destination;
+			}
+			return true;
+		},
+		{
+			message: "Pickup and destination cannot be the same",
+			path: ["destination"],
+		}
+	);
+
+export const senderReceiverSchema = z.object({
+	sender: z.object({
+		name: z
+			.string({
+				required_error: "Sender name is required",
+			})
+			.min(1, "Sender name is required")
+			.max(100, "Sender name must be less than 100 characters"),
+
+		email: z
+			.string({
+				required_error: "Sender email is required",
+			})
+			.email("Please enter a valid email address"),
+
+		phone: z
+			.string({
+				required_error: "Sender phone number is required",
+			})
+			.min(10, "Phone number must be at least 10 characters")
+			.max(15, "Phone number must be less than 15 characters")
+			.regex(/^[0-9]+$/, "Phone number must contain only numbers"),
+
+		address: z
+			.string({
+				required_error: "Sender address is required",
+			})
+			.min(5, "Address must be at least 5 characters")
+			.max(200, "Address must be less than 200 characters"),
+	}),
+
+	receiver: z.object({
+		name: z
+			.string({
+				required_error: "Receiver name is required",
+			})
+			.min(1, "Receiver name is required")
+			.max(100, "Receiver name must be less than 100 characters"),
+
+		email: z
+			.string({
+				required_error: "Receiver email is required",
+			})
+			.email("Please enter a valid email address"),
+
+		phone: z
+			.string({
+				required_error: "Receiver phone number is required",
+			})
+			.min(10, "Phone number must be at least 10 characters")
+			.max(15, "Phone number must be less than 15 characters")
+			.regex(/^[0-9]+$/, "Phone number must contain only numbers"),
+
+		address: z
+			.string({
+				required_error: "Receiver address is required",
+			})
+			.min(5, "Address must be at least 5 characters")
+			.max(200, "Address must be less than 200 characters"),
+	}),
+});
+
+export const importShipmentSchema = z
 	.object({
 		shipmentRoute: z
 			.string({
@@ -99,24 +220,6 @@ export const domesticShipmentSchema = z
 			.max(50, "Dimension must be less than 50 characters")
 			.optional(),
 		shipmentImage: z.any().optional(),
-
-		// shipmentImage: fileSchema
-		// 	.refine((file) => {
-		// 		if (!file) return true;
-		// 		if (typeof file === "string") return true;
-		// 		return file.size <= 5 * 1024 * 1024;
-		// 	}, "File size must be less than 5MB")
-		// 	.refine((file) => {
-		// 		if (!file) return true;
-		// 		if (typeof file === "string") return true;
-		// 		return [
-		// 			"image/jpeg",
-		// 			"image/png",
-		// 			"image/webp",
-		// 			"application/pdf",
-		// 		].includes(file.type);
-		// 	}, "Only JPEG, PNG, WEBP, or PDF files are accepted")
-		// 	.optional(),
 	})
 	.refine(
 		(data) => {
