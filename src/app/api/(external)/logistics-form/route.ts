@@ -2,8 +2,22 @@ import { NextResponse } from "next/server";
 import axios from "axios";
 import { getMailAccessToken } from "@/helpers/zoho-auth-token";
 
+interface SenderInfo {
+	name: string;
+	email: string;
+	phone: string;
+	address: string;
+}
+
+interface ReceiverInfo {
+	name: string;
+	email: string;
+	phone: string;
+	address: string;
+}
+
 interface ShipmentData {
-	shipmentRoute: string;
+	shipmentRoute?: string;
 	pickUp: string;
 	destination: string;
 	productCategory: string;
@@ -11,8 +25,10 @@ interface ShipmentData {
 	productWeight: string;
 	dimension?: string;
 	shipmentImage?: string;
-	shipmentImageUrl?: string;
+	shipmentImageUrl?: string | null;
 	formType: string;
+	sender?: SenderInfo;
+	receiver?: ReceiverInfo;
 }
 
 const formatFormType = (formType: string) => {
@@ -40,6 +56,8 @@ function generateEmailContent(data: any, isAdmin: boolean): string {
 		dimension: data.dimension,
 		shipmentImageUrl: data.shipmentImageUrl || data.shipmentImage,
 		formType: data.formType,
+		sender: data.sender,
+		receiver: data.receiver,
 	};
 
 	const { logisticsPartner, contactInfo } = data;
@@ -81,18 +99,81 @@ function generateEmailContent(data: any, isAdmin: boolean): string {
                 </table>
             </div>
 
+            ${
+							shipmentData.formType === "domestic" &&
+							shipmentData.sender &&
+							shipmentData.receiver
+								? `
+            <!-- Sender Information -->
+            <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                <h3 style="color: #1a365d; margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">
+                    Sender Information
+                </h3>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <td style="padding: 8px 0; color: #64748b; width: 140px;">Name:</td>
+                        <td style="padding: 8px 0; color: #1a365d; font-weight: 500;">${shipmentData.sender.name}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 0; color: #64748b;">Email:</td>
+                        <td style="padding: 8px 0; color: #1a365d; font-weight: 500;">${shipmentData.sender.email}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 0; color: #64748b;">Phone:</td>
+                        <td style="padding: 8px 0; color: #1a365d; font-weight: 500;">${shipmentData.sender.phone}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 0; color: #64748b;">Address:</td>
+                        <td style="padding: 8px 0; color: #1a365d; font-weight: 500;">${shipmentData.sender.address}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Receiver Information -->
+            <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                <h3 style="color: #1a365d; margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">
+                    Receiver Information
+                </h3>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <td style="padding: 8px 0; color: #64748b; width: 140px;">Name:</td>
+                        <td style="padding: 8px 0; color: #1a365d; font-weight: 500;">${shipmentData.receiver.name}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 0; color: #64748b;">Email:</td>
+                        <td style="padding: 8px 0; color: #1a365d; font-weight: 500;">${shipmentData.receiver.email}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 0; color: #64748b;">Phone:</td>
+                        <td style="padding: 8px 0; color: #1a365d; font-weight: 500;">${shipmentData.receiver.phone}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 0; color: #64748b;">Address:</td>
+                        <td style="padding: 8px 0; color: #1a365d; font-weight: 500;">${shipmentData.receiver.address}</td>
+                    </tr>
+                </table>
+            </div>
+            `
+								: ""
+						}
+
             <!-- Shipment Details -->
             <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
                 <h3 style="color: #1a365d; margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">
                     Shipment Details
                 </h3>
                 <table style="width: 100%; border-collapse: collapse;">
+                    ${
+											shipmentData.formType !== "domestic" &&
+											shipmentData.shipmentRoute
+												? `
                     <tr>
                         <td style="padding: 8px 0; color: #64748b; width: 140px;">Shipment Route:</td>
-                        <td style="padding: 8px 0; color: #1a365d; font-weight: 500;">${
-													shipmentData.shipmentRoute
-												}</td>
+                        <td style="padding: 8px 0; color: #1a365d; font-weight: 500;">${shipmentData.shipmentRoute}</td>
                     </tr>
+                    `
+												: ""
+										}
                     <tr>
                         <td style="padding: 8px 0; color: #64748b;">Pick Up Location:</td>
                         <td style="padding: 8px 0; color: #1a365d; font-weight: 500;">${
@@ -171,18 +252,15 @@ function generateEmailContent(data: any, isAdmin: boolean): string {
                 </table>
             </div>
 
-
-        
-          
-           <div style="text-align: center; margin-top: 30px; font-size: 12px; color: #777; border-top: 1px solid #eee; padding-top: 15px;">
+            <div style="text-align: center; margin-top: 30px; font-size: 12px; color: #777; border-top: 1px solid #eee; padding-top: 15px;">
              <img src="https://res.cloudinary.com/digm76oyr/image/upload/v1744893014/obana-logo.a86d1056_laai6x.png" 
                      alt="Obana Logo" style="width: 150px; margin-bottom: 20px;"/>
                      ${
 												isAdmin
 													? `
-                       <p>This email was sent from your website Logistics  ${formatFormType(
+                       <p>This email was sent from your website Logistics ${formatFormType(
 													shipmentData.formType
-												)}  form Request.</p>
+												)} form Request.</p>
                 `
 													: ` <div style="margin-bottom: 20px;">
                                <p>Our team will review your ${formatFormType(

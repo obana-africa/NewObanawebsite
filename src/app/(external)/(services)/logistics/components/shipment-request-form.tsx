@@ -5,12 +5,13 @@ import Button from "@/components/ui/button";
 import Image from "next/image";
 import below from "@/app/assets/images/rfq/below.png";
 import DomesticForm from "./shipment-forms/domestic-form";
+import ImportForm from "./shipment-forms/import-form";
 import { Tooltip } from "@/components/ui/form-tooltip";
 import { Info } from "lucide-react";
 import { useLogistics } from "@/hooks/use-logistics";
 
 const shipmentTypes = [
-	{ id: "import", label: "Import", hasForm: false },
+	{ id: "import", label: "Import", hasForm: true },
 	{ id: "export", label: "Export", hasForm: false },
 	{ id: "domestic", label: "Within Nigeria", hasForm: true },
 ];
@@ -63,6 +64,12 @@ const ShipmentRequestForm: React.FC = () => {
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleSubmit = async (data: any) => {
+		// console.log(
+		// 	"Submitting logistics form:",
+		// 	{ ...data },
+		// 	"shipment type:",
+		// 	selectedShipment || ""
+		// );
 		const success = await submitLogisticsForm(
 			{ ...data },
 			selectedShipment || ""
@@ -83,6 +90,14 @@ const ShipmentRequestForm: React.FC = () => {
 			case "DomesticForm":
 				return (
 					<DomesticForm
+						onBack={handleBack}
+						onSubmit={handleSubmit}
+						isSubmitting={isSubmitting}
+					/>
+				);
+			case "ImportForm":
+				return (
+					<ImportForm
 						onBack={handleBack}
 						onSubmit={handleSubmit}
 						isSubmitting={isSubmitting}
