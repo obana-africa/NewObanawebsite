@@ -251,7 +251,7 @@ const DomesticForm: React.FC<DomesticFormProps> = ({
 	];
 
 	// Render different content based on the current step
-	console.log(errors);
+	// console.log(errors);
 	return (
 		<div className="space-y-6">
 			{currentStep === "form" && (

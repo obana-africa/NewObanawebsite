@@ -128,13 +128,7 @@ export const senderReceiverSchema = z.object({
 			})
 			.email("Please enter a valid email address"),
 
-		phone: z
-			.string({
-				required_error: "Sender phone number is required",
-			})
-			.min(10, "Phone number must be at least 10 characters")
-			.max(15, "Phone number must be less than 15 characters")
-			.regex(/^[0-9]+$/, "Phone number must contain only numbers"),
+		phone: z.string().min(6, "Valid phone number is required"),
 
 		address: z
 			.string({
@@ -158,13 +152,7 @@ export const senderReceiverSchema = z.object({
 			})
 			.email("Please enter a valid email address"),
 
-		phone: z
-			.string({
-				required_error: "Receiver phone number is required",
-			})
-			.min(10, "Phone number must be at least 10 characters")
-			.max(15, "Phone number must be less than 15 characters")
-			.regex(/^[0-9]+$/, "Phone number must contain only numbers"),
+		phone: z.string().min(6, "Valid phone number is required"),
 
 		address: z
 			.string({

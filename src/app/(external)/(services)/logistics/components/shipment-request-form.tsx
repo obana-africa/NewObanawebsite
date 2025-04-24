@@ -64,12 +64,12 @@ const ShipmentRequestForm: React.FC = () => {
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleSubmit = async (data: any) => {
-		// console.log(
-		// 	"Submitting logistics form:",
-		// 	{ ...data },
-		// 	"shipment type:",
-		// 	selectedShipment || ""
-		// );
+		console.log(
+			"Submitting logistics form:",
+			{ ...data },
+			"shipment type:",
+			selectedShipment || ""
+		);
 		const success = await submitLogisticsForm(
 			{ ...data },
 			selectedShipment || ""
@@ -106,8 +106,8 @@ const ShipmentRequestForm: React.FC = () => {
 			default:
 				return (
 					<div className="p-4 bg-yellow-100 rounded">
-						Form for{" "}
-						{shipmentTypes.find((item) => item.id === selectedShipment)?.label}{" "}
+						Form for
+						{shipmentTypes.find((item) => item.id === selectedShipment)?.label}
 						is not implemented yet.
 					</div>
 				);

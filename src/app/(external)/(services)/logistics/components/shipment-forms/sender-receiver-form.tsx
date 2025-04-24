@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import FormInput from "@/components/ui/form-input";
 import Button from "@/components/ui/button";
 import { senderReceiverSchema } from "@/schemas";
+import PhoneInput from "@/components/ui/phone-input";
 
 interface SenderReceiverFormProps {
 	defaultValues?: {
@@ -34,6 +35,7 @@ const SenderReceiverForm: React.FC<SenderReceiverFormProps> = ({
 	const {
 		register,
 		handleSubmit,
+		control,
 		formState: { errors },
 	} = useForm({
 		resolver: zodResolver(senderReceiverSchema),
@@ -60,7 +62,7 @@ const SenderReceiverForm: React.FC<SenderReceiverFormProps> = ({
 			</h2>
 			<form onSubmit={handleSubmit(onSubmit)}>
 				<div className="space-y-6">
-					<div className="border p-4 rounded-lg">
+					<div className="shadow-md p-4 rounded-lg">
 						<h3 className="font-medium mb-4">Sender Details</h3>
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
 							<FormInput
@@ -82,11 +84,10 @@ const SenderReceiverForm: React.FC<SenderReceiverFormProps> = ({
 							/>
 						</div>
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-							<FormInput
-								id="sender.phone"
+							<PhoneInput
+								control={control}
+								name="sender.phone"
 								label="Phone Number"
-								placeholder="Enter your phone number"
-								register={register("sender.phone")}
 								error={errors.sender?.phone?.message}
 								required
 							/>
@@ -101,7 +102,7 @@ const SenderReceiverForm: React.FC<SenderReceiverFormProps> = ({
 						</div>
 					</div>
 
-					<div className="border p-4 rounded-lg">
+					<div className="shadow-md p-4 rounded-lg ">
 						<h3 className="font-medium mb-4">Receiver Details</h3>
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
 							<FormInput
@@ -123,11 +124,10 @@ const SenderReceiverForm: React.FC<SenderReceiverFormProps> = ({
 							/>
 						</div>
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-							<FormInput
-								id="receiver.phone"
+							<PhoneInput
+								control={control}
+								name="receiver.phone"
 								label="Phone Number"
-								placeholder="Enter receiver phone number"
-								register={register("receiver.phone")}
 								error={errors.receiver?.phone?.message}
 								required
 							/>
