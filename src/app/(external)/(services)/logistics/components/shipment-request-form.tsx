@@ -64,12 +64,12 @@ const ShipmentRequestForm: React.FC = () => {
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleSubmit = async (data: any) => {
-		console.log(
-			"Submitting logistics form:",
-			{ ...data },
-			"shipment type:",
-			selectedShipment || ""
-		);
+		// console.log(
+		// 	"Submitting logistics form:",
+		// 	{ ...data },
+		// 	"shipment type:",
+		// 	selectedShipment || ""
+		// );
 		const success = await submitLogisticsForm(
 			{ ...data },
 			selectedShipment || ""
