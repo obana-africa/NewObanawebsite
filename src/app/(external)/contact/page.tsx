@@ -11,7 +11,7 @@ const Page = () => {
 				<Breadcrumb
 					heading="Contact Us"
 					icon={clock}
-					iconSubheading="Available 24/7 for emergency road service"
+					iconSubheading="Available 24/7 for all your sourcing and logistics needs."
 				/>
 				<ContactInfo
 					whatsappNumber="+234 809 653 5511"

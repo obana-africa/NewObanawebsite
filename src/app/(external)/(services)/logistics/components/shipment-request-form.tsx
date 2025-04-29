@@ -4,13 +4,16 @@ import React, { useState } from "react";
 import Button from "@/components/ui/button";
 import Image from "next/image";
 import below from "@/app/assets/images/rfq/below.png";
+import DomesticForm from "./shipment-forms/domestic-form";
 import ImportForm from "./shipment-forms/import-form";
-import { toast } from "sonner";
+import { Tooltip } from "@/components/ui/form-tooltip";
+import { Info } from "lucide-react";
+import { useLogistics } from "@/hooks/use-logistics";
 
 const shipmentTypes = [
-	{ id: "import", label: "Import" },
-	{ id: "export", label: "Export" },
-	{ id: "domestic", label: "Within Nigeria" },
+	{ id: "import", label: "Import", hasForm: true },
+	{ id: "export", label: "Export", hasForm: false },
+	{ id: "domestic", label: "Within Nigeria", hasForm: true },
 ];
 
 const formMapping = {
@@ -22,7 +25,25 @@ const formMapping = {
 const ShipmentRequestForm: React.FC = () => {
 	const [selectedShipment, setSelectedShipment] = useState<string | null>(null);
 	const [showForm, setShowForm] = useState(false);
-	const [isSubmitting, setIsSubmitting] = useState(false);
+	// const [isSubmitting, setIsSubmitting] = useState(false);
+
+	const { submitLogisticsForm, isSubmitting } = useLogistics();
+
+	React.useEffect(() => {
+		const handlePopState = (event: PopStateEvent) => {
+			if (showForm) {
+				setShowForm(false);
+				event.preventDefault();
+				window.history.pushState(null, "", window.location.href);
+			}
+		};
+
+		window.addEventListener("popstate", handlePopState);
+
+		return () => {
+			window.removeEventListener("popstate", handlePopState);
+		};
+	}, [showForm]);
 
 	const handleShipmentSelect = (shipmentId: string) => {
 		if (selectedShipment === shipmentId) {
@@ -42,15 +63,22 @@ const ShipmentRequestForm: React.FC = () => {
 	};
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const handleSubmit = (data: any) => {
-		setIsSubmitting(true);
-		setTimeout(() => {
-			console.log("Form submitted successfully:", data);
-			setIsSubmitting(false);
-			toast.success("Shipment Booked successfully");
+	const handleSubmit = async (data: any) => {
+		// console.log(
+		// 	"Submitting logistics form:",
+		// 	{ ...data },
+		// 	"shipment type:",
+		// 	selectedShipment || ""
+		// );
+		const success = await submitLogisticsForm(
+			{ ...data },
+			selectedShipment || ""
+		);
+
+		if (success) {
 			setShowForm(false);
 			setSelectedShipment(null);
-		}, 1500);
+		}
 	};
 
 	const renderForm = () => {
@@ -59,23 +87,15 @@ const ShipmentRequestForm: React.FC = () => {
 		const formType = formMapping[selectedShipment as keyof typeof formMapping];
 
 		switch (formType) {
-			case "ImportForm":
-				return (
-					<ImportForm
-						onBack={handleBack}
-						onSubmit={handleSubmit}
-						isSubmitting={isSubmitting}
-					/>
-				);
-			case "ExportForm":
-				return (
-					<ImportForm
-						onBack={handleBack}
-						onSubmit={handleSubmit}
-						isSubmitting={isSubmitting}
-					/>
-				);
 			case "DomesticForm":
+				return (
+					<DomesticForm
+						onBack={handleBack}
+						onSubmit={handleSubmit}
+						isSubmitting={isSubmitting}
+					/>
+				);
+			case "ImportForm":
 				return (
 					<ImportForm
 						onBack={handleBack}
@@ -86,8 +106,8 @@ const ShipmentRequestForm: React.FC = () => {
 			default:
 				return (
 					<div className="p-4 bg-yellow-100 rounded">
-						Form for{" "}
-						{shipmentTypes.find((item) => item.id === selectedShipment)?.label}{" "}
+						Form for
+						{shipmentTypes.find((item) => item.id === selectedShipment)?.label}
 						is not implemented yet.
 					</div>
 				);
@@ -96,7 +116,7 @@ const ShipmentRequestForm: React.FC = () => {
 
 	const renderShipmentSelection = () => {
 		return (
-			<div className="space-y-6 p-6 mx-auto">
+			<div className="space-y-6 p-6 mx-auto" id="logistics-form">
 				<h2 className="font-bold text-center text-primary">
 					Request For Shipment
 				</h2>
@@ -106,19 +126,41 @@ const ShipmentRequestForm: React.FC = () => {
 						Shipment Type
 					</div>
 
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:place-items-center">
+					<div className="grid grid-cols-1 md:grid-cols-3 gap-4 place-items-center">
 						{shipmentTypes.map((shipment) => (
 							<div key={shipment.id} className="flex items-center">
-								<input
-									type="checkbox"
-									id={shipment.id}
-									checked={selectedShipment === shipment.id}
-									onChange={() => handleShipmentSelect(shipment.id)}
-									className="mr-2 h-5 w-5 cursor-pointer"
-								/>
-								<label htmlFor={shipment.id} className="cursor-pointer">
-									{shipment.label}
-								</label>
+								{shipment.hasForm ? (
+									<>
+										<input
+											type="checkbox"
+											id={shipment.id}
+											checked={selectedShipment === shipment.id}
+											onChange={() => handleShipmentSelect(shipment.id)}
+											className="mr-2 h-5 w-5 cursor-pointer"
+										/>
+										<label htmlFor={shipment.id} className="cursor-pointer">
+											{shipment.label}
+										</label>
+									</>
+								) : (
+									<div className="flex items-center">
+										<input
+											type="checkbox"
+											id={shipment.id}
+											disabled
+											className="mr-2 h-5 w-5 cursor-not-allowed opacity-50"
+										/>
+										<Tooltip content="Coming soon" side="top">
+											<label
+												htmlFor={shipment.id}
+												className="cursor-not-allowed opacity-50 flex items-center"
+											>
+												{shipment.label}
+												<Info className="w-4 h-4 ml-1 text-gray-500" />
+											</label>
+										</Tooltip>
+									</div>
+								)}
 							</div>
 						))}
 					</div>

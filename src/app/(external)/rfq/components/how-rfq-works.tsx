@@ -30,6 +30,7 @@ const HowRfqWorks = () => {
 
 							<Button
 								// onClick={handleGetStarted}
+								href="#rfqform"
 								variant="primary"
 								animation="ripple"
 								className="border border-primary "

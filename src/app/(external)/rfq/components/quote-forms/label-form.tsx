@@ -7,7 +7,7 @@ import FormSelect from "@/components/ui/form-select";
 import FormFileUpload from "@/components/ui/form-file-upload";
 import PhoneInput from "@/components/ui/phone-input";
 import Button from "@/components/ui/button";
-import { toast } from "sonner";
+import { CurrencyInputField } from "@/components/ui/currency-input";
 
 interface LabelFormProps {
 	onBack: () => void;
@@ -25,6 +25,7 @@ const LabelForm: React.FC<LabelFormProps> = ({
 		register,
 		handleSubmit,
 		control,
+		setValue,
 		formState: { errors },
 	} = useForm({
 		resolver: zodResolver(labelQuoteSchema),
@@ -36,17 +37,12 @@ const LabelForm: React.FC<LabelFormProps> = ({
 			materialType: "",
 			size: "",
 			moq: "",
-			targetPrice: "",
+			targetPrice: {},
 			designRequirement: "",
-			labelDesign: null,
+			sampleProduct: null,
+			sampleProductUrl: "",
 		},
 	});
-
-	const labelTypes = [
-		{ value: "woven", label: "Woven" },
-		{ value: "printed", label: "Printed" },
-		{ value: "leather", label: "Leather" },
-	];
 
 	const materialTypes = [
 		{ value: "cotton", label: "Cotton" },
@@ -54,10 +50,14 @@ const LabelForm: React.FC<LabelFormProps> = ({
 		{ value: "nylon", label: "Nylon" },
 	];
 
+	const handleFileUploadComplete = (url: string | null) => {
+		setValue("sampleProductUrl", url || "");
+	};
+
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleFormSubmit = (data: any) => {
-		console.log("Label form data:", data);
-		toast.success("Form submitted successfully");
+		// console.log("Label form data:", data);
+		// toast.success("Form submitted successfully");
 		onSubmit(data);
 	};
 
@@ -96,13 +96,12 @@ const LabelForm: React.FC<LabelFormProps> = ({
 						required
 					/>
 
-					<FormSelect
+					<FormInput
 						id="labelType"
 						label="Label Type"
-						options={labelTypes}
+						placeholder="Your preferred Label Type"
 						register={register("labelType")}
 						error={errors.labelType?.message}
-						required
 					/>
 				</div>
 
@@ -119,7 +118,7 @@ const LabelForm: React.FC<LabelFormProps> = ({
 					<FormInput
 						id="size"
 						label="Size"
-						placeholder="Height X Width in cm or inches"
+						placeholder="eg: XS - 4XL, 20 - 40 etc..."
 						register={register("size")}
 						error={errors.size?.message}
 						required
@@ -136,12 +135,20 @@ const LabelForm: React.FC<LabelFormProps> = ({
 						type="number"
 					/>
 
-					<FormInput
-						id="targetPrice"
-						label="What is your target sourcing price point?"
+					<CurrencyInputField
+						name="targetPrice"
+						control={control}
+						label="What is your target sourcing price point"
 						placeholder="Per unit"
-						register={register("targetPrice")}
-						error={errors.targetPrice?.message}
+						defaultValue={{ currency: "NGN", symbol: "₦" }}
+						required
+						className=""
+						error={
+							errors.targetPrice?.amount?.message &&
+							typeof errors.targetPrice.amount.message === "object"
+								? JSON.stringify(errors.targetPrice.amount.message)
+								: errors.targetPrice?.amount?.message
+						}
 					/>
 				</div>
 
@@ -149,7 +156,8 @@ const LabelForm: React.FC<LabelFormProps> = ({
 					<FormFileUpload
 						id="labelDesign"
 						label="Label Image/ Design"
-						register={register("labelDesign")}
+						onUploadComplete={handleFileUploadComplete}
+						accept="image/*"
 					/>
 
 					<FormInput
