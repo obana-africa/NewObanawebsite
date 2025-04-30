@@ -106,8 +106,8 @@ const ShipmentRequestForm: React.FC = () => {
 			default:
 				return (
 					<div className="p-4 bg-yellow-100 rounded">
-						Form for{" "}
-						{shipmentTypes.find((item) => item.id === selectedShipment)?.label}{" "}
+						Form for
+						{shipmentTypes.find((item) => item.id === selectedShipment)?.label}
 						is not implemented yet.
 					</div>
 				);

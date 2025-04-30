@@ -19,6 +19,7 @@ interface PhoneInputProps {
 	label: string;
 	error?: string;
 	required?: boolean;
+	placeholder?: string;
 }
 
 const PhoneInput: React.FC<PhoneInputProps> = ({
@@ -27,6 +28,7 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
 	label,
 	error,
 	required = false,
+	placeholder,
 }) => {
 	return (
 		<div>
@@ -39,11 +41,13 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
 			<Controller
 				name={name}
 				control={control}
+				defaultValue=""
 				render={({ field }) => (
 					<PhoneInputLib
 						country={"ng"}
 						value={field.value}
-						onChange={field.onChange}
+						onChange={(phone) => field.onChange(phone)}
+						onBlur={field.onBlur}
 						inputStyle={{
 							width: "100%",
 							height: "48px",
@@ -55,9 +59,9 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
 							width: "100%",
 						}}
 						inputProps={{
-							name: name,
-							id: name,
-							placeholder: "Enter your phone number",
+							name: field.name,
+							id: field.name,
+							placeholder: placeholder || "Enter phone number",
 						}}
 					/>
 				)}

@@ -9,8 +9,7 @@ import PreviewComponent from "../preview";
 import LogisticsPartners from "../logistics-partners";
 import Image from "next/image";
 import useNigerianStates from "@/hooks/use-nigerian-states";
-import { domesticShipmentSchema } from "@/schemas";
-import SenderReceiverForm from "./sender-receiver-form";
+import { importShipmentSchema } from "@/schemas";
 
 export interface FormDataType {
 	shipmentRoute: string;
@@ -22,34 +21,22 @@ export interface FormDataType {
 	dimension?: string;
 	shipmentImage?: File;
 	shipmentImageUrl?: string;
-	sender: {
-		name: string;
-		email: string;
-		phone: string;
-		address: string;
-	};
-	receiver: {
-		name: string;
-		email: string;
-		phone: string;
-		address: string;
-	};
 }
 
-interface DomesticFormProps {
+interface ImportFormProps {
 	onBack: () => void;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	onSubmit: (data: any) => void;
 	isSubmitting: boolean;
 }
 
-const DomesticForm: React.FC<DomesticFormProps> = ({
+const ImportForm: React.FC<ImportFormProps> = ({
 	onBack,
 	onSubmit,
 	isSubmitting,
 }) => {
 	const [currentStep, setCurrentStep] = useState<
-		"form" | "senderReceiver" | "preview" | "logistics"
+		"form" | "preview" | "logistics"
 	>("form");
 	const [formData, setFormData] = useState<FormDataType | null>(null);
 	const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -60,9 +47,9 @@ const DomesticForm: React.FC<DomesticFormProps> = ({
 	} = useNigerianStates();
 
 	const defaultLocations = [
-		{ value: "lagos", label: "Lagos" },
-		{ value: "abuja", label: "Abuja" },
-		{ value: "kano", label: "Kano" },
+		{ value: "Kenya", label: "Kenya" },
+		{ value: "Nigeria", label: "Nigeria" },
+		{ value: "South Africa", label: "South Africa" },
 	];
 
 	const locations =
@@ -74,8 +61,9 @@ const DomesticForm: React.FC<DomesticFormProps> = ({
 		setValue,
 		formState: { errors },
 	} = useForm({
-		resolver: zodResolver(domesticShipmentSchema),
+		resolver: zodResolver(importShipmentSchema),
 		defaultValues: {
+			shipmentRoute: "",
 			pickUp: "",
 			destination: "",
 			productCategory: "",
@@ -86,6 +74,12 @@ const DomesticForm: React.FC<DomesticFormProps> = ({
 		},
 	});
 
+	const shipmentRoutes = [
+		{ value: "air", label: "Air Freight" },
+		{ value: "sea", label: "Sea Freight" },
+		{ value: "land", label: "Land Freight" },
+	];
+
 	const productCategories = [
 		{ value: "electronics", label: "Electronics" },
 		{ value: "fashion", label: "Fashion" },
@@ -94,27 +88,12 @@ const DomesticForm: React.FC<DomesticFormProps> = ({
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handlePreview = (data: any) => {
-		// console.log("GO TO NEXT", data);
 		const formDataWithImage = {
 			...data,
 			shipmentImage: data.shipmentImage,
 			shipmentImageUrl: imageUrl,
 		};
 		setFormData(formDataWithImage);
-		// setFormData(data);
-		setCurrentStep("senderReceiver");
-	};
-
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const handleSenderReceiverSubmit = (senderReceiverData: any) => {
-		const mergedData = {
-			...formData,
-			...senderReceiverData,
-			shipmentImageUrl: imageUrl,
-		};
-		// console.log("GO TO NEXT", mergedData);
-
-		setFormData(mergedData);
 		setCurrentStep("preview");
 	};
 
@@ -138,7 +117,10 @@ const DomesticForm: React.FC<DomesticFormProps> = ({
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleFinalSubmit = (finalData: any) => {
+		// This now receives all the data including logistics partner and contact info
+		console.log("Final Data:", finalData);
 		onSubmit(finalData);
+		// You could navigate to a success page or other next step here
 	};
 
 	const getLabelFromValue = (
@@ -152,12 +134,12 @@ const DomesticForm: React.FC<DomesticFormProps> = ({
 		{
 			title: "Shipment Information",
 			fields: [
-				// {
-				// 	label: "Shipment route",
-				// 	value: formData?.shipmentRoute
-				// 		? getLabelFromValue(formData.shipmentRoute, shipmentRoutes)
-				// 		: "-",
-				// },
+				{
+					label: "Shipment route",
+					value: formData?.shipmentRoute
+						? getLabelFromValue(formData.shipmentRoute, shipmentRoutes)
+						: "-",
+				},
 				{
 					label: "From",
 					value: formData?.pickUp
@@ -206,52 +188,9 @@ const DomesticForm: React.FC<DomesticFormProps> = ({
 				},
 			],
 		},
-		{
-			title: "Sender Details",
-			fields: [
-				{
-					label: "Name",
-					value: formData?.sender?.name || "-",
-				},
-				{
-					label: "Email",
-					value: formData?.sender?.email || "-",
-				},
-				{
-					label: "Phone number",
-					value: formData?.sender?.phone || "-",
-				},
-				{
-					label: "Address",
-					value: formData?.sender?.address || "-",
-				},
-			],
-		},
-		{
-			title: "Receiver Details",
-			fields: [
-				{
-					label: "Name",
-					value: formData?.receiver?.name || "-",
-				},
-				{
-					label: "Email",
-					value: formData?.receiver?.email || "-",
-				},
-				{
-					label: "Phone number",
-					value: formData?.receiver?.phone || "-",
-				},
-				{
-					label: "Address",
-					value: formData?.receiver?.address || "-",
-				},
-			],
-		},
 	];
 
 	// Render different content based on the current step
-	// console.log(errors);
 	return (
 		<div className="space-y-6">
 			{currentStep === "form" && (
@@ -261,14 +200,14 @@ const DomesticForm: React.FC<DomesticFormProps> = ({
 					</h2>
 					<form onSubmit={handleSubmit(handlePreview)}>
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-							{/* <FormSelect
+							<FormSelect
 								id="shipmentRoute"
 								label="Shipment route "
 								options={shipmentRoutes}
 								register={register("shipmentRoute")}
 								error={errors.shipmentRoute?.message}
 								required
-							/> */}
+							/>
 
 							<FormSelect
 								id="pickUp"
@@ -364,17 +303,6 @@ const DomesticForm: React.FC<DomesticFormProps> = ({
 				</>
 			)}
 
-			{currentStep === "senderReceiver" && (
-				<SenderReceiverForm
-					defaultValues={{
-						sender: formData?.sender,
-						receiver: formData?.receiver,
-					}}
-					onBack={() => setCurrentStep("form")}
-					onSubmit={handleSenderReceiverSubmit}
-				/>
-			)}
-
 			{currentStep === "preview" && (
 				<PreviewComponent
 					title="Preview"
@@ -398,4 +326,4 @@ const DomesticForm: React.FC<DomesticFormProps> = ({
 	);
 };
 
-export default DomesticForm;
+export default ImportForm;
