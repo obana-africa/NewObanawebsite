@@ -8,12 +8,8 @@ import Button from "@/components/ui/button";
 import PreviewComponent from "../preview";
 import LogisticsPartners from "../logistics-partners";
 import Image from "next/image";
-// import useNigerianStates from "@/hooks/use-nigerian-states";
+import useNigerianStates from "@/hooks/use-nigerian-states";
 import { importShipmentSchema } from "@/schemas";
-import {
-	allNonAfricanLocations,
-	AfricanLocations,
-} from "@/constants/locations";
 
 export interface FormDataType {
 	shipmentRoute: string;
@@ -44,15 +40,20 @@ const ImportForm: React.FC<ImportFormProps> = ({
 	>("form");
 	const [formData, setFormData] = useState<FormDataType | null>(null);
 	const [imageUrl, setImageUrl] = useState<string | null>(null);
-	// const {
-	// 	data: nigerianStates,
-	// 	isLoading: statesLoading,
-	// 	error,
-	// } = useNigerianStates();
+	const {
+		data: nigerianStates,
+		isLoading: statesLoading,
+		error,
+	} = useNigerianStates();
 
-	const locations = AfricanLocations;
+	const defaultLocations = [
+		{ value: "Kenya", label: "Kenya" },
+		{ value: "Nigeria", label: "Nigeria" },
+		{ value: "South Africa", label: "South Africa" },
+	];
 
-	const allLocations = allNonAfricanLocations;
+	const locations =
+		statesLoading || error ? defaultLocations : nigerianStates || [];
 
 	const {
 		register,
@@ -211,7 +212,7 @@ const ImportForm: React.FC<ImportFormProps> = ({
 							<FormSelect
 								id="pickUp"
 								label="Pick Up "
-								options={allLocations}
+								options={locations}
 								register={register("pickUp")}
 								error={errors.pickUp?.message}
 								required
