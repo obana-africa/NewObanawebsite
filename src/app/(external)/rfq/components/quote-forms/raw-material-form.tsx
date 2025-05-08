@@ -20,7 +20,6 @@ interface RawMaterialFormProps {
 
 const RawMaterialForm: React.FC<RawMaterialFormProps> = ({
 	onBack,
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	onSubmit,
 	isSubmitting,
 }) => {
@@ -52,25 +51,25 @@ const RawMaterialForm: React.FC<RawMaterialFormProps> = ({
 	const { brands: brandOptions, error: brandsError } = useBrandOptions();
 
 	const materialTypes = [
-		{ value: "rubber_sole", label: "Rubber Sole" },
-		{ value: "eva_foam", label: "EVA Foam" },
-		{ value: "pu_leather", label: "PU Leather" },
-		{ value: "zippers", label: "Zippers" },
-		{ value: "buttons", label: "Buttons" },
-		{ value: "threads", label: "Threads" },
-		{ value: "lining_fabric", label: "Lining Fabric" },
-		{ value: "insole_materials", label: "Insole Materials" },
-		{ value: "packaging", label: "Packaging" },
-		{ value: "others", label: "Others" },
+		{ value: "Rubber Sole", label: "Rubber Sole" },
+		{ value: "EVA Foam", label: "EVA Foam" },
+		{ value: "PU Leather", label: "PU Leather" },
+		{ value: "Zippers", label: "Zippers" },
+		{ value: "Buttons", label: "Buttons" },
+		{ value: "Threads", label: "Threads" },
+		{ value: "Lining Fabric", label: "Lining Fabric" },
+		{ value: "Insole Materials", label: "Insole Materials" },
+		{ value: "Packaging", label: "Packaging" },
+		{ value: "Others", label: "Others" },
 	];
 
 	const applicationTypes = [
-		{ value: "footwear", label: "Footwear" },
-		{ value: "clothing", label: "Clothing" },
-		{ value: "upholstery", label: "Upholstery" },
-		{ value: "industrial", label: "Industrial" },
-		{ value: "accessories", label: "Accessories" },
-		{ value: "others", label: "Others" },
+		{ value: "Footwear", label: "Footwear" },
+		{ value: "Clothing", label: "Clothing" },
+		{ value: "Upholstery", label: "Upholstery" },
+		{ value: "Industrial", label: "Industrial" },
+		{ value: "Accessories", label: "Accessories" },
+		{ value: "Others", label: "Others" },
 	];
 
 	const handleFileUploadComplete = (url: string | null) => {
@@ -79,11 +78,11 @@ const RawMaterialForm: React.FC<RawMaterialFormProps> = ({
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleFormSubmit = (data: any) => {
-		console.log(data);
-		// onSubmit({
-		//     ...data,
-		//     sampleProduct: data.sampleProductUrl || null,
-		// });
+		// console.log(data);
+		onSubmit({
+			...data,
+			sampleProduct: data.sampleProductUrl || null,
+		});
 	};
 
 	return (
@@ -205,6 +204,7 @@ const RawMaterialForm: React.FC<RawMaterialFormProps> = ({
 						label="Upload Sample or Reference Image"
 						onUploadComplete={handleFileUploadComplete}
 						accept="image/*, application/pdf"
+						fileTypes="image/*"
 					/>
 				</div>
 

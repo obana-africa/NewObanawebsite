@@ -63,6 +63,7 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 		{ value: "Traditional/Cultural", label: "Traditional/Cultural" },
 	];
 
+
 	const handleFileUploadComplete = (url: string | null) => {
 		setValue("sampleProductUrl", url || "");
 	};
@@ -191,6 +192,7 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 						label="Upload a sample product if you have"
 						onUploadComplete={handleFileUploadComplete}
 						accept="image/*"
+						fileTypes="image/*"
 					/>
 
 					<div className="col-span-1 md:col-span-2">

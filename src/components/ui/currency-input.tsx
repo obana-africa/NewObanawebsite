@@ -74,46 +74,62 @@ export const CurrencyInputField = ({
 				{label} {required && <span className="text-error">*</span>}
 			</label>
 			<div className="flex rounded-md shadow-sm">
-				<select
-					value={selectedCurrency}
-					onChange={(e) => setSelectedCurrency(e.target.value)}
-					className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-secondary-light bg-gray-50 text-gray-500 focus:ring-primary focus:border-primary"
-				>
-					{currencyOptions.map((currency) => (
-						<option key={currency.code} value={currency.code}>
-							{currency.code}
-						</option>
-					))}
-				</select>
-
 				<Controller
 					name={name}
 					control={control}
 					defaultValue={defaultValue}
 					rules={{ required }}
 					render={({ field }) => (
-						<CurrencyInput
-							id={name}
-							name={name}
-							placeholder={placeholder}
-							intlConfig={{
-								locale: selectedCurrencyConfig.locale,
-								currency: selectedCurrencyConfig.code,
-							}}
-							decimalsLimit={2}
-							onValueChange={(value, name, values) => {
-								field.onChange({
-									amount: parseFloat(values?.value || "0"),
-									currency: selectedCurrency,
-									symbol: selectedCurrencyConfig.symbol,
-								});
-							}}
-							value={field.value?.amount}
-							className={`flex-1 min-w-0 block w-full p-3 rounded-r-md border border-secondary-light focus:border-primary focus:outline-1 ${
-								error ? "border-error" : ""
-							}`}
-							aria-invalid={!!error}
-						/>
+						<>
+							<select
+								value={selectedCurrency}
+								onChange={(e) => {
+									const newCurrency = e.target.value;
+									setSelectedCurrency(newCurrency);
+
+									const newCurrencyConfig =
+										currencyOptions.find((opt) => opt.code === newCurrency) ||
+										currencyOptions[0];
+
+									// Update form value when currency changes
+									field.onChange({
+										amount: field.value?.amount || 0,
+										currency: newCurrency,
+										symbol: newCurrencyConfig.symbol,
+									});
+								}}
+								className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-secondary-light bg-gray-50 text-gray-500 focus:ring-primary focus:border-primary"
+							>
+								{currencyOptions.map((currency) => (
+									<option key={currency.code} value={currency.code}>
+										{currency.code}
+									</option>
+								))}
+							</select>
+
+							<CurrencyInput
+								id={name}
+								name={name}
+								placeholder={placeholder}
+								intlConfig={{
+									locale: selectedCurrencyConfig.locale,
+									currency: selectedCurrencyConfig.code,
+								}}
+								decimalsLimit={2}
+								onValueChange={(value, name, values) => {
+									field.onChange({
+										amount: parseFloat(values?.value || "0"),
+										currency: selectedCurrency,
+										symbol: selectedCurrencyConfig.symbol,
+									});
+								}}
+								value={field.value?.amount}
+								className={`flex-1 min-w-0 block w-full p-3 rounded-r-md border border-secondary-light focus:border-primary focus:outline-1 ${
+									error ? "border-error" : ""
+								}`}
+								aria-invalid={!!error}
+							/>
+						</>
 					)}
 				/>
 			</div>

@@ -308,6 +308,7 @@ const DomesticForm: React.FC<DomesticFormProps> = ({
 								label="Upload shipment Image"
 								onUploadComplete={handleFileUploadComplete}
 								accept="image/*"
+								fileTypes="image/*"
 								required
 							/>
 						</div>

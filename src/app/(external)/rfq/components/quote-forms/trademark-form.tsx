@@ -19,7 +19,6 @@ interface TrademarkFormProps {
 
 const TrademarkForm: React.FC<TrademarkFormProps> = ({
 	onBack,
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	onSubmit,
 	isSubmitting,
 }) => {
@@ -48,35 +47,47 @@ const TrademarkForm: React.FC<TrademarkFormProps> = ({
 	});
 
 	const serviceTypes = [
-		{ value: "brand_name", label: "Brand Name Only" },
-		{ value: "logo", label: "Logo Only" },
-		{ value: "brand_logo", label: "Brand Name + Logo" },
-		{ value: "slogan", label: "Slogan" },
-		{ value: "others", label: "Others" },
+		{ value: "Brand Name Only", label: "Brand Name Only" },
+		{ value: "Logo Only", label: "Logo Only" },
+		{ value: "Brand Name + Logo", label: "Brand Name + Logo" },
+		{ value: "Slogan", label: "Slogan" },
+		{ value: "Others", label: "Others" },
 	];
 
 	const industryCategories = [
-		{ value: "apparel", label: "Apparel & Fashion" },
-		{ value: "cosmetics", label: "Cosmetics & Personal Care" },
-		{ value: "technology", label: "Technology & Software" },
-		{ value: "food", label: "Food & Beverage" },
-		{ value: "healthcare", label: "Healthcare & Pharmaceuticals" },
-		{ value: "education", label: "Education & Training" },
-		{ value: "manufacturing", label: "Manufacturing & Industrial" },
-		{ value: "retail", label: "Retail & E-commerce" },
-		{ value: "entertainment", label: "Entertainment & Media" },
-		{ value: "financial", label: "Financial Services" },
-		{ value: "real_estate", label: "Real Estate" },
-		{ value: "others", label: "Others" },
+		{ value: "Apparel & Fashion", label: "Apparel & Fashion" },
+		{ value: "Cosmetics & Personal Care", label: "Cosmetics & Personal Care" },
+		{ value: "Technology & Software", label: "Technology & Software" },
+		{ value: "Food & Beverage", label: "Food & Beverage" },
+		{
+			value: "Healthcare & Pharmaceuticals",
+			label: "Healthcare & Pharmaceuticals",
+		},
+		{ value: "Education & Training", label: "Education & Training" },
+		{
+			value: "Manufacturing & Industrial",
+			label: "Manufacturing & Industrial",
+		},
+		{ value: "Retail & E-commerce", label: "Retail & E-commerce" },
+		{ value: "Entertainment & Media", label: "Entertainment & Media" },
+		{ value: "Financial Services", label: "Financial Services" },
+		{ value: "Real Estate", label: "Real Estate" },
+		{ value: "Others", label: "Others" },
 	];
 
 	const registrationLocations = [
-		{ value: "nigeria", label: "Nigeria (Local Registration)" },
-		{ value: "africa", label: "Africa (ARIPO/OAPI Registration)" },
-		{ value: "usa", label: "United States" },
-		{ value: "uk", label: "United Kingdom" },
-		{ value: "eu", label: "European Union" },
-		{ value: "global", label: "Global (WIPO)" },
+		{
+			value: "Nigeria (Local Registration)",
+			label: "Nigeria (Local Registration)",
+		},
+		{
+			value: "Africa (ARIPO/OAPI Registration)",
+			label: "Africa (ARIPO/OAPI Registration)",
+		},
+		{ value: "United States", label: "United States" },
+		{ value: "United Kingdom", label: "United Kingdom" },
+		{ value: "European Union", label: "European Union" },
+		{ value: "Global (WIPO)", label: "Global (WIPO)" },
 	];
 
 	const handleFileUploadComplete = (url: string | null) => {
@@ -85,11 +96,11 @@ const TrademarkForm: React.FC<TrademarkFormProps> = ({
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleFormSubmit = (data: any) => {
-		console.log("Form Data:", data);
-		// onSubmit({
-		//     ...data,
-		//     sampleLogo: data.sampleLogoUrl || null,
-		// });
+		// console.log("Form Data:", data);
+		onSubmit({
+			...data,
+			sampleLogo: data.sampleLogoUrl || null,
+		});
 	};
 
 	return (
@@ -199,6 +210,7 @@ const TrademarkForm: React.FC<TrademarkFormProps> = ({
 						label="Upload Logo or Sample"
 						onUploadComplete={handleFileUploadComplete}
 						accept="image/*, application/pdf"
+						fileTypes="image/*"
 					/>
 
 					<FormTextarea

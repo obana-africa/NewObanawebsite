@@ -20,7 +20,6 @@ interface FabricFormProps {
 
 const FabricForm: React.FC<FabricFormProps> = ({
 	onBack,
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	onSubmit,
 	isSubmitting,
 }) => {
@@ -52,23 +51,23 @@ const FabricForm: React.FC<FabricFormProps> = ({
 	const { brands: brandOptions, error: brandsError } = useBrandOptions();
 
 	const fabricCategories = [
-		{ value: "cotton", label: "Cotton" },
-		{ value: "silk", label: "Silk" },
-		{ value: "ankara", label: "Ankara" },
-		{ value: "jersey", label: "Jersey" },
-		{ value: "linen", label: "Linen" },
-		{ value: "denim", label: "Denim" },
-		{ value: "lace", label: "Lace" },
-		{ value: "others", label: "Others" },
+		{ value: "Cotton", label: "Cotton" },
+		{ value: "Silk", label: "Silk" },
+		{ value: "Ankara", label: "Ankara" },
+		{ value: "Jersey", label: "Jersey" },
+		{ value: "Linen", label: "Linen" },
+		{ value: "Denim", label: "Denim" },
+		{ value: "Lace", label: "Lace" },
+		{ value: "Others", label: "Others" },
 	];
 
 	const usageOptions = [
-		{ value: "dresses", label: "Dresses" },
-		{ value: "suits", label: "Suits" },
-		{ value: "uniforms", label: "Uniforms" },
-		{ value: "homeDecor", label: "Home Decor" },
-		{ value: "casualwear", label: "Casualwear" },
-		{ value: "formalwear", label: "Formalwear" },
+		{ value: "Dresses", label: "Dresses" },
+		{ value: "Suits", label: "Suits" },
+		{ value: "Uniforms", label: "Uniforms" },
+		{ value: "Home Decor", label: "Home Decor" },
+		{ value: "Casualwear", label: "Casualwear" },
+		{ value: "Formalwear", label: "Formalwear" },
 	];
 
 	const handleFileUploadComplete = (url: string | null) => {
@@ -77,11 +76,11 @@ const FabricForm: React.FC<FabricFormProps> = ({
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleFormSubmit = (data: any) => {
-		console.log(data);
-		// onSubmit({
-		// 	...data,
-		// 	sampleProduct: data.sampleProductUrl || null,
-		// });
+		// console.log(data);
+		onSubmit({
+			...data,
+			sampleProduct: data.sampleProductUrl || null,
+		});
 	};
 
 	return (
@@ -204,6 +203,7 @@ const FabricForm: React.FC<FabricFormProps> = ({
 						label="Upload Sample or Reference Image"
 						onUploadComplete={handleFileUploadComplete}
 						accept="image/*, application/pdf"
+						fileTypes="image/*"
 					/>
 				</div>
 

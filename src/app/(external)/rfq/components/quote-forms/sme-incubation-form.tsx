@@ -19,7 +19,6 @@ interface SmeIncubationFormProps {
 
 const SmeIncubationForm: React.FC<SmeIncubationFormProps> = ({
 	onBack,
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	onSubmit,
 	isSubmitting,
 }) => {
@@ -50,43 +49,61 @@ const SmeIncubationForm: React.FC<SmeIncubationFormProps> = ({
 	});
 
 	const businessStages = [
-		{ value: "idea", label: "Idea Stage" },
-		{ value: "startup", label: "Startup (Pre-revenue)" },
-		{ value: "early_growth", label: "Early Growth" },
-		{ value: "scale_up", label: "Scale-up" },
-		{ value: "established", label: "Established Business" },
+		{ value: "Idea Stage", label: "Idea Stage" },
+		{ value: "Startup (Pre-revenue)", label: "Startup (Pre-revenue)" },
+		{ value: "Early Growth", label: "Early Growth" },
+		{ value: "Scale-up", label: "Scale-up" },
+		{ value: "Established Business", label: "Established Business" },
 	];
 
 	const industryCategories = [
-		{ value: "apparel", label: "Apparel & Fashion" },
-		{ value: "technology", label: "Technology & Software" },
-		{ value: "food", label: "Food & Beverage" },
-		{ value: "health", label: "Health & Wellness" },
-		{ value: "education", label: "Education & Training" },
-		{ value: "financial", label: "Financial Services" },
-		{ value: "ecommerce", label: "E-commerce" },
-		{ value: "manufacturing", label: "Manufacturing" },
-		{ value: "others", label: "Others" },
+		{ value: "Apparel & Fashion", label: "Apparel & Fashion" },
+		{ value: "Technology & Software", label: "Technology & Software" },
+		{ value: "Food & Beverage", label: "Food & Beverage" },
+		{ value: "Health & Wellness", label: "Health & Wellness" },
+		{ value: "Education & Training", label: "Education & Training" },
+		{ value: "Financial Services", label: "Financial Services" },
+		{ value: "E-commerce", label: "E-commerce" },
+		{ value: "Manufacturing", label: "Manufacturing" },
+		{ value: "Others", label: "Others" },
 	];
 
 	const incubationServices = [
-		{ value: "business_strategy", label: "Business Strategy Development" },
-		{ value: "financial_planning", label: "Financial Planning & Management" },
-		{ value: "product_development", label: "Product Development Support" },
-		{ value: "marketing", label: "Marketing & Branding" },
-		{ value: "networking", label: "Networking & Partnerships" },
-		{ value: "legal", label: "Legal Support & Compliance" },
-		{ value: "funding", label: "Funding/Investment Opportunities" },
-		{ value: "mentorship", label: "Mentorship & Coaching" },
-		{ value: "market_research", label: "Market Research & Analysis" },
-		{ value: "technology", label: "Technology & IT Support" },
+		{
+			value: "Business Strategy Development",
+			label: "Business Strategy Development",
+		},
+		{
+			value: "Financial Planning & Management",
+			label: "Financial Planning & Management",
+		},
+		{
+			value: "Product Development Support",
+			label: "Product Development Support",
+		},
+		{ value: "Marketing & Branding", label: "Marketing & Branding" },
+		{ value: "Networking & Partnerships", label: "Networking & Partnerships" },
+		{
+			value: "Legal Support & Compliance",
+			label: "Legal Support & Compliance",
+		},
+		{
+			value: "Funding/Investment Opportunities",
+			label: "Funding/Investment Opportunities",
+		},
+		{ value: "Mentorship & Coaching", label: "Mentorship & Coaching" },
+		{
+			value: "Market Research & Analysis",
+			label: "Market Research & Analysis",
+		},
+		{ value: "Technology & IT Support", label: "Technology & IT Support" },
 	];
 
 	const incubationDurations = [
-		{ value: "3_months", label: "3 Months" },
-		{ value: "6_months", label: "6 Months" },
-		{ value: "12_months", label: "12 Months" },
-		{ value: "custom", label: "Custom" },
+		{ value: "3 Months", label: "3 Months" },
+		{ value: "6 Months", label: "6 Months" },
+		{ value: "12 Months", label: "12 Months" },
+		{ value: "Custom", label: "Custom" },
 	];
 
 	const handleFileUploadComplete = (url: string | null) => {
@@ -95,11 +112,11 @@ const SmeIncubationForm: React.FC<SmeIncubationFormProps> = ({
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleFormSubmit = (data: any) => {
-		console.log("Form Data:", data);
-		// onSubmit({
-		// 	...data,
-		// 	businessPlan: data.businessPlanUrl || null,
-		// });
+		// console.log("Form Data:", data);
+		onSubmit({
+			...data,
+			businessPlan: data.businessPlanUrl || null,
+		});
 	};
 
 	return (
@@ -230,6 +247,7 @@ const SmeIncubationForm: React.FC<SmeIncubationFormProps> = ({
 						label="Upload Business Plan"
 						onUploadComplete={handleFileUploadComplete}
 						accept=".pdf,.doc,.docx"
+						fileTypes=".pdf,.doc,.docx"
 					/>
 				</div>
 
