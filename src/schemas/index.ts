@@ -221,3 +221,87 @@ export const importShipmentSchema = z
 			path: ["destination"],
 		}
 	);
+
+export const fabricQuoteSchema = baseQuoteSchema.extend({
+	fabricCategory: z.string().min(1, { message: "Fabric category is required" }),
+	fabricDescription: z
+		.string()
+		.min(1, { message: "Fabric description is required" }),
+	preferredBrand: z.string().optional(),
+	moq: z.string().optional(),
+	sizeRange: z.string().min(1, { message: "Size range is required" }),
+	targetPrice: z.object({
+		amount: z.number().min(0, { message: "Amount must be positive" }),
+		currency: z.any(),
+		symbol: z.any(),
+	}),
+	intendedUsage: z.array(z.string()).optional(),
+	additionalComments: z.string().optional(),
+	sampleProduct: z.any().optional(),
+	sampleProductUrl: z.string().optional(),
+});
+
+export const rawMaterialQuoteSchema = baseQuoteSchema.extend({
+	rawMaterialType: z
+		.string()
+		.min(1, { message: "Raw material type is required" }),
+	materialDescription: z
+		.string()
+		.min(1, { message: "Material description is required" }),
+	preferredBrand: z.string().optional(),
+	moq: z.string().optional(),
+	sizeSpecRange: z
+		.string()
+		.min(1, { message: "Size/Specification range is required" }),
+	targetPrice: z.object({
+		amount: z.number().min(0, { message: "Amount must be positive" }),
+		currency: z.any(),
+		symbol: z.any(),
+	}),
+	applicationUse: z.array(z.string()).optional(),
+	additionalComments: z.string().optional(),
+	sampleProduct: z.any().optional(),
+	sampleProductUrl: z.string().optional(),
+});
+
+export const trademarkQuoteSchema = baseQuoteSchema.extend({
+	trademarkServiceType: z
+		.string()
+		.min(1, { message: "Service type is required" }),
+	industryCategory: z
+		.string()
+		.min(1, { message: "Industry category is required" }),
+	brandName: z.string().min(1, { message: "Brand name is required" }),
+	brandDescription: z
+		.string()
+		.min(1, { message: "Brand description is required" }),
+	registrationLocation: z
+		.string()
+		.min(1, { message: "Registration location is required" }),
+	targetBudget: z.object({
+		amount: z.number().min(0, { message: "Amount must be positive" }),
+		currency: z.any(),
+		symbol: z.any(),
+	}),
+	additionalComments: z.string().optional(),
+	sampleLogo: z.any().optional(),
+	sampleLogoUrl: z.string().optional(),
+});
+
+export const smeIncubationQuoteSchema = baseQuoteSchema.extend({
+    businessName: z.string().min(1, { message: "Business name is required" }),
+    businessDescription: z.string().min(1, { message: "Business description is required" }),
+    businessStage: z.string().min(1, { message: "Business stage is required" }),
+    industryCategory: z.string().min(1, { message: "Industry category is required" }),
+    servicesRequired: z.array(z.string()).min(1, { message: "At least one service is required" }),
+    businessGoals: z.string().min(1, { message: "Business goals are required" }),
+    incubationDuration: z.string().min(1, { message: "Incubation duration is required" }),
+    targetBudget: z.object({
+        amount: z.number().min(0, { message: "Amount must be positive" }),
+        currency: z.any(),
+        symbol: z.any(),
+    }),
+    businessPlan: z.any().optional(),
+    businessPlanUrl: z.string().optional(),
+    additionalComments: z.string().optional(),
+});

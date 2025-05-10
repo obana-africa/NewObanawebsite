@@ -41,7 +41,7 @@ const FeatureBox: React.FC<FeatureBoxProps> = ({
 			</div>
 
 			<div
-				className={`absolute mx-auto top-[13px] right-[13px] sm:right-[40px] md:right-[80px] w-[98%] max-w-[495px]  2xl:max-w-[550px] h-[370px] sm:h-[400px] rounded-[10px] -z-10 pointer-events-none transition-bg duration-700 ${
+				className={`absolute mx-auto top-[13px] right-[43px] xl:right-[50px] 2xl:right-[90px] w-[90%] max-w-[550px] h-[370px] sm:h-[400px] rounded-[10px] -z-10 pointer-events-none transition-bg duration-700 ${
 					isHovered ? " bg-secondary" : "opacity-100 bg-primary "
 				}`}
 			/>

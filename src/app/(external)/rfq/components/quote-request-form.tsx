@@ -3,29 +3,33 @@
 import React, { useState } from "react";
 import ProductionForm from "./quote-forms/production-form";
 import LabelForm from "./quote-forms/label-form";
+import FabricForm from "./quote-forms/fabric-form";
+import RawMaterialForm from "./quote-forms/raw-material-form";
+import SmeIncubationForm from "./quote-forms/sme-incubation-form";
 import Button from "@/components/ui/button";
 import Image from "next/image";
 import below from "@/app/assets/images/rfq/below.png";
 import { useRfqForm } from "@/hooks/use-rfq-form";
 import { Info } from "lucide-react";
 import { Tooltip } from "@/components/ui/form-tooltip";
+import TrademarkForm from "./quote-forms/trademark-form";
 
 const itemTypes = [
 	{ id: "production", label: "Production (Shoe/ Apparel)", hasForm: true },
-	{ id: "fabricSourcing", label: "Fabric Sourcing", hasForm: false },
+	{ id: "fabricSourcing", label: "Fabric Sourcing", hasForm: true },
 	{ id: "brandLabel", label: "Brand Label", hasForm: true },
-	{ id: "rawMaterial", label: "Raw Material Sourcing", hasForm: false },
-	{ id: "brandTrademarking", label: "Brand Trademarking", hasForm: false },
-	{ id: "smeIncubation", label: "SME Incubation", hasForm: false },
+	{ id: "rawMaterial", label: "Raw Material Sourcing", hasForm: true },
+	{ id: "brandTrademarking", label: "Brand Trademarking", hasForm: true },
+	{ id: "smeIncubation", label: "SME Incubation", hasForm: true },
 ];
 
 const formMapping = {
 	production: "ProductionForm",
-	fabricSourcing: "",
+	fabricSourcing: "FabricForm",
 	brandLabel: "LabelForm",
-	rawMaterial: "",
-	brandTrademarking: "",
-	smeIncubation: "",
+	rawMaterial: "RawMaterialForm",
+	brandTrademarking: "TrademarkForm",
+	smeIncubation: "SmeIncubationForm",
 };
 
 const QuoteRequestForm: React.FC = () => {
@@ -86,6 +90,38 @@ const QuoteRequestForm: React.FC = () => {
 			case "ProductionForm":
 				return (
 					<ProductionForm
+						onBack={handleBack}
+						onSubmit={handleSubmit}
+						isSubmitting={isSubmitting}
+					/>
+				);
+			case "FabricForm":
+				return (
+					<FabricForm
+						onBack={handleBack}
+						onSubmit={handleSubmit}
+						isSubmitting={isSubmitting}
+					/>
+				);
+			case "RawMaterialForm":
+				return (
+					<RawMaterialForm
+						onBack={handleBack}
+						onSubmit={handleSubmit}
+						isSubmitting={isSubmitting}
+					/>
+				);
+			case "TrademarkForm":
+				return (
+					<TrademarkForm
+						onBack={handleBack}
+						onSubmit={handleSubmit}
+						isSubmitting={isSubmitting}
+					/>
+				);
+			case "SmeIncubationForm":
+				return (
+					<SmeIncubationForm
 						onBack={handleBack}
 						onSubmit={handleSubmit}
 						isSubmitting={isSubmitting}

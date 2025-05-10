@@ -115,7 +115,7 @@
 		display: none;
 	}
 }
-@media (max-width: 1700px) and (min-width: 1017px) {
+@media (max-width: 1700px) and (min-width: 1280px) {
 	.moving-stripes {
 		left: 10px;
 		top: -10px;
@@ -131,8 +131,24 @@
 		height: 500px;
 	}
 }
+@media (max-width: 1280px) and (min-width: 1025px) {
+	.moving-stripes {
+		left: 10px;
+		top: -10px;
+	}
+	.sphere {
+		top: 90px;
+		left: 120px;
+		width: 270px;
+		height: 270px;
+	}
+	.dash1 {
+		width: 500px;
+		height: 500px;
+	}
+}
 
-@media (max-width: 1017px) and (min-width: 960px) {
+@media (max-width: 1024px) and (min-width: 777px) {
 	.moving-stripes {
 		left: -20px;
 		top: -10px;
@@ -140,15 +156,15 @@
 	.sphere {
 		top: 90px;
 		left: 90px;
-		width: 320px;
-		height: 320px;
+		width: 200px;
+		height: 200px;
 	}
 	.dash1 {
 		width: 480px;
 		height: 480px;
 	}
 }
-@media (max-width: 960px) and (min-width: 560px) {
+@media (max-width: 777px) and (min-width: 560px) {
 	.ipad-view {
 		height: 513px;
 	}

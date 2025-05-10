@@ -3,7 +3,7 @@ import { useState } from "react";
 export const useCloudinaryUpload = () => {
 	const [isUploading, setIsUploading] = useState(false);
 
-	const uploadImage = async (file: File) => {
+	const uploadFile = async (file: File) => {
 		if (!file) return null;
 
 		setIsUploading(true);
@@ -20,8 +20,13 @@ export const useCloudinaryUpload = () => {
 			formData.append("file", file);
 			formData.append("upload_preset", uploadPreset || "");
 
+			// Determine resource type based on file type
+			const isImage = file.type.startsWith('image/');
+			const isPdf = file.type === 'application/pdf';
+			const resourceType = isImage ? 'image' : 'raw';
+
 			const response = await fetch(
-				`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+				`https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`,
 				{
 					method: "POST",
 					body: formData,
@@ -29,7 +34,7 @@ export const useCloudinaryUpload = () => {
 			);
 
 			if (!response.ok) {
-				throw new Error("Failed to upload image");
+				throw new Error(`Failed to upload ${isImage ? 'image' : isPdf ? 'PDF' : 'document'}`);
 			}
 
 			const data = await response.json();
@@ -43,5 +48,5 @@ export const useCloudinaryUpload = () => {
 		}
 	};
 
-	return { uploadImage, isUploading };
+	return { uploadFile, isUploading };
 };

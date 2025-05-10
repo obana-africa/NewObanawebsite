@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { productionQuoteSchema } from "@/schemas";
+import { rawMaterialQuoteSchema } from "@/schemas";
 import FormInput from "@/components/ui/form-input";
 import FormSelect from "@/components/ui/form-select";
 import FormTextarea from "@/components/ui/form-textarea";
@@ -10,16 +10,15 @@ import PhoneInput from "@/components/ui/phone-input";
 import Button from "@/components/ui/button";
 import { CurrencyInputField } from "@/components/ui/currency-input";
 import useBrandOptions from "@/hooks/use-active-brands";
-// import { toast } from "sonner";
 
-interface ProductionFormProps {
+interface RawMaterialFormProps {
 	onBack: () => void;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	onSubmit: (data: any) => void;
 	isSubmitting: boolean;
 }
 
-const ProductionForm: React.FC<ProductionFormProps> = ({
+const RawMaterialForm: React.FC<RawMaterialFormProps> = ({
 	onBack,
 	onSubmit,
 	isSubmitting,
@@ -31,38 +30,47 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 		setValue,
 		formState: { errors },
 	} = useForm({
-		resolver: zodResolver(productionQuoteSchema),
+		resolver: zodResolver(rawMaterialQuoteSchema),
 		defaultValues: {
 			name: "",
 			email: "",
 			phone: "",
-			productType: "",
-			itemDescription: "",
-			brandToSource: "",
+			rawMaterialType: "",
+			materialDescription: "",
+			preferredBrand: "",
 			moq: "",
-			sizeRange: "",
+			sizeSpecRange: "",
 			targetPrice: {},
-			style: "",
-			comment: "",
+			applicationUse: [],
 			sampleProduct: null,
 			sampleProductUrl: "",
+			additionalComments: "",
 		},
 	});
+
 	const { brands: brandOptions, error: brandsError } = useBrandOptions();
 
-	const itemStyles = [
-		{ value: "Casual", label: "Casual" },
-		{ value: "Formal", label: "Formal" },
-		{ value: "Streetwear", label: "Streetwear" },
-		{ value: "Athleisure", label: "Athleisure" },
-		{ value: "Business Casual", label: "Business Casual" },
-		{ value: "Bohemian", label: "Bohemian" },
-		{ value: "Vintage", label: "Vintage" },
-		{ value: "Urban", label: "Urban" },
-		{ value: "Sportswear", label: "Sportswear" },
-		{ value: "Traditional/Cultural", label: "Traditional/Cultural" },
+	const materialTypes = [
+		{ value: "Rubber Sole", label: "Rubber Sole" },
+		{ value: "EVA Foam", label: "EVA Foam" },
+		{ value: "PU Leather", label: "PU Leather" },
+		{ value: "Zippers", label: "Zippers" },
+		{ value: "Buttons", label: "Buttons" },
+		{ value: "Threads", label: "Threads" },
+		{ value: "Lining Fabric", label: "Lining Fabric" },
+		{ value: "Insole Materials", label: "Insole Materials" },
+		{ value: "Packaging", label: "Packaging" },
+		{ value: "Others", label: "Others" },
 	];
 
+	const applicationTypes = [
+		{ value: "Footwear", label: "Footwear" },
+		{ value: "Clothing", label: "Clothing" },
+		{ value: "Upholstery", label: "Upholstery" },
+		{ value: "Industrial", label: "Industrial" },
+		{ value: "Accessories", label: "Accessories" },
+		{ value: "Others", label: "Others" },
+	];
 
 	const handleFileUploadComplete = (url: string | null) => {
 		setValue("sampleProductUrl", url || "");
@@ -70,7 +78,7 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleFormSubmit = (data: any) => {
-		// console.log("Form Data:", data);
+		// console.log(data);
 		onSubmit({
 			...data,
 			sampleProduct: data.sampleProductUrl || null,
@@ -79,14 +87,14 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 
 	return (
 		<div className="space-y-6">
-			<h2 className=" font-bold text-center text-primary">Request For Quote</h2>
+			<h2 className="font-bold text-center text-primary">Request For Quote</h2>
 
 			<form onSubmit={handleSubmit(handleFormSubmit)}>
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
 					<FormInput
 						id="name"
-						label="Name"
-						placeholder="Your Name"
+						label="Full Name"
+						placeholder="e.g. John Doe"
 						register={register("name")}
 						error={errors.name?.message}
 						required
@@ -94,7 +102,7 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 
 					<FormInput
 						id="email"
-						label="Email"
+						label="Email Address"
 						placeholder="Your Email"
 						register={register("email")}
 						error={errors.email?.message}
@@ -107,65 +115,68 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 					<PhoneInput
 						control={control}
 						name="phone"
-						label="Phone Number"
+						label="WhatsApp or Phone Number"
 						error={errors.phone?.message}
 						required
 					/>
 
-					<FormInput
-						id="productType"
-						label="Type of Product"
-						placeholder="Preffered Product Type"
-						register={register("productType")}
-						error={errors.productType?.message}
-					/>
-				</div>
-
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-					<FormInput
-						id="itemDescription"
-						label="Item Description"
-						placeholder="Item Description"
-						register={register("itemDescription")}
-						error={errors.itemDescription?.message}
+					<FormSelect
+						id="rawMaterialType"
+						label="Raw Material Type"
+						options={materialTypes}
+						register={register("rawMaterialType")}
+						error={errors.rawMaterialType?.message}
 						required
 					/>
+				</div>
 
-					<FormSelect
-						id="brandToSource"
-						label="What brand do you want to source"
-						options={brandOptions}
-						register={register("brandToSource")}
-						error={errors.brandToSource?.message || brandsError || undefined}
-						searchable
+				<div className="grid grid-cols-1 gap-4 mb-4">
+					<FormTextarea
+						id="materialDescription"
+						label="Material Description"
+						placeholder="e.g. Black rubber sole for sneakers, anti-slip, 12mm thickness"
+						register={register("materialDescription")}
+						error={errors.materialDescription?.message}
+						required
 					/>
 				</div>
 
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+					<FormSelect
+						id="preferredBrand"
+						label="Preferred Brand (Optional)"
+						options={brandOptions}
+						register={register("preferredBrand")}
+						error={errors.preferredBrand?.message || brandsError || undefined}
+						placeholder="e.g. YKK, BASF"
+						searchable
+					/>
+
 					<FormInput
 						id="moq"
-						label="MOQ (Minimum order input)"
+						label="Minimum Order Quantity (MOQ)"
 						placeholder="Number input"
 						register={register("moq")}
 						error={errors.moq?.message}
 						type="number"
-					/>
-
-					<FormInput
-						id="sizeRange"
-						label="Suggested Size Range"
-						placeholder="eg: XS - 4XL, 20 - 40 etc..."
-						register={register("sizeRange")}
-						error={errors.sizeRange?.message}
 						required
 					/>
 				</div>
 
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+					<FormInput
+						id="sizeSpecRange"
+						label="Size or Specification Range"
+						placeholder="e.g. 1.5mm - 3mm thick, 12cm zippers"
+						register={register("sizeSpecRange")}
+						error={errors.sizeSpecRange?.message}
+						required
+					/>
+
 					<CurrencyInputField
 						name="targetPrice"
 						control={control}
-						label="What is your target sourcing price point"
+						label="Target Price per Unit (NGN)"
 						placeholder="Per unit"
 						defaultValue={{ currency: "NGN", symbol: "₦" }}
 						required
@@ -176,35 +187,36 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 								: undefined
 						}
 					/>
-
-					<FormSelect
-						id="style"
-						label="What style do you want"
-						options={itemStyles}
-						register={register("style")}
-						error={errors.style?.message}
-					/>
 				</div>
 
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-					<FormFileUpload
-						id="sampleProduct"
-						label="Upload a sample product if you have"
-						onUploadComplete={handleFileUploadComplete}
-						accept="image/*"
-						fileTypes="image/*"
+					<FormSelect
+						id="applicationUse"
+						label="Application Use"
+						options={applicationTypes}
+						register={register("applicationUse")}
+						error={errors.applicationUse?.message}
+						multiple
 					/>
 
-					<div className="col-span-1 md:col-span-2">
-						<FormTextarea
-							id="comment"
-							label="Extra Comment"
-							placeholder=""
-							register={register("comment")}
-							error={errors.comment?.message}
-							rows={4}
-						/>
-					</div>
+					<FormFileUpload
+						id="sampleProduct"
+						label="Upload Sample or Reference Image"
+						onUploadComplete={handleFileUploadComplete}
+						accept="image/*, application/pdf"
+						fileTypes="image/*"
+					/>
+				</div>
+
+				<div className="grid grid-cols-1 gap-4 mb-4">
+					<FormTextarea
+						id="additionalComments"
+						label="Additional Comments or Requirements"
+						placeholder="Mention durability needs, packaging requirements, color preference, etc"
+						register={register("additionalComments")}
+						error={errors.additionalComments?.message}
+						rows={4}
+					/>
 				</div>
 
 				<div className="flex justify-between mt-6">
@@ -235,4 +247,4 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 	);
 };
 
-export default ProductionForm;
+export default RawMaterialForm;

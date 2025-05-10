@@ -45,9 +45,9 @@ const LabelForm: React.FC<LabelFormProps> = ({
 	});
 
 	const materialTypes = [
-		{ value: "cotton", label: "Cotton" },
-		{ value: "polyester", label: "Polyester" },
-		{ value: "nylon", label: "Nylon" },
+		{ value: "Cotton", label: "Cotton" },
+		{ value: "Polyester", label: "Polyester" },
+		{ value: "Nylon", label: "Nylon" },
 	];
 
 	const handleFileUploadComplete = (url: string | null) => {
@@ -158,6 +158,7 @@ const LabelForm: React.FC<LabelFormProps> = ({
 						label="Label Image/ Design"
 						onUploadComplete={handleFileUploadComplete}
 						accept="image/*"
+						fileTypes="image/*"
 					/>
 
 					<FormInput

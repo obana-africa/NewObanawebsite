@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useCloudinaryUpload } from "@/hooks/use-cloudinary-upload";
+import { FileIcon, ImageIcon, FileTextIcon } from "lucide-react";
 
 interface FormFileUploadProps {
 	id: string;
@@ -9,6 +10,7 @@ interface FormFileUploadProps {
 	required?: boolean;
 	accept?: string;
 	disabled?: boolean;
+	fileTypes?: string;
 }
 
 const FormFileUpload: React.FC<FormFileUploadProps> = ({
@@ -17,29 +19,33 @@ const FormFileUpload: React.FC<FormFileUploadProps> = ({
 	onUploadComplete,
 	error,
 	required = false,
-	accept,
+	accept = "image/*,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt",
 	disabled = false,
+	fileTypes = "Images, Documents, PDFs",
 }) => {
 	const [fileName, setFileName] = useState<string | null>(null);
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+	const [fileType, setFileType] = useState<string | null>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
-	const { uploadImage, isUploading } = useCloudinaryUpload();
+	const { uploadFile, isUploading } = useCloudinaryUpload();
 
 	const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
 		if (!file) return;
 
 		setFileName(file.name);
+		setFileType(file.type);
 
-		const preview = URL.createObjectURL(file);
-		setPreviewUrl(preview);
+		// Create preview URL for images only
+		if (file.type.startsWith('image/')) {
+			const preview = URL.createObjectURL(file);
+			setPreviewUrl(preview);
+		} else {
+			setPreviewUrl(null);
+		}
 
-		const url = await uploadImage(file);
+		const url = await uploadFile(file);
 		onUploadComplete(url);
-
-		return () => {
-			URL.revokeObjectURL(preview);
-		};
 	};
 
 	useEffect(() => {
@@ -49,6 +55,18 @@ const FormFileUpload: React.FC<FormFileUploadProps> = ({
 			}
 		};
 	}, [previewUrl]);
+
+	const getFileIcon = () => {
+		if (!fileName) return null;
+		
+		if (fileType?.startsWith('image/')) {
+			return <ImageIcon className="w-4 h-4 mr-2 text-gray-500" />;
+		} else if (fileType === 'application/pdf') {
+			return <FileIcon className="w-4 h-4 mr-2 text-gray-500" />;
+		} else {
+			return <FileTextIcon className="w-4 h-4 mr-2 text-gray-500" />;
+		}
+	};
 
 	return (
 		<div>
@@ -77,8 +95,15 @@ const FormFileUpload: React.FC<FormFileUploadProps> = ({
 					>
 						{isUploading ? "Uploading..." : "Choose File"}
 					</label>
-					<span className="ml-3 text-sm text-gray-600 truncate max-w-xs">
-						{fileName || "No file chosen"}
+					<span className="ml-3 text-sm text-gray-600 truncate max-w-xs flex items-center">
+						{fileName ? (
+							<>
+								{getFileIcon()}
+								{fileName}
+							</>
+						) : (
+							`No file chosen (${fileTypes})`
+						)}
 					</span>
 				</div>
 			</div>
