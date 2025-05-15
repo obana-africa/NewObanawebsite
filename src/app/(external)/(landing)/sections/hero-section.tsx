@@ -48,7 +48,9 @@ const HeroSection: React.FC = () => {
 			<div className="container mx-auto px-4 md:px-6">
 				<div className="flex flex-col-reverse md:flex-row items-center -mt-10  sm:mt-0">
 					<div className=" w-full md:w-[60%]  mb-0 md:mb-0 md:pr-8 -mt-5  sm:mt-0">
-						<h3 className="mb-2">Enabling Sub-Saharan Africa’s Fashion & Beauty SMEs to Scale </h3>
+						<h2 className="text-sm md:text-base lg:text-lg font-semibold mb-1">
+  Enabling Sub-Saharan Africa’s Fashion & Beauty SMEs to Scale
+</h2>
 
 						<h3 className="bg-primary-light text-primary inline-block px-4 py-2 rounded-md">
 							<span
