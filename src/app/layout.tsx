@@ -6,8 +6,8 @@ import "slick-carousel/slick/slick.css";
 import "react-phone-input-2/lib/style.css";
 
 export const metadata: Metadata = {
-	title: "Obana - Enabling SMEs Scale",
-	description: "Obana | Sub-Sahara Africa's Sourcing Marketplace Platform.",
+	title: "Sub-Saharan Africa's Leading Marketplace for Fashion & Beauty",
+	description: "Sub-Saharan Africa's Leading Marketplace for Fashion & Beauty",
 	icons: {
 		icon: "/favicon.png?v=1",
 	},
