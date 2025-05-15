@@ -6,8 +6,8 @@ import "slick-carousel/slick/slick.css";
 import "react-phone-input-2/lib/style.css";
 
 export const metadata: Metadata = {
-	title: "Sub-Saharan Africa's Leading Marketplace for Fashion & Beauty",
-	description: "Sub-Saharan Africa's Leading Marketplace for Fashion & Beauty",
+	title: "Sub-Saharan Africa's Fashion & Beauty B2B Marketplace",
+	description: "Sub-Saharan Africa's Fashion & Beauty B2B Marketplace",
 	icons: {
 		icon: "/favicon.png?v=1",
 	},
