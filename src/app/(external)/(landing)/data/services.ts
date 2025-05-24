@@ -6,7 +6,7 @@ import logistics from "@/app/assets/images/landing-page/logistics.svg";
 export const serviceFeatures = [
 	{
 		icon: productSorce,
-		title: "product catalog",
+		title: "Product Catalog",
 		description:
 			"Via our curated marketplace, Obana will scout the world looking for and onboarding vendors that have what our SMEs need, work with them to price and set MOQs that are relatable to our target customer",
 		buttonText: "Get Started",
