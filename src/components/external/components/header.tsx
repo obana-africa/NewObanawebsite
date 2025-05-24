@@ -150,13 +150,13 @@ const Header: React.FC = () => {
 										href="https://shop.obana.africa"
 										className="block px-4 py-2 text-gray-800 hover:bg-blue-50 font-light hover:bg-primary hover:text-white hover:font-semibold"
 									>
-										Product Sourcing
+										Product Catalog
 									</Link>
 									<Link
 										href="/logistics"
 										className="block px-4 py-2 text-gray-800 hover:bg-blue-50 font-light hover:bg-primary hover:text-white hover:font-semibold"
 									>
-										Logistics
+										Embedded Logistics
 									</Link>
 									<Link
 										href="/inventory"
