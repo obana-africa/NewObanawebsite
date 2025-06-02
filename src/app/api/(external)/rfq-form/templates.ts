@@ -11,16 +11,13 @@ import {
 } from "./helpers";
 
 export function generateProductDetailsSection(data: FormData): string {
-	console.log("Data:", data);
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const priceInfo = (data as any).targetPrice
-		? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-		  formatPrice((data as any).targetPrice)
+	// console.log("Data:", data);
+	const priceInfo = 'targetPrice' in data && data.targetPrice
+		? formatPrice(data.targetPrice)
 		: null;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const budgetInfo = (data as any).targetBudget
-		? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-		  formatPrice((data as any).targetBudget)
+
+	const budgetInfo = 'targetBudget' in data && data.targetBudget
+		? formatPrice(data.targetBudget)
 		: null;
 
 	if (isProductionForm(data)) {
