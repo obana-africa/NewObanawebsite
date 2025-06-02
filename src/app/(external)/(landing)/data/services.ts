@@ -6,7 +6,7 @@ import logistics from "@/app/assets/images/landing-page/logistics.svg";
 export const serviceFeatures = [
 	{
 		icon: productSorce,
-		title: "Product Sourcing",
+		title: "Product Catalog",
 		description:
 			"Via our curated marketplace, Obana will scout the world looking for and onboarding vendors that have what our SMEs need, work with them to price and set MOQs that are relatable to our target customer",
 		buttonText: "Get Started",
@@ -14,7 +14,7 @@ export const serviceFeatures = [
 	},
 	{
 		icon: logistics,
-		title: "Logistics",
+		title: "Embedded Logistics",
 		description:
 			"We work with tech enabled logistics partners for inter national and intra country pick up and delivery of goods, with track trace and costing visibility to enable our SMEs make clear decision on total landed cost of their goods and delivery timeline to ensure proper planning.",
 		buttonText: "Get Started",
