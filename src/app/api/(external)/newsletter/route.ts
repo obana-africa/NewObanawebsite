@@ -3,6 +3,8 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 const ALLOWED_ORIGINS = [
+	"https://shop.obana.africa",
+	"https://staging.shop.obana.africa",
 	"https://www.obana.africa",
 	"https://obana.africa",
 	"http://localhost:3000",
