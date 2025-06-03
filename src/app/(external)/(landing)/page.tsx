@@ -9,6 +9,7 @@ import { stakeholders } from "./data/stakeholders";
 import WhyObanaSection from "./sections/why-obana";
 import CtaSection from "../../../components/external/components/cta-section";
 import Testimonials from "./sections/testimonials-section";
+import ImpactCarousel from "./sections/impact-section";
 
 const Home: NextPage = () => {
 	return (
@@ -23,6 +24,7 @@ const Home: NextPage = () => {
 					globeImage={shipbox}
 				/>
 				<WhyObanaSection />
+				<ImpactCarousel />
 				<CtaSection />
 				<Testimonials title="What Our Eco System Partners Says" />
 			</main>
