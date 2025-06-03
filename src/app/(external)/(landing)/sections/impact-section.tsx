@@ -70,8 +70,6 @@ const impactData = [
 	},
 ];
 
-
-
 const ImpactCarousel = () => {
 	return (
 		<div className="w-full py-10 px-2 bg-white relative overflow-hidden">
@@ -85,20 +83,22 @@ const ImpactCarousel = () => {
 					</h2>
 					<Seperator />
 					<p className="text-lg text-gray-600 max-w-3xl mt-4">
-						Discover how we&apos;re making a meaningful difference in communities,
-						environment, and economic growth
+						Discover how we&apos;re making a meaningful difference in
+						communities, environment, and economic growth
 					</p>
 				</div>
 
-				<div className="max-w-7xl mx-auto">
+				<div className="max-w-7xl mx-auto ">
 					<Slider {...impactSlickSettings} className="impact-carousel">
 						{impactData.map((impact) => {
 							const IconComponent = impact.icon;
 							return (
-								<div key={impact.id} className="px-3 focus:outline-none">
-									<div className="group h-full flex flex-col bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 overflow-hidden">
+								<div
+									key={impact.id}
+									className="px-3 focus:outline-none h-full "
+								>
+									<div className="group md:min-h-[400px]  2xl:min-h-[350px] h-full flex flex-col bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 overflow-hidden">
 										<div className="p-6 flex-1 flex flex-col">
-											{/* Icon at top right */}
 											<div className="flex justify-end mb-4">
 												<div
 													className={`p-3 rounded-lg ${impact.bgColor}  transition-colors duration-300`}
@@ -109,7 +109,6 @@ const ImpactCarousel = () => {
 												</div>
 											</div>
 
-											{/* Main content */}
 											<div className="flex-1 flex flex-col">
 												<h3 className="text-xl font-bold text-gray-900 mb-3">
 													{impact.title}
