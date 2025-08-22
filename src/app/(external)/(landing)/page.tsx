@@ -6,7 +6,8 @@ import StakeholderSection from "./sections/stakeholder-section";
 import WhyObanaSection from "./sections/why-obana";
 import Testimonials from "./sections/testimonials-section";
 import CtaSection from "../../../components/external/components/cta-section";
-import BNPL from "./sections/BNPL"; // ✅ import the first component
+import BNPL from "./sections/BNPL";
+import ImpactCarousel from "./sections/impact-section";
 
 import shipbox from "@/app/assets/images/landing-page/shipping-boxes-globe.svg";
 import { serviceFeatures } from "./data/services";
@@ -17,7 +18,10 @@ const Home: NextPage = () => {
     <div className="min-h-screen">
       <main>
         <HeroSection />
-		<BNPL />
+
+        {/* BNPL Section */}
+        <BNPL />
+
         <GlobalBrands />
         <ServiceSection features={serviceFeatures} imageSrc={shipbox} />
         <StakeholderSection
@@ -26,7 +30,9 @@ const Home: NextPage = () => {
           globeImage={shipbox}
         />
         <WhyObanaSection />
-        
+
+        {/* Impact Carousel Section */}
+        <ImpactCarousel />
 
         <CtaSection />
         <Testimonials title="What Our Eco System Partners Says" />
