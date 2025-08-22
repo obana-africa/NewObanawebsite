@@ -63,16 +63,11 @@ const HeroSection: React.FC = () => {
 						</h3>
 
 						<h2 className="mb-6 md:leading-12 w-full 2xl:w-[85%]">
-							by aggregating solutions to their business needs under one
-							platform
+							Aggregating sourcing, logistics, and financing into one seamless platform
 						</h2>
 
 						<p className="mb-8 text-md 2xl:text-lg ">
-							We help SMEs in Nigeria and Sub-Saharan Africa (beginning from
-							Nigeria) scale by providing a seamless, tech-driven supply chain
-							and delivering cost-effective and convenient solutions that
-							enhance efficiency and growth.
-						</p>
+							Helping fashion & beauty SMEs across Sub-Saharan Africa (beginning from Nigeria) grow faster and smarterr	</p>
 						<Button
 							variant="primary"
 							animation="ripple"
