@@ -45,9 +45,9 @@ const ImageBox: React.FC<ImageBoxProps> = ({
 
 const WhyObanaSection: React.FC = () => {
 	return (
-		<section className="relative px-4 py-4 md:py-4 overflow-hidden">
+		<section className="relative px-4 py-4 md:py-4 md:pb-16 overflow-hidden">
 			<div
-				className="absolute top-[50px] right-[150px] w-[182px] h-[36px] opacity-30 blur-[50px] bg-[#222] rounded-full"
+				className="absolute top-[100px] right-[150px] w-[182px] h-[36px] opacity-30 blur-[50px] bg-[#222] rounded-full"
 				style={{
 					transform: "translate(-50%, -50%)",
 				}}
@@ -72,7 +72,7 @@ const WhyObanaSection: React.FC = () => {
 				</div>
 
 				<div
-					className="absolute top-[50px] left-[350px] w-[182px] h-[36px] opacity-30 blur-[50px] bg-[#222] rounded-full"
+					className="absolute top-[100px] left-[350px] w-[182px] h-[36px] opacity-30 blur-[50px] bg-[#222] rounded-full"
 					style={{
 						transform: "translate(-50%, -50%)",
 					}}
@@ -92,7 +92,7 @@ const WhyObanaSection: React.FC = () => {
 						/>
 
 						<div
-							className="absolute top-[250px] left-[300px] w-[182px] h-[56px] opacity-28 blur-[50px] bg-[#222] rounded-full"
+							className="absolute top-[350px] left-[300px] w-[182px] h-[56px] opacity-28 blur-[50px] bg-[#222] rounded-full"
 							style={{
 								transform: "translate(-50%, -50%)",
 							}}
@@ -120,7 +120,7 @@ const WhyObanaSection: React.FC = () => {
 						/>
 
 						<div
-							className="absolute top-[300px] left-[300px] w-[182px] h-[56px] opacity-28 blur-[50px] bg-[#222] rounded-full"
+							className="absolute top-[200px] left-[300px] w-[182px] h-[56px] opacity-28 blur-[50px] bg-[#222] rounded-full"
 							style={{
 								transform: "translate(-50%, -50%)",
 							}}
