@@ -5,10 +5,10 @@ export default function BNPL() {
   return (
     <section
       aria-label="Buy now, pay later with Salad Africa"
-      className="mx-auto my-6 w-full max-w-5xl rounded-xl border p-4 bg-yellow-100"
+      className=" mx-auto my-6 w-full max-w-5xl  p-4 bg-yellow-100"
     >
-      <div className="flex items-center gap-4">
-        <div className="shrink-0">
+      <div className="flex items-center gap-4 rounded-xl border justify-center">
+        <div className="shrink-0 py-8 md:px-4 ">
           <Image
             src="/logos/salad-africa-placeholder.svg"
             alt="Salad Africa"
