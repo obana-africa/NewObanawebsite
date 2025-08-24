@@ -28,7 +28,6 @@ const Home: NextPage = () => {
 				/>
 				<WhyObanaSection />
 				<ImpactCarousel />
-				<ImpactCarousel />
 				<CtaSection />
 				<Testimonials title="What Our Eco System Partners Says" />
 			</main>
