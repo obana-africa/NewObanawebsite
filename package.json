@@ -4,11 +4,10 @@
 	"description": "",
 	"private": true,
 	"scripts": {
-		"dev": "next dev --turbopack",
+		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint",
-		"devnext": "next dev"
+		"lint": "next lint"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^4.1.3",
@@ -49,9 +48,9 @@
 		"B2B ",
 		"obana.africa",
 		"B2B Marketplace",
-		"salesforse"
+		"salesforce"
 	],
-	"author": "OLA-John <olagundoyealexander@gmail.com>",
+	"author": "OLA-John <olaoluwajohn06@gmail.com>",
 	"license": "ISC",
 	"packageManager": "pnpm@10.5.2",
 	"pnpm": {
