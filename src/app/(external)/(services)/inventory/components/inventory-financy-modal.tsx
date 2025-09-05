@@ -132,7 +132,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 		const loginUrl =
 			environment === "production"
 				? "https://shop.obana.africa/login"
-				: "http://localhost:3001/login";
+				: "https://staging.shop.obana.africa/login";
 		window.open(loginUrl, "_blank");
 		onClose();
 	};
@@ -147,10 +147,10 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 			setErrorMessage("");
 
 			// Complete form data with uploaded file for Obana
-			const completeFormData = {
-				...data,
-				businessRegistrationFile: uploadedFile,
-			};
+			// const completeFormData = {
+			// 	...data,
+			// 	businessRegistrationFile: uploadedFile,
+			// };
 
 			// Filtered data for Salad Africa
 			const saladAfricaData = {
@@ -257,7 +257,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 					? `https://shop.obana.africa/verify-otp?source=inventory-financing&email=${encodeURIComponent(
 							data.email
 					  )}&requestId=${obanaResult.request_id}&isRegister=true`
-					: `http://localhost:3001/verify-otp?source=inventory-financing&email=${encodeURIComponent(
+					: `https://staging.shop.obana.africa/verify-otp?source=inventory-financing&email=${encodeURIComponent(
 							data.email
 					  )}&requestId=${obanaResult.request_id}&isRegister=true`;
 
@@ -279,14 +279,14 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 		}
 	};
 
-	const handleContinueShopping = () => {
-		const shopUrl =
-			environment === "production"
-				? "https://shop.obana.africa"
-				: "http://localhost:3001";
-		window.open(shopUrl, "_blank");
-		onClose();
-	};
+	// const handleContinueShopping = () => {
+	// 	const shopUrl =
+	// 		environment === "production"
+	// 			? "https://shop.obana.africa"
+	// 			: "https://staging.shop.obana.africa";
+	// 	window.open(shopUrl, "_blank");
+	// 	onClose();
+	// };
 
 	const resetModal = () => {
 		setCurrentStep("main");
@@ -690,7 +690,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 				</h2>
 				<p className="text-gray-600">
 					Your inventory financing application has been submitted. You will
-					receive a confirmation email shortly. You'll be redirected to verify
+					receive a confirmation email shortly. You will be redirected to verify
 					your OTP.
 				</p>
 			</div>
@@ -713,7 +713,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 						const shopOtpUrl =
 							environment === "production"
 								? `https://shop.obana.africa/verify-otp?source=inventory-financing&requestId=${requestId}&isRegister=true`
-								: `http://localhost:3001/verify-otp?source=inventory-financing&email=${encodeURIComponent(
+								: `https://staging.shop.obana.africa/verify-otp?source=inventory-financing&email=${encodeURIComponent(
 										email
 								  )}&requestId=${requestId}&isRegister=true`;
 						window.open(shopOtpUrl, "_blank");
