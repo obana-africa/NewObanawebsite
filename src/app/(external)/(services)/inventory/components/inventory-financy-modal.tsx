@@ -3,12 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import {
-	X,
-	CheckCircle,
-	AlertCircle,
-	ChevronsRight,
-} from "lucide-react";
+import { X, CheckCircle, AlertCircle, ChevronsRight } from "lucide-react";
 import FormInput from "@/components/ui/form-input";
 import FormSelect from "@/components/ui/form-select";
 import FormFileUpload from "@/components/ui/form-file-upload";
@@ -21,6 +16,7 @@ import {
 } from "@/hooks/use-locations";
 import { inventoryFinancingSchema } from "../schemas";
 import PhoneInput from "@/components/ui/phone-input";
+import { FormDataType } from "../types";
 
 interface InventoryFinancingModalProps {
 	isOpen: boolean;
@@ -28,64 +24,25 @@ interface InventoryFinancingModalProps {
 	environment?: "production" | "development";
 }
 
-export interface FormDataType {
-	// Personal Information
-	salutation?: string;
-	firstName: string;
-	lastName: string;
-	email: string;
-	phone: string;
-	password: string;
-	dob?: string;
-	gender?: string;
-
-	// Business Information
-	businessName: string;
-	businessType?: string;
-	tin?: string;
-
-	// Address Information
-	address: string;
-	country: string;
-	state: string;
-	city: string;
-
-	// Bank Information
-	bankName: string;
-	accountNumber: string;
-	bvn: string;
-
-	// Additional Information
-	categoryOfInterest?: string[];
-	brandOfInterest?: string[];
-	terms: boolean;
-	businessRegistrationFile?: File | string | null;
-}
-
 const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 	isOpen,
 	onClose,
-	environment = "production",
+	environment = "development",
 }) => {
 	const modalRef = useRef<HTMLDivElement>(null);
 	const [currentStep, setCurrentStep] = useState<
 		"main" | "form" | "success" | "error"
 	>("main");
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
 	const [uploadedFile, setUploadedFile] = useState<string | null>(null);
 
 	// Location hooks
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { data: countries, isLoading: countriesLoading } = useGetCountries();
+	const { data: countries } = useGetCountries();
 	const [selectedCountry, setSelectedCountry] = useState("");
 	const [selectedState, setSelectedState] = useState("");
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { data: states, isLoading: statesLoading } =
-		useGetStatesByCountryId(selectedCountry);
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { data: cities, isLoading: citiesLoading } = useGetCitiesByStateId(
+	const { data: states } = useGetStatesByCountryId(selectedCountry);
+	const { data: cities } = useGetCitiesByStateId(
 		selectedState,
 		selectedCountry
 	);
@@ -175,7 +132,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 		const loginUrl =
 			environment === "production"
 				? "https://shop.obana.africa/login"
-				: "https://staging.shop.obana.africa/login";
+				: "http://localhost:3001/login";
 		window.open(loginUrl, "_blank");
 		onClose();
 	};
@@ -185,56 +142,148 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 	};
 
 	const onSubmit = async (data: FormDataType) => {
-		console.log("Form Data Submitted: ", { ...data, uploadedFile });
-		// try {
-		// 	setIsLoading(true);
-		// 	setErrorMessage("");
+		try {
+			setIsLoading(true);
+			setErrorMessage("");
 
-		// 	// Add the uploaded file to the form data
-		// 	const formDataWithFile = {
-		// 		...data,
-		// 		businessRegistrationFile: uploadedFile,
-		// 	};
-		// 	console.log("Submitting form data:", formDataWithFile);
+			// Complete form data with uploaded file for Obana
+			const completeFormData = {
+				...data,
+				businessRegistrationFile: uploadedFile,
+			};
 
-		// 	// 1. Create user in Obana's database
-		// 	const obanaResponse = await fetch("/api/users/create", {
-		// 		method: "POST",
-		// 		headers: { "Content-Type": "application/json" },
-		// 		body: JSON.stringify(formDataWithFile),
-		// 	});
+			// Filtered data for Salad Africa
+			const saladAfricaData = {
+				firstName: data.firstName,
+				lastName: data.lastName,
+				email: data.email,
+				phone: data.phone,
+				address: data.address,
+				bvn: data.bvn,
+				tin: data.tin,
+				gender: data.gender,
+				accountNumber: data.accountNumber,
+				bankName: data.bankName,
+				businessName: data.businessName,
+				businessRegistrationFile: uploadedFile,
+			};
 
-		// 	if (!obanaResponse.ok) {
-		// 		throw new Error("Failed to submit prequalification data, please try again");
-		// 	}
+			const obanaRegistrationData = {
+				email: data.email,
+				password: data.password,
+				phone: data.phone,
+				attributes: {
+					first_name: data.firstName,
+					last_name: data.lastName,
+					contact_type: "customer",
+					customer_sub_type: "individual",
+					billing_address: data.address,
+					billing_city: data.city,
+					billing_state: data.state,
+					billing_country: data.country,
+					address: data.address,
+					city: data.city,
+					state: data.state,
+					country: data.country,
+					language_code: "en",
+					account_types: "individual",
+					category_of_interest: data.categoryOfInterest,
+					brand_of_interest: data.brandOfInterest,
+					businessName: data.businessName,
+					salutation: data.salutation,
+					gender: data.gender,
+					dob: data.dob,
+					terms: data.terms,
+					// Additional fields specific to inventory financing
+					business_type: data.businessType,
+					tin: data.tin,
+					bank_name: data.bankName,
+					account_number: data.accountNumber,
+					bvn: data.bvn,
+					business_registration_file: uploadedFile,
+				},
+			};
 
-		// 	// 2. Send data to Salad Africa API
-		// 	const saladResponse = await fetch("/api/salad-africa/prequalify", {
-		// 		method: "POST",
-		// 		headers: { "Content-Type": "application/json" },
-		// 		body: JSON.stringify(formDataWithFile),
-		// 	});
+			console.log("Obana registration data:", obanaRegistrationData);
+			console.log("Salad Africa data:", saladAfricaData);
 
-		// 	if (!saladResponse.ok) {
-		// 		throw new Error("Failed to submit prequalification data");
-		// 	}
+			// 1. Create complete data user in  Obana's
+			const obanaResponse = await fetch("/api/shop/users/sign-up", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(obanaRegistrationData),
+			});
 
-		// 	setCurrentStep("success");
-		// } catch (error) {
-		// 	setErrorMessage(
-		// 		error instanceof Error ? error.message : "An error occurred"
-		// 	);
-		// 	setCurrentStep("error");
-		// } finally {
-		// 	setIsLoading(false);
-		// }
+			const obanaResult = await obanaResponse.json();
+			console.log("Obana response:", obanaResult);
+
+			if (!obanaResponse.ok) {
+				throw new Error(
+					obanaResult.message || "Failed to register user, please try again"
+				);
+			}
+
+			// 2. Send filtered data to Salad Africa API
+			// const saladResponse = await fetch("/api/salad-africa/prequalify", {
+			// 	method: "POST",
+			// 	headers: { "Content-Type": "application/json" },
+			// 	body: JSON.stringify(saladAfricaData),
+			// });
+
+			// if (!saladResponse.ok) {
+			// 	throw new Error(
+			// 		"Failed to submit prequalification data to Salad Africa"
+			// 	);
+			// }
+
+			// 3. Store registration data for OTP verification
+			// You might want to store this in localStorage or pass it via URL params
+			const registrationData = {
+				requestId: obanaResult.data.request_id,
+				email: data.email,
+				isInventoryFinancing: true,
+			};
+
+			// Store in localStorage for the shop platform to access
+			if (typeof window !== "undefined") {
+				localStorage.setItem(
+					"pendingRegistration",
+					JSON.stringify(registrationData)
+				);
+			}
+
+			const shopOtpUrl =
+				environment === "production"
+					? `https://shop.obana.africa/verify-otp?source=inventory-financing&email=${encodeURIComponent(
+							data.email
+					  )}&requestId=${obanaResult.request_id}&isRegister=true`
+					: `http://localhost:3001/verify-otp?source=inventory-financing&email=${encodeURIComponent(
+							data.email
+					  )}&requestId=${obanaResult.request_id}&isRegister=true`;
+
+			// Show success message first
+			setCurrentStep("success");
+
+			// Delay redirect slightly so user sees success message
+			setTimeout(() => {
+				window.open(shopOtpUrl, "_blank");
+				onClose();
+			}, 1000);
+		} catch (error) {
+			setErrorMessage(
+				error instanceof Error ? error.message : "An error occurred"
+			);
+			setCurrentStep("error");
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	const handleContinueShopping = () => {
 		const shopUrl =
 			environment === "production"
 				? "https://shop.obana.africa"
-				: "https://staging.shop.obana.africa";
+				: "http://localhost:3001";
 		window.open(shopUrl, "_blank");
 		onClose();
 	};
@@ -632,7 +681,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 		</div>
 	);
 
-	const renderErrorView = () => (
+	const renderSuccessView = () => (
 		<div className="flex-1 p-6 flex flex-col items-center justify-center space-y-6">
 			<CheckCircle className="w-16 h-16 text-green-500" />
 			<div className="text-center space-y-2">
@@ -641,17 +690,40 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 				</h2>
 				<p className="text-gray-600">
 					Your inventory financing application has been submitted. You will
-					receive a confirmation email shortly.
+					receive a confirmation email shortly. You'll be redirected to verify
+					your OTP.
 				</p>
 			</div>
 			<div className="flex flex-col sm:flex-row gap-4 w-full max-w-sm">
 				<Button
-					onClick={handleContinueShopping}
+					onClick={() => {
+						// Get the stored request ID
+						const storedData = localStorage.getItem("pendingRegistration");
+
+						const requestId = storedData
+							? JSON.parse(storedData).requestId
+							: null;
+						const email = storedData
+							? JSON.parse(storedData).email
+							: null;
+
+							console.log("REQUEST ID", requestId);
+							console.log("EMAIL", email);
+
+						const shopOtpUrl =
+							environment === "production"
+								? `https://shop.obana.africa/verify-otp?source=inventory-financing&requestId=${requestId}&isRegister=true`
+								: `http://localhost:3001/verify-otp?source=inventory-financing&email=${encodeURIComponent(
+										email
+								  )}&requestId=${requestId}&isRegister=true`;
+						window.open(shopOtpUrl, "_blank");
+						onClose();
+					}}
 					variant="primary"
 					animation="ripple"
 					className="flex-1"
 				>
-					Continue Shopping
+					Verify OTP & Continue Shopping
 				</Button>
 				<Button onClick={onClose} variant="outline" className="flex-1">
 					Close
@@ -660,7 +732,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 		</div>
 	);
 
-	const renderSuccessView = () => (
+	const renderErrorView = () => (
 		<div className="flex-1 p-6 flex flex-col items-center justify-center space-y-6">
 			<AlertCircle className="w-16 h-16 text-red-500" />
 			<div className="text-center space-y-2">
