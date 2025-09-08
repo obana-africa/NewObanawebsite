@@ -252,14 +252,18 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 				);
 			}
 
+			const storedData = localStorage.getItem("pendingRegistration");
+
+			const requestId = storedData ? JSON.parse(storedData).requestId : null;
+
 			const shopOtpUrl =
 				environment === "production"
 					? `https://shop.obana.africa/verify-otp?source=inventory-financing&email=${encodeURIComponent(
 							data.email
-					  )}&requestId=${obanaResult.request_id}&isRegister=true`
+					  )}&requestId=${requestId}&isRegister=true`
 					: `https://staging.shop.obana.africa/verify-otp?source=inventory-financing&email=${encodeURIComponent(
 							data.email
-					  )}&requestId=${obanaResult.request_id}&isRegister=true`;
+					  )}&requestId=${requestId}&isRegister=true`;
 
 			// Show success message first
 			setCurrentStep("success");
@@ -703,12 +707,10 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 						const requestId = storedData
 							? JSON.parse(storedData).requestId
 							: null;
-						const email = storedData
-							? JSON.parse(storedData).email
-							: null;
+						const email = storedData ? JSON.parse(storedData).email : null;
 
-							console.log("REQUEST ID", requestId);
-							console.log("EMAIL", email);
+						console.log("REQUEST ID", requestId);
+						console.log("EMAIL", email);
 
 						const shopOtpUrl =
 							environment === "production"
