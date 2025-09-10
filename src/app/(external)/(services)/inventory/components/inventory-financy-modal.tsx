@@ -54,6 +54,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 		setValue,
 		watch,
 		formState: { errors },
+		reset,
 	} = useForm<FormDataType>({
 		resolver: zodResolver(inventoryFinancingSchema),
 		defaultValues: {
@@ -136,39 +137,66 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 		window.open(loginUrl, "_blank");
 		onClose();
 	};
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 	const handleFileUploadComplete = (file: string | null) => {
-		setUploadedFile("");
+		setUploadedFile(file);
+		console.log("File uploaded:", file);
 	};
 
 	const onSubmit = async (data: FormDataType) => {
+		console.log("Form submitted with data:", data);
+
 		try {
 			setIsLoading(true);
 			setErrorMessage("");
 
-			// Complete form data with uploaded file for Obana
-			// const completeFormData = {
-			// 	...data,
-			// 	businessRegistrationFile: uploadedFile,
-			// };
+			// Validate required fields before submission
+			if (!data.email || !data.password || !data.phone) {
+				throw new Error("Email, password, and phone are required");
+			}
 
-			// Filtered data for Salad Africa
-			const saladAfricaData = {
-				firstName: data.firstName,
-				lastName: data.lastName,
-				email: data.email,
-				phone: data.phone,
-				address: data.address,
-				bvn: data.bvn,
-				tin: data.tin,
-				gender: data.gender,
-				accountNumber: data.accountNumber,
-				bankName: data.bankName,
-				businessName: data.businessName,
-				businessRegistrationFile: uploadedFile,
+			if (!data.terms) {
+				throw new Error("You must accept the terms and conditions");
+			}
+
+			console.log("Submitting to Google Form via API endpoint...");
+			const googleFormApiUrl = "/api/shop/users/google-form-submit"; 
+			const googleFormData = {
+				firstName: data.firstName || "",
+				lastName: data.lastName || "",
+				email: data.email || "",
+				phone: data.phone || "",
+				address: data.address || "",
+				bvn: data.bvn || "",
+				tin: data.tin || "",
+				gender: data.gender || "",
+				accountNumber: data.accountNumber || "",
+				bankName: data.bankName || "",
+				businessName: data.businessName || "",
 			};
 
-			const obanaRegistrationData = {
+			const googleFormResponse = await fetch(googleFormApiUrl, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Accept: "application/json",
+				},
+				body: JSON.stringify(googleFormData),
+			});
+
+			const googleFormResult = await googleFormResponse.json();
+			console.log("Google Form API response:", googleFormResult);
+
+			if (!googleFormResponse.ok || !googleFormResult.success) {
+				console.error("Google Form submission failed:", googleFormResult);
+				throw new Error(
+					googleFormResult.message || "Failed to submit to Google Form"
+				);
+			}
+
+			console.log("Google Form submitted successfully ✅");
+
+			const obanaRegistrationData = {	
 				email: data.email,
 				password: data.password,
 				phone: data.phone,
@@ -194,7 +222,6 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 					gender: data.gender,
 					dob: data.dob,
 					terms: data.terms,
-					// Additional fields specific to inventory financing
 					business_type: data.businessType,
 					tin: data.tin,
 					bank_name: data.bankName,
@@ -204,47 +231,37 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 				},
 			};
 
-			console.log("Obana registration data:", obanaRegistrationData);
-			console.log("Salad Africa data:", saladAfricaData);
+			console.log("Submitting to Obana API:", obanaRegistrationData);
 
-			// 1. Create complete data user in  Obana's
-			const obanaResponse = await fetch("/api/shop/users/sign-up", {
+			const obanaResponse = await fetch("/api/shop/users/obana-sign-up", {
 				method: "POST",
-				headers: { "Content-Type": "application/json" },
+				headers: {
+					"Content-Type": "application/json",
+					Accept: "application/json",
+				},
 				body: JSON.stringify(obanaRegistrationData),
 			});
 
 			const obanaResult = await obanaResponse.json();
-			console.log("Obana response:", obanaResult);
+			console.log("Obana API response:", obanaResult);
 
 			if (!obanaResponse.ok) {
+				console.error("Obana API Error:", obanaResult);
 				throw new Error(
-					obanaResult.message || "Failed to register user, please try again"
+					obanaResult.message ||
+						`Registration failed: ${obanaResponse.status} ${obanaResponse.statusText}`
 				);
 			}
 
-			// 2. Send filtered data to Salad Africa API
-			// const saladResponse = await fetch("/api/salad-africa/prequalify", {
-			// 	method: "POST",
-			// 	headers: { "Content-Type": "application/json" },
-			// 	body: JSON.stringify(saladAfricaData),
-			// });
-
-			// if (!saladResponse.ok) {
-			// 	throw new Error(
-			// 		"Failed to submit prequalification data to Salad Africa"
-			// 	);
-			// }
-
-			// 3. Store registration data for OTP verification
-			// You might want to store this in localStorage or pass it via URL params
+			// Store registration data
 			const registrationData = {
-				requestId: obanaResult.data.request_id,
+				requestId: obanaResult.data?.request_id || obanaResult.requestId,
 				email: data.email,
 				isInventoryFinancing: true,
 			};
 
-			// Store in localStorage for the shop platform to access
+			console.log("Storing registration data:", registrationData);
+
 			if (typeof window !== "undefined") {
 				localStorage.setItem(
 					"pendingRegistration",
@@ -252,31 +269,28 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 				);
 			}
 
-			const storedData = localStorage.getItem("pendingRegistration");
-
-			const requestId = storedData ? JSON.parse(storedData).requestId : null;
+			setCurrentStep("success");
 
 			const shopOtpUrl =
 				environment === "production"
 					? `https://shop.obana.africa/verify-otp?source=inventory-financing&email=${encodeURIComponent(
 							data.email
-					  )}&requestId=${requestId}&isRegister=true`
+					  )}&requestId=${registrationData.requestId}&isRegister=true`
 					: `https://staging.shop.obana.africa/verify-otp?source=inventory-financing&email=${encodeURIComponent(
 							data.email
-					  )}&requestId=${requestId}&isRegister=true`;
+					  )}&requestId=${registrationData.requestId}&isRegister=true`;
 
-			// Show success message first
-			setCurrentStep("success");
+			console.log("OTP URL prepared:", shopOtpUrl);
 
-			// Delay redirect slightly so user sees success message
 			setTimeout(() => {
 				window.open(shopOtpUrl, "_blank");
 				onClose();
-			}, 1000);
+			}, 2000);
 		} catch (error) {
-			setErrorMessage(
-				error instanceof Error ? error.message : "An error occurred"
-			);
+			console.error("Form submission error:", error);
+			const errorMsg =
+				error instanceof Error ? error.message : "An unknown error occurred";
+			setErrorMessage(errorMsg);
 			setCurrentStep("error");
 		} finally {
 			setIsLoading(false);
@@ -296,6 +310,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 		setCurrentStep("main");
 		setErrorMessage("");
 		setUploadedFile(null);
+		reset();
 	};
 
 	// Options for form fields
