@@ -205,7 +205,7 @@ export async function POST(request: NextRequest) {
 
 		const obanaEmailData = {
 			fromAddress: "'OBANA FINANCING' <ochije.nnani@iconholding.africa>",
-			toAddress: "olaoluwajohn06@gmail.com",
+			toAddress: "ochije.nnani@iconholding.africa",
 			subject: `New Inventory Financing Request from ${formData.firstName} ${formData.lastName}`,
 			content: generateFinancingEmailContent(formData, "obana"),
 		};
