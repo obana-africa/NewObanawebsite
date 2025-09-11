@@ -86,15 +86,15 @@ const apiTokenManager = new ZohoTokenManager(
 	"API"
 );
 
-const mailTokenManager = new ZohoTokenManager(
-	{
-		authUrl: process.env.ZOHO_AUTH_URL || "",
-		refreshToken: process.env.MAIL_REFRESH_TOKEN || "",
-		clientId: process.env.ZOHO_MAIL_CLIENT_ID || "",
-		clientSecret: process.env.ZOHO_MAIL_CLIENT_SECRET || "",
-	},
-	"Mail"
-);
+// const mailTokenManager = new ZohoTokenManager(
+// 	{
+// 		authUrl: process.env.ZOHO_AUTH_URL || "",
+// 		refreshToken: process.env.MAIL_REFRESH_TOKEN || "",
+// 		clientId: process.env.ZOHO_MAIL_CLIENT_ID || "",
+// 		clientSecret: process.env.ZOHO_MAIL_CLIENT_SECRET || "",
+// 	},
+// 	"Mail"
+// );
 
 export const getAccessToken = () => apiTokenManager.getAccessToken();
-export const getMailAccessToken = () => mailTokenManager.getAccessToken();
+export const getMailAccessToken = () => apiTokenManager.getAccessToken();
