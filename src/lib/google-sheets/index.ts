@@ -1,12 +1,25 @@
 import { google } from "googleapis";
 import { JWT } from "google-auth-library";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function appendToSheet(values: any[]) {
 	try {
+		const privateKey = process.env.GOOGLE_SHEETS_PRIVATE_KEY;
+		if (!privateKey) {
+			throw new Error("GOOGLE_SHEETS_PRIVATE_KEY is not set");
+		}
+		console.log(
+			"Private key starts with:",
+			privateKey.substring(0, 50) + "..."
+		);
+
+		const cleanedPrivateKey = privateKey
+			.replace(/^"|"$/g, "") 
+			.replace(/\\n/g, "\n") 
+			.trim();
+
 		const auth = new JWT({
 			email: process.env.GOOGLE_SHEETS_CLIENT_EMAIL,
-			key: process.env.GOOGLE_SHEETS_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+			key: cleanedPrivateKey,
 			scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 		});
 
