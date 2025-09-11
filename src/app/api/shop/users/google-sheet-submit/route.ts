@@ -281,6 +281,7 @@ export async function POST(request: NextRequest) {
 				updates: result?.updates,
 			},
 		});
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	} catch (error: any) {
 		console.error("Error in form submission or email sending:", error);
 
