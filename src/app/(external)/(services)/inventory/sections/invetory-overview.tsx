@@ -18,7 +18,7 @@ const InventoryOverview = () => {
 	};
 
 	const environment =
-		process.env.NODE_ENV === "production" ? "production" : "development";
+		process.env.ENVIRONMENT_ENV === "production" ? "production" : "development";
 
 	return (
 		<div className=" relative">
