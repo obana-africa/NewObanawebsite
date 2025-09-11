@@ -160,8 +160,8 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 			}
 
 			console.log("Submitting to Google Form via API endpoint...");
-			const googleFormApiUrl = "/api/shop/users/google-form-submit"; 
-			const googleFormData = {
+			const googleSheetsApiUrl = "/api/shop/users/google-sheet-submit";
+			const googleSheetsData = {
 				firstName: data.firstName || "",
 				lastName: data.lastName || "",
 				email: data.email || "",
@@ -173,30 +173,38 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 				accountNumber: data.accountNumber || "",
 				bankName: data.bankName || "",
 				businessName: data.businessName || "",
+				salutation: data.salutation || "",
+				dob: data.dob || "",
+				businessType: data.businessType || "",
+				country: data.country || "",
+				state: data.state || "",
+				city: data.city || "",
+				categoryOfInterest: data.categoryOfInterest || [],
+				brandOfInterest: data.brandOfInterest || [],
 			};
 
-			const googleFormResponse = await fetch(googleFormApiUrl, {
+			const googleSheetsResponse = await fetch(googleSheetsApiUrl, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 					Accept: "application/json",
 				},
-				body: JSON.stringify(googleFormData),
+				body: JSON.stringify(googleSheetsData),
 			});
 
-			const googleFormResult = await googleFormResponse.json();
-			console.log("Google Form API response:", googleFormResult);
+			const googleSheetsResult = await googleSheetsResponse.json();
+			console.log("Google Sheets API response:", googleSheetsResult);
 
-			if (!googleFormResponse.ok || !googleFormResult.success) {
-				console.error("Google Form submission failed:", googleFormResult);
+			if (!googleSheetsResponse.ok || !googleSheetsResult.success) {
+				console.error("Google Sheets submission failed:", googleSheetsResult);
 				throw new Error(
-					googleFormResult.message || "Failed to submit to Google Form"
+					googleSheetsResult.message || "Failed to submit to Google Sheets"
 				);
 			}
 
-			console.log("Google Form submitted successfully ✅");
+			console.log("Google Sheets submitted successfully ✅");
 
-			const obanaRegistrationData = {	
+			const obanaRegistrationData = {
 				email: data.email,
 				password: data.password,
 				phone: data.phone,
@@ -269,10 +277,10 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 				);
 			}
 
-			setCurrentStep("success");
+			// setCurrentStep("success");
 
 			const shopOtpUrl =
-				environment === "development"
+				environment === "production"
 					? `https://shop.obana.africa/verify-otp?source=inventory-financing&email=${encodeURIComponent(
 							data.email
 					  )}&requestId=${registrationData.requestId}&isRegister=true`
@@ -291,7 +299,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 			const errorMsg =
 				error instanceof Error ? error.message : "An unknown error occurred";
 			setErrorMessage(errorMsg);
-			setCurrentStep("error");
+			// setCurrentStep("error");
 		} finally {
 			setIsLoading(false);
 		}
@@ -345,19 +353,17 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 	];
 
 	const categoryOptions = [
-		{ value: "6519617000000134005", label: "Women" },
-		{ value: "6519617000000134017", label: "Beauty" },
-		{ value: "6519617000000134029", label: "Haberdashery" },
-		{ value: "6519617000000134041", label: "Men" },
-		{ value: "6519617000000134053", label: "Kids" },
+		{ value: "Women", label: "Women" },
+		{ value: "Beauty", label: "Beauty" },
+		{ value: "Men", label: "Men" },
+		{ value: "Kids", label: "Kids" },
 	];
 
 	const brandOptions = [
-		{ value: "6519617000000112133", label: "Wrangler" },
-		{ value: "6519617000000112201", label: "ADIDAS" },
-		{ value: "6519617000000112255", label: "BOOHOOMAN" },
-		{ value: "6519617000000112267", label: "Nike" },
-		{ value: "6519617000000112279", label: "Zara" },
+		{ value: "Addidas", label: "ADIDAS" },
+		{ value: "BOOHOOMAN", label: "BOOHOOMAN" },
+		{ value: "Nike", label: "Nike" },
+		{ value: "Zara", label: "Zara" },
 	];
 
 	const renderMainView = () => (
@@ -728,7 +734,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 						console.log("EMAIL", email);
 
 						const shopOtpUrl =
-							environment === "development"
+							environment === "production"
 								? `https://shop.obana.africa/verify-otp?source=inventory-financing&requestId=${requestId}&isRegister=true`
 								: `https://staging.shop.obana.africa/verify-otp?source=inventory-financing&email=${encodeURIComponent(
 										email
