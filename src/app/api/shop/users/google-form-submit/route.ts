@@ -72,6 +72,7 @@ export async function POST(request: Request) {
 				{ status: response.status || 400 }
 			);
 		}
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	} catch (error: any) {
 		console.error("Google Form API Error:", error);
 		return Response.json(

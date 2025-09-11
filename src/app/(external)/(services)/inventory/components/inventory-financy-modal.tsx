@@ -272,7 +272,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 			setCurrentStep("success");
 
 			const shopOtpUrl =
-				environment === "production"
+				environment === "development"
 					? `https://shop.obana.africa/verify-otp?source=inventory-financing&email=${encodeURIComponent(
 							data.email
 					  )}&requestId=${registrationData.requestId}&isRegister=true`
@@ -728,7 +728,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 						console.log("EMAIL", email);
 
 						const shopOtpUrl =
-							environment === "production"
+							environment === "development"
 								? `https://shop.obana.africa/verify-otp?source=inventory-financing&requestId=${requestId}&isRegister=true`
 								: `https://staging.shop.obana.africa/verify-otp?source=inventory-financing&email=${encodeURIComponent(
 										email
