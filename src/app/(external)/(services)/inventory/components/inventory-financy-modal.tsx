@@ -277,7 +277,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 				);
 			}
 
-			// setCurrentStep("success");
+			setCurrentStep("success");
 
 			const shopOtpUrl =
 				environment === "production"
@@ -299,7 +299,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 			const errorMsg =
 				error instanceof Error ? error.message : "An unknown error occurred";
 			setErrorMessage(errorMsg);
-			// setCurrentStep("error");
+			setCurrentStep("error");
 		} finally {
 			setIsLoading(false);
 		}
@@ -735,18 +735,25 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 
 						const shopOtpUrl =
 							environment === "production"
-								? `https://shop.obana.africa/verify-otp?source=inventory-financing&requestId=${requestId}&isRegister=true`
-								: `https://staging.shop.obana.africa/verify-otp?source=inventory-financing&email=${encodeURIComponent(
-										email
-								  )}&requestId=${requestId}&isRegister=true`;
+								? `https://shop.obana.africa`
+								: `https://staging.shop.obana.africa`;
 						window.open(shopOtpUrl, "_blank");
 						onClose();
 					}}
+					// 	const shopOtpUrl =
+					// 		environment === "production"
+					// 			? `https://shop.obana.africa/verify-otp?source=inventory-financing&requestId=${requestId}&isRegister=true`
+					// 			: `https://staging.shop.obana.africa/verify-otp?source=inventory-financing&email=${encodeURIComponent(
+					// 					email
+					// 			  )}&requestId=${requestId}&isRegister=true`;
+					// 	window.open(shopOtpUrl, "_blank");
+					// 	onClose();
+					// }}
 					variant="primary"
 					animation="ripple"
 					className="flex-1"
 				>
-					Verify OTP & Continue Shopping
+					Continue Shopping
 				</Button>
 				<Button onClick={onClose} variant="outline" className="flex-1">
 					Close
