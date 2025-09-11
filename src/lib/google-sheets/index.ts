@@ -1,6 +1,8 @@
 import { google } from "googleapis";
 import { JWT } from "google-auth-library";
 
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function appendToSheet(values: any[]) {
 	try {
 		const privateKey = process.env.GOOGLE_SHEETS_PRIVATE_KEY;
