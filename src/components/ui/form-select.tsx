@@ -9,8 +9,7 @@ interface Option {
 
 interface FormSelectProps {
 	id?: string;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	label?: any;
+	label?: string;
 	options: Option[];
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	register: any;
@@ -47,18 +46,18 @@ const FormSelect: React.FC<FormSelectProps> = ({
 	const [dropdownPosition, setDropdownPosition] = useState<"bottom" | "top">(
 		"bottom"
 	);
-	const [selectedValue, setSelectedValue] = useState(
-		multiple ? [] : register.value || null
+	// Initialize selectedValue as empty string for single-select, empty array for multi-select
+	const [selectedValue, setSelectedValue] = useState<string | string[]>(
+		multiple ? [] : register.value || ""
 	);
 	const selectRef = useRef<HTMLDivElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
-		// Initialize with register value
-		if (register.value) {
-			setSelectedValue(register.value);
+		if (register.value !== undefined) {
+			setSelectedValue(multiple ? register.value || [] : register.value || "");
 		}
-	}, [register.value]);
+	}, [register.value, multiple]);
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -106,12 +105,12 @@ const FormSelect: React.FC<FormSelectProps> = ({
 	};
 
 	const handleOptionSelect = (option: Option) => {
-		let newValue;
+		let newValue: string | string[];
 
 		if (multiple) {
 			newValue = Array.isArray(selectedValue)
 				? selectedValue.includes(option.value)
-					? selectedValue.filter((v: string) => v !== option.value)
+					? selectedValue.filter((v) => v !== option.value)
 					: [...selectedValue, option.value]
 				: [option.value];
 		} else {
@@ -138,7 +137,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
 						`${selectedValue.length} selected`
 				: `${selectedValue.length} selected`;
 		}
-		if (!multiple && selectedValue) {
+		if (!multiple && typeof selectedValue === "string" && selectedValue) {
 			return (
 				options.find((opt) => opt.value === selectedValue)?.label || placeholder
 			);
@@ -236,7 +235,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
 
 			{multiple && Array.isArray(selectedValue) && selectedValue.length > 0 && (
 				<div className="flex flex-wrap gap-2 mt-2">
-					{selectedValue.map((value: string) => (
+					{selectedValue.map((value) => (
 						<div
 							key={value}
 							className="flex items-center bg-secondary-light px-2 py-1 rounded text-sm"
@@ -246,9 +245,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
 								type="button"
 								onClick={(e) => {
 									e.stopPropagation();
-									const newValue = selectedValue.filter(
-										(v: string) => v !== value
-									);
+									const newValue = selectedValue.filter((v) => v !== value);
 									setSelectedValue(newValue);
 									register.onChange({
 										target: {
@@ -273,7 +270,8 @@ const FormSelect: React.FC<FormSelectProps> = ({
 				id={id}
 				{...register}
 				className="hidden"
-				value={selectedValue}
+				multiple={multiple}
+				value={multiple ? selectedValue : selectedValue || ""}
 				onChange={() => {}}
 			>
 				<option value="">Select</option>

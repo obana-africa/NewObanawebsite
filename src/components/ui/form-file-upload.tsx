@@ -1,125 +1,191 @@
-import React, { useState, useRef, useEffect } from "react";
-import { useCloudinaryUpload } from "@/hooks/use-cloudinary-upload";
-import { FileIcon, ImageIcon, FileTextIcon } from "lucide-react";
+import React, { useState, useCallback } from "react";
+import { useFormContext } from "react-hook-form";
+import { Upload } from "lucide-react";
+import { FormDataType } from "@/app/(external)/(services)/inventory/types";
+
+type FileFieldId =
+	| "businessRegistrationFile"
+	| "proofOfAddressFile"
+	| "statusReportFile";
 
 interface FormFileUploadProps {
-	id: string;
+	id: FileFieldId;
 	label: string;
-	onUploadComplete: (url: string | null) => void;
-	error?: string;
-	required?: boolean;
 	accept?: string;
-	disabled?: boolean;
 	fileTypes?: string;
+	error?: string;
+	onUploadComplete?: (
+		data: { url?: string; base64?: string; fileName?: string } | null
+	) => void;
+	required?: boolean;
 }
 
 const FormFileUpload: React.FC<FormFileUploadProps> = ({
 	id,
 	label,
-	onUploadComplete,
+	accept = ".pdf,.jpg,.jpeg,.png",
+	fileTypes = "PDF, JPG, PNG",
 	error,
-	required = false,
-	accept = "image/*,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt",
-	disabled = false,
-	fileTypes = "Images, Documents, PDFs",
+	onUploadComplete,
+	required,
 }) => {
+	const { setValue, setError, clearErrors } = useFormContext<FormDataType>();
+	const [isUploading, setIsUploading] = useState(false);
 	const [fileName, setFileName] = useState<string | null>(null);
-	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-	const [fileType, setFileType] = useState<string | null>(null);
-	const fileInputRef = useRef<HTMLInputElement>(null);
-	const { uploadFile, isUploading } = useCloudinaryUpload();
 
-	const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-		const file = e.target.files?.[0];
-		if (!file) return;
-
-		setFileName(file.name);
-		setFileType(file.type);
-
-		// Create preview URL for images only
-		if (file.type.startsWith('image/')) {
-			const preview = URL.createObjectURL(file);
-			setPreviewUrl(preview);
-		} else {
-			setPreviewUrl(null);
-		}
-
-		const url = await uploadFile(file);
-		onUploadComplete(url);
+	// Map file field IDs to their name and base64 field counterparts
+	const fieldMap: Record<
+		FileFieldId,
+		{ nameField: keyof FormDataType; base64Field: keyof FormDataType }
+	> = {
+		businessRegistrationFile: {
+			nameField: "businessRegistrationFileName",
+			base64Field: "businessRegistrationBase64",
+		},
+		proofOfAddressFile: {
+			nameField: "proofOfAddressFileName",
+			base64Field: "proofOfAddressBase64",
+		},
+		statusReportFile: {
+			nameField: "statusReportFileName",
+			base64Field: "statusReportBase64",
+		},
 	};
 
-	useEffect(() => {
-		return () => {
-			if (previewUrl) {
-				URL.revokeObjectURL(previewUrl);
+	const handleFileChange = useCallback(
+		async (event: React.ChangeEvent<HTMLInputElement>) => {
+			const file = event.target.files?.[0];
+			if (!file) {
+				setValue(id, "", { shouldValidate: true });
+				setValue(fieldMap[id].nameField, "", { shouldValidate: true });
+				setValue(fieldMap[id].base64Field, undefined, { shouldValidate: true });
+				setFileName(null);
+				onUploadComplete?.(null);
+				return;
 			}
-		};
-	}, [previewUrl]);
 
-	const getFileIcon = () => {
-		if (!fileName) return null;
-		
-		if (fileType?.startsWith('image/')) {
-			return <ImageIcon className="w-4 h-4 mr-2 text-gray-500" />;
-		} else if (fileType === 'application/pdf') {
-			return <FileIcon className="w-4 h-4 mr-2 text-gray-500" />;
-		} else {
-			return <FileTextIcon className="w-4 h-4 mr-2 text-gray-500" />;
-		}
-	};
+			setIsUploading(true);
+			setFileName(file.name);
+
+			try {
+				if (file.size > 20 * 1024 * 1024) {
+					throw new Error("File size exceeds 20MB limit");
+				}
+
+				const extension = file.name.toLowerCase().split(".").pop();
+				let result: {
+					url?: string;
+					base64?: string;
+					fileName?: string;
+				} | null = null;
+
+				if (
+					extension === "jpg" ||
+					extension === "jpeg" ||
+					extension === "png"
+				) {
+					// Upload images to Cloudinary
+					const formData = new FormData();
+					formData.append("file", file);
+					formData.append(
+						"upload_preset",
+						process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || ""
+					);
+
+					const response = await fetch(
+						`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+						{
+							method: "POST",
+							body: formData,
+						}
+					);
+
+					const data = await response.json();
+					if (!response.ok) {
+						throw new Error(data.error?.message || "Failed to upload image");
+					}
+
+					result = {
+						url: data.secure_url,
+						fileName: file.name,
+					};
+				} else if (extension === "pdf") {
+					const reader = new FileReader();
+					const base64Promise = new Promise<string>((resolve) => {
+						reader.onload = () => resolve(reader.result as string);
+						reader.readAsDataURL(file);
+					});
+					const base64 = await base64Promise;
+
+					result = {
+						base64: base64.split(",")[1],
+						fileName: file.name,
+					};
+				} else {
+					throw new Error(`Unsupported file type: ${extension}`);
+				}
+
+				// Update form fields
+				setValue(id, result.url || result.base64 || "", {
+					shouldValidate: true,
+				});
+				setValue(fieldMap[id].nameField, result.fileName || "", {
+					shouldValidate: true,
+				});
+				if (result.base64) {
+					setValue(fieldMap[id].base64Field, result.base64, {
+						shouldValidate: true,
+					});
+				} else {
+					setValue(fieldMap[id].base64Field, undefined, {
+						shouldValidate: true,
+					});
+				}
+				clearErrors([id, fieldMap[id].nameField, fieldMap[id].base64Field]);
+				onUploadComplete?.(result);
+			} catch (error) {
+				console.error("File upload error:", error);
+				setError(id, {
+					message:
+						error instanceof Error ? error.message : "Failed to upload file",
+				});
+				setValue(id, "", { shouldValidate: true });
+				setValue(fieldMap[id].nameField, "", { shouldValidate: true });
+				setValue(fieldMap[id].base64Field, undefined, { shouldValidate: true });
+				setFileName(null);
+				onUploadComplete?.(null);
+			} finally {
+				setIsUploading(false);
+			}
+		},
+		[id, setValue, setError, clearErrors, onUploadComplete]
+	);
 
 	return (
-		<div>
-			<label
-				htmlFor={id}
-				className="block text-sm font-medium text-gray-700 mb-1"
-			>
-				{label} {required && <span className="text-red-500">*</span>}
+		<div className="space-y-2">
+			<label htmlFor={id} className="block text-sm font-medium text-gray-700">
+				{label} {required && <span className="text-error">*</span>}
 			</label>
-			<div className="flex items-center gap-2">
-				<div className="border border-secondary-light rounded-md p-2 flex-1 flex items-center">
-					<input
-						type="file"
-						id={id}
-						ref={fileInputRef}
-						className="hidden"
-						onChange={handleFileChange}
-						accept={accept}
-						disabled={disabled || isUploading}
-					/>
-					<label
-						htmlFor={id}
-						className={`bg-secondary-dark text-white px-4 py-1 rounded cursor-pointer inline-block ${
-							disabled || isUploading ? "opacity-50 cursor-not-allowed" : ""
-						}`}
-					>
-						{isUploading ? "Uploading..." : "Choose File"}
-					</label>
-					<span className="ml-3 text-sm text-gray-600 truncate max-w-xs flex items-center">
-						{fileName ? (
-							<>
-								{getFileIcon()}
-								{fileName}
-							</>
-						) : (
-							`No file chosen (${fileTypes})`
-						)}
-					</span>
-				</div>
+			<div className="relative">
+				<input
+					id={id}
+					type="file"
+					accept={accept}
+					onChange={handleFileChange}
+					disabled={isUploading}
+					className="hidden border-info"
+				/>
+				<label
+					htmlFor={id}
+					className={`flex items-center justify-center w-full h-12 px-4 py-2 border border-secondary-light rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary ${
+						isUploading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+					}`}
+				>
+					<Upload className="w-5 h-5 mr-2" />
+					{isUploading ? "Uploading..." : fileName || `Upload ${fileTypes}`}
+				</label>
 			</div>
-			{/* {previewUrl && (
-				<div className="mt-2">
-					<Image
-						src={previewUrl}
-						alt="Preview"
-						className="w-32 h-32 object-contain border rounded"
-						width={128}
-						height={128}
-						loading="lazy"
-					/>
-				</div>
-			)} */}
-			{error && <p className="mt-1 text-sm text-error">{error}</p>}
+			{error && <p className="text-sm text-error">{error}</p>}
 		</div>
 	);
 };
