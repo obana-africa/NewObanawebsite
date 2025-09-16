@@ -158,6 +158,7 @@ const FormFileUpload: React.FC<FormFileUploadProps> = ({
 				setIsUploading(false);
 			}
 		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[id, setValue, setError, clearErrors, onUploadComplete]
 	);
 
