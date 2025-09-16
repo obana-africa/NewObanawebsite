@@ -5,7 +5,6 @@ import Image from "next/image";
 import { X, CheckCircle, AlertCircle, ChevronsRight } from "lucide-react";
 import FormInput from "@/components/ui/form-input";
 import FormSelect from "@/components/ui/form-select";
-import FormFileUpload from "@/components/ui/form-file-upload";
 import logoImage from "@/app/assets/images/logos/obana-logo.svg";
 import Button from "@/components/ui/button";
 import {
@@ -16,6 +15,7 @@ import {
 import { inventoryFinancingSchema } from "../schemas";
 import PhoneInput from "@/components/ui/phone-input";
 import { FormDataType } from "../types";
+import FormFileUpload from "@/app/(external)/(services)/inventory/components/inventory-file-upload";
 
 interface InventoryFinancingModalProps {
 	isOpen: boolean;
@@ -96,7 +96,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 			businessRegistrationFileName: "",
 			proofOfAddressFileName: "",
 			statusReportFileName: "",
-			inventoryFinancingType: "",  
+			inventoryFinancingType: "",
 		},
 	});
 
@@ -180,7 +180,6 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 	};
 
 	const onSubmit = handleSubmit(async (data: FormDataType) => {
-
 		try {
 			setIsLoading(true);
 			setErrorMessage("");
@@ -224,10 +223,9 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 				businessRegistrationFileName: data.businessRegistrationFileName,
 				proofOfAddressFileName: data.proofOfAddressFileName,
 				statusReportFileName: data.statusReportFileName,
-				inventoryFinancingType: data.inventoryFinancingType,  
+				inventoryFinancingType: data.inventoryFinancingType,
 			};
 
-			console.log("Submitting to Google Sheets:", googleSheetsData);
 
 			const googleSheetsResponse = await fetch(googleSheetsApiUrl, {
 				method: "POST",
@@ -239,7 +237,6 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 			});
 
 			const googleSheetsResult = await googleSheetsResponse.json();
-			console.log("Google Sheets response:", googleSheetsResult);
 
 			if (!googleSheetsResponse.ok || !googleSheetsResult.success) {
 				throw new Error(
@@ -280,11 +277,9 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 					bvn: data.bvn,
 					business_registration_file:
 						uploadedFiles.businessRegistrationFile?.url,
-					inventory_financing_type: data.inventoryFinancingType, 
+					inventory_financing_type: data.inventoryFinancingType,
 				},
 			};
-
-			console.log("Submitting to Obana:", obanaRegistrationData);
 
 			const obanaResponse = await fetch("/api/shop/users/obana-sign-up", {
 				method: "POST",
@@ -296,9 +291,27 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 			});
 
 			const obanaResult = await obanaResponse.json();
-			console.log("Obana response:", obanaResult);
 
 			if (!obanaResponse.ok) {
+				if (
+					obanaResult.message === "Email or Phone number already registered" ||
+					obanaResult.error?.message ===
+						"Email or Phone number already registered"
+				) {
+					setCurrentStep("success");
+					setErrorMessage(
+						"You are already a registered customer! Your submission has been received, and you can continue shopping."
+					);
+					setTimeout(() => {
+						const shopUrl =
+							environment === "production"
+								? "https://shop.obana.africa"
+								: "https://staging.shop.obana.africa";
+						window.open(shopUrl, "_blank");
+						onClose();
+					}, 2000);
+					return;
+				}
 				throw new Error(
 					obanaResult.message || `Registration failed: ${obanaResponse.status}`
 				);
@@ -832,12 +845,13 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 			<CheckCircle className="w-16 h-16 text-green-500" />
 			<div className="text-center space-y-2">
 				<h2 className="text-2xl font-bold text-primary">
-					Application Submitted Successfully!
+					{errorMessage
+						? "Submission Received!"
+						: "Application Submitted Successfully!"}
 				</h2>
 				<p className="text-gray-600">
-					Your inventory financing application and all documents have been
-					submitted successfully. Confirmation emails have been sent to all
-					relevant parties. You will be redirected to verify your OTP.
+					{errorMessage ||
+						"Your inventory financing application and all documents have been submitted successfully. Confirmation emails have been sent to all relevant parties. You will be redirected to verify your OTP."}
 				</p>
 				<div className="bg-green-50 border border-green-200 rounded-lg p-4 mt-4">
 					<p className="text-sm text-green-700">
@@ -849,13 +863,11 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 			<div className="flex flex-col sm:flex-row gap-4 w-full max-w-sm">
 				<Button
 					onClick={() => {
-						// eslint-disable-next-line @typescript-eslint/no-unused-vars
-						const storedData = localStorage.getItem("pendingRegistration");
-						const shopOtpUrl =
+						const shopUrl =
 							environment === "production"
-								? `https://shop.obana.africa`
-								: `https://staging.shop.obana.africa`;
-						window.open(shopOtpUrl, "_blank");
+								? "https://shop.obana.africa"
+								: "https://staging.shop.obana.africa";
+						window.open(shopUrl, "_blank");
 						onClose();
 					}}
 					variant="primary"

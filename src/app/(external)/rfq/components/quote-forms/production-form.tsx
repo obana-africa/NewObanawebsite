@@ -63,7 +63,6 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 		{ value: "Traditional/Cultural", label: "Traditional/Cultural" },
 	];
 
-
 	const handleFileUploadComplete = (url: string | null) => {
 		setValue("sampleProductUrl", url || "");
 	};

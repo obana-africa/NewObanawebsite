@@ -58,7 +58,7 @@ interface FinancingPartner {
 const FINANCING_PARTNERS: Record<string, FinancingPartner> = {
 	salad_africa: {
 		name: "Salad Africa",
-		email: "olaoluwajohn06@gmail.com",
+		email: "olagundoyealexander@gmail.com",
 		displayName: "Salad Africa (50/50 Split Financing)",
 	},
 	cabon_finance: {
@@ -442,9 +442,6 @@ async function processImageAttachment(
 		const response = await fetch(fileUrl);
 
 		if (!response.ok) {
-			console.error(
-				`❌ Failed to fetch file from ${fileUrl}: ${response.status} ${response.statusText}`
-			);
 			return null;
 		}
 
@@ -516,7 +513,6 @@ async function processDocumentAttachment(
 				);
 		}
 
-		// Validate base64 content
 		let buffer;
 		try {
 			buffer = Buffer.from(cleanBase64, "base64");
@@ -525,13 +521,9 @@ async function processDocumentAttachment(
 			return null;
 		}
 
-		// Basic file integrity check (e.g., for PDFs, check for %PDF header)
 		if (extension === "pdf") {
 			const header = buffer.toString("ascii", 0, 4);
 			if (!header.startsWith("%PDF")) {
-				console.error(
-					`❌ Invalid PDF file for ${fileName}: Missing %PDF header`
-				);
 				return null;
 			}
 		}
@@ -581,21 +573,11 @@ async function uploadAttachmentToZoho(
 			};
 
 			if (!zohoAttachment.storeName || !zohoAttachment.attachmentPath) {
-				console.error(
-					`❌ Missing storeName or attachmentPath for ${attachment.fileName}`
-				);
 				return null;
 			}
 
 			return zohoAttachment;
 		} else {
-			console.error(
-				`❌ Failed to upload attachment ${attachment.fileName}. Response:`,
-				{
-					status: response.data.status,
-					data: response.data,
-				}
-			);
 			return null;
 		}
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -637,9 +619,6 @@ export async function POST(request: NextRequest) {
 		const formData: FormDataType = await request.json();
 		const financingType = formData.inventoryFinancingType;
 		if (!financingType || !FINANCING_PARTNERS[financingType]) {
-			console.error(
-				`❌ Invalid or missing inventory financing type: ${financingType}`
-			);
 			return Response.json(
 				{
 					success: false,
@@ -718,25 +697,6 @@ export async function POST(request: NextRequest) {
 			}
 		}
 
-		// Upload separate sets of attachments for each email to avoid deletion issue
-		const zohoAttachmentsObana = await uploadAttachments(
-			attachments,
-			accessToken,
-			accountId
-		);
-
-		const zohoAttachmentsPartner = await uploadAttachments(
-			attachments,
-			accessToken,
-			accountId
-		);
-
-		const zohoAttachmentsCustomer = await uploadAttachments(
-			attachments,
-			accessToken,
-			accountId
-		);
-
 		// Save to Google Sheets (use one set for info, since same)
 		const timestamp = new Date().toISOString();
 		const sheetData = [
@@ -775,32 +735,35 @@ export async function POST(request: NextRequest) {
 			// 	: "No documents",
 		];
 
-		let result;
-		let attempt = 0;
-		const maxAttempts = 3;
+		await appendToSheet(sheetData);
 
-		while (attempt < maxAttempts) {
-			try {
-				result = await appendToSheet(sheetData);
-				break;
-			} catch (error) {
-				attempt++;
-				if (attempt === maxAttempts) {
-					throw error;
-				}
-				await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
-			}
-		}
-
-		// Prepare email data
 		const apiUrl = `https://mail.zoho.com/api/accounts/${accountId}/messages`;
+		const attachmentNames = attachments.map((att) => att.fileName);
 
-		const createEmailData = (
+		async function sendEmailWithAttachments(
 			toAddress: string,
 			subject: string,
 			content: string,
-			zohoAttachments: ZohoAttachment[]
-		) => {
+			recipientType: string,
+			maxRetries = 3
+		) {
+
+			let zohoAttachments: ZohoAttachment[] = [];
+
+			if (attachments.length > 0) {
+				if (!accountId) {
+					throw new Error(
+						"ZOHO_MAIL_ACCOUNT_ID environment variable is not set"
+					);
+				}
+				zohoAttachments = await uploadAttachments(
+					attachments,
+					accessToken,
+					accountId
+				);
+				await new Promise((resolve) => setTimeout(resolve, 2000));
+			}
+
 			const emailData = {
 				fromAddress: "'OBANA FINANCING' <ochije.nnani@iconholding.africa>",
 				toAddress,
@@ -815,59 +778,7 @@ export async function POST(request: NextRequest) {
 				}),
 			};
 
-			return emailData;
-		};
-
-		const attachmentNames = attachments.map((att) => att.fileName);
-
-		const obanaEmailData = createEmailData(
-			"ola11@mailinator.com",
-			`New Inventory Financing Request from ${formData.firstName} ${formData.lastName} - ${partnerInfo.displayName}`,
-			generateFinancingEmailContent(
-				formData,
-				"obana",
-				zohoAttachmentsObana.length,
-				attachmentNames,
-				partnerInfo
-			),
-			zohoAttachmentsObana
-		);
-
-		const partnerEmailData = createEmailData(
-			partnerInfo.email,
-			`New Inventory Financing Request from ${formData.firstName} ${formData.lastName} - ${partnerInfo.displayName}`,
-			generateFinancingEmailContent(
-				formData,
-				"partner",
-				zohoAttachmentsPartner.length,
-				attachmentNames,
-				partnerInfo
-			),
-			zohoAttachmentsPartner
-		);
-
-		const customerEmailData = createEmailData(
-			formData.email!,
-			"Your Inventory Financing Request Confirmation - ${partnerInfo.displayName}",
-			generateFinancingEmailContent(
-				formData,
-				"customer",
-				zohoAttachmentsCustomer.length,
-				attachmentNames,
-				partnerInfo
-			),
-			zohoAttachmentsCustomer
-		);
-
-		// Send emails
-		async function sendEmail(
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			emailData: any,
-			recipientType: string,
-			retries = 3,
-			delay = 2000
-		) {
-			for (let attempt = 1; attempt <= retries; attempt++) {
+			for (let attempt = 1; attempt <= maxRetries; attempt++) {
 				try {
 					const response = await axios.post(apiUrl, emailData, {
 						headers: {
@@ -875,92 +786,148 @@ export async function POST(request: NextRequest) {
 							Accept: "application/json",
 							"Content-Type": "application/json",
 						},
-						timeout: 30000,
+						timeout: 45000,
 					});
 
-					return response.data;
+					if (response.data.status?.code === 200) {
+						return {
+							success: true,
+							data: response.data,
+							attachmentCount: zohoAttachments.length,
+						};
+					} else {
+						throw new Error(
+							`Zoho API returned error: ${JSON.stringify(response.data)}`
+						);
+					}
 					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				} catch (error: any) {
-					console.error(
-						`❌ Failed attempt ${attempt}/${retries} for ${recipientType} email:`,
-						{
-							message: error.message,
-							status: error.response?.status,
-							statusText: error.response?.statusText,
-							data: error.response?.data,
-						}
-					);
-
-					if (attempt < retries) {
+					if (attempt < maxRetries) {
+						const delay = attempt * 3000;
 						await new Promise((resolve) => setTimeout(resolve, delay));
-						continue;
+					} else {
+						return {
+							success: false,
+							error: error.response?.data || error.message,
+							attachmentCount: zohoAttachments.length,
+						};
 					}
-
-					throw new Error(
-						`Failed to send ${recipientType} email after ${retries} attempts: ${JSON.stringify(
-							error.response?.data || error.message
-						)}`
-					);
 				}
+			}
+
+			return {
+				success: false,
+				error: "Max retries exceeded",
+				attachmentCount: 0,
+			};
+		}
+
+		// Define email recipients and details
+		const emailTargets = [
+			{
+				address: "olaoluwajohn06@gmail.com",
+				type: "Obana",
+				subject: `New Inventory Financing Request from ${formData.firstName} ${formData.lastName} - ${partnerInfo.displayName}`,
+				content: generateFinancingEmailContent(
+					formData,
+					"obana",
+					attachments.length,
+					attachmentNames,
+					partnerInfo
+				),
+			},
+			{
+				address: partnerInfo.email,
+				type: `Partner (${partnerInfo.name})`,
+				subject: `New Inventory Financing Request from ${formData.firstName} ${formData.lastName} - ${partnerInfo.displayName}`,
+				content: generateFinancingEmailContent(
+					formData,
+					"partner",
+					attachments.length,
+					attachmentNames,
+					partnerInfo
+				),
+			},
+			{
+				address: formData.email!,
+				type: "Customer",
+				subject: `Your Inventory Financing Request Confirmation - ${partnerInfo.displayName}`,
+				content: generateFinancingEmailContent(
+					formData,
+					"customer",
+					attachments.length,
+					attachmentNames,
+					partnerInfo
+				),
+			},
+		];
+
+		// Send emails with proper error tracking
+		const emailResults: Array<{
+			type: string;
+			address: string;
+			success: boolean;
+			error?: string;
+			attachmentCount?: number;
+		}> = [];
+
+		for (const target of emailTargets) {
+			const result = await sendEmailWithAttachments(
+				target.address,
+				target.subject,
+				target.content,
+				target.type
+			);
+
+			emailResults.push({
+				type: target.type,
+				address: target.address,
+				success: result.success,
+				error: result.success ? undefined : result.error,
+				attachmentCount: result.attachmentCount,
+			});
+
+			// Wait between emails to avoid rate limiting
+			if (target !== emailTargets[emailTargets.length - 1]) {
+				await new Promise((resolve) => setTimeout(resolve, 5000));
 			}
 		}
 
-		await new Promise((resolve) => setTimeout(resolve, 5000));
+		// Analyze results
+		const successfulEmails = emailResults.filter((r) => r.success);
+		const failedEmails = emailResults.filter((r) => !r.success);
 
-		await sendEmail(obanaEmailData, "Obana", 3, 2000);
-
-		await sendEmail(partnerEmailData, partnerInfo.name, 3, 2000);
-
-		await sendEmail(customerEmailData, "Customer", 3, 2000);
-
+		// Return comprehensive response
 		return Response.json({
 			success: true,
-			message:
-				"Form submitted successfully to Google Sheet and emails sent with attachments",
+			message: `Form submitted successfully. ${successfulEmails.length}/${emailResults.length} emails sent successfully.`,
 			data: {
-				spreadsheetId: result?.spreadsheetId,
-				tableRange: result?.tableRange,
-				updates: result?.updates,
 				attachmentsProcessed: attachments.length,
-				attachmentsUploaded: zohoAttachmentsObana.length, // Since all same
+				emailsSent: successfulEmails.length,
+				emailsFailed: failedEmails.length,
+				successfulEmails: successfulEmails.map((e) => ({
+					type: e.type,
+					address: e.address,
+				})),
+				failedEmails: failedEmails.map((e) => ({
+					type: e.type,
+					address: e.address,
+					error: e.error,
+				})),
 				attachmentNames: attachments.map((att) => att.fileName),
-				zohoAttachments: zohoAttachmentsObana, // Example
-				emailsSent: 3,
+				detailedResults: emailResults,
 			},
 		});
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	} catch (error: any) {
-		console.error(`💥 ERROR IN FORM SUBMISSION:`, {
-			message: error.message,
-			stack: error.stack,
-			name: error.name,
-		});
-
-		let errorMessage = "Something went wrong";
-		if (error.message?.includes("Unable to parse range")) {
-			errorMessage = "Sheet configuration error";
-		} else if (error.message?.includes("The caller does not have permission")) {
-			errorMessage = "Permission error - check sheet sharing settings";
-		} else if (error.message?.includes("Requested entity was not found")) {
-			errorMessage = "Sheet not found - check sheet ID";
-		} else if (error.message?.includes("Zoho")) {
-			errorMessage = "Failed to send emails - check Zoho API configuration";
-		} else if (process.env.NODE_ENV === "development") {
-			errorMessage = error.message;
-		}
-
 		return Response.json(
 			{
 				success: false,
-				message: "Failed to submit to Google Sheet or send emails",
-				error: errorMessage,
-				details:
+				message: "Failed to submit form",
+				error:
 					process.env.NODE_ENV === "development"
-						? {
-								stack: error.stack,
-								name: error.name,
-						  }
-						: undefined,
+						? error.message
+						: "Internal server error",
 			},
 			{ status: 500 }
 		);
