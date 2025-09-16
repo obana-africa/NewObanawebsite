@@ -573,6 +573,7 @@ async function uploadAttachmentToZoho(
 			);
 			return null;
 		}
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	} catch (error: any) {
 		console.error(
 			`❌ Error uploading attachment ${attachment.fileName} to Zoho:`,
@@ -926,6 +927,7 @@ export async function POST(request: NextRequest) {
 		// Send emails
 		console.log(`\n📤 SENDING EMAILS...`);
 		async function sendEmail(
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			emailData: any,
 			recipientType: string,
 			retries = 3,
@@ -940,6 +942,7 @@ export async function POST(request: NextRequest) {
 				hasAttachments: !!emailData.attachments,
 				attachmentCount: emailData.attachments?.length || 0,
 				attachments:
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 					emailData.attachments?.map((att: any) => ({
 						name: att.attachmentName,
 						storeName: att.storeName,
@@ -966,6 +969,7 @@ export async function POST(request: NextRequest) {
 						messageId: response.data?.data?.messageId,
 					});
 					return response.data;
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				} catch (error: any) {
 					console.error(
 						`❌ Failed attempt ${attempt}/${retries} for ${recipientType} email:`,
@@ -1030,6 +1034,7 @@ export async function POST(request: NextRequest) {
 				emailsSent: 3,
 			},
 		});
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	} catch (error: any) {
 		console.error(`💥 ERROR IN FORM SUBMISSION:`, {
 			message: error.message,

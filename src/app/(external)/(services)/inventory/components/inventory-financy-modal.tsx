@@ -116,6 +116,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 			setValue("state", "");
 			setValue("city", "");
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [watch("country"), setValue]);
 
 	useEffect(() => {
@@ -123,6 +124,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 			setSelectedState(watch("state"));
 			setValue("city", "");
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [watch("state"), setValue]);
 
 	useEffect(() => {
@@ -783,6 +785,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 			<div className="flex flex-col sm:flex-row gap-4 w-full max-w-sm">
 				<Button
 					onClick={() => {
+						// eslint-disable-next-line @typescript-eslint/no-unused-vars
 						const storedData = localStorage.getItem("pendingRegistration");
 						const shopOtpUrl =
 							environment === "production"
