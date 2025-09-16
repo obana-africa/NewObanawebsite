@@ -41,4 +41,7 @@ export const inventoryFinancingSchema = z.object({
 	statusReportFileName: z
 		.string()
 		.min(1, "Business status report file name is required"),
+	inventoryFinancingType: z
+		.string()
+		.min(1, "Inventory financing type is required"),
 });

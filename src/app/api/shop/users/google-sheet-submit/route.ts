@@ -32,6 +32,7 @@ interface FormDataType {
 	businessRegistrationFileName?: string;
 	proofOfAddressFileName?: string;
 	statusReportFileName?: string;
+	inventoryFinancingType?: string;
 	[key: string]: string | string[] | undefined;
 }
 
@@ -47,11 +48,47 @@ interface ZohoAttachment {
 	attachmentName: string;
 }
 
+interface FinancingPartner {
+	name: string;
+	email: string;
+	displayName: string;
+}
+
+// Configuration for financing partners
+const FINANCING_PARTNERS: Record<string, FinancingPartner> = {
+	salad_africa: {
+		name: "Salad Africa",
+		email: "olaoluwajohn06@gmail.com",
+		displayName: "Salad Africa (50/50 Split Financing)",
+	},
+	cabon_finance: {
+		name: "Cabon Finance",
+		email: "cabon@mailinator.com",
+		displayName: "Cabon Finance (Pay in 3 Months)",
+	},
+	quickfund_capital: {
+		name: "QuickFund Capital",
+		email: "quickfund@mailinator.com",
+		displayName: "QuickFund Capital (6-Month Plan)",
+	},
+	tradeline_credit: {
+		name: "TradeLine Credit",
+		email: "tradeline@mailinator.com",
+		displayName: "TradeLine Credit (Flexible Terms)",
+	},
+	inventory_bridge: {
+		name: "Inventory Bridge",
+		email: "bridge@mailinator.com",
+		displayName: "Inventory Bridge (Revolving Credit)",
+	},
+};
+
 function generateFinancingEmailContent(
 	data: FormDataType,
-	recipient: "obana" | "salad" | "customer",
+	recipient: "obana" | "partner" | "customer",
 	attachmentCount: number = 0,
-	attachmentNames: string[] = []
+	attachmentNames: string[] = [],
+	partnerInfo?: FinancingPartner
 ): string {
 	const fullName = `${data.salutation || ""} ${data.firstName || ""} ${
 		data.lastName || ""
@@ -67,6 +104,12 @@ function generateFinancingEmailContent(
 		if (Array.isArray(arr)) return arr.join(", ");
 		return arr;
 	};
+
+	// Get financing type display name
+	const financingTypeDisplay = data.inventoryFinancingType
+		? FINANCING_PARTNERS[data.inventoryFinancingType]?.displayName ||
+		  data.inventoryFinancingType
+		: "Not specified";
 
 	// Generate attachment list HTML
 	const attachmentListHtml =
@@ -105,6 +148,14 @@ function generateFinancingEmailContent(
 
       <!-- Main Content -->
       <div style="background: white; padding: 25px 20px;">
+        
+        <!-- Financing Type Section -->
+        <div style="background: #e6fffa; border-radius: 8px; padding: 15px; margin: 15px 0; border-left: 4px solid #38b2ac;">
+          <h4 style="margin: 0 0 8px 0; color: #2d3748; font-size: 12px;">💼 Selected Financing Option:</h4>
+          <p style="margin: 0; color: #2d3748; font-size: 14px; font-weight: 600;">
+            ${financingTypeDisplay}
+          </p>
+        </div>
         
         <!-- Attachment Status Section -->
         ${attachmentListHtml}
@@ -275,7 +326,7 @@ function generateFinancingEmailContent(
         <div style="background: #2d3748;  border-radius: 8px; padding: 18px; margin: 20px 0; color: white; text-align: center;">
           <h3 style="margin: 0 0 10px 0; font-size: 14px;">⚡ Action Required</h3>
           <p style="margin: 0; font-size: 12px; opacity: 0.9;">
-            A new inventory financing request has been submitted. Please review the attached documents and applicant details to proceed with processing.
+            A new inventory financing request has been submitted for <strong>${financingTypeDisplay}</strong>. Please review the attached documents and applicant details to proceed with processing.
           </p>
         </div>
 
@@ -290,7 +341,7 @@ function generateFinancingEmailContent(
         </p>
       </div>
     </div>`;
-	} else if (recipient === "salad") {
+	} else if (recipient === "partner") {
 		return `
       ${baseContent}
       
@@ -298,7 +349,16 @@ function generateFinancingEmailContent(
         <div style="background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); border-radius: 8px; padding: 18px; margin: 20px 0; color: white; text-align: center;">
           <h3 style="margin: 0 0 10px 0; font-size: 14px;">📋 Review Required</h3>
           <p style="margin: 0; font-size: 12px; opacity: 0.9;">
-            A new inventory financing application has been received. Please review the applicant information and attached documents for loan pre-qualification assessment.
+            A new inventory financing application has been received through Obana for <strong>${financingTypeDisplay}</strong>. Please review the applicant information and attached documents for loan pre-qualification assessment.
+          </p>
+        </div>
+
+        <!-- Partner Info Section -->
+        <div style="background: #e6fffa; border-radius: 8px; padding: 15px; margin: 15px 0; border-left: 4px solid #38b2ac;">
+          <p style="margin: 0; color: #2d3748; font-size: 11px;">
+            <strong>Partner:</strong> ${
+							partnerInfo?.name || "Financing Partner"
+						} - This application was specifically submitted for your financing program.
           </p>
         </div>
 
@@ -321,7 +381,7 @@ function generateFinancingEmailContent(
         <div style="background: #2d3748;  border-radius: 8px; padding: 18px; margin: 20px 0; color: white; text-align: center;">
           <h3 style="margin: 0 0 10px 0; font-size: 14px;">✅ Application Received Successfully</h3>
           <p style="margin: 0; font-size: 12px; opacity: 0.9;">
-            Thank you for your inventory financing application. We have received all your information and documents. Our team will review your application and get back to you within 2-3 business days.
+            Thank you for your inventory financing application with <strong>${financingTypeDisplay}</strong>. We have received all your information and documents. Our team will review your application and get back to you within 2-3 business days.
           </p>
         </div>
 
@@ -329,7 +389,9 @@ function generateFinancingEmailContent(
           <h4 style="margin: 0 0 8px 0; color: #2d3748; font-size: 12px;">📋 Next Steps:</h4>
           <ul style="margin: 0; padding-left: 15px; color: #4a5568; font-size: 11px;">
             <li style="margin: 5px 0;">Our team will review your submitted documents</li>
-            <li style="margin: 5px 0;">We'll verify your business and financial information</li>
+            <li style="margin: 5px 0;">We'll verify your business and financial information with ${
+							partnerInfo?.name || "your selected financing partner"
+						}</li>
             <li style="margin: 5px 0;">You'll receive a pre-qualification decision within 2-3 business days</li>
             <li style="margin: 5px 0;">If approved, we'll contact you with next steps</li>
           </ul>
@@ -374,7 +436,6 @@ async function processImageAttachment(
 ): Promise<DocumentAttachment | null> {
 	try {
 		if (!fileUrl) {
-			console.log(`❌ No file URL provided for ${fileName}`);
 			return null;
 		}
 
@@ -428,19 +489,12 @@ async function processDocumentAttachment(
 	base64: string,
 	fileName: string
 ): Promise<DocumentAttachment | null> {
-	console.log(`🔄 PROCESSING DOCUMENT ATTACHMENT:`, {
-		fileName,
-		base64Length: base64?.length,
-	});
-
 	try {
 		if (!base64) {
-			console.log(`❌ No base64 data provided for ${fileName}`);
 			return null;
 		}
 
 		const cleanBase64 = base64.replace(/^data:[^;]+;base64,/, "");
-		console.log(`🧹 Cleaned base64 data, length: ${cleanBase64.length}`);
 
 		const extension = fileName.toLowerCase().split(".").pop() || "pdf";
 		let contentType = "application/octet-stream";
@@ -466,7 +520,6 @@ async function processDocumentAttachment(
 		let buffer;
 		try {
 			buffer = Buffer.from(cleanBase64, "base64");
-			console.log(`✅ Valid base64 data, buffer size: ${buffer.length} bytes`);
 		} catch (validationError) {
 			console.error(`❌ Invalid base64 data for ${fileName}:`, validationError);
 			return null;
@@ -482,13 +535,6 @@ async function processDocumentAttachment(
 				return null;
 			}
 		}
-
-		console.log(`✅ Successfully processed document attachment:`, {
-			fileName,
-			contentType,
-			contentLength: cleanBase64.length,
-			estimatedSizeKB: Math.round((cleanBase64.length * 3) / 4 / 1024),
-		});
 
 		return {
 			fileName,
@@ -509,13 +555,6 @@ async function uploadAttachmentToZoho(
 	accountId: string,
 	attachment: DocumentAttachment
 ): Promise<ZohoAttachment | null> {
-	console.log(`🔄 UPLOADING TO ZOHO:`, {
-		fileName: attachment.fileName,
-		contentType: attachment.contentType,
-		contentLength: attachment.content.length,
-		accountId,
-	});
-
 	try {
 		const uploadUrl = `https://mail.zoho.com/api/accounts/${accountId}/messages/attachments?uploadType=multipart&isInline=false`;
 		const buffer = Buffer.from(attachment.content, "base64");
@@ -523,25 +562,12 @@ async function uploadAttachmentToZoho(
 		const blob = new Blob([buffer], { type: attachment.contentType });
 		formData.append("attach", blob, attachment.fileName);
 
-		console.log(`📤 Uploading to Zoho URL: ${uploadUrl}`);
-		console.log(`📤 File details:`, {
-			originalName: attachment.fileName,
-			blobSize: buffer.length,
-			contentType: attachment.contentType,
-		});
-
 		const response = await axios.post(uploadUrl, formData, {
 			headers: {
 				Authorization: `Zoho-oauthtoken ${accessToken}`,
 				"Content-Type": "multipart/form-data",
 			},
 			timeout: 60000,
-		});
-
-		console.log(`📥 Zoho upload response for ${attachment.fileName}:`, {
-			status: response.status,
-			statusText: response.statusText,
-			data: JSON.stringify(response.data, null, 2), // Log full response
 		});
 
 		if (response.data.status?.code === 200 && response.data.data) {
@@ -561,7 +587,6 @@ async function uploadAttachmentToZoho(
 				return null;
 			}
 
-			console.log(`✅ Successfully uploaded to Zoho:`, zohoAttachment);
 			return zohoAttachment;
 		} else {
 			console.error(
@@ -595,7 +620,6 @@ async function uploadAttachments(
 ): Promise<ZohoAttachment[]> {
 	const zohoAttachments: ZohoAttachment[] = [];
 	for (const attachment of attachments) {
-		console.log(`\n🔄 Uploading ${attachment.fileName} to Zoho...`);
 		const zohoAttachment = await uploadAttachmentToZoho(
 			accessToken,
 			accountId,
@@ -603,9 +627,6 @@ async function uploadAttachments(
 		);
 		if (zohoAttachment) {
 			zohoAttachments.push(zohoAttachment);
-			console.log(`✅ Successfully uploaded ${attachment.fileName} to Zoho`);
-		} else {
-			console.log(`❌ Failed to upload ${attachment.fileName} to Zoho`);
 		}
 	}
 	return zohoAttachments;
@@ -614,42 +635,39 @@ async function uploadAttachments(
 export async function POST(request: NextRequest) {
 	try {
 		const formData: FormDataType = await request.json();
-
-		console.log(`🚀 FORM SUBMISSION STARTED`);
-		console.log(`📝 Received form data:`, {
-			firstName: formData.firstName,
-			lastName: formData.lastName,
-			email: formData.email,
-			phone: formData.phone,
-			hasBusinessRegFile: !!formData.businessRegistrationFile,
-			hasProofOfAddressFile: !!formData.proofOfAddressFile,
-			hasStatusReportFile: !!formData.statusReportFile,
-			businessRegFileName: formData.businessRegistrationFileName,
-			proofOfAddressFileName: formData.proofOfAddressFileName,
-			statusReportFileName: formData.statusReportFileName,
-		});
-
-		// Get Zoho access token
-		console.log(`🔐 Getting Zoho access token...`);
+		const financingType = formData.inventoryFinancingType;
+		if (!financingType || !FINANCING_PARTNERS[financingType]) {
+			console.error(
+				`❌ Invalid or missing inventory financing type: ${financingType}`
+			);
+			return Response.json(
+				{
+					success: false,
+					message: "Invalid or missing inventory financing type",
+				},
+				{ status: 400 }
+			);
+		}
+		const partnerInfo = FINANCING_PARTNERS[financingType];
 		const accessToken = await getMailAccessToken();
 		if (!accessToken) {
-			console.error(`❌ Failed to retrieve Zoho access token`);
 			throw new Error("Failed to retrieve Zoho access token");
 		}
-		console.log(`✅ Successfully obtained Zoho access token`);
 
 		const accountId = process.env.ZOHO_MAIL_ACCOUNT_ID;
 		if (!accountId) {
-			console.error(`❌ ZOHO_MAIL_ACCOUNT_ID environment variable is not set`);
 			throw new Error("ZOHO_MAIL_ACCOUNT_ID environment variable is not set");
 		}
-		console.log(`✅ Zoho Account ID: ${accountId}`);
 
-		// Validate required fields
-		const requiredFields = ["firstName", "lastName", "email", "phone"];
+		const requiredFields = [
+			"firstName",
+			"lastName",
+			"email",
+			"phone",
+			"inventoryFinancingType",
+		];
 		const missingFields = requiredFields.filter((field) => !formData[field]);
 		if (missingFields.length > 0) {
-			console.error(`❌ Missing required fields: ${missingFields.join(", ")}`);
 			return Response.json(
 				{
 					success: false,
@@ -658,10 +676,7 @@ export async function POST(request: NextRequest) {
 				{ status: 400 }
 			);
 		}
-		console.log(`✅ All required fields present`);
 
-		// Process attachments
-		console.log(`\n🔄 STARTING ATTACHMENT PROCESSING...`);
 		const attachments: DocumentAttachment[] = [];
 
 		const documentData = [
@@ -684,110 +699,45 @@ export async function POST(request: NextRequest) {
 			},
 		];
 
-		console.log(
-			`📋 Document data to process:`,
-			documentData.map((doc) => ({
-				type: doc.type,
-				name: doc.name,
-				hasData: !!doc.data,
-				dataType: doc.data
-					? doc.data.startsWith("http")
-						? "URL"
-						: "base64"
-					: "none",
-				dataLength: doc.data?.length || 0,
-			}))
-		);
-
 		for (const doc of documentData) {
 			if (!doc.data) {
-				console.log(`⏭️ Skipping ${doc.type} - no data provided`);
 				continue;
 			}
 
-			console.log(`\n🔄 Processing ${doc.type}...`);
 			let attachment: DocumentAttachment | null = null;
 
 			// Check if it's a URL (starts with http/https) or base64 data
 			if (doc.data.startsWith("http")) {
-				console.log(`📡 Processing as URL: ${doc.data.substring(0, 50)}...`);
 				attachment = await processImageAttachment(doc.data, doc.name);
 			} else {
-				console.log(`📄 Processing as base64 data, length: ${doc.data.length}`);
 				attachment = await processDocumentAttachment(doc.data, doc.name);
 			}
 
 			if (attachment) {
 				attachments.push(attachment);
-				console.log(
-					`✅ Successfully processed ${doc.type}: ${attachment.fileName}`
-				);
-			} else {
-				console.log(`❌ Failed to process ${doc.type}`);
 			}
 		}
 
-		console.log(`\n📊 ATTACHMENT PROCESSING SUMMARY:`, {
-			totalProcessed: attachments.length,
-			attachmentNames: attachments.map((att) => att.fileName),
-			attachmentSizes: attachments.map((att) => ({
-				name: att.fileName,
-				contentType: att.contentType,
-				sizeKB: Math.round((att.content.length * 3) / 4 / 1024),
-			})),
-		});
-
 		// Upload separate sets of attachments for each email to avoid deletion issue
-		console.log(`\n🔄 UPLOADING ATTACHMENTS FOR OBANA EMAIL...`);
 		const zohoAttachmentsObana = await uploadAttachments(
 			attachments,
 			accessToken,
 			accountId
 		);
 
-		console.log(`\n🔄 UPLOADING ATTACHMENTS FOR SALAD EMAIL...`);
-		const zohoAttachmentsSalad = await uploadAttachments(
+		const zohoAttachmentsPartner = await uploadAttachments(
 			attachments,
 			accessToken,
 			accountId
 		);
 
-		console.log(`\n🔄 UPLOADING ATTACHMENTS FOR CUSTOMER EMAIL...`);
 		const zohoAttachmentsCustomer = await uploadAttachments(
 			attachments,
 			accessToken,
 			accountId
 		);
 
-		console.log(`\n📊 ZOHO UPLOAD SUMMARY FOR OBANA:`, {
-			totalUploaded: zohoAttachmentsObana.length,
-			uploadedFiles: zohoAttachmentsObana.map((att) => ({
-				name: att.attachmentName,
-				storeName: att.storeName,
-				path: att.attachmentPath,
-			})),
-		});
-
-		console.log(`\n📊 ZOHO UPLOAD SUMMARY FOR SALAD:`, {
-			totalUploaded: zohoAttachmentsSalad.length,
-			uploadedFiles: zohoAttachmentsSalad.map((att) => ({
-				name: att.attachmentName,
-				storeName: att.storeName,
-				path: att.attachmentPath,
-			})),
-		});
-
-		console.log(`\n📊 ZOHO UPLOAD SUMMARY FOR CUSTOMER:`, {
-			totalUploaded: zohoAttachmentsCustomer.length,
-			uploadedFiles: zohoAttachmentsCustomer.map((att) => ({
-				name: att.attachmentName,
-				storeName: att.storeName,
-				path: att.attachmentPath,
-			})),
-		});
-
 		// Save to Google Sheets (use one set for info, since same)
-		console.log(`\n📊 SAVING TO GOOGLE SHEETS...`);
 		const timestamp = new Date().toISOString();
 		const sheetData = [
 			timestamp,
@@ -814,17 +764,16 @@ export async function POST(request: NextRequest) {
 			Array.isArray(formData.brandOfInterest)
 				? formData.brandOfInterest.join(", ")
 				: formData.brandOfInterest || "",
+			formData.inventoryFinancingType || "",
 			attachments.length > 0
-				? `${attachments.length} documents attached: ${attachments
-						.map((att) => att.fileName)
-						.join(", ")}`
+				? `${attachments.length} documents attached`
 				: "No documents",
+			// attachments.length > 0
+			// 	? `${attachments.length} documents attached: ${attachments
+			// 			.map((att) => att.fileName)
+			// 			.join(", ")}`
+			// 	: "No documents",
 		];
-
-		console.log(`📝 Sheet data prepared:`, {
-			rowLength: sheetData.length,
-			attachmentInfo: sheetData[sheetData.length - 1],
-		});
 
 		let result;
 		let attempt = 0;
@@ -832,17 +781,10 @@ export async function POST(request: NextRequest) {
 
 		while (attempt < maxAttempts) {
 			try {
-				console.log(
-					`📊 Attempting to save to Google Sheets (attempt ${
-						attempt + 1
-					}/${maxAttempts})...`
-				);
 				result = await appendToSheet(sheetData);
-				console.log(`✅ Google Sheet append result:`, result);
 				break;
 			} catch (error) {
 				attempt++;
-				console.error(`❌ Google Sheets attempt ${attempt} failed:`, error);
 				if (attempt === maxAttempts) {
 					throw error;
 				}
@@ -851,7 +793,6 @@ export async function POST(request: NextRequest) {
 		}
 
 		// Prepare email data
-		console.log(`\n📧 PREPARING EMAIL DATA...`);
 		const apiUrl = `https://mail.zoho.com/api/accounts/${accountId}/messages`;
 
 		const createEmailData = (
@@ -874,58 +815,51 @@ export async function POST(request: NextRequest) {
 				}),
 			};
 
-			console.log(`📧 Email data created for ${toAddress}:`, {
-				toAddress: emailData.toAddress,
-				subject: emailData.subject,
-				hasAttachments: !!emailData.attachments,
-				attachmentCount: emailData.attachments?.length || 0,
-				attachmentNames:
-					emailData.attachments?.map((att) => att.attachmentName) || [],
-			});
-
 			return emailData;
 		};
 
-		const attachmentNames = attachments.map((att) => att.fileName); // Use original names for email content
+		const attachmentNames = attachments.map((att) => att.fileName);
 
 		const obanaEmailData = createEmailData(
 			"ola11@mailinator.com",
-			`New Inventory Financing Request from ${formData.firstName} ${formData.lastName}`,
+			`New Inventory Financing Request from ${formData.firstName} ${formData.lastName} - ${partnerInfo.displayName}`,
 			generateFinancingEmailContent(
 				formData,
 				"obana",
 				zohoAttachmentsObana.length,
-				attachmentNames
+				attachmentNames,
+				partnerInfo
 			),
 			zohoAttachmentsObana
 		);
 
-		const saladEmailData = createEmailData(
-			"olaoluwajohn06@gmail.com",
-			`New Inventory Financing Request from ${formData.firstName} ${formData.lastName}`,
+		const partnerEmailData = createEmailData(
+			partnerInfo.email,
+			`New Inventory Financing Request from ${formData.firstName} ${formData.lastName} - ${partnerInfo.displayName}`,
 			generateFinancingEmailContent(
 				formData,
-				"salad",
-				zohoAttachmentsSalad.length,
-				attachmentNames
+				"partner",
+				zohoAttachmentsPartner.length,
+				attachmentNames,
+				partnerInfo
 			),
-			zohoAttachmentsSalad
+			zohoAttachmentsPartner
 		);
 
 		const customerEmailData = createEmailData(
 			formData.email!,
-			"Your Inventory Financing Request Confirmation",
+			"Your Inventory Financing Request Confirmation - ${partnerInfo.displayName}",
 			generateFinancingEmailContent(
 				formData,
 				"customer",
 				zohoAttachmentsCustomer.length,
-				attachmentNames
+				attachmentNames,
+				partnerInfo
 			),
 			zohoAttachmentsCustomer
 		);
 
 		// Send emails
-		console.log(`\n📤 SENDING EMAILS...`);
 		async function sendEmail(
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			emailData: any,
@@ -933,28 +867,8 @@ export async function POST(request: NextRequest) {
 			retries = 3,
 			delay = 2000
 		) {
-			console.log(`📤 Sending email to ${recipientType}...`);
-			console.log(`📧 Email payload:`, {
-				toAddress: emailData.toAddress,
-				subject: emailData.subject,
-				hasContent: !!emailData.content,
-				contentLength: emailData.content?.length || 0,
-				hasAttachments: !!emailData.attachments,
-				attachmentCount: emailData.attachments?.length || 0,
-				attachments:
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
-					emailData.attachments?.map((att: any) => ({
-						name: att.attachmentName,
-						storeName: att.storeName,
-						path: att.attachmentPath,
-					})) || [],
-			});
-
 			for (let attempt = 1; attempt <= retries; attempt++) {
 				try {
-					console.log(
-						`📤 Attempt ${attempt}/${retries} for ${recipientType} email...`
-					);
 					const response = await axios.post(apiUrl, emailData, {
 						headers: {
 							Authorization: `Zoho-oauthtoken ${accessToken}`,
@@ -964,10 +878,6 @@ export async function POST(request: NextRequest) {
 						timeout: 30000,
 					});
 
-					console.log(`✅ ${recipientType} email sent successfully:`, {
-						status: response.status,
-						messageId: response.data?.data?.messageId,
-					});
 					return response.data;
 					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				} catch (error: any) {
@@ -982,7 +892,6 @@ export async function POST(request: NextRequest) {
 					);
 
 					if (attempt < retries) {
-						console.log(`⏳ Waiting ${delay}ms before retrying...`);
 						await new Promise((resolve) => setTimeout(resolve, delay));
 						continue;
 					}
@@ -1000,24 +909,9 @@ export async function POST(request: NextRequest) {
 
 		await sendEmail(obanaEmailData, "Obana", 3, 2000);
 
-		await sendEmail(saladEmailData, "Salad", 3, 2000);
+		await sendEmail(partnerEmailData, partnerInfo.name, 3, 2000);
 
 		await sendEmail(customerEmailData, "Customer", 3, 2000);
-
-		console.log(`\n🎉 PROCESS COMPLETED SUCCESSFULLY!`);
-		console.log(`📊 FINAL SUMMARY:`, {
-			attachmentsProcessed: attachments.length,
-			attachmentsUploadedObana: zohoAttachmentsObana.length,
-			attachmentsUploadedSalad: zohoAttachmentsSalad.length,
-			attachmentsUploadedCustomer: zohoAttachmentsCustomer.length,
-			emailsSent: 3,
-			sheetUpdated: !!result,
-			attachmentDetails: zohoAttachmentsObana.map((att) => ({
-				name: att.attachmentName,
-				storeName: att.storeName,
-				path: att.attachmentPath,
-			})),
-		});
 
 		return Response.json({
 			success: true,

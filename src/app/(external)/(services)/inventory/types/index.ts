@@ -35,7 +35,8 @@ export interface FormDataType {
 	businessRegistrationBase64?: string;
 	proofOfAddressBase64?: string;
 	statusReportBase64?: string;
-	businessRegistrationFileName: string; 
-	proofOfAddressFileName: string; 
-	statusReportFileName: string; 
+	businessRegistrationFileName: string;
+	proofOfAddressFileName: string;
+	statusReportFileName: string;
+	inventoryFinancingType: string;
 }

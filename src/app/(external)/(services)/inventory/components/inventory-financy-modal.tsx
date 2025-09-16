@@ -96,6 +96,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 			businessRegistrationFileName: "",
 			proofOfAddressFileName: "",
 			statusReportFileName: "",
+			inventoryFinancingType: "",  
 		},
 	});
 
@@ -116,7 +117,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 			setValue("state", "");
 			setValue("city", "");
 		}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [watch("country"), setValue]);
 
 	useEffect(() => {
@@ -124,7 +125,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 			setSelectedState(watch("state"));
 			setValue("city", "");
 		}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [watch("state"), setValue]);
 
 	useEffect(() => {
@@ -179,9 +180,6 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 	};
 
 	const onSubmit = handleSubmit(async (data: FormDataType) => {
-		console.log("Form data on submit:", data);
-		console.log("Uploaded files:", uploadedFiles);
-		console.log("Form errors:", errors);
 
 		try {
 			setIsLoading(true);
@@ -226,6 +224,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 				businessRegistrationFileName: data.businessRegistrationFileName,
 				proofOfAddressFileName: data.proofOfAddressFileName,
 				statusReportFileName: data.statusReportFileName,
+				inventoryFinancingType: data.inventoryFinancingType,  
 			};
 
 			console.log("Submitting to Google Sheets:", googleSheetsData);
@@ -281,6 +280,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 					bvn: data.bvn,
 					business_registration_file:
 						uploadedFiles.businessRegistrationFile?.url,
+					inventory_financing_type: data.inventoryFinancingType, 
 				},
 			};
 
@@ -398,6 +398,35 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 		{ value: "Zara", label: "Zara" },
 	];
 
+	// New inventory financing type options
+	const inventoryFinancingTypeOptions = [
+		{
+			value: "salad_africa",
+			label: "Salad Africa (50/50 Split Financing)",
+			description: "Pay 50% upfront, 50% later with flexible terms",
+		},
+		{
+			value: "cabon_finance",
+			label: "Cabon Finance (Pay in 3 Months)",
+			description: "Get inventory now, pay the full amount in 3 months",
+		},
+		{
+			value: "quickfund_capital",
+			label: "QuickFund Capital (6-Month Plan)",
+			description: "Spread payments over 6 months with competitive rates",
+		},
+		{
+			value: "tradeline_credit",
+			label: "TradeLine Credit (Flexible Terms)",
+			description: "Customizable payment terms based on business needs",
+		},
+		{
+			value: "inventory_bridge",
+			label: "Inventory Bridge (Revolving Credit)",
+			description: "Revolving credit line for continuous inventory financing",
+		},
+	];
+
 	const renderMainView = () => (
 		<div className="flex-1 p-6 flex flex-col items-center space-y-8">
 			<div className="flex flex-col items-center justify-center gap-4">
@@ -464,6 +493,40 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 			</div>
 			<FormProvider {...methods}>
 				<form onSubmit={onSubmit} className="space-y-6">
+					{/* Inventory Financing Type Selection - First Section */}
+					<div className="space-y-4">
+						<h3 className="text-lg font-semibold text-primary">
+							Financing Option
+						</h3>
+						<div className="bg-secondary border border-secondary-dark rounded-lg p-3 mb-4">
+							<p className="text-sm text-primary">
+								<strong>Choose Your Financing Partner:</strong> Select the
+								inventory financing option that best suits your business needs.
+							</p>
+						</div>
+						<FormSelect
+							id="inventoryFinancingType"
+							label="Select Inventory Financing Type"
+							options={inventoryFinancingTypeOptions}
+							register={register("inventoryFinancingType")}
+							error={errors.inventoryFinancingType?.message}
+							required
+							searchable
+						/>
+						{watch("inventoryFinancingType") && (
+							<div className="bg-green-50 border border-success rounded-lg p-2">
+								<p className="text-sm text-success">
+									<strong>Selected:</strong>{" "}
+									{
+										inventoryFinancingTypeOptions.find(
+											(opt) => opt.value === watch("inventoryFinancingType")
+										)?.description
+									}
+								</p>
+							</div>
+						)}
+					</div>
+
 					<div className="space-y-4">
 						<h3 className="text-lg font-semibold text-primary">
 							Personal Information
@@ -677,7 +740,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 						<div className="bg-secondary border border-secondary-dark rounded-lg p-3 mb-4">
 							<p className="text-sm text-primary">
 								<strong>📎 Important:</strong> Please upload all required
-								documents. 
+								documents.
 							</p>
 						</div>
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -728,9 +791,10 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 								className="mt-1 w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
 							/>
 							<label htmlFor="terms" className="text-sm text-gray-700">
-								I authorize Obana to share my information with Salad Africa for
-								loan pre-qualification and underwriting purposes, and I confirm
-								that all uploaded documents are authentic and accurate.
+								I authorize Obana to share my information with the selected
+								financing partner for loan pre-qualification and underwriting
+								purposes, and I confirm that all uploaded documents are
+								authentic and accurate.
 							</label>
 						</div>
 						{errors.terms && (
@@ -777,8 +841,8 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 				</p>
 				<div className="bg-green-50 border border-green-200 rounded-lg p-4 mt-4">
 					<p className="text-sm text-green-700">
-						📧 Emails sent with your documents attached to Obana team and Salad
-						Africa for review.
+						📧 Emails sent with your documents attached to Obana team and your
+						selected financing partner for review.
 					</p>
 				</div>
 			</div>
