@@ -37,7 +37,7 @@ const FormFileUpload: React.FC<FormFileUploadProps> = ({
 		setFileType(file.type);
 
 		// Create preview URL for images only
-		if (file.type.startsWith('image/')) {
+		if (file.type.startsWith("image/")) {
 			const preview = URL.createObjectURL(file);
 			setPreviewUrl(preview);
 		} else {
@@ -58,10 +58,10 @@ const FormFileUpload: React.FC<FormFileUploadProps> = ({
 
 	const getFileIcon = () => {
 		if (!fileName) return null;
-		
-		if (fileType?.startsWith('image/')) {
+
+		if (fileType?.startsWith("image/")) {
 			return <ImageIcon className="w-4 h-4 mr-2 text-gray-500" />;
-		} else if (fileType === 'application/pdf') {
+		} else if (fileType === "application/pdf") {
 			return <FileIcon className="w-4 h-4 mr-2 text-gray-500" />;
 		} else {
 			return <FileTextIcon className="w-4 h-4 mr-2 text-gray-500" />;
