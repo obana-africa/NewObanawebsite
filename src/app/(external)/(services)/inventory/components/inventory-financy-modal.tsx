@@ -226,7 +226,6 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 				inventoryFinancingType: data.inventoryFinancingType,
 			};
 
-
 			const googleSheetsResponse = await fetch(googleSheetsApiUrl, {
 				method: "POST",
 				headers: {
@@ -424,19 +423,10 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 			description: "Get inventory now, pay the full amount in 3 months",
 		},
 		{
-			value: "quickfund_capital",
-			label: "QuickFund Capital (6-Month Plan)",
-			description: "Spread payments over 6 months with competitive rates",
-		},
-		{
-			value: "tradeline_credit",
-			label: "TradeLine Credit (Flexible Terms)",
-			description: "Customizable payment terms based on business needs",
-		},
-		{
-			value: "inventory_bridge",
-			label: "Inventory Bridge (Revolving Credit)",
-			description: "Revolving credit line for continuous inventory financing",
+			value: "stellar_bank",
+			label: "Stellar Bank (Flexible Financing)",
+			description:
+				"Access flexible financing options tailored to your business needs",
 		},
 	];
 
