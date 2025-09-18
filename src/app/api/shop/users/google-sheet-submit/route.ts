@@ -58,28 +58,18 @@ interface FinancingPartner {
 const FINANCING_PARTNERS: Record<string, FinancingPartner> = {
 	salad_africa: {
 		name: "Salad Africa",
-		email: "olagundoyealexander@gmail.com",
+		email: "koredebusuyicareer@gmail.com",
 		displayName: "Salad Africa (50/50 Split Financing)",
 	},
 	cabon_finance: {
 		name: "Cabon Finance",
-		email: "cabon@mailinator.com",
+		email: "olaoluwajohn06@gmail.com",
 		displayName: "Cabon Finance (Pay in 3 Months)",
 	},
-	quickfund_capital: {
-		name: "QuickFund Capital",
-		email: "quickfund@mailinator.com",
-		displayName: "QuickFund Capital (6-Month Plan)",
-	},
-	tradeline_credit: {
-		name: "TradeLine Credit",
-		email: "tradeline@mailinator.com",
-		displayName: "TradeLine Credit (Flexible Terms)",
-	},
-	inventory_bridge: {
-		name: "Inventory Bridge",
-		email: "bridge@mailinator.com",
-		displayName: "Inventory Bridge (Revolving Credit)",
+	stellar_bank: {
+		name: "Stellar Bank",
+		email: "stellar@mailinator.com",
+		displayName: "Stellar Bank (Flexible Financing)",
 	},
 };
 
@@ -825,7 +815,7 @@ export async function POST(request: NextRequest) {
 		// Define email recipients and details
 		const emailTargets = [
 			{
-				address: "olaoluwajohn06@gmail.com",
+				address: "contact@obana.africa",
 				type: "Obana",
 				subject: `New Inventory Financing Request from ${formData.firstName} ${formData.lastName} - ${partnerInfo.displayName}`,
 				content: generateFinancingEmailContent(
