@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { appendToSheet } from "@/lib/google-sheets";
 import axios from "axios";
 import { getMailAccessToken } from "@/helpers/zoho-auth-token";
+import { handleCors } from "@/lib/cors";
 
 interface FormDataType {
 	firstName?: string;
@@ -605,6 +606,11 @@ async function uploadAttachments(
 }
 
 export async function POST(request: NextRequest) {
+	 const corsHeaders = handleCors(request);
+		if (corsHeaders instanceof Response) {
+			return corsHeaders; 
+		}
+
 	try {
 		const formData: FormDataType = await request.json();
 		const financingType = formData.inventoryFinancingType;
