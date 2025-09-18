@@ -435,42 +435,51 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 			<div className="flex flex-col items-center justify-center gap-4">
 				<Image src={logoImage} alt="Logo" width={120} height={40} />
 				<h2 className="text-2xl font-bold text-center text-primary">
-					Login or Register to Access Inventory Financing
+					Access Inventory Financing
 				</h2>
 				<p className="text-center text-gray-600">
-					Get pre-qualified for inventory financing to access the stock you need
-					without immediate financial strain.
+					Get pre-qualified to access the stock you need without immediate
+					financial strain.
 				</p>
 			</div>
 
 			<div className="w-full flex flex-col md:flex-row items-center justify-center gap-4 md:gap-10 my-auto max-w-sm mx-auto">
-				<Button
-					onClick={() => {
-						const loginUrl =
-							environment === "production"
-								? "https://shop.obana.africa/login"
-								: "https://staging.shop.obana.africa/login";
-						window.open(loginUrl, "_blank");
-						onClose();
-					}}
-					variant="primary"
-					animation="ripple"
-					icon={<ChevronsRight />}
-					iconPosition="right"
-					className="rounded-sm w-full py-3 border-primary text-primary"
-				>
-					Login
-				</Button>
-				<Button
-					onClick={() => setCurrentStep("form")}
-					variant="primary"
-					animation="ripple"
-					icon={<ChevronsRight />}
-					iconPosition="right"
-					className="rounded-sm w-full py-3 border-primary text-primary"
-				>
-					Register
-				</Button>
+				<div className="flex flex-col items-center gap-2">
+					<p className="text-center text-gray-700 font-medium">
+						Are you an existing user?
+					</p>
+					<Button
+						onClick={() => {
+							const loginUrl =
+								environment === "production"
+									? "https://shop.obana.africa/login"
+									: "https://staging.shop.obana.africa/login";
+							window.open(loginUrl, "_blank");
+							onClose();
+						}}
+						variant="primary"
+						animation="ripple"
+						icon={<ChevronsRight />}
+						iconPosition="right"
+						className="rounded-sm w-full py-3 border-primary text-primary"
+					>
+						Login
+					</Button>
+				</div>
+
+				<div className="flex flex-col items-center gap-2">
+					<p className="text-center text-gray-700 font-medium">New here?</p>
+					<Button
+						onClick={() => setCurrentStep("form")}
+						variant="primary"
+						animation="ripple"
+						icon={<ChevronsRight />}
+						iconPosition="right"
+						className="rounded-sm w-full py-3 border-primary text-primary"
+					>
+						Register
+					</Button>
+				</div>
 			</div>
 		</div>
 	);
