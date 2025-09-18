@@ -3,8 +3,8 @@ import { NextRequest } from "next/server";
 export function handleCors(req: NextRequest) {
 	const origin =
 		process.env.NODE_ENV === "production"
-			? "https://shop.obana.africa"
-			: "https://staging.shop.obana.africa";
+			? "https://staging.shop.obana.africa"
+			: "http://localhost:3000";
 
 	const headers = {
 		"Access-Control-Allow-Origin": origin,
