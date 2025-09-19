@@ -45,7 +45,7 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
 				render={({ field }) => (
 					<PhoneInputLib
 						country={"ng"}
-						value={field.value}
+						value={field.value || ""}
 						onChange={(phone) => field.onChange(phone)}
 						onBlur={field.onBlur}
 						inputStyle={{

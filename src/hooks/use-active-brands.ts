@@ -14,7 +14,7 @@ const useBrandOptions = () => {
 		const fetchBrands = async () => {
 			try {
 				const response = await fetch(
-					"https://tajiri-backend-qamx.onrender.com/requests/zoho/get-formated-brand?store_name=testShop&status=active",
+					"https://tajiri-backend-qamx.onrender.com/requests/zoho/get-formated-brand?status=active",
 					{
 						mode: "cors", 
 						headers: {

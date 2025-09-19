@@ -1,11 +1,25 @@
 import Seperator from "@/components/external/components/seperator";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import inventory111 from "@/app/assets/images/services-page/inventory111.png";
 import inventory from "@/app/assets/images/services-page/inventory.png";
 import Button from "@/components/ui/button";
+import InventoryFinancingModal from "../components/inventory-financy-modal";
 
 const InventoryOverview = () => {
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const handleInventoryFinancing = () => {
+		setIsModalOpen(true);
+	};
+
+	const handleCloseModal = () => {
+		setIsModalOpen(false);
+	};
+
+	const environment =
+		process.env.ENVIRONMENT_ENV === "production" ? "production" : "development";
+
 	return (
 		<div className=" relative">
 			<section className="container mx-auto px-4 md:px-6 py-8 md:py-16 mt-12 md:mt-12">
@@ -69,7 +83,7 @@ const InventoryOverview = () => {
 							</div>
 
 							<Button
-								// onClick={handleGetStarted}
+								onClick={handleInventoryFinancing}
 								variant="primary"
 								animation="ripple"
 								className="border border-primary "
@@ -92,6 +106,11 @@ const InventoryOverview = () => {
 					</div>
 				</div>
 			</section>
+			<InventoryFinancingModal
+				isOpen={isModalOpen}
+				onClose={handleCloseModal}
+				environment={environment}
+			/>
 		</div>
 	);
 };

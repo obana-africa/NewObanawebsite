@@ -18,7 +18,7 @@ export const serviceFeatures = [
 		description:
 			"We work with tech enabled logistics partners for inter national and intra country pick up and delivery of goods, with track trace and costing visibility to enable our SMEs make clear decision on total landed cost of their goods and delivery timeline to ensure proper planning.",
 		buttonText: "Get Started",
-		href: "#",
+		href: "/logistics",
 	},
 	{
 		icon: inventory,
@@ -26,7 +26,7 @@ export const serviceFeatures = [
 		description:
 			"Work with 3rd party partners to review and qualify SMEs that require financing for their inventory purchase to ensure they have the right assortment to grow their business and cash flow to ensure required working capital",
 		buttonText: "Get Started",
-		href: "#",
+		href: "/inventory",
 	},
 	{
 		icon: sales,

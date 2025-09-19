@@ -81,7 +81,7 @@ const Header: React.FC = () => {
 	};
 
 	const handleGetStarted = (): void => {
-		console.log("OPEN MODAL");
+		// console.log("OPEN MODAL");
 		openGetStartedModal();
 		setIsOpen(false);
 	};
