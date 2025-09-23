@@ -48,7 +48,7 @@ const FabricForm: React.FC<FabricFormProps> = ({
 		},
 	});
 
-	const { brands: brandOptions, error: brandsError } = useBrandOptions();
+	const { error: brandsError } = useBrandOptions();
 
 	const fabricCategories = [
 		{ value: "Cotton", label: "Cotton" },

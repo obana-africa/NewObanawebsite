@@ -48,7 +48,7 @@ const RawMaterialForm: React.FC<RawMaterialFormProps> = ({
 		},
 	});
 
-	const { brands: brandOptions, error: brandsError } = useBrandOptions();
+	const {  error: brandsError } = useBrandOptions();
 
 	const materialTypes = [
 		{ value: "Rubber Sole", label: "Rubber Sole" },
