@@ -606,10 +606,10 @@ async function uploadAttachments(
 }
 
 export async function POST(request: NextRequest) {
-	 const corsHeaders = handleCors(request);
-		if (corsHeaders instanceof Response) {
-			return corsHeaders; 
-		}
+	const corsHeaders = handleCors(request);
+	if (corsHeaders instanceof Response) {
+		return corsHeaders;
+	}
 
 	try {
 		const formData: FormDataType = await request.json();
@@ -743,7 +743,6 @@ export async function POST(request: NextRequest) {
 			recipientType: string,
 			maxRetries = 3
 		) {
-
 			let zohoAttachments: ZohoAttachment[] = [];
 
 			if (attachments.length > 0) {
@@ -894,26 +893,29 @@ export async function POST(request: NextRequest) {
 		const failedEmails = emailResults.filter((r) => !r.success);
 
 		// Return comprehensive response
-		return Response.json({
-			success: true,
-			message: `Form submitted successfully. ${successfulEmails.length}/${emailResults.length} emails sent successfully.`,
-			data: {
-				attachmentsProcessed: attachments.length,
-				emailsSent: successfulEmails.length,
-				emailsFailed: failedEmails.length,
-				successfulEmails: successfulEmails.map((e) => ({
-					type: e.type,
-					address: e.address,
-				})),
-				failedEmails: failedEmails.map((e) => ({
-					type: e.type,
-					address: e.address,
-					error: e.error,
-				})),
-				attachmentNames: attachments.map((att) => att.fileName),
-				detailedResults: emailResults,
+		return Response.json(
+			{
+				success: true,
+				message: `Form submitted successfully. ${successfulEmails.length}/${emailResults.length} emails sent successfully.`,
+				data: {
+					attachmentsProcessed: attachments.length,
+					emailsSent: successfulEmails.length,
+					emailsFailed: failedEmails.length,
+					successfulEmails: successfulEmails.map((e) => ({
+						type: e.type,
+						address: e.address,
+					})),
+					failedEmails: failedEmails.map((e) => ({
+						type: e.type,
+						address: e.address,
+						error: e.error,
+					})),
+					attachmentNames: attachments.map((att) => att.fileName),
+					detailedResults: emailResults,
+				},
 			},
-		});
+			{ headers: corsHeaders }
+		);
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	} catch (error: any) {
 		return Response.json(
@@ -925,7 +927,7 @@ export async function POST(request: NextRequest) {
 						? error.message
 						: "Internal server error",
 			},
-			{ status: 500 }
+			{ status: 500, headers: corsHeaders }
 		);
 	}
 }
