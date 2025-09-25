@@ -2,7 +2,6 @@ import { NextRequest } from "next/server";
 import { appendToSheet } from "@/lib/google-sheets";
 import axios from "axios";
 import { getMailAccessToken } from "@/helpers/zoho-auth-token";
-import { handleCors } from "@/lib/cors";
 
 interface FormDataType {
 	firstName?: string;
@@ -606,10 +605,10 @@ async function uploadAttachments(
 }
 
 export async function POST(request: NextRequest) {
-	const corsHeaders = handleCors(request);
-	if (corsHeaders instanceof Response) {
-		return corsHeaders;
-	}
+	// const corsHeaders = handleCors(request);
+	// if (corsHeaders instanceof Response) {
+	// 	return corsHeaders;
+	// }
 
 	try {
 		const formData: FormDataType = await request.json();
@@ -914,7 +913,6 @@ export async function POST(request: NextRequest) {
 					detailedResults: emailResults,
 				},
 			},
-			{ headers: corsHeaders }
 		);
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	} catch (error: any) {
@@ -927,7 +925,6 @@ export async function POST(request: NextRequest) {
 						? error.message
 						: "Internal server error",
 			},
-			{ status: 500, headers: corsHeaders }
 		);
 	}
 }
