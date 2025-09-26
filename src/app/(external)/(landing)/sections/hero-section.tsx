@@ -67,7 +67,7 @@ const HeroSection: React.FC = () => {
 						</h2>
 
 						<p className="mb-8 text-md 2xl:text-lg ">
-							Helping fashion & beauty SMEs across Sub-Saharan Africa (beginning from Nigeria) grow faster and smarterr	
+							Helping fashion & beauty SMEs across Sub-Saharan Africa (beginning from Nigeria) grow faster and smarter
 							</p>
 						<Button
 							variant="primary"
