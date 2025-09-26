@@ -49,7 +49,7 @@ const HeroSection: React.FC = () => {
 				<div className="flex flex-col-reverse md:flex-row items-center -mt-10  sm:mt-0">
 					<div className=" w-full md:w-[60%]  mb-0 md:mb-0 md:pr-8 -mt-5  sm:mt-0">
 						<h2 className="text-sm md:text-base lg:text-lg font-semibold mb-1">
-  Enabling Sub-Saharan Africa’s Fashion & Beauty SMEs to Scale
+  
 </h2>
 
 
@@ -70,7 +70,7 @@ const HeroSection: React.FC = () => {
 						</h2>
 
 						<p className="mb-8 text-md 2xl:text-lg ">
-							Helping fashion & beauty SMEs across Sub-Saharan Africa (beginning from Nigeria) grow faster and smarter
+							Connecting Brands to Africa’s Fashion SMEs for Growth and Sustainability
 							</p>
 						<Button
 							variant="primary"
