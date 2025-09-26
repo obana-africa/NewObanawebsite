@@ -52,6 +52,7 @@ const HeroSection: React.FC = () => {
   Enabling Sub-Saharan Africa’s Fashion & Beauty SMEs to Scale
 </h2>
 
+
 						<h3 className="bg-primary-light text-primary inline-block px-4 py-2 rounded-md">
 							<span
 								className={`animate-fade-in duration-700 ${
@@ -62,6 +63,8 @@ const HeroSection: React.FC = () => {
 							</span>
 						</h3>
 
+						
+						
 						<h2 className="mb-6 md:leading-12 w-full 2xl:w-[85%]">
 							Digital Ecosystem Powering Africa&apos;s Circular Fashion Economy
 						</h2>
