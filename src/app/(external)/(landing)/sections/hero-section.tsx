@@ -62,12 +62,14 @@ const HeroSection: React.FC = () => {
 							</span>
 						</h3>
 
+
 						<h2 className="mb-6 md:leading-12 w-full 2xl:w-[85%]">
 							Digital Ecosystem Powering Africa's Circular Fashion Economy
 						</h2>
 
 						<p className="mb-8 text-md 2xl:text-lg ">
-							Helping fashion & beauty SMEs across Sub-Saharan Africa (beginning from Nigeria) grow faster and smarterr	</p>
+							Helping fashion & beauty SMEs across Sub-Saharan Africa (beginning from Nigeria) grow faster and smarterr	
+							</p>
 						<Button
 							variant="primary"
 							animation="ripple"

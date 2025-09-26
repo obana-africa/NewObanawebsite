@@ -48,7 +48,7 @@ const RawMaterialForm: React.FC<RawMaterialFormProps> = ({
 		},
 	});
 
-	const { brands: brandOptions, error: brandsError } = useBrandOptions();
+	const {  error: brandsError } = useBrandOptions();
 
 	const materialTypes = [
 		{ value: "Rubber Sole", label: "Rubber Sole" },
@@ -142,14 +142,13 @@ const RawMaterialForm: React.FC<RawMaterialFormProps> = ({
 				</div>
 
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-					<FormSelect
+					<FormInput
 						id="preferredBrand"
 						label="Preferred Brand (Optional)"
-						options={brandOptions}
 						register={register("preferredBrand")}
 						error={errors.preferredBrand?.message || brandsError || undefined}
 						placeholder="e.g. YKK, BASF"
-						searchable
+						type="text"
 					/>
 
 					<FormInput
