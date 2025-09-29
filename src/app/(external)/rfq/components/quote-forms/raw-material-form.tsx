@@ -146,7 +146,6 @@ const RawMaterialForm: React.FC<RawMaterialFormProps> = ({
 						id="preferredBrand"
 						label="Preferred Brand (Optional)"
 						register={register("preferredBrand")}
-						error={errors.preferredBrand?.message || brandsError || undefined}
 						placeholder="e.g. YKK, BASF"
 						type="text"
 					/>
