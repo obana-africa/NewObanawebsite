@@ -9,7 +9,6 @@ import FormFileUpload from "@/components/ui/form-file-upload";
 import PhoneInput from "@/components/ui/phone-input";
 import Button from "@/components/ui/button";
 import { CurrencyInputField } from "@/components/ui/currency-input";
-import useBrandOptions from "@/hooks/use-active-brands";
 
 interface FabricFormProps {
 	onBack: () => void;
@@ -48,7 +47,6 @@ const FabricForm: React.FC<FabricFormProps> = ({
 		},
 	});
 
-	const { error: brandsError } = useBrandOptions();
 
 	const fabricCategories = [
 		{ value: "Cotton", label: "Cotton" },
