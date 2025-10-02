@@ -453,7 +453,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 							const loginUrl =
 								environment === "production"
 									? "https://shop.obana.africa/login?source=inventory-financing&redirect=inventory-financing"
-									: "http://localhost:3000/login?source=inventory-financing&redirect=inventory-financing";
+									: "https://staging.shop.obana.africa/login?source=inventory-financing&redirect=inventory-financing";
 							window.open(loginUrl, "_blank");
 							onClose();
 						}}
