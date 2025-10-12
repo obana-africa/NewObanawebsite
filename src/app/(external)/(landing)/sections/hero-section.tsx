@@ -66,7 +66,7 @@ const HeroSection: React.FC = () => {
 						
 						
 						<h2 className="mb-6 md:leading-12 w-full 2xl:w-[85%]">
-							Africa's circular and sustainable sourcing ecosystem 
+							Africa&apos;s circular and sustainable sourcing ecosystem 
 						</h2>
 
 						<p className="mb-8 text-md 2xl:text-lg ">
