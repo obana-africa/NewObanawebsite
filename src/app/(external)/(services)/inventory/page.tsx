@@ -7,6 +7,7 @@ import InventoryWorks from "./sections/how-inventory-works";
 import { inventoryBenefits } from "./data/inventory-steps";
 import InventoryBenefits from "./sections/benefits";
 import CtaSection from "@/components/external/components/cta-section";
+import InventoryPartners from "./sections/inventory-partners";
 
 const Page = () => {
 	return (
@@ -17,6 +18,7 @@ const Page = () => {
 					subheading="Buy products for your business without paying upfront at very minimal or nothing."
 				/>
 				<InventoryOverview />
+				<InventoryPartners />
 				<InventoryWorks />
 				<InventoryBenefits inventoryBenefits={inventoryBenefits} />
 				<CtaSection
