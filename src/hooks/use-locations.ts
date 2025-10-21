@@ -1,10 +1,10 @@
-import { unAuthenticatedApi } from "@/app/api/(instances)/axiosInstance";
+import api, { unAuthenticatedApi } from "@/app/api/(instances)/axiosInstance";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetCountries = () => {
 	const fetchCountries = async () => {
 		try {
-			const response = await unAuthenticatedApi.get(
+			const response = await api.get(
 				`/requests/terminalAfrica/get-countries`
 			);
 			return (
