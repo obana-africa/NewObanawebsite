@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { useFormContext } from "react-hook-form";
-import { Upload } from "lucide-react";
+import { Upload, Info } from "lucide-react";
 import { FormDataType } from "@/app/(external)/(services)/inventory/types";
 
 type FileFieldId =
@@ -18,6 +18,7 @@ interface FormFileUploadProps {
 		data: { url?: string; base64?: string; fileName?: string } | null
 	) => void;
 	required?: boolean;
+	helpText?: string; 
 }
 
 const FormFileUpload: React.FC<FormFileUploadProps> = ({
@@ -28,10 +29,12 @@ const FormFileUpload: React.FC<FormFileUploadProps> = ({
 	error,
 	onUploadComplete,
 	required,
+	helpText,
 }) => {
 	const { setValue, setError, clearErrors } = useFormContext<FormDataType>();
 	const [isUploading, setIsUploading] = useState(false);
 	const [fileName, setFileName] = useState<string | null>(null);
+	const [showPopover, setShowPopover] = useState(false);
 
 	// Map file field IDs to their name and base64 field counterparts
 	const fieldMap: Record<
@@ -164,9 +167,49 @@ const FormFileUpload: React.FC<FormFileUploadProps> = ({
 
 	return (
 		<div className="space-y-2">
-			<label htmlFor={id} className="block text-sm font-medium text-gray-700">
-				{label} {required && <span className="text-error">*</span>}
-			</label>
+			<div className="flex items-center gap-2">
+				<label htmlFor={id} className="block text-sm font-medium text-gray-700">
+					{label} {required && <span className="text-error">*</span>}
+				</label>
+				{helpText && (
+					<div className="relative inline-block">
+						<div
+							className="hidden md:block"
+							onMouseEnter={() => setShowPopover(true)}
+							onMouseLeave={() => setShowPopover(false)}
+						>
+							<Info className="w-4 h-4 text-gray-500 cursor-help" />
+							{showPopover && (
+								<div className="absolute left-0 top-6 z-50 w-64 p-3 bg-secondary-dark text-white text-xs rounded-md shadow-lg">
+									<div className="absolute -top-1 left-2 w-2 h-2 bg-secondary-dark transform rotate-45"></div>
+									{helpText}
+								</div>
+							)}
+						</div>
+						<div className="md:hidden">
+							<button
+								type="button"
+								onClick={() => setShowPopover(!showPopover)}
+								className="focus:outline-none"
+							>
+								<Info className="w-4 h-4 text-gray-500" />
+							</button>
+							{showPopover && (
+								<>
+									<div
+										className="fixed inset-0 z-40"
+										onClick={() => setShowPopover(false)}
+									></div>
+									<div className="absolute left-0 top-6 z-50 w-64 p-3 bg-secondary-dark text-white text-xs rounded-md shadow-lg">
+										<div className="absolute -top-1 left-2 w-2 h-2 bg-secondary-dark transform rotate-45"></div>
+										{helpText}
+									</div>
+								</>
+							)}
+						</div>
+					</div>
+				)}
+			</div>
 			<div className="relative">
 				<input
 					id={id}
