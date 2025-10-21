@@ -10,14 +10,14 @@ import WhyObanaSection from "./sections/why-obana";
 import CtaSection from "../../../components/external/components/cta-section";
 import Testimonials from "./sections/testimonials-section";
 import ImpactCarousel from "./sections/impact-section";
-import BNPL from "./sections/BNPL"; 
+// import BNPL from "./sections/BNPL"; 
 
 const Home: NextPage = () => {
 	return (
 		<div className=" min-h-screen">
 			<main>
 				<HeroSection />
-				<BNPL />
+				{/* <BNPL /> */}
 				<GlobalBrands />
 				<ServiceSection features={serviceFeatures} imageSrc={shipbox} />
 				<StakeholderSection

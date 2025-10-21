@@ -412,19 +412,19 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 
 	// New inventory financing type options
 	const inventoryFinancingTypeOptions = [
-		{
-			value: "salad_africa",
-			label: "Salad Africa (50/50 Split Financing)",
-			description: "Pay 50% upfront, 50% later with flexible terms",
-		},
-		{
-			value: "cabon_finance",
-			label: "Cabon Finance (Pay in 3 Months)",
-			description: "Get inventory now, pay the full amount in 3 months",
-		},
+		// {
+		// 	value: "salad_africa",
+		// 	label: "Salad Africa (50/50 Split Financing)",
+		// 	description: "Pay 50% upfront, 50% later with flexible terms",
+		// },
+		// {
+		// 	value: "cabon_finance",
+		// 	label: "Cabon Finance (Pay in 3 Months)",
+		// 	description: "Get inventory now, pay the full amount in 3 months",
+		// },
 		{
 			value: "stellar_bank",
-			label: "Stellar Bank (Flexible Financing)",
+			label: "Stellas Bank (Flexible Financing)",
 			description:
 				"Access flexible financing options tailored to your business needs",
 		},
@@ -759,7 +759,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 							<FormFileUpload
 								required
 								id="businessRegistrationFile"
-								label="Business Registration Certificate"
+								label="Business Registration Certificate (CAC)"
 								onUploadComplete={(data) =>
 									handleFileUploadComplete(data, "businessRegistrationFile")
 								}
@@ -777,6 +777,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 								accept=".pdf,.jpg,.jpeg,.png"
 								fileTypes="PDF, JPG, PNG"
 								error={errors.proofOfAddressFile?.message}
+								helpText="Proof Of Address - (utilitiy bill, lawma, PHCN, internet or rent - as recent as 3 months)"
 							/>
 						</div>
 						<FormFileUpload
@@ -789,6 +790,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 							accept=".pdf,.jpg,.jpeg,.png"
 							fileTypes="PDF, JPG, PNG"
 							error={errors.statusReportFile?.message}
+							helpText="Proof Of Address - (utilitiy bill, lawma, PHCN, internet or rent - as recent as 3 months)"
 						/>
 					</div>
 					<div className="space-y-2">
