@@ -759,7 +759,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 							<FormFileUpload
 								required
 								id="businessRegistrationFile"
-								label="Business Registration Certificate"
+								label="Business Registration Certificate (CAC)"
 								onUploadComplete={(data) =>
 									handleFileUploadComplete(data, "businessRegistrationFile")
 								}
@@ -777,6 +777,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 								accept=".pdf,.jpg,.jpeg,.png"
 								fileTypes="PDF, JPG, PNG"
 								error={errors.proofOfAddressFile?.message}
+								helpText="Proof Of Address - (utilitiy bill, lawma, PHCN, internet or rent - as recent as 3 months)"
 							/>
 						</div>
 						<FormFileUpload
@@ -789,6 +790,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 							accept=".pdf,.jpg,.jpeg,.png"
 							fileTypes="PDF, JPG, PNG"
 							error={errors.statusReportFile?.message}
+							helpText="Proof Of Address - (utilitiy bill, lawma, PHCN, internet or rent - as recent as 3 months)"
 						/>
 					</div>
 					<div className="space-y-2">
