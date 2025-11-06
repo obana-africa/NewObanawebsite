@@ -91,7 +91,7 @@ const ShipmentRequestForm: React.FC = () => {
 				return (
 					<DomesticForm
 						onBack={handleBack}
-						onSubmit={handleSubmit}
+						onComplete={handleSubmit}
 						isSubmitting={isSubmitting}
 					/>
 				);

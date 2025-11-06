@@ -12,6 +12,14 @@ const nextConfig: NextConfig = {
 				protocol: "https",
 				hostname: "1.bp.blogspot.com",
 			},
+
+			   {
+        protocol: 'https',
+        hostname: 'ucarecdn.com',
+        port: '',
+        pathname: '/**',
+      }
+
 		],
 	},
 
