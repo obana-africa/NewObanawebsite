@@ -1,4 +1,4 @@
-// domestic-form.tsx - Updated with termApi Axios client
+
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,7 +12,7 @@ import { toast } from "sonner";
 import useCountries from "@/hooks/use-countries";
 import useStates from "@/hooks/use-states";
 import useCities from "@/hooks/use-cities";
-import { termApi } from "@/lib/axios"; // Adjust import path as needed
+import { termApi } from "@/app/api/(instances)/axiosInstance";
 
 // Enhanced schema with international support
 const domesticFormSchema = z.object({
