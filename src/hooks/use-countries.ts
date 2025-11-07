@@ -33,9 +33,9 @@ const useCountries = (): UseCountriesReturn => {
     const fetchCountries = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch('https://sandbox.terminal.africa/v1/countries', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_TERMINAL_AFRICA_BASE_URL}/countries`, {
           headers: {
-            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TERMINAL_AFRICA_SECRET_KEY}`,
+            'Authorization': `${process.env.NEXT_PUBLIC_TERMINAL_AFRICA_SECRET_KEY}`,
           },
         });
 

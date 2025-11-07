@@ -32,10 +32,10 @@ const useCities = (countryCode: string | null, stateCode: string | null): UseCit
         setError(null);
         
         const response = await fetch(
-          `https://sandbox.terminal.africa/v1/cities?country_code=${countryCode}&state_code=${stateCode}`,
+          `${process.env.NEXT_PUBLIC_TERMINAL_AFRICA_BASE_URL}/cities?country_code=${countryCode}&state_code=${stateCode}`,
           {
             headers: {
-              'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TERMINAL_AFRICA_SECRET_KEY}`,
+              'Authorization': `${process.env.NEXT_PUBLIC_TERMINAL_AFRICA_SECRET_KEY}`,
             },
           }
         );
