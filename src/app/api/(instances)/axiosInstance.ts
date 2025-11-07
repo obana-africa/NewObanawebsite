@@ -14,7 +14,7 @@ const termApi = axios.create({
 	baseURL: process.env.NEXT_PUBLIC_TERMINAL_AFRICA_BASE_URL,
 		headers: {
 		"Content-Type": "application/json",
-		"Authorization": process.env.NEXT_PUBLIC_TERMINAL_AFRICA_SECRET_KEY
+		"Authorization": `Bearer ${process.env.NEXT_PUBLIC_TERMINAL_AFRICA_SECRET_KEY}`
 	},
 
 });
