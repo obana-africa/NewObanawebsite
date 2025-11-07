@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Search, XCircle, ChevronUp, ChevronDown } from "lucide-react";
 import { Tooltip } from "./form-tooltip";
-import { UseFormRegisterReturn } from 'react-hook-form';
 
 interface Option {
 	value: string;
@@ -141,7 +140,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
 					name: register.name,
 					type: 'select',
 				},
-			} as React.ChangeEvent<HTMLSelectElement>;
+			} as unknown as React.ChangeEvent<HTMLSelectElement>;
 			onChange(syntheticEvent);
 		}
 		
@@ -302,7 +301,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
 											name: register.name,
 											type: 'select',
 										},
-									} as React.ChangeEvent<HTMLSelectElement>;
+									} as unknown as React.ChangeEvent<HTMLSelectElement>;
 									
 									register.onChange(syntheticEvent);
 									

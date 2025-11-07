@@ -1,4 +1,4 @@
-import { unAuthenticatedApi } from '../../(instances)/axiosInstance';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from 'next/server';
 import { termApi as termAPI } from '../../(instances)/axiosInstance';
 

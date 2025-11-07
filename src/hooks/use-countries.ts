@@ -1,4 +1,4 @@
-// hooks/use-countries.ts
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react';
 
 interface Country {

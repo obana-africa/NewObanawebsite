@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const formatPhoneNumber = (phone: string, countryCode: string) => {
 	if (phone.startsWith("+")) return phone;
 
@@ -11,4 +12,9 @@ export const formatPhoneNumber = (phone: string, countryCode: string) => {
 
 	// For other countries, you might need different formatting logic
 	return `+${cleanPhone}`;
+};
+
+export const getStateDisplayName = (stateCode: string, statesList: any[]) => {
+	const state = statesList.find((s) => s.isoCode === stateCode);
+	return state ? state.name : stateCode;
 };

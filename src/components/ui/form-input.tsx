@@ -6,14 +6,14 @@ export interface FormInputProps {
   id: string;
   label: string;
   placeholder?: string;
-  type?: "text" | "email" | "password" | "number" | "tel" | "url";
+  type?: "text" | "email" | "password" | "number" | "tel" | "url" | "date";
   error?: string;
   required?: boolean;
   disabled?: boolean;
   register?: UseFormRegisterReturn;
-  step?: string | number; // ADDED: Support step for number inputs
-  min?: string | number;   // ADDED: Support min for number inputs
-  max?: string | number;   // ADDED: Support max for number inputs
+  step?: string | number; 
+  min?: string | number;
+  max?: string | number; 
   className?: string;
   inputClassName?: string;
 }

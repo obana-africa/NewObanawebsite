@@ -1,4 +1,4 @@
-// hooks/use-cities.ts
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react';
 
 interface City {

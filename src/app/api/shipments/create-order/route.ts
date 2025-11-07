@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from 'next/server';
 import { unAuthenticatedApi } from '../../(instances)/axiosInstance';
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://your-backend-api.com';
+// const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://your-backend-api.com';
 
 export async function POST(request: NextRequest) {
   try {

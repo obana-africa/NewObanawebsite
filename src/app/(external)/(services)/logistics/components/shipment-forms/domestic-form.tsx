@@ -1,4 +1,4 @@
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,38 +13,9 @@ import useCountries from "@/hooks/use-countries";
 import useStates from "@/hooks/use-states";
 import useCities from "@/hooks/use-cities";
 import { termApi } from "@/app/api/(instances)/axiosInstance";
+import { domesticFormSchema } from "@/schemas";
 
-// Enhanced schema with international support
-const domesticFormSchema = z.object({
-  // Pickup (Sender)
-  senderFirstName: z.string().min(1, "Sender first name is required"),
-  senderLastName: z.string().min(1, "Sender last name is required"),
-  senderEmail: z.string().email("Valid email required"),
-  senderPhone: z.string().min(5, "Phone number required"),
-  senderAddress: z.string().min(5, "Address required"),
-  senderCity: z.string().min(1, "City required"),
-  senderState: z.string().min(1, "State required"),
-  senderCountry: z.string().min(2, "Country required"),
-  senderZip: z.string().optional(),
-  
-  // Delivery (Receiver)
-  receiverFirstName: z.string().min(1, "Receiver first name is required"),
-  receiverLastName: z.string().min(1, "Receiver last name is required"),
-  receiverEmail: z.string().email("Valid email required"),
-  receiverPhone: z.string().min(5, "Phone number required"),
-  receiverAddress: z.string().min(5, "Address required"),
-  receiverCity: z.string().min(1, "City required"),
-  receiverState: z.string().min(1, "State required"),
-  receiverCountry: z.string().min(2, "Country required"),
-  receiverZip: z.string().optional(),
-  
-  // Parcel
-  itemName: z.string().min(1, "Item name required"),
-  itemDescription: z.string().min(1, "Item description required"),
-  itemValue: z.string().min(1, "Item value required"),
-  itemWeight: z.string().min(1, "Item weight required"),
-  itemCurrency: z.string().default("NGN"),
-});
+
 
 type DomesticFormInputs = z.infer<typeof domesticFormSchema>;
 
@@ -553,8 +524,11 @@ const DomesticForm: React.FC<DomesticFormProps> = ({
                   required
                   searchable
                   isLoading={countriesLoading}
-                  onChange={(e) => {
-                    setValue("senderCountry", e.target.value);
+                  onChange={(value: string | React.ChangeEvent<HTMLSelectElement> | string[]) => {
+                    const newValue = typeof value === 'string' ? value : 
+                                   Array.isArray(value) ? value[0] : 
+                                   value.target.value;
+                    setValue("senderCountry", newValue);
                     setValue("senderState", "");
                     setValue("senderCity", "");
                     setSenderStateName("");
@@ -572,11 +546,14 @@ const DomesticForm: React.FC<DomesticFormProps> = ({
                   searchable
                   isLoading={senderStatesLoading}
                   disabled={!watchSenderCountry}
-                  onChange={(e) => {
-                    setValue("senderState", e.target.value);
+                  onChange={(value: string | React.ChangeEvent<HTMLSelectElement> | string[]) => {
+                    const newValue = typeof value === 'string' ? value : 
+                                   Array.isArray(value) ? value[0] : 
+                                   value.target.value;
+                    setValue("senderState", newValue);
                     setValue("senderCity", "");
                     // Update state name when state is selected
-                    const selectedState = senderStates.find(state => state.isoCode === e.target.value);
+                    const selectedState = senderStates.find(state => state.isoCode === newValue);
                     if (selectedState) {
                       setSenderStateName(selectedState.name);
                     }
@@ -663,8 +640,11 @@ const DomesticForm: React.FC<DomesticFormProps> = ({
                   required
                   searchable
                   isLoading={countriesLoading}
-                  onChange={(e) => {
-                    setValue("receiverCountry", e.target.value);
+                  onChange={(value: string | React.ChangeEvent<HTMLSelectElement> | string[]) => {
+                    const newValue = typeof value === 'string' ? value : 
+                                   Array.isArray(value) ? value[0] : 
+                                   value.target.value;
+                    setValue("receiverCountry", newValue);
                     setValue("receiverState", "");
                     setValue("receiverCity", "");
                     setReceiverStateName("");
@@ -682,11 +662,14 @@ const DomesticForm: React.FC<DomesticFormProps> = ({
                   searchable
                   isLoading={receiverStatesLoading}
                   disabled={!watchReceiverCountry}
-                  onChange={(e) => {
-                    setValue("receiverState", e.target.value);
+                  onChange={(value: string | React.ChangeEvent<HTMLSelectElement> | string[]) => {
+                    const newValue = typeof value === 'string' ? value :
+                                     Array.isArray(value) ? value[0] :
+                                     value.target.value;
+                    setValue("receiverState", newValue);
                     setValue("receiverCity", "");
                     // Update state name when state is selected
-                    const selectedState = receiverStates.find(state => state.isoCode === e.target.value);
+                    const selectedState = receiverStates.find(state => state.isoCode === newValue);
                     if (selectedState) {
                       setReceiverStateName(selectedState.name);
                     }
