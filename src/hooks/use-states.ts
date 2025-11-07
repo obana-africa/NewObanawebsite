@@ -35,7 +35,7 @@ const useStates = (countryCode: string | null): UseStatesReturn => {
 					`${process.env.NEXT_PUBLIC_TERMINAL_AFRICA_BASE_URL}/states?country_code=${countryCode}`,
 					{
 						headers: {
-							Authorization: `${process.env.NEXT_PUBLIC_TERMINAL_AFRICA_SECRET_KEY}`,
+							Authorization: `Bearer ${process.env.NEXT_PUBLIC_TERMINAL_AFRICA_SECRET_KEY}`,
 						},
 					}
 				);

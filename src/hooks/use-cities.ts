@@ -35,7 +35,7 @@ const useCities = (countryCode: string | null, stateCode: string | null): UseCit
           `${process.env.NEXT_PUBLIC_TERMINAL_AFRICA_BASE_URL}/cities?country_code=${countryCode}&state_code=${stateCode}`,
           {
             headers: {
-              'Authorization': `${process.env.NEXT_PUBLIC_TERMINAL_AFRICA_SECRET_KEY}`,
+              'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TERMINAL_AFRICA_SECRET_KEY}`,
             },
           }
         );
