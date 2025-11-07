@@ -32,7 +32,7 @@ const useStates = (countryCode: string | null): UseStatesReturn => {
 				setError(null);
 
 				const response = await fetch(
-					`https://sandbox.terminal.africa/v1/states?country_code=${countryCode}`,
+					`${process.env.NEXT_PUBLIC_TERMINAL_AFRICA_BASE_URL}/states?country_code=${countryCode}`,
 					{
 						headers: {
 							Authorization: `Bearer ${process.env.NEXT_PUBLIC_TERMINAL_AFRICA_SECRET_KEY}`,
