@@ -35,7 +35,7 @@ const useCountries = (): UseCountriesReturn => {
         setIsLoading(true);
         const response = await fetch(`${process.env.NEXT_PUBLIC_TERMINAL_AFRICA_BASE_URL}/countries`, {
           headers: {
-            'Authorization': `Bearer  ${process.env.NEXT_PUBLIC_TERMINAL_AFRICA_SECRET_KEY}`,
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TERMINAL_AFRICA_SECRET_KEY}`,
           },
         });
 
