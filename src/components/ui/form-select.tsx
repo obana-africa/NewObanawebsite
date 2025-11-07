@@ -19,10 +19,11 @@ interface FormSelectProps {
 	disabled?: boolean;
 	searchable?: boolean;
 	tooltip?: string;
-	onChange?: (value: string | string[]) => void;
+	onChange?: (value: string | string[] | React.ChangeEvent<HTMLSelectElement>) => void;
 	onRemove?: (value: string) => void;
 	clearErrors?: (name?: string) => void;
 	placeholder?: string;
+	isLoading?: boolean;
 }
 
 const FormSelect: React.FC<FormSelectProps> = ({
@@ -40,6 +41,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
 	onRemove,
 	clearErrors,
 	placeholder = "Select an option",
+	isLoading = false,
 }) => {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [isOpen, setIsOpen] = useState(false);
@@ -95,7 +97,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
 	};
 
 	const handleSelectClick = () => {
-		if (!disabled) {
+		if (!disabled && !isLoading) {
 			calculateDropdownPosition();
 			setIsOpen(!isOpen);
 			if (isOpen && searchable && inputRef.current) {
@@ -120,17 +122,36 @@ const FormSelect: React.FC<FormSelectProps> = ({
 		}
 
 		setSelectedValue(newValue);
+		
+		// Call register's onChange
 		register.onChange({
 			target: {
 				value: newValue,
 				name: register.name,
 			},
 		});
-		onChange?.(newValue);
+		
+		// Call custom onChange if provided
+		if (onChange) {
+			// Create a synthetic event for consistency
+			const syntheticEvent = {
+				target: {
+					value: newValue,
+					name: register.name,
+					type: 'select',
+				},
+			} as unknown as React.ChangeEvent<HTMLSelectElement>;
+			onChange(syntheticEvent);
+		}
+		
 		if (clearErrors) clearErrors(register.name);
 	};
 
 	const getDisplayValue = () => {
+		if (isLoading) {
+			return "Loading...";
+		}
+		
 		if (multiple && Array.isArray(selectedValue) && selectedValue.length > 0) {
 			return selectedValue.length === 1
 				? options.find((opt) => opt.value === selectedValue[0])?.label ||
@@ -145,12 +166,28 @@ const FormSelect: React.FC<FormSelectProps> = ({
 		return placeholder;
 	};
 
+	// Handle direct select element change (for form compliance)
+	const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		const value = multiple 
+			? Array.from(e.target.selectedOptions, option => option.value)
+			: e.target.value;
+		
+		setSelectedValue(value);
+		register.onChange(e);
+		
+		if (onChange) {
+			onChange(e);
+		}
+	};
+
 	return (
 		<div className="relative" ref={selectRef}>
 			<div className="flex items-center gap-1 mb-2">
-				<label htmlFor={id} className="text-sm font-semibold">
-					{label} {required && <span className="text-error">*</span>}
-				</label>
+				{label && (
+					<label htmlFor={id} className="text-sm font-semibold">
+						{label} {required && <span className="text-error">*</span>}
+					</label>
+				)}
 				{tooltip && <Tooltip content={tooltip} />}
 			</div>
 
@@ -158,21 +195,26 @@ const FormSelect: React.FC<FormSelectProps> = ({
 				className={`w-full p-3 border rounded-md cursor-pointer flex items-center justify-between ${
 					error
 						? "border-error"
-						: disabled
+						: disabled || isLoading
 						? "bg-secondary-light cursor-not-allowed text-secondary-dark"
 						: "border-secondary-light focus:border-primary focus:outline-1"
 				}`}
 				onClick={handleSelectClick}
 			>
-				<span>{getDisplayValue()}</span>
-				{!disabled && (
+				<span className={isLoading ? "text-gray-500" : ""}>
+					{getDisplayValue()}
+				</span>
+				{!(disabled || isLoading) && (
 					<span className="text-gray-400">
 						{isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
 					</span>
 				)}
+				{isLoading && (
+					<span className="text-gray-400 animate-pulse">Loading...</span>
+				)}
 			</div>
 
-			{isOpen && !disabled && (
+			{isOpen && !disabled && !isLoading && (
 				<div
 					className={`absolute z-10 w-full ${
 						dropdownPosition === "bottom" ? "mt-1" : "bottom-full mb-1"
@@ -194,7 +236,11 @@ const FormSelect: React.FC<FormSelectProps> = ({
 						</div>
 					)}
 					<div className="max-h-40 overflow-y-auto">
-						{filteredOptions.length > 0 ? (
+						{isLoading ? (
+							<div className="px-4 py-2 text-secondary-dark text-center">
+								Loading options...
+							</div>
+						) : filteredOptions.length > 0 ? (
 							filteredOptions.map((option) => (
 								<div
 									key={option.value}
@@ -225,7 +271,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
 								</div>
 							))
 						) : (
-							<div className="px-4 py-2 text-secondary-dark">
+							<div className="px-4 py-2 text-secondary-dark text-center">
 								No options found
 							</div>
 						)}
@@ -247,13 +293,21 @@ const FormSelect: React.FC<FormSelectProps> = ({
 									e.stopPropagation();
 									const newValue = selectedValue.filter((v) => v !== value);
 									setSelectedValue(newValue);
-									register.onChange({
+									
+									// Create synthetic event for form handling
+									const syntheticEvent = {
 										target: {
 											value: newValue,
 											name: register.name,
+											type: 'select',
 										},
-									});
-									onChange?.(newValue);
+									} as unknown as React.ChangeEvent<HTMLSelectElement>;
+									
+									register.onChange(syntheticEvent);
+									
+									if (onChange) {
+										onChange(syntheticEvent);
+									}
 									onRemove?.(value);
 									if (clearErrors) clearErrors(register.name);
 								}}
@@ -266,15 +320,17 @@ const FormSelect: React.FC<FormSelectProps> = ({
 				</div>
 			)}
 
+			{/* Hidden native select for form compliance */}
 			<select
 				id={id}
 				{...register}
 				className="hidden"
 				multiple={multiple}
 				value={multiple ? selectedValue : selectedValue || ""}
-				onChange={() => {}}
+				onChange={handleSelectChange}
+				disabled={disabled || isLoading}
 			>
-				<option value="">Select</option>
+				<option value="">{isLoading ? "Loading..." : "Select"}</option>
 				{options.map((option) => (
 					<option key={option.value} value={option.value}>
 						{option.label}

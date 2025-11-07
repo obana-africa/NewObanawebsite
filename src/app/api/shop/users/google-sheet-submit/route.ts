@@ -68,7 +68,7 @@ const FINANCING_PARTNERS: Record<string, FinancingPartner> = {
 	},
 	stellar_bank: {
 		name: "Stellar Bank",
-		email: "stellar@mailinator.com",
+		email: "stellas_obana@stellasmfb.com",
 		displayName: "Stellar Bank (Flexible Financing)",
 	},
 };

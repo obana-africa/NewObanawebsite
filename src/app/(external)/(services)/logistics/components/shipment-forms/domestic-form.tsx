@@ -1,402 +1,804 @@
-import React, { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormInput from "@/components/ui/form-input";
 import FormSelect from "@/components/ui/form-select";
-import FormFileUpload from "@/components/ui/form-file-upload";
 import Button from "@/components/ui/button";
 import PreviewComponent from "../preview";
 import LogisticsPartners from "../logistics-partners";
-import Image from "next/image";
-import useNigerianStates from "@/hooks/use-nigerian-states";
-import { domesticShipmentSchema } from "@/schemas";
-import SenderReceiverForm from "./sender-receiver-form";
+import { z } from "zod";
+import { toast } from "sonner";
+import useCountries from "@/hooks/use-countries";
+import useStates from "@/hooks/use-states";
+import useCities from "@/hooks/use-cities";
+import { termApi } from "@/app/api/(instances)/axiosInstance";
+import { domesticFormSchema } from "@/schemas";
 
-export interface FormDataType {
-	shipmentRoute: string;
-	pickUp: string;
-	destination: string;
-	productCategory: string;
-	productType: string;
-	productWeight: string;
-	dimension?: string;
-	shipmentImage?: File;
-	shipmentImageUrl?: string;
-	sender: {
-		name: string;
-		email: string;
-		phone: string;
-		address: string;
-	};
-	receiver: {
-		name: string;
-		email: string;
-		phone: string;
-		address: string;
-	};
-}
+
+
+type DomesticFormInputs = z.infer<typeof domesticFormSchema>;
 
 interface DomesticFormProps {
-	onBack: () => void;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	onSubmit: (data: any) => void;
-	isSubmitting: boolean;
+  onBack: () => void;
+  onComplete?: (shipmentData: any) => void;
+  isSubmitting: boolean;
 }
 
 const DomesticForm: React.FC<DomesticFormProps> = ({
-	onBack,
-	onSubmit,
-	isSubmitting,
+  onBack,
+  onComplete,
+  isSubmitting,
 }) => {
-	const [currentStep, setCurrentStep] = useState<
-		"form" | "senderReceiver" | "preview" | "logistics"
-	>("form");
-	const [formData, setFormData] = useState<FormDataType | null>(null);
-	const [imageUrl, setImageUrl] = useState<string | null>(null);
-	const {
-		data: nigerianStates,
-		isLoading: statesLoading,
-		error,
-	} = useNigerianStates();
+  const [currentStep, setCurrentStep] = useState<"form" | "logistics" | "preview">("form");
+  const [formData, setFormData] = useState<DomesticFormInputs | null>(null);
+  const [shipmentDraft, setShipmentDraft] = useState<any>(null);
+  const [availableRates, setAvailableRates] = useState<any[]>([]);
+  const [isLoadingRates, setIsLoadingRates] = useState(false);
+  const [selectedRate, setSelectedRate] = useState<any>(null);
+  
+  // Country, state, and city hooks for sender
+  const { countries: allCountries, isLoading: countriesLoading } = useCountries();
+  const [senderCountry, setSenderCountry] = useState<string>("NG");
+  const [senderState, setSenderState] = useState<string>("");
+  const { states: senderStates, isLoading: senderStatesLoading } = useStates(senderCountry);
+  const { cities: senderCities, isLoading: senderCitiesLoading } = useCities(senderCountry, senderState);
+  
+  // Country, state, and city hooks for receiver
+  const [receiverCountry, setReceiverCountry] = useState<string>("NG");
+  const [receiverState, setReceiverState] = useState<string>("");
+  const { states: receiverStates, isLoading: receiverStatesLoading } = useStates(receiverCountry);
+  const { cities: receiverCities, isLoading: receiverCitiesLoading } = useCities(receiverCountry, receiverState);
 
-	const defaultLocations = [
-		{ value: "lagos", label: "Lagos" },
-		{ value: "abuja", label: "Abuja" },
-		{ value: "kano", label: "Kano" },
-	];
+  // Store state names for API submission
+  const [senderStateName, setSenderStateName] = useState<string>("");
+  const [receiverStateName, setReceiverStateName] = useState<string>("");
 
-	const locations =
-		statesLoading || error ? defaultLocations : nigerianStates || [];
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+    setValue,
+  } = useForm<DomesticFormInputs>({
+    resolver: zodResolver(domesticFormSchema),
+    defaultValues: {
+      senderCountry: "NG",
+      receiverCountry: "NG",
+      itemCurrency: "NGN",
+    },
+  });
 
-	const {
-		register,
-		handleSubmit,
-		setValue,
-		formState: { errors },
-	} = useForm({
-		resolver: zodResolver(domesticShipmentSchema),
-		defaultValues: {
-			pickUp: "",
-			destination: "",
-			productCategory: "",
-			productType: "",
-			productWeight: "",
-			dimension: "",
-			shipmentImage: "",
-		},
-	});
+  // Watch for country and state changes to update dropdowns
+  const watchSenderCountry = watch("senderCountry");
+  const watchSenderState = watch("senderState");
+  const watchReceiverCountry = watch("receiverCountry");
+  const watchReceiverState = watch("receiverState");
 
-	const productCategories = [
-		{ value: "electronics", label: "Electronics" },
-		{ value: "fashion", label: "Fashion" },
-		{ value: "food", label: "Food Items" },
-	];
+  // Update local state when form values change
+  useEffect(() => {
+    if (watchSenderCountry) setSenderCountry(watchSenderCountry);
+  }, [watchSenderCountry]);
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const handlePreview = (data: any) => {
-		// console.log("GO TO NEXT", data);
-		const formDataWithImage = {
-			...data,
-			shipmentImage: data.shipmentImage,
-			shipmentImageUrl: imageUrl,
-		};
-		setFormData(formDataWithImage);
-		// setFormData(data);
-		setCurrentStep("senderReceiver");
-	};
+  useEffect(() => {
+    if (watchSenderState) {
+      setSenderState(watchSenderState);
+      // Find and store the state name when state code is selected
+      const selectedState = senderStates.find(state => state.isoCode === watchSenderState);
+      if (selectedState) {
+        setSenderStateName(selectedState.name);
+      }
+    }
+  }, [watchSenderState, senderStates]);
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const handleSenderReceiverSubmit = (senderReceiverData: any) => {
-		const mergedData = {
-			...formData,
-			...senderReceiverData,
-			shipmentImageUrl: imageUrl,
-		};
-		// console.log("GO TO NEXT", mergedData);
+  useEffect(() => {
+    if (watchReceiverCountry) setReceiverCountry(watchReceiverCountry);
+  }, [watchReceiverCountry]);
 
-		setFormData(mergedData);
-		setCurrentStep("preview");
-	};
+  useEffect(() => {
+    if (watchReceiverState) {
+      setReceiverState(watchReceiverState);
+      // Find and store the state name when state code is selected
+      const selectedState = receiverStates.find(state => state.isoCode === watchReceiverState);
+      if (selectedState) {
+        setReceiverStateName(selectedState.name);
+      }
+    }
+  }, [watchReceiverState, receiverStates]);
 
-	const handleEdit = () => {
-		setCurrentStep("form");
-	};
+  // Format phone number based on country
+  const formatPhoneNumber = (phone: string, countryCode: string) => {
+    if (phone.startsWith('+')) return phone;
+    
+    // Remove any non-digit characters
+    const cleanPhone = phone.replace(/\D/g, '');
+    
+    // For Nigeria, ensure it starts with +234
+    if (countryCode === 'NG' && cleanPhone.startsWith('0')) {
+      return `+234${cleanPhone.substring(1)}`;
+    }
+    
+    // For other countries, you might need different formatting logic
+    // This is a basic implementation - you might want to enhance it
+    return `+${cleanPhone}`;
+  };
 
-	const handleProceedToBook = () => {
-		setCurrentStep("logistics");
-	};
+  // Create shipment draft with international support
+  const createShipmentDraft = async (data: DomesticFormInputs) => {
+    console.log("Creating shipment draft with data:", {
+      senderState: data.senderState,
+      senderStateName,
+      receiverState: data.receiverState,
+      receiverStateName
+    });
+    
+    setIsLoadingRates(true);
+    try {
+      const payload = {
+        pickup_address: {
+          first_name: data.senderFirstName,
+          last_name: data.senderLastName,
+          email: data.senderEmail,
+          phone: formatPhoneNumber(data.senderPhone, data.senderCountry),
+          line1: data.senderAddress,
+          line2: "",
+          city: data.senderCity,
+          state: senderStateName,
+          country: data.senderCountry,
+          zip: data.senderZip || "",
+        },
+        delivery_address: {
+          first_name: data.receiverFirstName,
+          last_name: data.receiverLastName,
+          email: data.receiverEmail,
+          phone: formatPhoneNumber(data.receiverPhone, data.receiverCountry),
+          line1: data.receiverAddress,
+          line2: "",
+          city: data.receiverCity,
+          state: receiverStateName || data.receiverState,
+          country: data.receiverCountry,
+          zip: data.receiverZip || "",
+        },
+        parcel: {
+          description: data.itemDescription,
+          weight_unit: "kg",
+          items: [
+            {
+              name: data.itemName,
+              description: data.itemDescription,
+              currency: data.itemCurrency,
+              value: parseFloat(data.itemValue),
+              weight: parseFloat(data.itemWeight),
+              quantity: 1,
+            },
+          ],
+        },
+        metadata: {
+          source: "web_platform",
+        },
+      };
 
-	const handleFileUploadComplete = (url: string | null) => {
-		setImageUrl(url);
-		setValue("shipmentImage", url || "");
-	};
+      console.log("Final payload to Terminal Africa:", payload);
 
-	const handleContactSupport = () => {
-		// Implement your customer support logic here
-		console.log("Contact customer support");
-	};
+      // Use termApi Axios client instead of fetch
+      const response = await termApi.post("/shipments/quick", payload);
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const handleFinalSubmit = (finalData: any) => {
-		onSubmit(finalData);
-	};
+      const result = response.data;
+      console.log("Shipment draft created:", result);
 
-	const getLabelFromValue = (
-		value: string,
-		options: Array<{ value: string; label: string }>
-	) => {
-		return options.find((option) => option.value === value)?.label || value;
-	};
+      if (result.status && result.data) {
+        setShipmentDraft(result.data);
+        return result.data;
+      } else {
+        throw new Error(result.message || "Invalid response from Terminal Africa");
+      }
+    } catch (error: any) {
+      console.error("Error creating shipment draft:", error);
+      const errorMessage = error.response?.data?.message || error.message || "Failed to create shipment draft";
+      toast.error(errorMessage);
+      return null;
+    } finally {
+      setIsLoadingRates(false);
+    }
+  };
 
-	const previewSections = [
-		{
-			title: "Shipment Information",
-			fields: [
-				// {
-				// 	label: "Shipment route",
-				// 	value: formData?.shipmentRoute
-				// 		? getLabelFromValue(formData.shipmentRoute, shipmentRoutes)
-				// 		: "-",
-				// },
-				{
-					label: "From",
-					value: formData?.pickUp
-						? getLabelFromValue(formData.pickUp, locations)
-						: "-",
-				},
-				{
-					label: "To",
-					value: formData?.destination
-						? getLabelFromValue(formData.destination, locations)
-						: "-",
-				},
-				{
-					label: "Product category",
-					value: formData?.productCategory
-						? getLabelFromValue(formData.productCategory, productCategories)
-						: "-",
-				},
-				{
-					label: "Product type",
-					value: formData?.productType || "-",
-				},
-				{
-					label: "Product weight",
-					value: formData?.productWeight ? `${formData.productWeight}kg` : "-",
-				},
-				{
-					label: "Dimension",
-					value: formData?.dimension || "-",
-				},
-				{
-					label: "Shipment image",
-					value: formData?.shipmentImageUrl ? (
-						<div className="w-32 h-32 relative">
-							<Image
-								src={formData.shipmentImageUrl}
-								alt="Shipment preview"
-								fill
-								className="object-contain"
-								sizes="(max-width: 128px) 100vw, 128px"
-							/>
-						</div>
-					) : (
-						"None"
-					),
-				},
-			],
-		},
-		{
-			title: "Sender Details",
-			fields: [
-				{
-					label: "Name",
-					value: formData?.sender?.name || "-",
-				},
-				{
-					label: "Email",
-					value: formData?.sender?.email || "-",
-				},
-				{
-					label: "Phone number",
-					value: formData?.sender?.phone || "-",
-				},
-				{
-					label: "Address",
-					value: formData?.sender?.address || "-",
-				},
-			],
-		},
-		{
-			title: "Receiver Details",
-			fields: [
-				{
-					label: "Name",
-					value: formData?.receiver?.name || "-",
-				},
-				{
-					label: "Email",
-					value: formData?.receiver?.email || "-",
-				},
-				{
-					label: "Phone number",
-					value: formData?.receiver?.phone || "-",
-				},
-				{
-					label: "Address",
-					value: formData?.receiver?.address || "-",
-				},
-			],
-		},
-	];
+  // Get rates for shipment using termApi
+  const fetchRatesForShipment = async (shipmentId: string) => {
+    setIsLoadingRates(true);
+    try {
+      // Use termApi Axios client instead of fetch
+      const response = await termApi.get(
+        `/rates/shipment/?shipment_id=${shipmentId}&cash_on_delivery=${true}`
+      );
 
-	// Render different content based on the current step
-	// console.log(errors);
-	return (
-		<div className="space-y-6">
-			{currentStep === "form" && (
-				<>
-					<h2 className="font-bold text-center text-primary">
-						Request For Shipment
-					</h2>
-					<form onSubmit={handleSubmit(handlePreview)}>
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-							{/* <FormSelect
-								id="shipmentRoute"
-								label="Shipment route "
-								options={shipmentRoutes}
-								register={register("shipmentRoute")}
-								error={errors.shipmentRoute?.message}
-								required
-							/> */}
+      const result = response.data;
+      console.log("Rates fetched:", result);
 
-							<FormSelect
-								id="pickUp"
-								label="Pick Up "
-								options={locations}
-								register={register("pickUp")}
-								error={errors.pickUp?.message}
-								required
-								searchable
-							/>
-						</div>
+      if (result.status && result.data) {
+        const processedRates = result.data.map((rate: any) => ({
+          ...rate,
+          carrier_name: rate.carrier_name === "GIG Logistics" 
+            ? "Obana Express" 
+            : rate.carrier_name,
+          amount: Math.round(rate.amount * 1.025),
+          original_amount: rate.amount,
+        }));
 
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-							<FormSelect
-								id="productCategory"
-								label="Product category "
-								options={productCategories}
-								register={register("productCategory")}
-								error={errors.productCategory?.message}
-								required
-							/>
+        setAvailableRates(processedRates);
+        return processedRates;
+      } else {
+        toast.error(result.message || "No rates available for this route");
+        return [];
+      }
+    } catch (error: any) {
+      console.error("Error fetching rates:", error);
+      const errorMessage = error.response?.data?.message || error.message || "Failed to fetch shipping rates";
+      toast.error(errorMessage);
+      return [];
+    } finally {
+      setIsLoadingRates(false);
+    }
+  };
 
-							<FormInput
-								id="productWeight"
-								label="Product weight "
-								placeholder="In Kg"
-								register={register("productWeight")}
-								error={errors.productWeight?.message}
-								type="number"
-								required
-							/>
-						</div>
+  // Handle form submission
+  const handleFormSubmit = async (data: DomesticFormInputs) => {
+    setFormData(data);
+    
+    const draft = await createShipmentDraft(data);
+    
+    if (draft && draft.shipment_id) {
+      const rates = await fetchRatesForShipment(draft.shipment_id);
+      
+      if (rates && rates.length > 0) {
+        setCurrentStep("logistics");
+      } else {
+        toast.error("No shipping options available for this route");
+      }
+    }
+  };
 
-						<div className="mb-4">
-							<FormFileUpload
-								id="shipmentImage"
-								label="Upload shipment Image"
-								onUploadComplete={handleFileUploadComplete}
-								accept="image/*"
-								fileTypes="image/*"
-								required
-							/>
-						</div>
+  // Handle rate selection and arrange pickup
+  const handleRateSelection = (rate: any) => {
+    setSelectedRate(rate);
+    setCurrentStep("preview");
+  };
 
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-							<FormSelect
-								id="destination"
-								label="Destination "
-								options={locations}
-								register={register("destination")}
-								error={errors.destination?.message}
-								required
-								searchable={true}
-							/>
+  const arrangePickup = async () => {
+    if (!shipmentDraft || !selectedRate) {
+      toast.error("Missing shipment or rate information");
+      return;
+    }
 
-							<FormInput
-								id="productType"
-								label="Product type "
-								placeholder="Eg, Headset, Shirt"
-								register={register("productType")}
-								error={errors.productType?.message}
-								required
-							/>
-						</div>
+    try {
+      const payload = {
+        shipment_id: shipmentDraft.shipment_id,
+        rate_id: selectedRate.rate_id,
+        rate_amount: selectedRate.original_amount,
+        rate_currency: selectedRate.currency,
+      };
 
-						<div className="mb-4">
-							<FormInput
-								id="dimension"
-								label="Dimension"
-								placeholder="Height X Width in cm or inches"
-								register={register("dimension")}
-								error={errors.dimension?.message}
-							/>
-						</div>
+      // Use termApi Axios client instead of fetch
+      const response = await termApi.post("/shipments/pickup/", payload);
 
-						<div className="flex justify-between mt-6">
-							<Button
-								onClick={onBack}
-								variant="outline"
-								className="border border-blue-900 text-blue-900"
-							>
-								Back
-							</Button>
-							<Button
-								type="submit"
-								variant="primary"
-								animation="ripple"
-								className="border border-primary"
-							>
-								Next
-							</Button>
-						</div>
-					</form>
-				</>
-			)}
+      const result = response.data;
+      console.log("Pickup arranged:", result);
 
-			{currentStep === "senderReceiver" && (
-				<SenderReceiverForm
-					defaultValues={{
-						sender: formData?.sender,
-						receiver: formData?.receiver,
-					}}
-					onBack={() => setCurrentStep("form")}
-					onSubmit={handleSenderReceiverSubmit}
-				/>
-			)}
+      if (result.status && result.data) {
+        toast.success("Shipment booked successfully!");
+        
+        // Add safety check for onComplete
+        if (typeof onComplete === 'function') {
+          onComplete({
+            shipment: result.data,
+            formData,
+            selectedRate,
+          });
+        } else {
+          console.error('onComplete is not a function', { onComplete });
+          toast.error('Completion handler not available');
+          // Fallback: go back to form
+          setCurrentStep("form");
+        }
+      } else {
+        throw new Error(result.message || "Invalid response from Terminal Africa");
+      }
+    } catch (error: any) {
+      console.error("Error arranging pickup:", error);
+      const errorMessage = error.response?.data?.message || error.message || "Failed to arrange pickup";
+      toast.error(errorMessage);
+    }
+  };
 
-			{currentStep === "preview" && (
-				<PreviewComponent
-					title="Preview"
-					sections={previewSections}
-					onEdit={handleEdit}
-					onProceedToBook={handleProceedToBook}
-					onContactSupport={handleContactSupport}
-					isSubmitting={isSubmitting}
-				/>
-			)}
+  const handleEdit = () => {
+    setCurrentStep("form");
+  };
 
-			{currentStep === "logistics" && formData && (
-				<LogisticsPartners
-					shipmentData={formData}
-					onBack={() => setCurrentStep("preview")}
-					onSubmit={handleFinalSubmit}
-					isSubmitting={isSubmitting}
-				/>
-			)}
-		</div>
-	);
+  const handleContactSupport = () => {
+    console.log("Contact customer support");
+  };
+
+  // Helper function to get state display name for preview
+  const getStateDisplayName = (stateCode: string, statesList: any[]) => {
+    const state = statesList.find(s => s.isoCode === stateCode);
+    return state ? state.name : stateCode;
+  };
+
+  // Prepare dropdown options
+  const countryOptions = allCountries.map(country => ({
+    value: country.isoCode,
+    label: `${country.flag} ${country.name}`,
+  }));
+
+  const senderStateOptions = senderStates.map(state => ({
+    value: state.isoCode,
+    label: state.name,
+  }));
+
+  const senderCityOptions = senderCities.map(city => ({
+    value: city.name,
+    label: city.name,
+  }));
+
+  const receiverStateOptions = receiverStates.map(state => ({
+    value: state.isoCode,
+    label: state.name,
+  }));
+
+  const receiverCityOptions = receiverCities.map(city => ({
+    value: city.name,
+    label: city.name,
+  }));
+
+  const previewSections = [
+    {
+      title: "Sender Details",
+      fields: [
+        {
+          label: "Name",
+          value: formData ? `${formData.senderFirstName} ${formData.senderLastName}` : "-",
+        },
+        {
+          label: "Email",
+          value: formData?.senderEmail || "-",
+        },
+        {
+          label: "Phone",
+          value: formData?.senderPhone || "-",
+        },
+        {
+          label: "Address",
+          value: formData?.senderAddress || "-",
+        },
+        {
+          label: "City",
+          value: formData?.senderCity || "-",
+        },
+        {
+          label: "State",
+          value: formData ? getStateDisplayName(formData.senderState, senderStates) : "-",
+        },
+        {
+          label: "Country",
+          value: formData?.senderCountry || "-",
+        },
+        {
+          label: "ZIP Code",
+          value: formData?.senderZip || "-",
+        },
+      ],
+    },
+    {
+      title: "Receiver Details",
+      fields: [
+        {
+          label: "Name",
+          value: formData ? `${formData.receiverFirstName} ${formData.receiverLastName}` : "-",
+        },
+        {
+          label: "Email",
+          value: formData?.receiverEmail || "-",
+        },
+        {
+          label: "Phone",
+          value: formData?.receiverPhone || "-",
+        },
+        {
+          label: "Address",
+          value: formData?.receiverAddress || "-",
+        },
+        {
+          label: "City",
+          value: formData?.receiverCity || "-",
+        },
+        {
+          label: "State",
+          value: formData ? getStateDisplayName(formData.receiverState, receiverStates) : "-",
+        },
+        {
+          label: "Country",
+          value: formData?.receiverCountry || "-",
+        },
+        {
+          label: "ZIP Code",
+          value: formData?.receiverZip || "-",
+        },
+      ],
+    },
+    {
+      title: "Shipment Details",
+      fields: [
+        {
+          label: "Item Name",
+          value: formData?.itemName || "-",
+        },
+        {
+          label: "Description",
+          value: formData?.itemDescription || "-",
+        },
+        {
+          label: "Weight",
+          value: formData?.itemWeight ? `${formData.itemWeight}kg` : "-",
+        },
+        {
+          label: "Value",
+          value: formData?.itemValue ? `${formData.itemCurrency} ${parseFloat(formData.itemValue).toLocaleString()}` : "-",
+        },
+        {
+          label: "Carrier",
+          value: selectedRate?.carrier_name || "-",
+        },
+        {
+          label: "Shipping Cost",
+          value: selectedRate?.amount ? `${selectedRate.currency} ${selectedRate.amount.toLocaleString()}` : "-",
+        },
+        {
+          label: "Delivery Time",
+          value: selectedRate?.delivery_time || "-",
+        },
+      ],
+    },
+  ];
+
+  return (
+    <div className="space-y-6">
+      {currentStep === "form" && (
+        <>
+          <h2 className="font-bold text-center text-primary text-2xl">
+            Request For Shipment
+          </h2>
+          <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
+            {/* Sender Section */}
+            <div className="border rounded-lg p-4">
+              <h3 className="font-semibold text-lg mb-4">Sender Information</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormInput
+                  id="senderFirstName"
+                  label="First Name"
+                  placeholder="Enter first name"
+                  register={register("senderFirstName")}
+                  error={errors.senderFirstName?.message}
+                  required
+                />
+                <FormInput
+                  id="senderLastName"
+                  label="Last Name"
+                  placeholder="Enter last name"
+                  register={register("senderLastName")}
+                  error={errors.senderLastName?.message}
+                  required
+                />
+                <FormInput
+                  id="senderEmail"
+                  label="Email"
+                  type="email"
+                  placeholder="sender@example.com"
+                  register={register("senderEmail")}
+                  error={errors.senderEmail?.message}
+                  required
+                />
+                <FormInput
+                  id="senderPhone"
+                  label="Phone"
+                  type="tel"
+                  placeholder="+1234567890"
+                  register={register("senderPhone")}
+                  error={errors.senderPhone?.message}
+                  required
+                />
+                <FormInput
+                  id="senderAddress"
+                  label="Address"
+                  placeholder="Enter full address"
+                  register={register("senderAddress")}
+                  error={errors.senderAddress?.message}
+                  required
+                />
+                
+                {/* Country Dropdown */}
+                <FormSelect
+                  id="senderCountry"
+                  label="Country"
+                  options={countryOptions}
+                  register={register("senderCountry")}
+                  error={errors.senderCountry?.message}
+                  required
+                  searchable
+                  isLoading={countriesLoading}
+                  onChange={(value: string | React.ChangeEvent<HTMLSelectElement> | string[]) => {
+                    const newValue = typeof value === 'string' ? value : 
+                                   Array.isArray(value) ? value[0] : 
+                                   value.target.value;
+                    setValue("senderCountry", newValue);
+                    setValue("senderState", "");
+                    setValue("senderCity", "");
+                    setSenderStateName("");
+                  }}
+                />
+                
+                {/* State Dropdown */}
+                <FormSelect
+                  id="senderState"
+                  label="State/Province"
+                  options={senderStateOptions}
+                  register={register("senderState")}
+                  error={errors.senderState?.message}
+                  required
+                  searchable
+                  isLoading={senderStatesLoading}
+                  disabled={!watchSenderCountry}
+                  onChange={(value: string | React.ChangeEvent<HTMLSelectElement> | string[]) => {
+                    const newValue = typeof value === 'string' ? value : 
+                                   Array.isArray(value) ? value[0] : 
+                                   value.target.value;
+                    setValue("senderState", newValue);
+                    setValue("senderCity", "");
+                    // Update state name when state is selected
+                    const selectedState = senderStates.find(state => state.isoCode === newValue);
+                    if (selectedState) {
+                      setSenderStateName(selectedState.name);
+                    }
+                  }}
+                />
+                
+                {/* City Dropdown */}
+                <FormSelect
+                  id="senderCity"
+                  label="City"
+                  options={senderCityOptions}
+                  register={register("senderCity")}
+                  error={errors.senderCity?.message}
+                  required
+                  searchable
+                  isLoading={senderCitiesLoading}
+                  disabled={!watchSenderState}
+                />
+                
+                <FormInput
+                  id="senderZip"
+                  label="ZIP/Postal Code"
+                  placeholder="Enter ZIP code"
+                  register={register("senderZip")}
+                  error={errors.senderZip?.message}
+                />
+              </div>
+            </div>
+
+            {/* Receiver Section */}
+            <div className="border rounded-lg p-4">
+              <h3 className="font-semibold text-lg mb-4">Receiver Information</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormInput
+                  id="receiverFirstName"
+                  label="First Name"
+                  placeholder="Enter first name"
+                  register={register("receiverFirstName")}
+                  error={errors.receiverFirstName?.message}
+                  required
+                />
+                <FormInput
+                  id="receiverLastName"
+                  label="Last Name"
+                  placeholder="Enter last name"
+                  register={register("receiverLastName")}
+                  error={errors.receiverLastName?.message}
+                  required
+                />
+                <FormInput
+                  id="receiverEmail"
+                  label="Email"
+                  type="email"
+                  placeholder="receiver@example.com"
+                  register={register("receiverEmail")}
+                  error={errors.receiverEmail?.message}
+                  required
+                />
+                <FormInput
+                  id="receiverPhone"
+                  label="Phone"
+                  type="tel"
+                  placeholder="+1234567890"
+                  register={register("receiverPhone")}
+                  error={errors.receiverPhone?.message}
+                  required
+                />
+                <FormInput
+                  id="receiverAddress"
+                  label="Address"
+                  placeholder="Enter full address"
+                  register={register("receiverAddress")}
+                  error={errors.receiverAddress?.message}
+                  required
+                />
+                
+                {/* Country Dropdown */}
+                <FormSelect
+                  id="receiverCountry"
+                  label="Country"
+                  options={countryOptions}
+                  register={register("receiverCountry")}
+                  error={errors.receiverCountry?.message}
+                  required
+                  searchable
+                  isLoading={countriesLoading}
+                  onChange={(value: string | React.ChangeEvent<HTMLSelectElement> | string[]) => {
+                    const newValue = typeof value === 'string' ? value : 
+                                   Array.isArray(value) ? value[0] : 
+                                   value.target.value;
+                    setValue("receiverCountry", newValue);
+                    setValue("receiverState", "");
+                    setValue("receiverCity", "");
+                    setReceiverStateName("");
+                  }}
+                />
+                
+                {/* State Dropdown */}
+                <FormSelect
+                  id="receiverState"
+                  label="State/Province"
+                  options={receiverStateOptions}
+                  register={register("receiverState")}
+                  error={errors.receiverState?.message}
+                  required
+                  searchable
+                  isLoading={receiverStatesLoading}
+                  disabled={!watchReceiverCountry}
+                  onChange={(value: string | React.ChangeEvent<HTMLSelectElement> | string[]) => {
+                    const newValue = typeof value === 'string' ? value :
+                                     Array.isArray(value) ? value[0] :
+                                     value.target.value;
+                    setValue("receiverState", newValue);
+                    setValue("receiverCity", "");
+                    // Update state name when state is selected
+                    const selectedState = receiverStates.find(state => state.isoCode === newValue);
+                    if (selectedState) {
+                      setReceiverStateName(selectedState.name);
+                    }
+                  }}
+                />
+                
+                {/* City Dropdown */}
+                <FormSelect
+                  id="receiverCity"
+                  label="City"
+                  options={receiverCityOptions}
+                  register={register("receiverCity")}
+                  error={errors.receiverCity?.message}
+                  required
+                  searchable
+                  isLoading={receiverCitiesLoading}
+                  disabled={!watchReceiverState}
+                />
+                
+                <FormInput
+                  id="receiverZip"
+                  label="ZIP/Postal Code"
+                  placeholder="Enter ZIP code"
+                  register={register("receiverZip")}
+                  error={errors.receiverZip?.message}
+                />
+              </div>
+            </div>
+
+            {/* Parcel Section */}
+            <div className="border rounded-lg p-4">
+              <h3 className="font-semibold text-lg mb-4">Parcel Information</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormInput
+                  id="itemName"
+                  label="Item Name"
+                  placeholder="e.g., Laptop, Shoes"
+                  register={register("itemName")}
+                  error={errors.itemName?.message}
+                  required
+                />
+                <FormInput
+                  id="itemDescription"
+                  label="Item Description"
+                  placeholder="Brief description"
+                  register={register("itemDescription")}
+                  error={errors.itemDescription?.message}
+                  required
+                />
+                <FormInput
+                  id="itemWeight"
+                  label="Weight (kg)"
+                  type="number"
+                  step="0.01"
+                  placeholder="Weight in kg"
+                  register={register("itemWeight")}
+                  error={errors.itemWeight?.message}
+                  required
+                />
+                <FormInput
+                  id="itemValue"
+                  label="Item Value"
+                  type="number"
+                  step="0.01"
+                  placeholder="Item value"
+                  register={register("itemValue")}
+                  error={errors.itemValue?.message}
+                  required
+                />
+                <FormSelect
+                  id="itemCurrency"
+                  label="Currency"
+                  options={[
+                    { value: "NGN", label: "NGN - Nigerian Naira" },
+                    { value: "USD", label: "USD - US Dollar" },
+                    { value: "EUR", label: "EUR - Euro" },
+                    { value: "GBP", label: "GBP - British Pound" },
+                  ]}
+                  register={register("itemCurrency")}
+                  error={errors.itemCurrency?.message}
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-between mt-6">
+              <Button
+                onClick={onBack}
+                variant="outline"
+                className="border border-blue-900 text-blue-900"
+              >
+                Back
+              </Button>
+              <Button
+                type="submit"
+                variant="primary"
+                animation="ripple"
+                className="border border-primary"
+                disabled={isLoadingRates}
+              >
+                {isLoadingRates ? "Processing..." : "Get Rates"}
+              </Button>
+            </div>
+          </form>
+        </>
+      )}
+
+      {currentStep === "logistics" && (
+        <LogisticsPartners
+          shipmentData={formData}
+          availableRates={availableRates}
+          isLoadingRates={isLoadingRates}
+          onBack={() => setCurrentStep("form")}
+          onSubmit={handleRateSelection}
+          isSubmitting={false}
+        />
+      )}
+
+      {currentStep === "preview" && (
+        <PreviewComponent
+          title="Review Your Shipment"
+          sections={previewSections}
+          onEdit={handleEdit}
+          onProceedToBook={arrangePickup}
+          onContactSupport={handleContactSupport}
+          isSubmitting={isSubmitting}
+        />
+      )}
+    </div>
+  );
 };
 
 export default DomesticForm;
