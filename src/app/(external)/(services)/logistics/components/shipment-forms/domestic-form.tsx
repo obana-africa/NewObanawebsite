@@ -13,6 +13,8 @@ import useCountries from "@/hooks/use-countries";
 import useStates from "@/hooks/use-states";
 import useCities from "@/hooks/use-cities";
 import { termApi } from "@/app/api/(instances)/axiosInstance";
+import { formatPhoneNumber } from "@/utils/phone-number-format";
+import { useLogistics } from "@/hooks/use-logistics";
 import { domesticFormSchema } from "@/schemas";
 
 
@@ -37,20 +39,19 @@ const DomesticForm: React.FC<DomesticFormProps> = ({
   const [isLoadingRates, setIsLoadingRates] = useState(false);
   const [selectedRate, setSelectedRate] = useState<any>(null);
   
-  // Country, state, and city hooks for sender
+  const { submitLogisticsForm } = useLogistics();
+  
   const { countries: allCountries, isLoading: countriesLoading } = useCountries();
   const [senderCountry, setSenderCountry] = useState<string>("NG");
   const [senderState, setSenderState] = useState<string>("");
   const { states: senderStates, isLoading: senderStatesLoading } = useStates(senderCountry);
   const { cities: senderCities, isLoading: senderCitiesLoading } = useCities(senderCountry, senderState);
   
-  // Country, state, and city hooks for receiver
   const [receiverCountry, setReceiverCountry] = useState<string>("NG");
   const [receiverState, setReceiverState] = useState<string>("");
   const { states: receiverStates, isLoading: receiverStatesLoading } = useStates(receiverCountry);
   const { cities: receiverCities, isLoading: receiverCitiesLoading } = useCities(receiverCountry, receiverState);
 
-  // Store state names for API submission
   const [senderStateName, setSenderStateName] = useState<string>("");
   const [receiverStateName, setReceiverStateName] = useState<string>("");
 
@@ -105,23 +106,6 @@ const DomesticForm: React.FC<DomesticFormProps> = ({
       }
     }
   }, [watchReceiverState, receiverStates]);
-
-  // Format phone number based on country
-  const formatPhoneNumber = (phone: string, countryCode: string) => {
-    if (phone.startsWith('+')) return phone;
-    
-    // Remove any non-digit characters
-    const cleanPhone = phone.replace(/\D/g, '');
-    
-    // For Nigeria, ensure it starts with +234
-    if (countryCode === 'NG' && cleanPhone.startsWith('0')) {
-      return `+234${cleanPhone.substring(1)}`;
-    }
-    
-    // For other countries, you might need different formatting logic
-    // This is a basic implementation - you might want to enhance it
-    return `+${cleanPhone}`;
-  };
 
   // Create shipment draft with international support
   const createShipmentDraft = async (data: DomesticFormInputs) => {
@@ -264,8 +248,8 @@ const DomesticForm: React.FC<DomesticFormProps> = ({
   };
 
   const arrangePickup = async () => {
-    if (!shipmentDraft || !selectedRate) {
-      toast.error("Missing shipment or rate information");
+    if (!shipmentDraft || !selectedRate || !formData) {
+      toast.error("Missing shipment, rate, or form information");
       return;
     }
 
@@ -277,7 +261,6 @@ const DomesticForm: React.FC<DomesticFormProps> = ({
         rate_currency: selectedRate.currency,
       };
 
-      // Use termApi Axios client instead of fetch
       const response = await termApi.post("/shipments/pickup/", payload);
 
       const result = response.data;
@@ -285,6 +268,13 @@ const DomesticForm: React.FC<DomesticFormProps> = ({
 
       if (result.status && result.data) {
         toast.success("Shipment booked successfully!");
+        
+        // After successful booking, submit to logistics API for emails
+        const emailSuccess = await submitLogisticsForm(formData, "domestic");
+        if (!emailSuccess) {
+          console.warn("Email submission failed, but booking completed");
+          // Optional: toast.warning("Booking successful, but email notification failed");
+        }
         
         // Add safety check for onComplete
         if (typeof onComplete === 'function') {
@@ -468,7 +458,7 @@ const DomesticForm: React.FC<DomesticFormProps> = ({
           </h2>
           <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
             {/* Sender Section */}
-            <div className="border rounded-lg p-4">
+            <div className="border border-accent rounded-lg p-4">
               <h3 className="font-semibold text-lg mb-4">Sender Information</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormInput
@@ -584,7 +574,7 @@ const DomesticForm: React.FC<DomesticFormProps> = ({
             </div>
 
             {/* Receiver Section */}
-            <div className="border rounded-lg p-4">
+            <div className="border border-accent  rounded-lg p-4">
               <h3 className="font-semibold text-lg mb-4">Receiver Information</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormInput
@@ -700,7 +690,7 @@ const DomesticForm: React.FC<DomesticFormProps> = ({
             </div>
 
             {/* Parcel Section */}
-            <div className="border rounded-lg p-4">
+            <div className="border border-accent  rounded-lg p-4">
               <h3 className="font-semibold text-lg mb-4">Parcel Information</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormInput

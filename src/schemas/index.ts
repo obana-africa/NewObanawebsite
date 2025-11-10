@@ -113,33 +113,58 @@ export const domesticShipmentSchema = z
 		}
 	);
 
-export const domesticFormSchema = z.object({
-	senderFirstName: z.string().min(1, "Sender first name is required"),
-	senderLastName: z.string().min(1, "Sender last name is required"),
-	senderEmail: z.string().email("Valid email required"),
-	senderPhone: z.string().min(5, "Phone number required"),
-	senderAddress: z.string().min(5, "Address required"),
-	senderCity: z.string().min(1, "City required"),
-	senderState: z.string().min(1, "State required"),
-	senderCountry: z.string().min(2, "Country required"),
-	senderZip: z.string().optional(),
 
-	receiverFirstName: z.string().min(1, "Receiver first name is required"),
-	receiverLastName: z.string().min(1, "Receiver last name is required"),
-	receiverEmail: z.string().email("Valid email required"),
-	receiverPhone: z.string().min(5, "Phone number required"),
-	receiverAddress: z.string().min(5, "Address required"),
-	receiverCity: z.string().min(1, "City required"),
-	receiverState: z.string().min(1, "State required"),
-	receiverCountry: z.string().min(2, "Country required"),
-	receiverZip: z.string().optional(),
+	
+export const domesticFormSchema = z
+	.object({
+		senderFirstName: z.string().min(1, "Sender first name is required"),
+		senderLastName: z.string().min(1, "Sender last name is required"),
+		senderEmail: z.string().email("Valid email required"),
+		senderPhone: z.string().min(5, "Phone number required"),
+		senderAddress: z.string().min(5, "Address required"),
+		senderCity: z.string().min(1, "City required"),
+		senderState: z.string().min(1, "State required"),
+		senderCountry: z.string().min(2, "Country required"),
+		senderZip: z.string().optional(),
 
-	itemName: z.string().min(1, "Item name required"),
-	itemDescription: z.string().min(1, "Item description required"),
-	itemValue: z.string().min(1, "Item value required"),
-	itemWeight: z.string().min(1, "Item weight required"),
-	itemCurrency: z.string().default("NGN"),
-});
+		receiverFirstName: z.string().min(1, "Receiver first name is required"),
+		receiverLastName: z.string().min(1, "Receiver last name is required"),
+		receiverEmail: z.string().email("Valid email required"),
+		receiverPhone: z.string().min(5, "Phone number required"),
+		receiverAddress: z.string().min(5, "Address required"),
+
+		receiverCity: z.string().min(1, "City required"),
+		receiverState: z.string().min(1, "State required"),
+		receiverCountry: z.string().min(2, "Country required"),
+		receiverZip: z.string().optional(),
+
+		itemName: z.string().min(1, "Item name required"),
+		itemDescription: z.string().min(1, "Item description required"),
+		itemValue: z
+			.string()
+			.min(1, "Item value required")
+			.refine((val) => !isNaN(parseFloat(val)), {
+				message: "Item value must be a valid number",
+			}),
+		itemWeight: z
+			.string()
+			.min(1, "Item weight required")
+			.refine((val) => !isNaN(parseFloat(val)), {
+				message: "Item weight must be a valid number",
+			}),
+		itemCurrency: z.string().default("NGN"),
+	})
+	.refine(
+		(data) => {
+			const senderLoc = `${data.senderCity}, ${data.senderState}, ${data.senderCountry}`;
+			const receiverLoc = `${data.receiverCity}, ${data.receiverState}, ${data.receiverCountry}`;
+			return senderLoc !== receiverLoc;
+		},
+		{
+			message: "Sender and receiver locations cannot be the same",
+			path: ["receiverCity"], 
+		}
+	);
 
 export const senderReceiverSchema = z.object({
 	sender: z.object({
