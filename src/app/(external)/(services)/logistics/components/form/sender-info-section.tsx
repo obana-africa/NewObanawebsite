@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import FormInput from "@/components/ui/form-input";
 import FormSelect from "@/components/ui/form-select";

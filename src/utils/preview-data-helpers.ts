@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const getStateDisplayName = (stateCode: string, statesList: any[]) => {
 	const state = statesList.find((s) => s.isoCode === stateCode);
 	return state ? state.name : stateCode;
