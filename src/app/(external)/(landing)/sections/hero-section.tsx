@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Button from "@/components/ui/button";
-import RotatingGlobe from "../components/hero-globe";
 import { useModal } from "@/contexts/modal-context";
 import heroBgImage from "@/app/assets/images/landing-page/bgbg.png"; 
 
@@ -56,7 +55,6 @@ const HeroSection: React.FC = () => {
 				}}
 			></div>
 
-			{/* Content */}
 			<div className="container mx-auto px-4 md:px-6 relative z-30">
 				<div className="flex flex-col-reverse md:flex-row items-center -mt-10 sm:mt-0">
 					<div className="w-full md:w-[60%] mb-0 md:mb-0 md:pr-8 -mt-5 sm:mt-0">

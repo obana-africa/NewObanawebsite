@@ -16,7 +16,7 @@ export interface Feature {
 	description: string;
 	buttonText?: string;
 	href?: string;
-	imageSrc: string;
+	imageSrc?: string;
 }
 export interface Benefit {
 	title: string;
