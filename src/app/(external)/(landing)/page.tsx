@@ -33,7 +33,7 @@ const Home: NextPage = () => {
 				{/* <CtaSection /> */}
 				{/* <Testimonials title="What Our Eco System Partners Says" /> */}
 				<TestimonialSection
-					title="What Our Eco System Partners Says"
+					title="Testimonials"
 					testimonials={testimonials}
 					autoPlayInterval={2000} 
 				/>
