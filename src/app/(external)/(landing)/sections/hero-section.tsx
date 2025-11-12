@@ -7,7 +7,7 @@ import { useModal } from "@/contexts/modal-context";
 import heroBgImage from "@/app/assets/images/landing-page/bgbg.png"; 
 
 const HeroSection: React.FC = () => {
-	const solutions = ["Earn as a Sales Partner", "Earn as a Vendor"];
+	const solutions = ["Earn as a Sales Partner", "Sell on Obana.africa", "Buy in Bulk" ];
 
 	const [currentSolutionIndex, setCurrentSolutionIndex] = useState(0);
 	const [isAnimating, setIsAnimating] = useState(false);
