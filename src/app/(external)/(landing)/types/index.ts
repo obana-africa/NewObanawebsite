@@ -11,11 +11,12 @@ export interface FeatureBoxProps {
 }
 
 export interface Feature {
-	icon: ReactNode;
+	icon?: ReactNode;
 	title: string;
 	description: string;
 	buttonText?: string;
 	href?: string;
+	imageSrc?: string;
 }
 export interface Benefit {
 	title: string;
@@ -37,21 +38,15 @@ export interface CoreValuesProps {
 }
 
 export type StakeholderBoxProps = {
-	label: string;
+	title: string;
 	description: React.ReactNode;
-	rightIcon: string;
+	imageSrc?: string;
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	[x: string]: any;
 };
 
 export type StakeholderSectionProps = {
 	title: string;
-	stakeholders: {
-		label: string;
-		description: React.ReactNode;
-		rightIcon: string;
-	}[];
+	stakeholders: StakeholderBoxProps;
 	globeImage: string;
 };
 
