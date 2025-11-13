@@ -29,7 +29,7 @@ const ServiceFeatureBox: React.FC<ServiceFeatureBoxProps> = ({
 
 	return (
 		<div
-			className="relative h-[500px] rounded-lg overflow-hidden group "
+			className="relative h-[300px]  md:h-[500px] rounded-lg overflow-hidden group "
 			data-aos={aosAnimation}
 			data-aos-delay={aosDelay}
 			data-aos-duration="800"

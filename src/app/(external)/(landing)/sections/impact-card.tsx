@@ -31,9 +31,6 @@ const ImpactCard: React.FC<ImpactCardProps> = ({
 					? "bg-[#1E3A5F] text-white"
 					: "bg-white text-[#4A5568] border border-secondary-light"
 			} rounded-2xl p-8 md:p-10 shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col justify-between min-h-[300px] relative overflow-hidden`}
-			data-aos="fade-up"
-			data-aos-delay={aosDelay}
-			data-aos-duration="800"
 		>
 			{isPrimary && backgroundImage && (
 				<>

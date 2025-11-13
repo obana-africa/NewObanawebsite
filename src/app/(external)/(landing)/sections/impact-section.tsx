@@ -44,17 +44,12 @@ const ImpactSection: React.FC<ImpactSectionProps> = ({
 				<div className="text-center mb-12 md:mb-16 max-w-4xl mx-auto  items-center flex flex-col">
 					<h2
 						className="text-primary text-3xl md:text-2xl lg:text-3xl font-bold "
-						data-aos="fade-down"
-						data-aos-duration="800"
 					>
 						{title}
 					</h2>
 					<Seperator />
 					<p
 						className="text-primary text-base md:text-lg lg:text-xl leading-relaxed mt-2"
-						data-aos="fade-up"
-						data-aos-delay="100"
-						data-aos-duration="800"
 					>
 						{description}
 					</p>

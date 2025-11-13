@@ -205,8 +205,8 @@ const Footer = () => {
 
 					<div className="border-t border-gray-600 my-8"></div>
 
-					<div className="flex flex-col md:flex-row justify-between items-center">
-						<div className=" w-[40%]">
+					<div className="flex flex-col-reverse md:flex-row justify-between items-center gap-10">
+						<div className="w-full md:w-[40%]">
 							<p className=" mb-4 md:mb-0">
 								Copyright © 2025 Obana.Africa (An ICON Tech & Ecom Services Ltd
 								Trademark). All Rights Reserved.
@@ -223,7 +223,7 @@ const Footer = () => {
 								))}
 							</div>
 						</div>
-						<div className="mt-8 md:mt-0 w-[30%]">
+						<div className=" md:mt-0 md:w-[30%]">
 							<h3 className="text-lg font-medium mb-4">Stay Connected</h3>
 							<p className="mb-4 ">
 								Subscribe for updates on sourcing opportunities, vendor

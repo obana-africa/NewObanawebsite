@@ -20,12 +20,11 @@ const StakeholderSection: React.FC<StakeholderSectionProps> = ({
 	stakeholders,
 }) => {
 	return (
-		<section className="w-full py-12 md:py-2 bg-white">
+		<section className="w-full py-2 md:py-2 bg-white">
 			<div className="container mx-auto px-4 md:px-6">
 				<div className="text-center mb-12 md:mb-16 items-center flex flex-col">
 					<h2
 						className="text-primary text-3xl md:text-4xl lg:text-5xl font-bold mb-1"
-						data-aos="fade-down"
 					>
 						{title}
 					</h2>

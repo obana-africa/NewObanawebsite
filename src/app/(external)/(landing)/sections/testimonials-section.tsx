@@ -5,7 +5,7 @@ import Image, { StaticImageData } from "next/image";
 
 interface Testimonial {
 	quote: string;
-	rating: string;
+	rating?: any;
 	name: string;
 	role: string;
 	image: string | StaticImageData;
@@ -51,12 +51,11 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
 	const currentTestimonial = testimonials[currentIndex];
 
 	return (
-		<section className="w-full py-16 md:py-2 bg-white relative overflow-hidden">
+		<section className="w-full py-0 md:py-2 bg-white relative overflow-hidden">
 			<div className="container mx-auto px-4 md:px-6">
 				<div className="text-center mb-12 md:mb-8">
 					<h2
 						className="text-primary text-3xl md:text-4xl lg:text-5xl font-bold"
-						data-aos="fade-down"
 					>
 						{title}
 					</h2>
@@ -123,9 +122,9 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
 	totalTestimonials,
 }) => {
 	return (
-		<div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 p-8 md:p-12 rounded-3xl transition-all duration-700">
+		<div className="flex flex-col md:flex-row items-center gap-2 md:gap-12 p-2 md:p-12 rounded-3xl transition-all duration-700">
 			<div className="w-full md:w-2/5 flex justify-center items-center">
-				<div className="relative w-full max-w-[320px] aspect-[4/5] rounded-3xl overflow-hidden shadow-xl">
+				<div className="relative w-full max-w-[220px] md:max-w-[320px] aspect-[4/5] rounded-3xl overflow-hidden shadow-xl">
 					<Image
 						src={image}
 						alt={name}
@@ -159,7 +158,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
 					{message}
 				</p>
 
-				<p className="text-[#6B7280] text-sm md:text-base mb-8">{rating}</p>
+				<p className="text-[#6B7280] text-sm md:text-base mb-2">{rating}</p>
 
 				<div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
 					<div>
