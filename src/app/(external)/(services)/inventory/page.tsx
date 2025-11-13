@@ -1,6 +1,5 @@
 "use client";
 
-import Breadcrumb from "@/components/external/components/breadcrumb";
 import React from "react";
 import InventoryOverview from "./sections/invetory-overview";
 import InventoryWorks from "./sections/how-inventory-works";
