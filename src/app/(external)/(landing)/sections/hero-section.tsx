@@ -32,7 +32,7 @@ const HeroSection: React.FC = () => {
 	};
 
 	return (
-		<section className="text-white pt-32 pb-12 md:pt-16 md:pb-2 relative overflow-hidden">
+		<section className="text-white  pb-12 md:pt-16 md:pb-2 relative overflow-hidden">
 			{/* Background Image */}
 			<div className="absolute inset-0 z-0">
 				<Image
@@ -56,7 +56,7 @@ const HeroSection: React.FC = () => {
 			></div>
 
 			<div className="container mx-auto px-4 md:px-6 relative z-30">
-				<div className="flex flex-col-reverse md:flex-row items-center -mt-10 sm:mt-0">
+				<div className="flex flex-col-reverse md:flex-row items-center -mt-[15rem] sm:mt-0">
 					<div className="w-full md:w-[60%] mb-0 md:mb-0 md:pr-8 -mt-5 sm:mt-0">
 						<h2 className="text-sm md:text-base lg:text-lg font-semibold mb-1"></h2>
 
