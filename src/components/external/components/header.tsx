@@ -128,7 +128,7 @@ const Header: React.FC = () => {
 				title: "Order Now, Pay Small Small (ONPSS)",
 				description:
 					"Now you can — thanks to Obana's Order Now, Pay Small Small feature.",
-				href: "https://shop.obana.africa/inventory-financing",
+				href: "/inventory",
 			},
 			{
 				title: "Sell on Obana.Africa",

@@ -21,7 +21,7 @@ const InventoryOverview = () => {
 		process.env.ENVIRONMENT_ENV === "production" ? "production" : "development";
 
 	return (
-		<div className=" relative">
+		<div className=" relative bg-primary py-10">
 			<section className="container mx-auto px-4 md:px-6 py-8 md:pt-10 md:pb-6 mt-12 md:mt-12">
 				<div className="flex flex-col-reverse justify-between md:flex-row gap-6 md:gap-16">
 					<div
@@ -60,13 +60,13 @@ const InventoryOverview = () => {
 						// data-aos-delay="100"
 					>
 						<h2
-							className="text-primary text-2xl md:text-3xl lg:text-4xl font-bold inline-block"
+							className="text-secondary text-2xl md:text-3xl lg:text-4xl font-bold inline-block"
 							data-aos="fade-right"
 						>
-							Inventory Financing Overview
+							Order Now & Pay Small Small Overview
 						</h2>
 						<Seperator />
-						<div className="mt-4 md:mt-6 space-y-4 md:space-y-8 text-[#222]  md:text-base lg:text-md leading-8">
+						<div className="mt-4 md:mt-6 space-y-4 md:space-y-8 text-secondary  md:text-base lg:text-md leading-8">
 							<div>
 								<p data-aos="fade-right">
 									We Obana.africa as a technology infrastructure work with
@@ -86,7 +86,7 @@ const InventoryOverview = () => {
 								onClick={handleInventoryFinancing}
 								variant="primary"
 								animation="ripple"
-								className="border border-primary "
+								className="border border-secondary "
 							>
 								Get Started
 							</Button>

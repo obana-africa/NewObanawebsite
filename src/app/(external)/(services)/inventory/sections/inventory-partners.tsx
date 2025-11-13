@@ -101,7 +101,7 @@ const InventoryPartners = () => {
 	};
 
 	return (
-		<section className="container mx-auto px-4 py-10 md:pt-2">
+		<section className="container mx-auto px-4 py-10 md:pt-8">
 			<div className="text-center mb-12 md:mb-14 items-center flex flex-col">
 				<h2
 					className="text-primary text-2xl md:text-3xl lg:text-4xl font-bold inline-block"

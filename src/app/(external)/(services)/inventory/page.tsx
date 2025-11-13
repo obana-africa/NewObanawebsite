@@ -13,10 +13,10 @@ const Page = () => {
 	return (
 		<div className=" min-h-screen overflow-x-hidden">
 			<main>
-				<Breadcrumb
-					heading="Inventory Financing"
+				{/* <Breadcrumb
+					heading="Order Now & Pay Small Small (ONPSS)"
 					subheading="Buy products for your business without paying upfront at very minimal or nothing."
-				/>
+				/> */}
 				<InventoryOverview />
 				<InventoryPartners />
 				<InventoryWorks />
