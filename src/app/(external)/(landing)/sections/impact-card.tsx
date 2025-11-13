@@ -19,7 +19,6 @@ const ImpactCard: React.FC<ImpactCardProps> = ({
 	subtitle,
 	description,
 	variant = "default",
-	aosDelay = 0,
 	backgroundImage,
 }) => {
 	const isPrimary = variant === "primary";

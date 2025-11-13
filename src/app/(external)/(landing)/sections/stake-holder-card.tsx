@@ -15,7 +15,6 @@ const StakeholderCard: React.FC<StakeholderCardProps> = ({
 	description,
 	imageSrc,
 	imagePosition = "left",
-	aosDelay = 0,
 }) => {
 	return (
 		<div

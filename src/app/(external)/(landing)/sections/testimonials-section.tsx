@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -54,9 +55,7 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
 		<section className="w-full py-0 md:py-2 bg-white relative overflow-hidden">
 			<div className="container mx-auto px-4 md:px-6">
 				<div className="text-center mb-12 md:mb-8">
-					<h2
-						className="text-primary text-3xl md:text-4xl lg:text-5xl font-bold"
-					>
+					<h2 className="text-primary text-3xl md:text-4xl lg:text-5xl font-bold">
 						{title}
 					</h2>
 				</div>
