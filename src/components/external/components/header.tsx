@@ -15,6 +15,9 @@ const Header: React.FC = () => {
 	const [activeMobileDropdown, setActiveMobileDropdown] = useState<
 		string | null
 	>(null);
+	const [activeMobileSubDropdown, setActiveMobileSubDropdown] = useState<
+		string | null
+	>(null);
 
 	const { openGetStartedModal } = useModal();
 	const pathname = usePathname();
@@ -41,6 +44,7 @@ const Header: React.FC = () => {
 		setIsOpen(false);
 		setActiveDropdown(null);
 		setActiveMobileDropdown(null);
+		setActiveMobileSubDropdown(null);
 	}, [pathname]);
 
 	useEffect(() => {
@@ -85,6 +89,7 @@ const Header: React.FC = () => {
 		setIsOpen(!isOpen);
 		if (isOpen) {
 			setActiveMobileDropdown(null);
+			setActiveMobileSubDropdown(null);
 		}
 	};
 
@@ -100,6 +105,15 @@ const Header: React.FC = () => {
 	const toggleMobileDropdown = (dropdown: string): void => {
 		setActiveMobileDropdown(
 			activeMobileDropdown === dropdown ? null : dropdown
+		);
+		if (activeMobileDropdown !== dropdown) {
+			setActiveMobileSubDropdown(null);
+		}
+	};
+
+	const toggleMobileSubDropdown = (subDropdown: string): void => {
+		setActiveMobileSubDropdown(
+			activeMobileSubDropdown === subDropdown ? null : subDropdown
 		);
 	};
 
@@ -122,7 +136,19 @@ const Header: React.FC = () => {
 				title: "Buy in Bulk",
 				description:
 					"Explore our Buy in Bulk deals and grow your hustle the easy way.",
-				href: "https://shop.obana.africa/",
+				hasSubMenu: true,
+				subItems: [
+					{
+						title: "Browse Products",
+						description: "Explore our Buy in Bulk deals and grow your hustle the easy way.",
+						href: "https://shop.obana.africa/",
+					},
+					{
+						title: "Custom Sourcing",
+						description: "Can't find what you're looking for? Tell us — we'll source it for you.",
+						href: "#",
+					},
+				],
 			},
 			{
 				title: "Order Now, Pay Small Small (ONPSS)",
@@ -260,21 +286,51 @@ const Header: React.FC = () => {
 									<div className="container mx-auto px-4 md:px-6 py-8">
 										<div className="grid grid-cols-3 gap-6 max-w-6xl mx-auto">
 											{megaMenuItems.solutions.map((item, idx) => (
-												<Link
-													key={idx}
-													href={item.href}
-													className="p-6 rounded-lg hover:bg-gray-50 transition-colors group hover:bg-primary"
-												>
-													<h3 className="font-semibold text-primary mb-2 group-hover:text-primary-light text-lg">
-														{item.title}
-													</h3>
-													<p className="text-sm  text-primary mb-3 group-hover:text-primary-light">
-														{item.description}
-													</p>
-													<span className="text-sm flex items-center font-medium text-primary group-hover:text-primary-light">
-														Click here <ArrowRight className="ml-1 h-3 w-3" />
-													</span>
-												</Link>
+												<div key={idx}>
+													{item.hasSubMenu && item.subItems ? (
+														<div className="p-6 rounded-lg hover:bg-primary transition-colors group">
+															<h3 className="font-semibold text-primary group-hover:text-primary-light mb-4 text-lg">
+																{item.title}
+															</h3>
+															<div className="space-y-4">
+																{item.subItems.map((subItem, subIdx) => (
+																	<Link
+																		key={subIdx}
+																		href={subItem.href}
+																		className="block pl-4 border-l-2 border-transparent hover:border-primary-light"
+																	>
+																		<h4 className="font-medium text-primary group-hover:text-primary-light text-sm mb-1">
+																			{subItem.title}
+																		</h4>
+																		<p className="text-xs text-primary group-hover:text-primary-light">
+																			{subItem.description}
+																		</p>
+																		<span className="text-sm flex items-center font-medium text-primary group-hover:text-primary-light ">
+																			Click here
+																			<ArrowRight className="ml-1 h-3 w-3" />
+																		</span>
+																	</Link>
+																))}
+															</div>
+														</div>
+													) : (
+														<Link
+															href={item.href || "#"}
+															className="p-6 rounded-lg hover:bg-gray-50 transition-colors group hover:bg-primary block"
+														>
+															<h3 className="font-semibold text-primary mb-2 group-hover:text-primary-light text-lg">
+																{item.title}
+															</h3>
+															<p className="text-sm  text-primary mb-3 group-hover:text-primary-light">
+																{item.description}
+															</p>
+															<span className="text-sm flex items-center font-medium text-primary group-hover:text-primary-light">
+																Click here{" "}
+																<ArrowRight className="ml-1 h-3 w-3" />
+															</span>
+														</Link>
+													)}
+												</div>
 											))}
 										</div>
 									</div>
@@ -443,18 +499,53 @@ const Header: React.FC = () => {
 							<div
 								className={`ml-4 mb-2 transition-all duration-300 ${
 									activeMobileDropdown === "solutions"
-										? "max-h-96 opacity-100"
+										? "max-h-[600px] opacity-100"
 										: "max-h-0 opacity-0 overflow-hidden"
 								}`}
 							>
 								{megaMenuItems.solutions.map((item, idx) => (
-									<Link
-										key={idx}
-										href={item.href}
-										className="block py-2 text-gray-700 hover:bg-primary hover:text-white hover:pl-2 transition-all duration-200"
-									>
-										{item.title}
-									</Link>
+									<div key={idx}>
+										{item.hasSubMenu && item.subItems ? (
+											<div className="border-b border-gray-200 last:border-b-0">
+												<button
+													className="flex items-center justify-between w-full py-2 text-gray-700"
+													onClick={() => toggleMobileSubDropdown("buyInBulk")}
+													type="button"
+												>
+													<span>{item.title}</span>
+													{activeMobileSubDropdown === "buyInBulk" ? (
+														<ChevronUp className="h-3 w-3" />
+													) : (
+														<ChevronDown className="h-3 w-3" />
+													)}
+												</button>
+												<div
+													className={`ml-4 transition-all duration-300 ${
+														activeMobileSubDropdown === "buyInBulk"
+															? "max-h-96 opacity-100 mb-2"
+															: "max-h-0 opacity-0 overflow-hidden"
+													}`}
+												>
+													{item.subItems.map((subItem, subIdx) => (
+														<Link
+															key={subIdx}
+															href={subItem.href}
+															className="block py-2 text-sm text-gray-600 hover:bg-primary hover:text-white hover:pl-2 transition-all duration-200"
+														>
+															{subItem.title}
+														</Link>
+													))}
+												</div>
+											</div>
+										) : (
+											<Link
+												href={item.href || "#"}
+												className="block py-2 text-gray-700 hover:bg-primary hover:text-white hover:pl-2 transition-all duration-200"
+											>
+												{item.title}
+											</Link>
+										)}
+									</div>
 								))}
 							</div>
 						</div>
