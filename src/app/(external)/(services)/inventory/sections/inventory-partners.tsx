@@ -111,8 +111,6 @@ const InventoryPartners = () => {
 				<Seperator />
 				<p
 					className="mt-3 text-[#222] text-sm md:text-base max-w-2xl mx-auto"
-					data-aos="fade-up"
-					data-aos-delay="100"
 				>
 					We collaborate with trusted financial institutions to provide you with
 					the best inventory financing options
@@ -124,8 +122,6 @@ const InventoryPartners = () => {
 					<div
 						key={index}
 						className="group bg-gradient-to-br from-white to-gray-50 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-4 md:p-5 border border-secondary-light hover:border-primary/20"
-						data-aos="fade-up"
-						data-aos-delay={index * 50}
 					>
 						<div className="flex items-start gap-3">
 							<div className="flex-shrink-0 mt-1">
@@ -152,12 +148,10 @@ const InventoryPartners = () => {
 				</h3>
 
 				<div className="gap-4 grid grid-cols-1 md:grid-cols-2 ">
-					{partnersData.map((partner, index) => (
+					{partnersData.map((partner) => (
 						<div
 							key={partner.id}
 							className="group bg-white rounded-xl shadow-sm border border-secondary-light overflow-hidden hover:shadow-md transition-all duration-300"
-							data-aos="fade-up"
-							data-aos-delay={index * 100}
 						>
 							<button
 								onClick={() => toggleExpand(partner.id)}

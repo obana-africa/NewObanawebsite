@@ -12,8 +12,6 @@ const InventoryBenefits: React.FC<CoreValuesProps> = ({
 			<div className="container mx-auto px-4 md:px-6">
 				<div
 					className="mb-8 flex items-start mx-auto justify-center flex-col max-w-full sm:w-full z-20"
-					data-aos="fade-up"
-					data-aos-delay="100"
 				>
 					<h2 className="text-primary hidden sm:block">{title}</h2>
 					<h1 className="text-primary block sm:hidden">{title}</h1>
@@ -26,9 +24,6 @@ const InventoryBenefits: React.FC<CoreValuesProps> = ({
 							key={index}
 							title={value.title}
 							description={value.description}
-							data-aos={index % 2 === 0 ? "fade-up" : "fade-up"}
-							data-aos-delay={100 + index * 100}
-							data-aos-duration="800"
 						/>
 					))}
 				</div>
