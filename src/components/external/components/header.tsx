@@ -140,13 +140,15 @@ const Header: React.FC = () => {
 				subItems: [
 					{
 						title: "Browse Products",
-						description: "Explore our Buy in Bulk deals and grow your hustle the easy way.",
+						description:
+							"Explore our Buy in Bulk deals and grow your hustle the easy way.",
 						href: "https://shop.obana.africa/",
 					},
 					{
 						title: "Custom Sourcing",
-						description: "Can't find what you're looking for? Tell us — we'll source it for you.",
-						href: "#",
+						description:
+							"Can't find what you're looking for? Tell us — we'll source it for you.",
+						href: "/rfq",
 					},
 				],
 			},
