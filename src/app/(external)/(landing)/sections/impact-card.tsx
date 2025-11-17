@@ -48,14 +48,14 @@ const ImpactCard: React.FC<ImpactCardProps> = ({
 			<div className="relative z-10">
 				<div className="mb-6">
 					<h2
-						className={`text-5xl md:text-6xl font-bold mb-4 ${
+						className={`text-4xl md:text-5xl lg:text-6xl font-bold mb-4 ${
 							isPrimary ? "text-white" : "text-primary"
 						}`}
 					>
 						{number}
 					</h2>
 					<h3
-						className={`text-xl md:text-2xl font-semibold ${
+						className={`text-xl md:text-xl lg:text-2xl font-semibold ${
 							isPrimary ? "text-white" : "text-primary"
 						}`}
 					>

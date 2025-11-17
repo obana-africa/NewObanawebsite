@@ -29,7 +29,7 @@ const ServiceFeatureBox: React.FC<ServiceFeatureBoxProps> = ({
 
 	return (
 		<div
-			className="relative h-[300px]  md:h-[500px] rounded-lg overflow-hidden group "
+			className="relative h-[300px] xl:h-[400px] lg:h-[350px]  md:h-[300px] rounded-lg overflow-hidden group "
 			data-aos={aosAnimation}
 			data-aos-delay={aosDelay}
 			data-aos-duration="800"
@@ -47,10 +47,10 @@ const ServiceFeatureBox: React.FC<ServiceFeatureBoxProps> = ({
 			<div className="absolute inset-0 bg-black/40 group-hover:bg-primary/70 transition-all duration-500" />
 
 			<div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center text-white z-10">
-				<h3 className="text-3xl md:text-4xl font-bold mb-4 transition-transform duration-500 group-hover:scale-105">
+				<h3 className="text-3xl lg:text-4xl md:text-3xl font-bold mb-4 transition-transform duration-500 group-hover:scale-105">
 					{title}
 				</h3>
-				<p className="text-base md:text-md mb-6 max-w-md md:max-w-2/3 leading-relaxed transition-opacity duration-500 group-hover:opacity-90 group-hover:font-bold">
+				<p className="text-base lg:text-md md:text-sm mb-6 max-w-md md:max-w-2/3 leading-relaxed transition-opacity duration-500 group-hover:opacity-90 group-hover:font-bold">
 					{description}
 				</p>
 				<Button

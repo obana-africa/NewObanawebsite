@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image, { StaticImageData } from "next/image";
+import Seperator from "@/components/external/components/seperator";
 
 interface Testimonial {
 	quote: string;
@@ -54,10 +55,11 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
 	return (
 		<section className="w-full py-0 md:py-2 bg-white relative overflow-hidden">
 			<div className="container mx-auto px-4 md:px-6">
-				<div className="text-center mb-12 md:mb-8">
+				<div className="text-center mb-5 md:mb-2 items-center flex-col flex">
 					<h2 className="text-primary text-3xl md:text-4xl lg:text-5xl font-bold">
 						{title}
 					</h2>
+					<Seperator />
 				</div>
 
 				<div
@@ -65,7 +67,7 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
 					onMouseEnter={() => setIsPaused(true)}
 					onMouseLeave={() => setIsPaused(false)}
 				>
-					<div className="min-h-[600px] md:min-h-[500px]">
+					<div className="min-h-[600px] md:min-h-[300px]   lg:min-h-[500px]   ">
 						<TestimonialCard
 							message={currentTestimonial.quote}
 							rating={currentTestimonial.rating}
@@ -77,17 +79,17 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
 						/>
 					</div>
 
-					<div className="flex justify-center items-center gap-4 mb-8 ">
+					<div className="flex justify-center items-center gap-4 mb-8   ">
 						<button
 							onClick={goToPrevious}
-							className="w-12 h-12 rounded-full bg-white border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center shadow-md hover:shadow-lg"
+							className="w-12 h-12 rounded-full bg-white border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center shadow-md hover:shadow-lg  hover:cursor-pointer"
 							aria-label="Previous testimonial"
 						>
 							<ChevronLeft size={24} />
 						</button>
 						<button
 							onClick={goToNext}
-							className="w-12 h-12 rounded-full bg-primary text-white hover:bg-[#1E3A5F] transition-all duration-300 flex items-center justify-center shadow-md hover:shadow-lg"
+							className="w-12 h-12 rounded-full border-primary border-2  hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center shadow-md hover:shadow-lg hover:cursor-pointer"
 							aria-label="Next testimonial"
 						>
 							<ChevronRight size={24} />
@@ -123,7 +125,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
 	return (
 		<div className="flex flex-col md:flex-row items-center gap-2 md:gap-12 p-2 md:p-12 rounded-3xl transition-all duration-700">
 			<div className="w-full md:w-2/5 flex justify-center items-center">
-				<div className="relative w-full max-w-[220px] md:max-w-[320px] aspect-[4/5] rounded-3xl overflow-hidden shadow-xl">
+				<div className="relative w-full max-w-[220px] md:max-w-[270px]  lg:max-w-[320px] aspect-[4/5] rounded-3xl overflow-hidden shadow-xl">
 					<Image
 						src={image}
 						alt={name}
@@ -153,7 +155,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
 					</svg>
 				</div>
 
-				<p className="text-primary text-xl md:text-2xl lg:text-3xl font-semibold leading-relaxed mb-8">
+				<p className="text-primary text-xl md:text-xl lg:text-2xl font-semibold leading-relaxed mb-8">
 					{message}
 				</p>
 
