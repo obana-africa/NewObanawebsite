@@ -47,20 +47,32 @@ const Footer = () => {
 		// { title: "Join our Sales Team", href: "https://salesforce.obana.africa/" },
 	];
 	const sourcingLinks = [
-		{ title: "Circular Sourcing ", href: "#" },
-		{ title: "African Inspired Sourcing", href: "#" },
-		{ title: "Request for Sourcing", href: "#" },
+		{
+			title: "Circular Sourcing ",
+			href: "https://shop.obana.africa/categories/Men",
+		},
+		{
+			title: "African Inspired Sourcing",
+			href: "https://shop.obana.africa/categories/Kids",
+		},
+		{ title: "Request for Sourcing", href: "/rfq" },
 	];
 
 	const companyLinks = [
-		{ title: "Request Shipment", href: "#" },
-		{ title: "Order Now &Pay Small Small (ONPSS)", href: "#" },
-		{ title: "Partner With Us", href: "#" },
+		{ title: "Request Shipment", href: "/logistics" },
+		{
+			title: "Order Now & Pay Small Small (ONPSS)",
+			href: "https://shop.obana.africa/inventory-financing",
+		},
+		{ title: "Partner With Us", href: "https://salesforce.obana.africa/" },
 	];
 	const tradeLinks = [
-		{ title: "Sell on Obana", href: "#" },
-		{ title: "OrBuy in Bulk", href: "#" },
-		{ title: "ParEarn as a Sales Partner", href: "#" },
+		{ title: "Sell on Obana", href: "https://vendor.obana.africa/" },
+		{ title: "Buy in Bulk", href: "https://shop.obana.africa/" },
+		{
+			title: "Earn as a Sales Partner",
+			href: "https://salesforce.obana.africa/",
+		},
 	];
 
 	const socialLinks = [
