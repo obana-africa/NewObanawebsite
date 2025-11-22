@@ -153,7 +153,7 @@ const Header: React.FC = () => {
 				],
 			},
 			{
-				title: "ONPSS",
+				title: "Order Now, Pay Small Small (ONPSS)",
 				description:
 					"Now you can — thanks to Obana's Order Now, Pay Small Small feature.",
 				href: "/inventory",
