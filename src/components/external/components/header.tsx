@@ -122,13 +122,13 @@ const Header: React.FC = () => {
 			{
 				title: "Circular Sourcing",
 				description: "Want to see how sustainable trade works at Obana?",
-				href: "#",
+				href: "https://shop.obana.africa/categories/Men",
 			},
 			{
 				title: "African Inspired Sourcing",
 				description:
 					"See how Obana.Africa connects culture and commerce through African-inspired Sourcing, made by local hands.",
-				href: "#",
+				href: "https://shop.obana.africa/categories/Beauty",
 			},
 		],
 		solutions: [
@@ -153,7 +153,7 @@ const Header: React.FC = () => {
 				],
 			},
 			{
-				title: "Order Now, Pay Small Small (ONPSS)",
+				title: "ONPSS",
 				description:
 					"Now you can — thanks to Obana's Order Now, Pay Small Small feature.",
 				href: "/inventory",
