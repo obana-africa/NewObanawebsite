@@ -38,8 +38,9 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
 	const trackingNumber = extras.tracking_number;
 	const carrierName =
 		selectedRate.carrier_name === "GIG Logistics"
-			? "Obana Express"
-			: selectedRate.carrier_name || "Obana Express";
+			? "Obana Express (Domestic)"
+			: selectedRate.carrier_name === "DHL Express"
+			? "Obana Express (International)" : selectedRate.carrier_name;
 	const status = data.status || "confirmed";
 
 	const copyToClipboard = (text: string) => {

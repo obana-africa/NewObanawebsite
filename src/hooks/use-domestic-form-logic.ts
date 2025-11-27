@@ -114,9 +114,11 @@ export const useDomesticFormLogic = () => {
 				const processedRates = result.data.map((rate: any) => ({
 					...rate,
 					carrier_name:
-						rate.carrier_name === "GIG Logistics"
-							? "Obana Express"
-							: rate.carrier_name,
+           rate.carrier_name === "GIG Logistics"
+          ? "Obana Express (Domestic)"
+          : rate.carrier_name === "DHL Express"
+          ? "Obana Express (International)"
+          : rate.carrier_name,
 					amount: Math.round(rate.amount * 1.025),
 					original_amount: rate.amount,
 				}));
