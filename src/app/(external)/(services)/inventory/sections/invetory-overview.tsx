@@ -21,7 +21,7 @@ const InventoryOverview = () => {
 		process.env.ENVIRONMENT_ENV === "production" ? "production" : "development";
 
 	return (
-		<div className=" relative bg-primary py-10">
+		<div className=" relative">
 			<section className="container mx-auto px-4 md:px-6 py-8 md:pt-10 md:pb-6 mt-12 md:mt-12">
 				<div className="flex flex-col-reverse justify-between md:flex-row gap-6 md:gap-16">
 					<div
