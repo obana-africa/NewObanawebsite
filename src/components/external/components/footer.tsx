@@ -220,8 +220,7 @@ const Footer = () => {
 					<div className="flex flex-col-reverse md:flex-row justify-between items-center gap-10">
 						<div className="w-full md:w-[40%]">
 							<p className=" mb-4 md:mb-0">
-								Copyright © 2025 Obana.Africa (An ICON Tech & Ecom Services Ltd
-								Trademark). All Rights Reserved.
+								Copyright © 2025 Icon Tech & Ecommerce Service Limited trading as Obana.Africa. All Rights Reserved.
 							</p>
 							<div className="flex gap-4 ">
 								{policyLinks.map((link, index) => (
