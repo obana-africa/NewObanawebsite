@@ -6,6 +6,8 @@ import { termApi } from "@/app/api/(instances)/axiosInstance";
 import { formatPhoneNumber } from "@/utils/phone-number-format";
 import { domesticFormSchema } from "@/schemas";
 import { z } from "zod";
+import logoImage from "@/app/assets/images/logos/obana-logo.svg";
+
 
 type DomesticFormInputs = z.infer<typeof domesticFormSchema>;
 
@@ -114,9 +116,13 @@ export const useDomesticFormLogic = () => {
 				const processedRates = result.data.map((rate: any) => ({
 					...rate,
 					carrier_name:
-						rate.carrier_name === "GIG Logistics"
-							? "Obana Express"
-							: rate.carrier_name,
+           rate.carrier_name === "GIG Logistics"
+          ? "Obana Express (Domestic)"
+          : rate.carrier_name === "DHL Express"
+          ? "Obana Express (International)"
+          : rate.carrier_name,
+		            carrier_logo: (rate.carrier_name === "GIG Logistics" || rate.carrier_name === "DHL Express") ? logoImage : rate.carrier_logo,
+
 					amount: Math.round(rate.amount * 1.025),
 					original_amount: rate.amount,
 				}));
