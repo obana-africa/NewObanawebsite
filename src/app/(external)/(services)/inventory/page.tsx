@@ -1,6 +1,5 @@
 "use client";
 
-import Breadcrumb from "@/components/external/components/breadcrumb";
 import React from "react";
 import InventoryOverview from "./sections/invetory-overview";
 import InventoryWorks from "./sections/how-inventory-works";
@@ -13,10 +12,10 @@ const Page = () => {
 	return (
 		<div className=" min-h-screen overflow-x-hidden">
 			<main>
-				<Breadcrumb
-					heading="Inventory Financing"
+				{/* <Breadcrumb
+					heading="Order Now & Pay Small Small (ONPSS)"
 					subheading="Buy products for your business without paying upfront at very minimal or nothing."
-				/>
+				/> */}
 				<InventoryOverview />
 				<InventoryPartners />
 				<InventoryWorks />

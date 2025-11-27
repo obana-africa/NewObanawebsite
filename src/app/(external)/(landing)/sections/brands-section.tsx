@@ -3,38 +3,80 @@ import React from "react";
 import Slider from "react-slick";
 import Image from "next/image";
 import { logoSlickSettings } from "@/lib/slick";
-import joop from "@/app/assets/images/landing-page/joop.svg";
-import jack from "@/app/assets/images/landing-page/jack&jones.svg";
-import boohooman from "@/app/assets/images/landing-page/boohooman.svg";
-import ralph from "@/app/assets/images/landing-page/ralph.svg";
-import tommy from "@/app/assets/images/landing-page/tommy.svg";
+import asos from "@/app/assets/images/landing-page/asos.png";
+import boohoo from "@/app/assets/images/landing-page/boohoo.png";
+import tommy from "@/app/assets/images/landing-page/tommy.png";
+import zara from "@/app/assets/images/landing-page/zara.png";
+import gap from "@/app/assets/images/landing-page/gap.png";
+import hacket from "@/app/assets/images/landing-page/hacket.png";
+import adidas from "@/app/assets/images/landing-page/adidas.png";
+import jack from "@/app/assets/images/landing-page/jack.png";
+import select from "@/app/assets/images/landing-page/select.png";
+import spar from "@/app/assets/images/landing-page/spar.png";
+import foodco from "@/app/assets/images/landing-page/foodco.png";
+import market from "@/app/assets/images/landing-page/market.png";
 import Seperator from "@/components/external/components/seperator";
 
 const logoImages = [
 	{
 		id: 1,
-		src: joop,
-		alt: "JOOP",
+		src: asos,
+		alt: "Asos",
 	},
 	{
 		id: 2,
-		src: jack,
-		alt: "Jack & Jones",
+		src: zara,
+		alt: "Zara",
 	},
 	{
 		id: 3,
-		src: boohooman,
+		src: boohoo,
 		alt: "BoohooMAN",
 	},
 	{
 		id: 4,
-		src: ralph,
-		alt: "Ralph Lauren",
+		src: gap,
+		alt: "Gap",
 	},
 	{
 		id: 5,
 		src: tommy,
 		alt: "Tommy Hilfiger",
+	},
+	{
+		id: 6,
+		src: hacket,
+		alt: "Hackett",
+	},
+	{
+		id: 7,
+		src: adidas,
+		alt: "Adidas",
+	},
+	{
+		id: 5,
+		src: jack,
+		alt: "Jack",
+	},
+	{
+		id: 5,
+		src: select,
+		alt: "Select",
+	},
+	{
+		id: 5,
+		src: spar,
+		alt: "Spar",
+	},
+	{
+		id: 5,
+		src: foodco,
+		alt: "Foodco",
+	},
+	{
+		id: 5,
+		src: market,
+		alt: "Market",
 	},
 ];
 
@@ -52,7 +94,7 @@ const GlobalBrands = () => {
 
 			<div className="container mx-auto px-4 mb-8 flex flex-col items-center relative z-10">
 				<h5 className="text-center mb-2 font-bold sm:font-normal">
-					Over 100 global brands and growing every day
+					Over 20 brands and partners and growing everyday
 				</h5>
 
 				<Seperator />

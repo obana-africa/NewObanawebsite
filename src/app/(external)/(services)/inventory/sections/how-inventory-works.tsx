@@ -14,7 +14,6 @@ const InventoryWorks = () => {
 					<div className="w-full md:w-3/5">
 						<h2
 							className="text-primary text-2xl md:text-3xl lg:text-4xl font-bold inline-block"
-							data-aos="fade-right"
 						>
 							How Our Inventory Financing Works
 						</h2>
@@ -32,7 +31,6 @@ const InventoryWorks = () => {
 
 					<div
 						className="w-full md:w-2/5 flex justify-center items-center"
-						data-aos="fade-left"
 					>
 						<div className="relative w-full max-w-sm md:max-w-md lg:max-w-lg hidden md:block">
 							<Image

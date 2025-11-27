@@ -8,8 +8,6 @@ const ListItem: React.FC<ListItemProps> = ({
 	className = "",
 	iconClassName = "",
 	contentClassName = "",
-	aosAnimation,
-	aosDuration,
 	aosDelay,
 	customIcon,
 	nestedList,
@@ -17,8 +15,6 @@ const ListItem: React.FC<ListItemProps> = ({
 	return (
 		<li
 			className={`flex flex-col items-start gap-2 mb-2 ${className}`}
-			data-aos={aosAnimation}
-			data-aos-duration={aosDuration}
 			data-aos-delay={aosDelay}
 		>
 			<div className="flex items-start w-full gap-2">
@@ -52,8 +48,6 @@ const NormalList: React.FC<NormalListProps> = ({
 	bulletSize = "6px",
 	bulletStyle = "circle",
 	customIcon,
-	aosAnimation = "",
-	aosDuration = "800",
 	aosDelay = "0",
 	aosDelayIncrement = 100,
 	hideBullets = false,
@@ -145,8 +139,6 @@ const NormalList: React.FC<NormalListProps> = ({
 		<ListTag
 			className={`${listClassName}`}
 			style={getBulletStyle()}
-			data-aos={aosAnimation}
-			data-aos-duration={aosDuration}
 		>
 			{items.map((item, index) => {
 				// Handle string items
@@ -158,8 +150,6 @@ const NormalList: React.FC<NormalListProps> = ({
 							customIcon={renderCustomBullet(index)}
 							iconClassName={iconClassName}
 							contentClassName={contentClassName}
-							aosAnimation={aosAnimation}
-							aosDuration={aosDuration}
 							aosDelay={getDelay(index)}
 						>
 							{item}
@@ -177,8 +167,6 @@ const NormalList: React.FC<NormalListProps> = ({
 						contentClassName={`${contentClassName} ${
 							item.contentClassName || ""
 						}`}
-						aosAnimation={item.aosAnimation || aosAnimation}
-						aosDuration={item.aosDuration || aosDuration}
 						aosDelay={item.aosDelay || getDelay(index)}
 						nestedList={item.children}
 					>
