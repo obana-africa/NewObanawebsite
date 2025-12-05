@@ -1,120 +1,111 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import FormInput from "@/components/ui/form-input";
-import FormSelect from "@/components/ui/form-select";
-import FormFileUpload from "@/components/ui/form-file-upload";
 import Button from "@/components/ui/button";
 import PreviewComponent from "../preview";
 import LogisticsPartners from "../logistics-partners";
-import Image from "next/image";
-import useNigerianStates from "@/hooks/use-nigerian-states";
-import { domesticShipmentSchema } from "@/schemas";
-import SenderReceiverForm from "./sender-receiver-form";
-
-export interface FormDataType {
-	shipmentRoute: string;
-	pickUp: string;
-	destination: string;
-	productCategory: string;
-	productType: string;
-	productWeight: string;
-	dimension?: string;
-	shipmentImage?: File;
-	shipmentImageUrl?: string;
-	sender: {
-		name: string;
-		email: string;
-		phone: string;
-		address: string;
-	};
-	receiver: {
-		name: string;
-		email: string;
-		phone: string;
-		address: string;
-	};
-}
+import { useLogistics } from "@/hooks/use-logistics";
+import { useDomesticFormLogic } from "@/hooks/use-domestic-form-logic";
+import { useLocationSelectors } from "@/hooks/use-location-selectors";
+import { toast } from "sonner";
+import { buildPreviewSections } from "@/utils/preview-data-helpers";
+import { SenderInfoSection } from "../form/sender-info-section";
+import { ReceiverInfoSection } from "../form/receiver-info-section";
+import { ParcelInfoSection } from "../form/parcel-info-section";
+import { SuccessModal } from "../modals/success-modal";
+import { ErrorModal } from "../modals/error-modal";
+import { LoadingOverlay } from "../modals/loading-overlay";
 
 interface DomesticFormProps {
 	onBack: () => void;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	onSubmit: (data: any) => void;
+	onComplete?: (shipmentData: any) => void;
 	isSubmitting: boolean;
 }
 
 const DomesticForm: React.FC<DomesticFormProps> = ({
 	onBack,
-	onSubmit,
-	isSubmitting,
+	onComplete,
 }) => {
-	const [currentStep, setCurrentStep] = useState<
-		"form" | "senderReceiver" | "preview" | "logistics"
-	>("form");
-	const [formData, setFormData] = useState<FormDataType | null>(null);
-	const [imageUrl, setImageUrl] = useState<string | null>(null);
+	const { submitLogisticsForm } = useLogistics();
+
+	const [showSuccessModal, setShowSuccessModal] = useState(false);
+	const [successData, setSuccessData] = useState<any>(null);
+	const [showErrorModal, setShowErrorModal] = useState(false);
+	const [errorMessage, setErrorMessage] = useState("");
+	const [loadingMessage, setLoadingMessage] = useState("");
+	const [isProcessing, setIsProcessing] = useState(false);
+
 	const {
-		data: nigerianStates,
-		isLoading: statesLoading,
-		error,
-	} = useNigerianStates();
-
-	const defaultLocations = [
-		{ value: "lagos", label: "Lagos" },
-		{ value: "abuja", label: "Abuja" },
-		{ value: "kano", label: "Kano" },
-	];
-
-	const locations =
-		statesLoading || error ? defaultLocations : nigerianStates || [];
+		currentStep,
+		setCurrentStep,
+		formData,
+		setFormData,
+		availableRates,
+		isLoadingRates,
+		selectedRate,
+		setSelectedRate,
+		formMethods,
+		createShipmentDraft,
+		fetchRatesForShipment,
+		arrangePickup,
+	} = useDomesticFormLogic();
 
 	const {
 		register,
 		handleSubmit,
-		setValue,
 		formState: { errors },
-	} = useForm({
-		resolver: zodResolver(domesticShipmentSchema),
-		defaultValues: {
-			pickUp: "",
-			destination: "",
-			productCategory: "",
-			productType: "",
-			productWeight: "",
-			dimension: "",
-			shipmentImage: "",
-		},
-	});
+		watch,
+		setValue,
+	} = formMethods;
 
-	const productCategories = [
-		{ value: "electronics", label: "Electronics" },
-		{ value: "fashion", label: "Fashion" },
-		{ value: "food", label: "Food Items" },
-	];
+	const watchSenderCountry = watch("senderCountry");
+	const watchSenderState = watch("senderState");
+	const watchReceiverCountry = watch("receiverCountry");
+	const watchReceiverState = watch("receiverState");
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const handlePreview = (data: any) => {
-		// console.log("GO TO NEXT", data);
-		const formDataWithImage = {
-			...data,
-			shipmentImage: data.shipmentImage,
-			shipmentImageUrl: imageUrl,
-		};
-		setFormData(formDataWithImage);
-		// setFormData(data);
-		setCurrentStep("senderReceiver");
+	const locationData = useLocationSelectors(
+		watchSenderCountry,
+		watchSenderState,
+		watchReceiverCountry,
+		watchReceiverState
+	);
+
+	const handleFormSubmit = async (data: any) => {
+		setFormData(data);
+		setLoadingMessage("Creating shipment draft...");
+
+		const draftResult = await createShipmentDraft(
+			data,
+			locationData.senderStateName,
+			locationData.receiverStateName
+		);
+
+		setLoadingMessage("");
+
+		if (draftResult.success && draftResult.data?.shipment_id) {
+			setLoadingMessage("Fetching shipping rates...");
+			const ratesResult = await fetchRatesForShipment(
+				draftResult.data.shipment_id
+			);
+			setLoadingMessage("");
+
+			if (
+				ratesResult.success &&
+				ratesResult.data &&
+				ratesResult.data.length > 0
+			) {
+				setCurrentStep("logistics");
+			} else {
+				toast.error(
+					ratesResult.error || "No shipping options available for this route"
+				);
+			}
+		} else {
+			toast.error(draftResult.error || "Failed to create shipment");
+		}
 	};
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const handleSenderReceiverSubmit = (senderReceiverData: any) => {
-		const mergedData = {
-			...formData,
-			...senderReceiverData,
-			shipmentImageUrl: imageUrl,
-		};
-		// console.log("GO TO NEXT", mergedData);
-
-		setFormData(mergedData);
+	const handleRateSelection = (rate: any) => {
+		setSelectedRate(rate);
 		setCurrentStep("preview");
 	};
 
@@ -122,280 +113,167 @@ const DomesticForm: React.FC<DomesticFormProps> = ({
 		setCurrentStep("form");
 	};
 
-	const handleProceedToBook = () => {
-		setCurrentStep("logistics");
+	const handleProceedToBook = async () => {
+		setIsProcessing(true);
+		setLoadingMessage("Arranging pickup and confirming shipment...");
+
+		const result = await arrangePickup(submitLogisticsForm);
+
+		setLoadingMessage("");
+		setIsProcessing(false);
+
+		if (result.success) {
+			setSuccessData(result.data);
+			setShowSuccessModal(true);
+		} else {
+			setErrorMessage(result.error || "Failed to book shipment");
+			setShowErrorModal(true);
+		}
 	};
 
-	const handleFileUploadComplete = (url: string | null) => {
-		setImageUrl(url);
-		setValue("shipmentImage", url || "");
+	const handleSuccessClose = () => {
+		setShowSuccessModal(false);
+
+		if (typeof onComplete === "function" && successData) {
+			onComplete({
+				shipment: successData,
+				formData,
+				selectedRate,
+			});
+		}
+
+		setCurrentStep("form");
+		setFormData(null);
+		setSelectedRate(null);
+		setSuccessData(null);
+	};
+
+	const handleErrorClose = () => {
+		setShowErrorModal(false);
+		setErrorMessage("");
+	};
+
+	const handleRetry = () => {
+		setCurrentStep("preview");
 	};
 
 	const handleContactSupport = () => {
-		// Implement your customer support logic here
 		console.log("Contact customer support");
 	};
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const handleFinalSubmit = (finalData: any) => {
-		onSubmit(finalData);
-	};
+	const previewSections = buildPreviewSections(
+		formData,
+		selectedRate,
+		locationData.senderStates,
+		locationData.receiverStates
+	);
 
-	const getLabelFromValue = (
-		value: string,
-		options: Array<{ value: string; label: string }>
-	) => {
-		return options.find((option) => option.value === value)?.label || value;
-	};
-
-	const previewSections = [
-		{
-			title: "Shipment Information",
-			fields: [
-				// {
-				// 	label: "Shipment route",
-				// 	value: formData?.shipmentRoute
-				// 		? getLabelFromValue(formData.shipmentRoute, shipmentRoutes)
-				// 		: "-",
-				// },
-				{
-					label: "From",
-					value: formData?.pickUp
-						? getLabelFromValue(formData.pickUp, locations)
-						: "-",
-				},
-				{
-					label: "To",
-					value: formData?.destination
-						? getLabelFromValue(formData.destination, locations)
-						: "-",
-				},
-				{
-					label: "Product category",
-					value: formData?.productCategory
-						? getLabelFromValue(formData.productCategory, productCategories)
-						: "-",
-				},
-				{
-					label: "Product type",
-					value: formData?.productType || "-",
-				},
-				{
-					label: "Product weight",
-					value: formData?.productWeight ? `${formData.productWeight}kg` : "-",
-				},
-				{
-					label: "Dimension",
-					value: formData?.dimension || "-",
-				},
-				{
-					label: "Shipment image",
-					value: formData?.shipmentImageUrl ? (
-						<div className="w-32 h-32 relative">
-							<Image
-								src={formData.shipmentImageUrl}
-								alt="Shipment preview"
-								fill
-								className="object-contain"
-								sizes="(max-width: 128px) 100vw, 128px"
-							/>
-						</div>
-					) : (
-						"None"
-					),
-				},
-			],
-		},
-		{
-			title: "Sender Details",
-			fields: [
-				{
-					label: "Name",
-					value: formData?.sender?.name || "-",
-				},
-				{
-					label: "Email",
-					value: formData?.sender?.email || "-",
-				},
-				{
-					label: "Phone number",
-					value: formData?.sender?.phone || "-",
-				},
-				{
-					label: "Address",
-					value: formData?.sender?.address || "-",
-				},
-			],
-		},
-		{
-			title: "Receiver Details",
-			fields: [
-				{
-					label: "Name",
-					value: formData?.receiver?.name || "-",
-				},
-				{
-					label: "Email",
-					value: formData?.receiver?.email || "-",
-				},
-				{
-					label: "Phone number",
-					value: formData?.receiver?.phone || "-",
-				},
-				{
-					label: "Address",
-					value: formData?.receiver?.address || "-",
-				},
-			],
-		},
-	];
-
-	// Render different content based on the current step
-	// console.log(errors);
 	return (
-		<div className="space-y-6">
-			{currentStep === "form" && (
-				<>
-					<h2 className="font-bold text-center text-primary">
-						Request For Shipment
-					</h2>
-					<form onSubmit={handleSubmit(handlePreview)}>
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-							{/* <FormSelect
-								id="shipmentRoute"
-								label="Shipment route "
-								options={shipmentRoutes}
-								register={register("shipmentRoute")}
-								error={errors.shipmentRoute?.message}
-								required
-							/> */}
+		<>
+			{loadingMessage && <LoadingOverlay message={loadingMessage} />}
 
-							<FormSelect
-								id="pickUp"
-								label="Pick Up "
-								options={locations}
-								register={register("pickUp")}
-								error={errors.pickUp?.message}
-								required
-								searchable
-							/>
-						</div>
+			<SuccessModal
+				isOpen={showSuccessModal}
+				onClose={handleSuccessClose}
+				shipmentData={successData}
+			/>
 
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-							<FormSelect
-								id="productCategory"
-								label="Product category "
-								options={productCategories}
-								register={register("productCategory")}
-								error={errors.productCategory?.message}
-								required
-							/>
+			<ErrorModal
+				isOpen={showErrorModal}
+				onClose={handleErrorClose}
+				error={errorMessage}
+				onRetry={handleRetry}
+			/>
 
-							<FormInput
-								id="productWeight"
-								label="Product weight "
-								placeholder="In Kg"
-								register={register("productWeight")}
-								error={errors.productWeight?.message}
-								type="number"
-								required
-							/>
-						</div>
-
-						<div className="mb-4">
-							<FormFileUpload
-								id="shipmentImage"
-								label="Upload shipment Image"
-								onUploadComplete={handleFileUploadComplete}
-								accept="image/*"
-								fileTypes="image/*"
-								required
-							/>
-						</div>
-
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-							<FormSelect
-								id="destination"
-								label="Destination "
-								options={locations}
-								register={register("destination")}
-								error={errors.destination?.message}
-								required
-								searchable={true}
+			<div className="space-y-6">
+				{currentStep === "form" && (
+					<>
+						<h2 className="font-bold text-center text-primary text-2xl">
+							Request For Shipment
+						</h2>
+						<form
+							onSubmit={handleSubmit(handleFormSubmit)}
+							className="space-y-6"
+						>
+							<SenderInfoSection
+								register={register}
+								errors={errors}
+								setValue={setValue}
+								watchSenderCountry={watchSenderCountry}
+								watchSenderState={watchSenderState}
+								countryOptions={locationData.countryOptions}
+								senderStateOptions={locationData.senderStateOptions}
+								senderCityOptions={locationData.senderCityOptions}
+								countriesLoading={locationData.countriesLoading}
+								senderStatesLoading={locationData.senderStatesLoading}
+								senderCitiesLoading={locationData.senderCitiesLoading}
+								senderStates={locationData.senderStates}
+								setSenderStateName={locationData.setSenderStateName}
 							/>
 
-							<FormInput
-								id="productType"
-								label="Product type "
-								placeholder="Eg, Headset, Shirt"
-								register={register("productType")}
-								error={errors.productType?.message}
-								required
+							<ReceiverInfoSection
+								register={register}
+								errors={errors}
+								setValue={setValue}
+								watchReceiverCountry={watchReceiverCountry}
+								watchReceiverState={watchReceiverState}
+								countryOptions={locationData.countryOptions}
+								receiverStateOptions={locationData.receiverStateOptions}
+								receiverCityOptions={locationData.receiverCityOptions}
+								countriesLoading={locationData.countriesLoading}
+								receiverStatesLoading={locationData.receiverStatesLoading}
+								receiverCitiesLoading={locationData.receiverCitiesLoading}
+								receiverStates={locationData.receiverStates}
+								setReceiverStateName={locationData.setReceiverStateName}
 							/>
-						</div>
 
-						<div className="mb-4">
-							<FormInput
-								id="dimension"
-								label="Dimension"
-								placeholder="Height X Width in cm or inches"
-								register={register("dimension")}
-								error={errors.dimension?.message}
-							/>
-						</div>
+							<ParcelInfoSection register={register} errors={errors} />
 
-						<div className="flex justify-between mt-6">
-							<Button
-								onClick={onBack}
-								variant="outline"
-								className="border border-blue-900 text-blue-900"
-							>
-								Back
-							</Button>
-							<Button
-								type="submit"
-								variant="primary"
-								animation="ripple"
-								className="border border-primary"
-							>
-								Next
-							</Button>
-						</div>
-					</form>
-				</>
-			)}
+							<div className="flex justify-between mt-6">
+								<Button
+									onClick={onBack}
+									variant="outline"
+									className="border border-blue-900 text-blue-900"
+								>
+									Back
+								</Button>
+								<Button
+									type="submit"
+									variant="primary"
+									animation="ripple"
+									className="border border-primary"
+									disabled={isLoadingRates}
+								>
+									{isLoadingRates ? "Processing..." : "Get Rates"}
+								</Button>
+							</div>
+						</form>
+					</>
+				)}
 
-			{currentStep === "senderReceiver" && (
-				<SenderReceiverForm
-					defaultValues={{
-						sender: formData?.sender,
-						receiver: formData?.receiver,
-					}}
-					onBack={() => setCurrentStep("form")}
-					onSubmit={handleSenderReceiverSubmit}
-				/>
-			)}
+				{currentStep === "logistics" && (
+					<LogisticsPartners
+						shipmentData={formData}
+						availableRates={availableRates}
+						isLoadingRates={isLoadingRates}
+						onBack={() => setCurrentStep("form")}
+						onSubmit={handleRateSelection}
+						isSubmitting={false}
+					/>
+				)}
 
-			{currentStep === "preview" && (
-				<PreviewComponent
-					title="Preview"
-					sections={previewSections}
-					onEdit={handleEdit}
-					onProceedToBook={handleProceedToBook}
-					onContactSupport={handleContactSupport}
-					isSubmitting={isSubmitting}
-				/>
-			)}
-
-			{currentStep === "logistics" && formData && (
-				<LogisticsPartners
-					shipmentData={formData}
-					onBack={() => setCurrentStep("preview")}
-					onSubmit={handleFinalSubmit}
-					isSubmitting={isSubmitting}
-				/>
-			)}
-		</div>
+				{currentStep === "preview" && (
+					<PreviewComponent
+						title="Review Your Shipment"
+						sections={previewSections}
+						onEdit={handleEdit}
+						onProceedToBook={handleProceedToBook}
+						onContactSupport={handleContactSupport}
+						isSubmitting={isProcessing}
+					/>
+				)}
+			</div>
+		</>
 	);
 };
 

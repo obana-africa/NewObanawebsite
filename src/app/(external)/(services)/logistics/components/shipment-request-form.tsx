@@ -11,9 +11,9 @@ import { Info } from "lucide-react";
 import { useLogistics } from "@/hooks/use-logistics";
 
 const shipmentTypes = [
-	{ id: "import", label: "Import", hasForm: true },
+	{ id: "domestic", label: "Import", hasForm: true },
 	{ id: "export", label: "Export", hasForm: false },
-	{ id: "domestic", label: "Within Nigeria", hasForm: true },
+	{ id: "import", label: "Within Nigeria", hasForm: true },
 ];
 
 const formMapping = {
@@ -91,7 +91,7 @@ const ShipmentRequestForm: React.FC = () => {
 				return (
 					<DomesticForm
 						onBack={handleBack}
-						onSubmit={handleSubmit}
+						onComplete={handleSubmit}
 						isSubmitting={isSubmitting}
 					/>
 				);
