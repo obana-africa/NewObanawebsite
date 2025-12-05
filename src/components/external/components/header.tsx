@@ -191,6 +191,13 @@ const Header: React.FC = () => {
 							>
 								FAQ
 							</Link>
+														{/* New Track Your Shipment Link */}
+							<Link
+								href="/track-shipment"
+								className="text-gray-800 hover:text-blue-900 font-medium"
+							>
+								Track Your Shipment
+							</Link>
 						</nav>
 
 						<div className="hidden md:flex items-center space-x-4">
