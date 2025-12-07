@@ -21,12 +21,12 @@ export default function TrackShipmentPage() {
     setTrackingData(null);
 
     try {
-      // Call the Terminal Africa API
+      
       const response = await fetch(
-        `https://api.terminal.africa/v1/shipments/track/${trackingId}`,
+        `${process.env.NEXT_PUBLIC_TERMINAL_AFRICA_BASE_URL}/shipments/track/${trackingId}`,
         {
           headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TERMINAL_AFRICA_API_KEY || 'your-api-key-here'}`,
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TERMINAL_AFRICA_SECRET_KEY}`,
           },
         }
       );
@@ -41,61 +41,8 @@ export default function TrackShipmentPage() {
       console.error("Tracking error:", error);
       setTrackingError(error instanceof Error ? error.message : "Unable to track shipment. Please check the tracking number.");
       
-      // For demo purposes, show mock data
-      setTrackingData({
-        status: true,
-        message: "Shipment tracking status retrieved successfully",
-        data: {
-          address_to: {
-            city: "Apapa",
-            country: "NG",
-            email: "customer@example.com",
-            first_name: "John",
-            last_name: "Doe",
-            line1: "123 Sample Street",
-            phone: "+2348012345678",
-            state: "Lagos",
-            zip: "100123",
-          },
-          address_from: {
-            city: "Lagos",
-            country: "NG",
-            email: "sender@example.com",
-            first_name: "Jane",
-            last_name: "Smith",
-            line1: "456 Business Avenue",
-            phone: "+2348098765432",
-            state: "Lagos",
-            zip: "100126",
-          },
-          carrier_tracking_number: trackingId,
-          status: "in_transit",
-          tracking_status: {},
-          events: [
-            {
-              status: "Shipment Created",
-              description: "Shipment label created",
-              timestamp: new Date(Date.now() - 86400000 * 2).toISOString(),
-              location: "Lagos Warehouse",
-            },
-            {
-              status: "In Transit",
-              description: "Package departed from facility",
-              timestamp: new Date(Date.now() - 86400000).toISOString(),
-              location: "Lagos Distribution Center",
-            },
-            {
-              status: "Out for Delivery",
-              description: "Package is out for delivery",
-              timestamp: new Date().toISOString(),
-              location: "Apapa, Lagos",
-            },
-          ],
-          shipment_id: trackingId,
-          delivery_date: new Date(Date.now() + 86400000).toISOString(),
-          pickup_date: new Date(Date.now() - 86400000 * 2).toISOString(),
-        },
-      });
+      
+      setTrackingData(null);
     } finally {
       setIsLoading(false);
     }
@@ -130,7 +77,7 @@ export default function TrackShipmentPage() {
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
       <div className="container mx-auto px-4 md:px-6 py-12">
-        {/* Hero Section */}
+        
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             Track Your Shipment
@@ -140,7 +87,7 @@ export default function TrackShipmentPage() {
           </p>
         </div>
 
-        {/* Main Content */}
+        
         <div className="max-w-6xl mx-auto">
           {/* Tracking Input Section */}
           <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-8">
@@ -190,7 +137,7 @@ export default function TrackShipmentPage() {
               </Button>
             </div>
             
-            {/* Information Tips */}
+            
             <div className="mt-8 pt-6 border-t border-gray-200">
               <p className="text-gray-600 mb-3">Where to find your tracking number:</p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -219,7 +166,7 @@ export default function TrackShipmentPage() {
             </div>
           </div>
 
-          {/* Tracking Results */}
+          
           {trackingData && (
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
               {/* Status Overview */}
@@ -255,11 +202,11 @@ export default function TrackShipmentPage() {
                 </div>
               </div>
 
-              {/* Tracking Timeline */}
+              
               <div className="p-6 md:p-8">
                 <h3 className="text-xl font-semibold text-gray-900 mb-6">Tracking History</h3>
                 <div className="relative">
-                  {/* Timeline line */}
+                  
                   <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-blue-200"></div>
                   
                   <div className="space-y-8 relative">
@@ -307,11 +254,11 @@ export default function TrackShipmentPage() {
                 </div>
               </div>
 
-              {/* Address Information */}
+              
               <div className="p-6 md:p-8 border-t border-gray-200 bg-gray-50">
                 <h3 className="text-xl font-semibold text-gray-900 mb-6">Shipment Details</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Sender */}
+                  
                   <div className="bg-white rounded-xl border border-gray-200 p-6">
                     <div className="flex items-center space-x-2 mb-4">
                       <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-50">
@@ -335,7 +282,7 @@ export default function TrackShipmentPage() {
                     </div>
                   </div>
 
-                  {/* Receiver */}
+                  
                   <div className="bg-white rounded-xl border border-gray-200 p-6">
                     <div className="flex items-center space-x-2 mb-4">
                       <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-50">
@@ -361,7 +308,7 @@ export default function TrackShipmentPage() {
                 </div>
               </div>
 
-              {/* Actions */}
+              
               <div className="p-6 md:p-8 border-t border-gray-200">
                 <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                   <p className="text-gray-600 text-sm">
