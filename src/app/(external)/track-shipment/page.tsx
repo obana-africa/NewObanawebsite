@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Package, Search, Truck, MapPin, Calendar, CheckCircle, AlertCircle, Shield, Clock } from "lucide-react";
 import Button from "@/components/ui/button";
+import { termApi } from "@/app/api/(instances)/axiosInstance";
 
 export default function TrackShipmentPage() {
   const [trackingId, setTrackingId] = useState<string>("");
@@ -22,8 +23,8 @@ export default function TrackShipmentPage() {
 
     try {
       
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_TERMINAL_AFRICA_BASE_URL}/shipments/track/${trackingId}`,
+      			const response = await termApi.get(
+        `/shipments/track/${trackingId}`,
         {
           headers: {
             Authorization: `Bearer ${process.env.NEXT_PUBLIC_TERMINAL_AFRICA_SECRET_KEY}`,
@@ -31,11 +32,11 @@ export default function TrackShipmentPage() {
         }
       );
 
-      if (!response.ok) {
+      if (!response.status===true) {
         throw new Error(`Unable to track shipment. Please check the tracking number.`);
       }
 
-      const data = await response.json();
+      const data = response.data;
       setTrackingData(data);
     } catch (error) {
       console.error("Tracking error:", error);
