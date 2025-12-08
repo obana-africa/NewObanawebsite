@@ -1,7 +1,6 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
 import "./globals.css";
 import Header from "@/components/external/components/header";
 import { Bricolage_Grotesque, Inter } from "next/font/google";
@@ -37,11 +36,7 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     Aos.init({
       once: false,
@@ -52,10 +47,53 @@ export default function RootLayout({
     });
   }, []);
 
+  // ✅ ADD WATI WIDGET HERE
+  useEffect(() => {
+    const url = "https://wati-integration-prod-service.clare.ai/v2/watiWidget.js?57932";
+    const s = document.createElement("script");
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = url;
+
+    const options = {
+      enabled: true,
+      chatButtonSetting: {
+        backgroundColor: "#00e785",
+        ctaText: "Chat with us",
+        borderRadius: "25",
+        marginLeft: "0",
+        marginRight: "20",
+        marginBottom: "20",
+        ctaIconWATI: false,
+        position: "left",
+      },
+      brandSetting: {
+        brandName: "Wati",
+        brandSubTitle: "undefined",
+        brandImg: "https://www.wati.io/wp-content/uploads/2023/04/Wati-logo.svg",
+        welcomeText: "Hi there!\nHow can I help you?",
+        messageText: "Hello, %0A I have a question about {{page_link}}",
+        backgroundColor: "#00e785",
+        ctaText: "Chat with us",
+        borderRadius: "25",
+        autoShow: false,
+        phoneNumber: "2348072257364",
+      },
+    };
+
+    s.onload = () => {
+      // @ts-ignore
+      CreateWhatsappChatWidget(options);
+    };
+
+    document.body.appendChild(s);
+
+    return () => document.body.removeChild(s);
+  }, []);
+
   return (
     <html lang="en">
       <head>
-        {/* Facebook Domain Verification */}
         <meta
           name="facebook-domain-verification"
           content="0q3frl5copj66sc5lk2b8ekficn0wg"
