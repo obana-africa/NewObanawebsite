@@ -15,20 +15,14 @@ const StakeholderCard: React.FC<StakeholderCardProps> = ({
 	description,
 	imageSrc,
 	imagePosition = "left",
-	aosDelay = 0,
 }) => {
 	return (
 		<div
 			className={`flex flex-col ${
 				imagePosition === "right" ? "md:flex-row-reverse" : "md:flex-row"
-			} gap-10 items-stretch`}
+			} gap-2  md:gap-10 items-stretch mt-5`}
 		>
-			<div
-				className="w-full md:w-[40%] rounded-2xl"
-				data-aos="fade-left"
-				data-aos-delay={aosDelay}
-				data-aos-duration="400"
-			>
+			<div className="w-full md:w-[40%] rounded-2xl">
 				<div className="relative w-full h-64 md:h-full min-h-[200px] md:min-h-[300px] rounded-2xl  overflow-hidden">
 					<Image
 						src={imageSrc}
@@ -40,16 +34,11 @@ const StakeholderCard: React.FC<StakeholderCardProps> = ({
 				</div>
 			</div>
 
-			<div
-				className="w-full md:w-[60%] bg-[#F5F7FA] rounded-b-2xl md:rounded-b-none md:rounded-r-2xl p-8 md:p-12 flex flex-col justify-center"
-				data-aos="fade-right"
-				data-aos-delay={aosDelay}
-				data-aos-duration="400"
-			>
-				<h3 className="text-primary text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6">
+			<div className="w-full md:w-[60%] bg-[#F5F7FA] rounded-b-2xl md:rounded-b-none md:rounded-r-2xl p-8 md:p-12 flex flex-col justify-center">
+				<h3 className="text-primary text-2xl md:text-2xl lg:text-3xl font-bold mb-4 md:mb-6">
 					{title}
 				</h3>
-				<p className="text-[#4A5568] text-base md:text-md font-medium leading-relaxed">
+				<p className="text-[#4A5568] text-base md:text-base  lg:text-md font-medium leading-relaxed">
 					{description}
 				</p>
 			</div>

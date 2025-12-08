@@ -96,7 +96,8 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 					<div className="flex flex-col items-center justify-center gap-4">
 						<Image src={logoImage} alt="Logo" width={120} height={40} />
 						<p className="text-center">
-							Obana | Sub-Sahara Africa&apos;s Sourcing Marketplace Platform.
+							Obana.Africa | Africa’s Circular Sourcing Ecosystem for Fashion &
+							Beauty SMEsh
 						</p>
 					</div>
 
@@ -126,7 +127,7 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 											iconPosition="right"
 											className="rounded-sm w-full !bg-[#3D6188] py-2"
 										>
-											Continue As A Vendor
+											Sell on Obana.Africa
 										</Button>
 									</>
 								) : (
@@ -138,7 +139,7 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 										iconPosition="right"
 										className="rounded-sm w-full transition-all duration-300 border-primary py-2"
 									>
-										Continue As A Vendor
+										Sell on Obana.Africa
 									</Button>
 								)}
 							</div>
@@ -168,7 +169,7 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 											iconPosition="right"
 											className="rounded-sm w-full !bg-[#3D6188] py-2"
 										>
-											Continue As A Customer
+											Buy in Bulk
 										</Button>
 									</>
 								) : (
@@ -180,7 +181,7 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 										iconPosition="right"
 										className="rounded-sm w-full transition-all duration-300 border-primary py-2"
 									>
-										Continue As A Customer
+										Buy in Bulk
 									</Button>
 								)}
 							</div>
@@ -210,7 +211,7 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 											iconPosition="right"
 											className="rounded-sm w-full !bg-[#3D6188] py-2"
 										>
-											Continue As A Sales Partner
+											Earn as a Sales Partner
 										</Button>
 									</>
 								) : (
@@ -222,7 +223,7 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 										iconPosition="right"
 										className="rounded-sm w-full transition-all duration-300 border-primary py-2"
 									>
-										Continue As A Sales Partner
+										Earn as a Sales Partner
 									</Button>
 								)}
 							</div>

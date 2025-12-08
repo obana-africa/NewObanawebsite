@@ -19,7 +19,6 @@ const ImpactCard: React.FC<ImpactCardProps> = ({
 	subtitle,
 	description,
 	variant = "default",
-	aosDelay = 0,
 	backgroundImage,
 }) => {
 	const isPrimary = variant === "primary";
@@ -31,9 +30,6 @@ const ImpactCard: React.FC<ImpactCardProps> = ({
 					? "bg-[#1E3A5F] text-white"
 					: "bg-white text-[#4A5568] border border-secondary-light"
 			} rounded-2xl p-8 md:p-10 shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col justify-between min-h-[300px] relative overflow-hidden`}
-			data-aos="fade-up"
-			data-aos-delay={aosDelay}
-			data-aos-duration="800"
 		>
 			{isPrimary && backgroundImage && (
 				<>
@@ -52,14 +48,14 @@ const ImpactCard: React.FC<ImpactCardProps> = ({
 			<div className="relative z-10">
 				<div className="mb-6">
 					<h2
-						className={`text-5xl md:text-6xl font-bold mb-4 ${
+						className={`text-4xl md:text-5xl lg:text-6xl font-bold mb-4 ${
 							isPrimary ? "text-white" : "text-primary"
 						}`}
 					>
 						{number}
 					</h2>
 					<h3
-						className={`text-xl md:text-2xl font-semibold ${
+						className={`text-xl md:text-xl lg:text-2xl font-semibold ${
 							isPrimary ? "text-white" : "text-primary"
 						}`}
 					>

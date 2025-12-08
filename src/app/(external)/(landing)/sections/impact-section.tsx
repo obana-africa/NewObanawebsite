@@ -27,7 +27,7 @@ const ImpactSection: React.FC<ImpactSectionProps> = ({
 	backgroundImage,
 }) => {
 	return (
-		<section className="w-full py-16 md:py-20 bg-[#F8FAFC] relative overflow-hidden">
+		<section className="w-full py-10 md:py-10 bg-[#F8FAFC] relative overflow-hidden">
 			{backgroundImage && (
 				<div className="absolute right-0 top-1/2 -translate-y-1/2 opacity-10 pointer-events-none hidden lg:block">
 					<Image
@@ -44,17 +44,12 @@ const ImpactSection: React.FC<ImpactSectionProps> = ({
 				<div className="text-center mb-12 md:mb-16 max-w-4xl mx-auto  items-center flex flex-col">
 					<h2
 						className="text-primary text-3xl md:text-2xl lg:text-3xl font-bold "
-						data-aos="fade-down"
-						data-aos-duration="800"
 					>
 						{title}
 					</h2>
 					<Seperator />
 					<p
-						className="text-primary text-base md:text-lg lg:text-xl leading-relaxed mt-2"
-						data-aos="fade-up"
-						data-aos-delay="100"
-						data-aos-duration="800"
+						className="text-primary text-base md:text-base lg:text-lg leading-relaxed mt-2"
 					>
 						{description}
 					</p>

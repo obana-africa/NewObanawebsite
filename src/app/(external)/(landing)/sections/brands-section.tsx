@@ -9,6 +9,12 @@ import tommy from "@/app/assets/images/landing-page/tommy.png";
 import zara from "@/app/assets/images/landing-page/zara.png";
 import gap from "@/app/assets/images/landing-page/gap.png";
 import hacket from "@/app/assets/images/landing-page/hacket.png";
+import adidas from "@/app/assets/images/landing-page/adidas.png";
+import jack from "@/app/assets/images/landing-page/jack.png";
+import select from "@/app/assets/images/landing-page/select.png";
+import spar from "@/app/assets/images/landing-page/spar.png";
+import foodco from "@/app/assets/images/landing-page/foodco.png";
+import market from "@/app/assets/images/landing-page/market.png";
 import Seperator from "@/components/external/components/seperator";
 
 const logoImages = [
@@ -38,9 +44,39 @@ const logoImages = [
 		alt: "Tommy Hilfiger",
 	},
 	{
-		id: 5,
+		id: 6,
 		src: hacket,
 		alt: "Hackett",
+	},
+	{
+		id: 7,
+		src: adidas,
+		alt: "Adidas",
+	},
+	{
+		id: 5,
+		src: jack,
+		alt: "Jack",
+	},
+	{
+		id: 5,
+		src: select,
+		alt: "Select",
+	},
+	{
+		id: 5,
+		src: spar,
+		alt: "Spar",
+	},
+	{
+		id: 5,
+		src: foodco,
+		alt: "Foodco",
+	},
+	{
+		id: 5,
+		src: market,
+		alt: "Market",
 	},
 ];
 
