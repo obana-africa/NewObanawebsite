@@ -1,12 +1,10 @@
-"use client";
 import React, { useState, useEffect, useRef } from "react";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { X, CheckCircle, AlertCircle, ChevronsRight } from "lucide-react";
 import FormInput from "@/components/ui/form-input";
 import FormSelect from "@/components/ui/form-select";
-import FormFileUpload from "@/components/ui/form-file-upload";
 import logoImage from "@/app/assets/images/logos/obana-logo.svg";
 import Button from "@/components/ui/button";
 import {
@@ -17,11 +15,26 @@ import {
 import { inventoryFinancingSchema } from "../schemas";
 import PhoneInput from "@/components/ui/phone-input";
 import { FormDataType } from "../types";
+import FormFileUpload from "@/app/(external)/(services)/inventory/components/inventory-file-upload";
 
 interface InventoryFinancingModalProps {
 	isOpen: boolean;
 	onClose: () => void;
 	environment?: "production" | "development";
+}
+
+interface UploadedFiles {
+	businessRegistrationFile: {
+		url?: string;
+		base64?: string;
+		fileName?: string;
+	} | null;
+	proofOfAddressFile: {
+		url?: string;
+		base64?: string;
+		fileName?: string;
+	} | null;
+	statusReportFile: { url?: string; base64?: string; fileName?: string } | null;
 }
 
 const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
@@ -35,9 +48,12 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 	>("main");
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
-	const [uploadedFile, setUploadedFile] = useState<string | null>(null);
+	const [uploadedFiles, setUploadedFiles] = useState<UploadedFiles>({
+		businessRegistrationFile: null,
+		proofOfAddressFile: null,
+		statusReportFile: null,
+	});
 
-	// Location hooks
 	const { data: countries } = useGetCountries();
 	const [selectedCountry, setSelectedCountry] = useState("");
 	const [selectedState, setSelectedState] = useState("");
@@ -47,15 +63,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 		selectedCountry
 	);
 
-	const {
-		register,
-		handleSubmit,
-		control,
-		setValue,
-		watch,
-		formState: { errors },
-		reset,
-	} = useForm<FormDataType>({
+	const methods = useForm<FormDataType>({
 		resolver: zodResolver(inventoryFinancingSchema),
 		defaultValues: {
 			salutation: "",
@@ -79,33 +87,50 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 			categoryOfInterest: [],
 			brandOfInterest: [],
 			terms: false,
+			businessRegistrationFile: "",
+			proofOfAddressFile: "",
+			statusReportFile: "",
+			businessRegistrationBase64: undefined,
+			proofOfAddressBase64: undefined,
+			statusReportBase64: undefined,
+			businessRegistrationFileName: "",
+			proofOfAddressFileName: "",
+			statusReportFileName: "",
+			inventoryFinancingType: "",
 		},
 	});
 
-	// Watch country and state to update dependent fields
-	const watchedCountry = watch("country");
-	const watchedState = watch("state");
+	const {
+		register,
+		handleSubmit,
+		control,
+		setValue,
+		watch,
+		formState: { errors, isValid },
+		reset,
+		trigger,
+	} = methods;
 
 	useEffect(() => {
-		if (watchedCountry) {
-			setSelectedCountry(watchedCountry);
+		if (watch("country")) {
+			setSelectedCountry(watch("country"));
 			setValue("state", "");
 			setValue("city", "");
 		}
-	}, [watchedCountry, setValue]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [watch("country"), setValue]);
 
 	useEffect(() => {
-		if (watchedState) {
-			setSelectedState(watchedState);
+		if (watch("state")) {
+			setSelectedState(watch("state"));
 			setValue("city", "");
 		}
-	}, [watchedState, setValue]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [watch("state"), setValue]);
 
 	useEffect(() => {
 		const handleKeyDown = (e: KeyboardEvent) => {
-			if (e.key === "Escape") {
-				onClose();
-			}
+			if (e.key === "Escape") onClose();
 		};
 
 		const handleClickOutside = (e: MouseEvent) => {
@@ -129,74 +154,96 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 
 	if (!isOpen) return null;
 
-	const handleLogin = () => {
-		const loginUrl =
-			environment === "production"
-				? "https://shop.obana.africa/login"
-				: "https://staging.shop.obana.africa/login";
-		window.open(loginUrl, "_blank");
-		onClose();
+	const handleFileUploadComplete = (
+		data: { url?: string; base64?: string; fileName?: string } | null,
+		fileType: keyof UploadedFiles
+	) => {
+		setUploadedFiles((prev) => ({
+			...prev,
+			[fileType]: data,
+		}));
+		setValue(fileType as keyof FormDataType, data?.url || data?.base64 || "", {
+			shouldValidate: true,
+		});
+		setValue(`${fileType}Name` as keyof FormDataType, data?.fileName || "", {
+			shouldValidate: true,
+		});
+		const base64Field = `${fileType.replace(
+			"File",
+			""
+		)}Base64` as keyof FormDataType;
+		if (data?.base64) {
+			setValue(base64Field, data.base64, { shouldValidate: true });
+		} else {
+			setValue(base64Field, undefined, { shouldValidate: true });
+		}
 	};
 
-	const handleFileUploadComplete = (file: string | null) => {
-		setUploadedFile(file);
-		console.log("File uploaded:", file);
-	};
-
-	const onSubmit = async (data: FormDataType) => {
-		console.log("Form submitted with data:", data);
-
+	const onSubmit = handleSubmit(async (data: FormDataType) => {
 		try {
 			setIsLoading(true);
 			setErrorMessage("");
 
-			// Validate required fields before submission
-			if (!data.email || !data.password || !data.phone) {
-				throw new Error("Email, password, and phone are required");
+			// Trigger validation to ensure all required fields are valid
+			const isValidForm = await trigger();
+			if (!isValidForm) {
+				throw new Error("Please fill out all required fields correctly");
 			}
 
-			if (!data.terms) {
-				throw new Error("You must accept the terms and conditions");
-			}
-
-			console.log("Submitting to Google Form via API endpoint...");
-			const googleFormApiUrl = "/api/shop/users/google-form-submit"; 
-			const googleFormData = {
-				firstName: data.firstName || "",
-				lastName: data.lastName || "",
-				email: data.email || "",
-				phone: data.phone || "",
-				address: data.address || "",
-				bvn: data.bvn || "",
-				tin: data.tin || "",
+			const googleSheetsApiUrl = "/api/shop/users/google-sheet-submit";
+			const googleSheetsData: FormDataType = {
+				firstName: data.firstName,
+				lastName: data.lastName,
+				email: data.email,
+				phone: data.phone,
+				password: data.password,
+				address: data.address,
+				bvn: data.bvn,
+				tin: data.tin,
 				gender: data.gender || "",
-				accountNumber: data.accountNumber || "",
-				bankName: data.bankName || "",
-				businessName: data.businessName || "",
+				accountNumber: data.accountNumber,
+				bankName: data.bankName,
+				businessName: data.businessName,
+				salutation: data.salutation || "",
+				dob: data.dob || "",
+				businessType: data.businessType || "",
+				country: data.country,
+				state: data.state,
+				city: data.city,
+				categoryOfInterest: data.categoryOfInterest || [],
+				brandOfInterest: data.brandOfInterest || [],
+				terms: data.terms,
+				businessRegistrationFile: data.businessRegistrationFile,
+				proofOfAddressFile: data.proofOfAddressFile,
+				statusReportFile: data.statusReportFile,
+				businessRegistrationBase64:
+					uploadedFiles.businessRegistrationFile?.base64,
+				proofOfAddressBase64: uploadedFiles.proofOfAddressFile?.base64,
+				statusReportBase64: uploadedFiles.statusReportFile?.base64,
+				businessRegistrationFileName: data.businessRegistrationFileName,
+				proofOfAddressFileName: data.proofOfAddressFileName,
+				statusReportFileName: data.statusReportFileName,
+				inventoryFinancingType: data.inventoryFinancingType,
 			};
 
-			const googleFormResponse = await fetch(googleFormApiUrl, {
+			const googleSheetsResponse = await fetch(googleSheetsApiUrl, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 					Accept: "application/json",
 				},
-				body: JSON.stringify(googleFormData),
+				body: JSON.stringify(googleSheetsData),
 			});
 
-			const googleFormResult = await googleFormResponse.json();
-			console.log("Google Form API response:", googleFormResult);
+			const googleSheetsResult = await googleSheetsResponse.json();
 
-			if (!googleFormResponse.ok || !googleFormResult.success) {
-				console.error("Google Form submission failed:", googleFormResult);
+			if (!googleSheetsResponse.ok || !googleSheetsResult.success) {
 				throw new Error(
-					googleFormResult.message || "Failed to submit to Google Form"
+					googleSheetsResult.message || "Failed to submit to Google Sheets"
 				);
 			}
 
-			console.log("Google Form submitted successfully ✅");
-
-			const obanaRegistrationData = {	
+			const obanaRegistrationData = {
 				email: data.email,
 				password: data.password,
 				phone: data.phone,
@@ -227,11 +274,11 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 					bank_name: data.bankName,
 					account_number: data.accountNumber,
 					bvn: data.bvn,
-					business_registration_file: uploadedFile,
+					business_registration_file:
+						uploadedFiles.businessRegistrationFile?.url,
+					inventory_financing_type: data.inventoryFinancingType,
 				},
 			};
-
-			console.log("Submitting to Obana API:", obanaRegistrationData);
 
 			const obanaResponse = await fetch("/api/shop/users/obana-sign-up", {
 				method: "POST",
@@ -243,24 +290,37 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 			});
 
 			const obanaResult = await obanaResponse.json();
-			console.log("Obana API response:", obanaResult);
 
 			if (!obanaResponse.ok) {
-				console.error("Obana API Error:", obanaResult);
+				if (
+					obanaResult.message === "Email or Phone number already registered" ||
+					obanaResult.error?.message ===
+						"Email or Phone number already registered"
+				) {
+					setCurrentStep("success");
+					setErrorMessage(
+						"You are already a registered customer! Your submission has been received, and you can continue shopping."
+					);
+					setTimeout(() => {
+						const shopUrl =
+							environment === "production"
+								? "https://shop.obana.africa"
+								: "https://staging.shop.obana.africa";
+						window.open(shopUrl, "_blank");
+						onClose();
+					}, 2000);
+					return;
+				}
 				throw new Error(
-					obanaResult.message ||
-						`Registration failed: ${obanaResponse.status} ${obanaResponse.statusText}`
+					obanaResult.message || `Registration failed: ${obanaResponse.status}`
 				);
 			}
 
-			// Store registration data
 			const registrationData = {
 				requestId: obanaResult.data?.request_id || obanaResult.requestId,
 				email: data.email,
 				isInventoryFinancing: true,
 			};
-
-			console.log("Storing registration data:", registrationData);
 
 			if (typeof window !== "undefined") {
 				localStorage.setItem(
@@ -272,15 +332,13 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 			setCurrentStep("success");
 
 			const shopOtpUrl =
-				environment === "development"
+				environment === "production"
 					? `https://shop.obana.africa/verify-otp?source=inventory-financing&email=${encodeURIComponent(
 							data.email
 					  )}&requestId=${registrationData.requestId}&isRegister=true`
 					: `https://staging.shop.obana.africa/verify-otp?source=inventory-financing&email=${encodeURIComponent(
 							data.email
 					  )}&requestId=${registrationData.requestId}&isRegister=true`;
-
-			console.log("OTP URL prepared:", shopOtpUrl);
 
 			setTimeout(() => {
 				window.open(shopOtpUrl, "_blank");
@@ -295,25 +353,19 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 		} finally {
 			setIsLoading(false);
 		}
-	};
-
-	// const handleContinueShopping = () => {
-	// 	const shopUrl =
-	// 		environment === "production"
-	// 			? "https://shop.obana.africa"
-	// 			: "https://staging.shop.obana.africa";
-	// 	window.open(shopUrl, "_blank");
-	// 	onClose();
-	// };
+	});
 
 	const resetModal = () => {
 		setCurrentStep("main");
 		setErrorMessage("");
-		setUploadedFile(null);
+		setUploadedFiles({
+			businessRegistrationFile: null,
+			proofOfAddressFile: null,
+			statusReportFile: null,
+		});
 		reset();
 	};
 
-	// Options for form fields
 	const salutationOptions = [
 		{ value: "Mr.", label: "Mr." },
 		{ value: "Mrs.", label: "Mrs." },
@@ -345,19 +397,37 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 	];
 
 	const categoryOptions = [
-		{ value: "6519617000000134005", label: "Women" },
-		{ value: "6519617000000134017", label: "Beauty" },
-		{ value: "6519617000000134029", label: "Haberdashery" },
-		{ value: "6519617000000134041", label: "Men" },
-		{ value: "6519617000000134053", label: "Kids" },
+		{ value: "Women", label: "Women" },
+		{ value: "Beauty", label: "Beauty" },
+		{ value: "Men", label: "Men" },
+		{ value: "Kids", label: "Kids" },
 	];
 
 	const brandOptions = [
-		{ value: "6519617000000112133", label: "Wrangler" },
-		{ value: "6519617000000112201", label: "ADIDAS" },
-		{ value: "6519617000000112255", label: "BOOHOOMAN" },
-		{ value: "6519617000000112267", label: "Nike" },
-		{ value: "6519617000000112279", label: "Zara" },
+		{ value: "Addidas", label: "ADIDAS" },
+		{ value: "BOOHOOMAN", label: "BOOHOOMAN" },
+		{ value: "Nike", label: "Nike" },
+		{ value: "Zara", label: "Zara" },
+	];
+
+	// New inventory financing type options
+	const inventoryFinancingTypeOptions = [
+		// {
+		// 	value: "salad_africa",
+		// 	label: "Salad Africa (50/50 Split Financing)",
+		// 	description: "Pay 50% upfront, 50% later with flexible terms",
+		// },
+		// {
+		// 	value: "cabon_finance",
+		// 	label: "Cabon Finance (Pay in 3 Months)",
+		// 	description: "Get inventory now, pay the full amount in 3 months",
+		// },
+		{
+			value: "stellar_bank",
+			label: "Stellas Bank (Flexible Financing)",
+			description:
+				"Access flexible financing options tailored to your business needs",
+		},
 	];
 
 	const renderMainView = () => (
@@ -365,35 +435,51 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 			<div className="flex flex-col items-center justify-center gap-4">
 				<Image src={logoImage} alt="Logo" width={120} height={40} />
 				<h2 className="text-2xl font-bold text-center text-primary">
-					Login or Register to Access Inventory Financing
+					Access Inventory Financing
 				</h2>
 				<p className="text-center text-gray-600">
-					Get pre-qualified for inventory financing to access the stock you need
-					without immediate financial strain.
+					Get pre-qualified to access the stock you need without immediate
+					financial strain.
 				</p>
 			</div>
 
 			<div className="w-full flex flex-col md:flex-row items-center justify-center gap-4 md:gap-10 my-auto max-w-sm mx-auto">
-				<Button
-					onClick={handleLogin}
-					variant="primary"
-					animation="ripple"
-					icon={<ChevronsRight />}
-					iconPosition="right"
-					className="rounded-sm w-full py-3 border-primary text-primary"
-				>
-					Login
-				</Button>
-				<Button
-					onClick={() => setCurrentStep("form")}
-					variant="primary"
-					animation="ripple"
-					icon={<ChevronsRight />}
-					iconPosition="right"
-					className="rounded-sm w-full py-3 border-primary text-primary"
-				>
-					Register
-				</Button>
+				<div className="flex flex-col items-center gap-2">
+					<p className="text-center text-gray-700 font-medium">
+						Are you an existing user?
+					</p>
+					<Button
+						onClick={() => {
+							const loginUrl =
+								environment === "production"
+									? "https://shop.obana.africa/login?source=inventory-financing&redirect=inventory-financing"
+									: "https://staging.shop.obana.africa/login?source=inventory-financing&redirect=inventory-financing";
+							window.open(loginUrl, "_blank");
+							onClose();
+						}}
+						variant="primary"
+						animation="ripple"
+						icon={<ChevronsRight />}
+						iconPosition="right"
+						className="rounded-sm w-full py-3 border-primary text-primary"
+					>
+						Login
+					</Button>
+				</div>
+
+				<div className="flex flex-col items-center gap-2">
+					<p className="text-center text-gray-700 font-medium">New here?</p>
+					<Button
+						onClick={() => setCurrentStep("form")}
+						variant="primary"
+						animation="ripple"
+						icon={<ChevronsRight />}
+						iconPosition="right"
+						className="rounded-sm w-full py-3 border-primary text-primary"
+					>
+						Register
+					</Button>
+				</div>
 			</div>
 		</div>
 	);
@@ -404,299 +490,354 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 				<h2 className="text-2xl font-bold text-center text-primary">
 					Register for Inventory Financing
 				</h2>
+				{Object.keys(errors).length > 0 && (
+					<div className="bg-red-50 border border-red-200 rounded-lg p-4">
+						<p className="text-sm text-red-700">
+							Please correct the following errors:
+						</p>
+						<ul className="list-disc list-inside text-sm text-red-700">
+							{Object.entries(errors).map(([field, error]) => (
+								<li key={field}>{error?.message}</li>
+							))}
+						</ul>
+					</div>
+				)}
 			</div>
-
-			<form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-				{/* Personal Information */}
-				<div className="space-y-4">
-					<h3 className="text-lg font-semibold text-primary">
-						Personal Information
-					</h3>
-
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+			<FormProvider {...methods}>
+				<form onSubmit={onSubmit} className="space-y-6">
+					{/* Inventory Financing Type Selection - First Section */}
+					<div className="space-y-4">
+						<h3 className="text-lg font-semibold text-primary">
+							Financing Option
+						</h3>
+						<div className="bg-secondary border border-secondary-dark rounded-lg p-3 mb-4">
+							<p className="text-sm text-primary">
+								<strong>Choose Your Financing Partner:</strong> Select the
+								inventory financing option that best suits your business needs.
+							</p>
+						</div>
 						<FormSelect
-							id="salutation"
-							label="Salutation"
-							options={salutationOptions}
-							register={register("salutation")}
-							error={errors.salutation?.message}
-						/>
-
-						<FormSelect
-							id="gender"
-							label="Gender"
-							options={genderOptions}
-							register={register("gender")}
-							error={errors.gender?.message}
-						/>
-					</div>
-
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-						<FormInput
-							id="firstName"
-							placeholder="First name"
-							label="Enter your first Name"
-							register={register("firstName")}
-							error={errors.firstName?.message}
+							id="inventoryFinancingType"
+							label="Select Inventory Financing Type"
+							options={inventoryFinancingTypeOptions}
+							register={register("inventoryFinancingType")}
+							error={errors.inventoryFinancingType?.message}
 							required
-						/>
-
-						<FormInput
-							id="lastName"
-							placeholder="Last name"
-							label="Enter your last Name"
-							register={register("lastName")}
-							error={errors.lastName?.message}
-							required
-						/>
-					</div>
-
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-						<FormInput
-							id="email"
-							placeholder="Enter your email"
-							label="Email"
-							type="email"
-							register={register("email")}
-							error={errors.email?.message}
-							required
-						/>
-
-						<PhoneInput
-							control={control}
-							name="phone"
-							label="Phone Number"
-							error={errors.phone?.message}
-							required
-						/>
-					</div>
-
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-						<FormInput
-							id="password"
-							placeholder="Enter your password"
-							label="Password"
-							type="password"
-							register={register("password")}
-							error={errors.password?.message}
-							required
-						/>
-
-						<FormInput
-							id="dob"
-							placeholder="Enter your date of birth"
-							label="Date of Birth"
-							type="date"
-							register={register("dob")}
-							error={errors.dob?.message}
-						/>
-					</div>
-				</div>
-
-				{/* Business Information */}
-				<div className="space-y-4">
-					<h3 className="text-lg font-semibold text-primary">
-						Business Information
-					</h3>
-
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-						<FormInput
-							id="businessName"
-							placeholder="Enter your business name"
-							label="Business Name"
-							register={register("businessName")}
-							error={errors.businessName?.message}
-							required
-						/>
-
-						<FormSelect
-							id="businessType"
-							label="Business Type"
-							options={businessTypeOptions}
-							register={register("businessType")}
-							error={errors.businessType?.message}
-						/>
-					</div>
-
-					<FormInput
-						id="tin"
-						placeholder="Enter your TIN"
-						label="TIN (Tax Identification Number)"
-						register={register("tin")}
-						error={errors.tin?.message}
-						required
-					/>
-				</div>
-
-				{/* Address Information */}
-				<div className="space-y-4">
-					<h3 className="text-lg font-semibold text-primary">
-						Address Information
-					</h3>
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-						<FormSelect
-							id="country"
-							label="Country"
-							options={countries || []}
-							register={register("country")}
-							error={errors.country?.message}
-							searchable
-							// isLoading={countriesLoading}
-							required
-						/>
-
-						<FormSelect
-							id="state"
-							label="State/Province"
-							options={states || []}
-							register={register("state")}
-							error={errors.state?.message}
-							// isLoading={statesLoading}
-							disabled={!watchedCountry}
-							searchable
-							required
-						/>
-
-						<FormSelect
-							id="city"
-							label="City"
-							options={cities || []}
-							register={register("city")}
-							error={errors.city?.message}
-							// isLoading={citiesLoading}
-							disabled={!watchedState}
-							searchable
-							required
-						/>
-					</div>{" "}
-					<FormInput
-						id="address"
-						placeholder="Enter your address"
-						label="Home Address"
-						register={register("address")}
-						error={errors.address?.message}
-					/>
-				</div>
-
-				{/* Bank Information */}
-				<div className="space-y-4">
-					<h3 className="text-lg font-semibold text-primary">
-						Bank Information
-					</h3>
-
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-						<FormSelect
-							id="bankName"
-							label="Bank Name"
-							options={bankOptions}
-							register={register("bankName")}
-							error={errors.bankName?.message}
-							searchable
-							required
-						/>
-
-						<FormInput
-							id="accountNumber"
-							placeholder="Enter your account number"
-							label="Bank Account Number"
-							register={register("accountNumber")}
-							error={errors.accountNumber?.message}
-							required
-						/>
-					</div>
-
-					<FormInput
-						id="bvn"
-						placeholder="Enter your BVN"
-						label="BVN (Bank Verification Number)"
-						register={register("bvn")}
-						error={errors.bvn?.message}
-						required
-					/>
-				</div>
-
-				{/* Business Interests */}
-				<div className="space-y-4">
-					<h3 className="text-lg font-semibold text-primary">
-						Business Interests
-					</h3>
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-						<FormSelect
-							id="categoryOfInterest"
-							label="Category of Interest"
-							options={categoryOptions}
-							register={register("categoryOfInterest")}
-							error={errors.categoryOfInterest?.message}
-							multiple
 							searchable
 						/>
+						{watch("inventoryFinancingType") && (
+							<div className="bg-green-50 border border-success rounded-lg p-2">
+								<p className="text-sm text-success">
+									<strong>Selected:</strong>{" "}
+									{
+										inventoryFinancingTypeOptions.find(
+											(opt) => opt.value === watch("inventoryFinancingType")
+										)?.description
+									}
+								</p>
+							</div>
+						)}
+					</div>
 
-						<FormSelect
-							id="brandOfInterest"
-							label="Brand of Interest"
-							options={brandOptions}
-							register={register("brandOfInterest")}
-							error={errors.brandOfInterest?.message}
-							multiple
-							searchable
+					<div className="space-y-4">
+						<h3 className="text-lg font-semibold text-primary">
+							Personal Information
+						</h3>
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+							<FormSelect
+								id="salutation"
+								label="Salutation"
+								options={salutationOptions}
+								register={register("salutation")}
+								error={errors.salutation?.message}
+							/>
+							<FormSelect
+								id="gender"
+								label="Gender"
+								options={genderOptions}
+								register={register("gender")}
+								error={errors.gender?.message}
+							/>
+						</div>
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+							<FormInput
+								id="firstName"
+								placeholder="First name"
+								label="Enter your first Name"
+								register={register("firstName")}
+								error={errors.firstName?.message}
+								required
+							/>
+							<FormInput
+								id="lastName"
+								placeholder="Last name"
+								label="Enter your last Name"
+								register={register("lastName")}
+								error={errors.lastName?.message}
+								required
+							/>
+						</div>
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+							<FormInput
+								id="email"
+								placeholder="Enter your email"
+								label="Email"
+								type="email"
+								register={register("email")}
+								error={errors.email?.message}
+								required
+							/>
+							<PhoneInput
+								control={control}
+								name="phone"
+								label="Phone Number"
+								error={errors.phone?.message}
+								required
+							/>
+						</div>
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+							<FormInput
+								id="password"
+								placeholder="Enter your password"
+								label="Password"
+								type="password"
+								register={register("password")}
+								error={errors.password?.message}
+								required
+							/>
+							<FormInput
+								id="dob"
+								placeholder="Enter your date of birth"
+								label="Date of Birth"
+								type="date"
+								register={register("dob")}
+								error={errors.dob?.message}
+							/>
+						</div>
+					</div>
+					<div className="space-y-4">
+						<h3 className="text-lg font-semibold text-primary">
+							Business Information
+						</h3>
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+							<FormInput
+								id="businessName"
+								placeholder="Enter your business name"
+								label="Business Name"
+								register={register("businessName")}
+								error={errors.businessName?.message}
+								required
+							/>
+							<FormSelect
+								id="businessType"
+								label="Business Type"
+								options={businessTypeOptions}
+								register={register("businessType")}
+								error={errors.businessType?.message}
+							/>
+						</div>
+						<FormInput
+							id="tin"
+							placeholder="Enter your TIN"
+							label="TIN (Tax Identification Number)"
+							register={register("tin")}
+							error={errors.tin?.message}
+							required
 						/>
 					</div>
-				</div>
-
-				{/* Document Upload */}
-				<div className="space-y-4">
-					<h3 className="text-lg font-semibold text-primary">Documents</h3>
-
-					<FormFileUpload
-						id="businessRegistrationFile"
-						label="Business Registration Certificate"
-						onUploadComplete={handleFileUploadComplete}
-						accept=".pdf,.jpg,.jpeg,.png"
-						fileTypes="PDF, JPG, PNG"
-					/>
-				</div>
-
-				{/* Terms and Conditions */}
-				<div className="space-y-4">
-					<h3 className="text-lg font-semibold text-primary">Authorization</h3>
-
-					<div className="flex items-start space-x-3">
-						<input
-							type="checkbox"
-							id="terms"
-							{...register("terms")}
-							className="mt-1 w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+					<div className="space-y-4">
+						<h3 className="text-lg font-semibold text-primary">
+							Address Information
+						</h3>
+						<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+							<FormSelect
+								id="country"
+								label="Country"
+								options={countries || []}
+								register={register("country")}
+								error={errors.country?.message}
+								searchable
+								required
+							/>
+							<FormSelect
+								id="state"
+								label="State/Province"
+								options={states || []}
+								register={register("state")}
+								error={errors.state?.message}
+								disabled={!watch("country")}
+								searchable
+								required
+							/>
+							<FormSelect
+								id="city"
+								label="City"
+								options={cities || []}
+								register={register("city")}
+								error={errors.city?.message}
+								disabled={!watch("state")}
+								searchable
+								required
+							/>
+						</div>
+						<FormInput
+							id="address"
+							placeholder="Enter your address"
+							label="Address"
+							register={register("address")}
+							error={errors.address?.message}
 						/>
-						<label htmlFor="terms" className="text-sm text-gray-700">
-							I authorize Obana to share my information with Salad Africa for
-							loan pre-qualification and underwriting purposes.
-						</label>
 					</div>
-					{errors.terms && (
-						<p className="text-sm text-red-600">{errors.terms.message}</p>
-					)}
-				</div>
-
-				<div className="flex flex-col sm:flex-row gap-4 pt-6">
-					<Button
-						onClick={() => setCurrentStep("main")}
-						variant="outline"
-						className="flex-1"
-						disabled={isLoading}
-					>
-						Back
-					</Button>
-					<Button
-						type="submit"
-						variant="primary"
-						animation="ripple"
-						className="flex-1"
-						disabled={isLoading}
-					>
-						{isLoading ? "Submitting..." : "Submit Application"}
-					</Button>
-				</div>
-			</form>
+					<div className="space-y-4">
+						<h3 className="text-lg font-semibold text-primary">
+							Bank Information
+						</h3>
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+							<FormSelect
+								id="bankName"
+								label="Bank Name"
+								options={bankOptions}
+								register={register("bankName")}
+								error={errors.bankName?.message}
+								searchable
+								required
+							/>
+							<FormInput
+								id="accountNumber"
+								placeholder="Enter your account number"
+								label="Bank Account Number"
+								register={register("accountNumber")}
+								error={errors.accountNumber?.message}
+								required
+							/>
+						</div>
+						<FormInput
+							id="bvn"
+							placeholder="Enter your BVN"
+							label="BVN (Bank Verification Number)"
+							register={register("bvn")}
+							error={errors.bvn?.message}
+							required
+						/>
+					</div>
+					<div className="space-y-4">
+						<h3 className="text-lg font-semibold text-primary">
+							Business Interests
+						</h3>
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+							<FormSelect
+								id="categoryOfInterest"
+								label="Category of Interest"
+								options={categoryOptions}
+								register={register("categoryOfInterest")}
+								error={errors.categoryOfInterest?.message}
+								multiple
+								searchable
+							/>
+							<FormSelect
+								id="brandOfInterest"
+								label="Brand of Interest"
+								options={brandOptions}
+								register={register("brandOfInterest")}
+								error={errors.brandOfInterest?.message}
+								multiple
+								searchable
+							/>
+						</div>
+					</div>
+					<div className="space-y-4">
+						<h3 className="text-lg font-semibold text-primary">
+							Required Documents
+						</h3>
+						<div className="bg-secondary border border-secondary-dark rounded-lg p-3 mb-4">
+							<p className="text-sm text-primary">
+								<strong>📎 Important:</strong> Please upload all required
+								documents.
+							</p>
+						</div>
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+							<FormFileUpload
+								required
+								id="businessRegistrationFile"
+								label="Business Registration Certificate (CAC)"
+								onUploadComplete={(data) =>
+									handleFileUploadComplete(data, "businessRegistrationFile")
+								}
+								accept=".pdf,.jpg,.jpeg,.png"
+								fileTypes="PDF, JPG, PNG"
+								error={errors.businessRegistrationFile?.message}
+							/>
+							<FormFileUpload
+								required
+								id="proofOfAddressFile"
+								label="Proof of Address"
+								onUploadComplete={(data) =>
+									handleFileUploadComplete(data, "proofOfAddressFile")
+								}
+								accept=".pdf,.jpg,.jpeg,.png"
+								fileTypes="PDF, JPG, PNG"
+								error={errors.proofOfAddressFile?.message}
+								helpText="Proof Of Address - (utilitiy bill, lawma, PHCN, internet or rent - as recent as 3 months)"
+							/>
+						</div>
+						<FormFileUpload
+							required
+							id="statusReportFile"
+							label="Business Status Report"
+							onUploadComplete={(data) =>
+								handleFileUploadComplete(data, "statusReportFile")
+							}
+							accept=".pdf,.jpg,.jpeg,.png"
+							fileTypes="PDF, JPG, PNG"
+							error={errors.statusReportFile?.message}
+							helpText="Proof Of Address - (utilitiy bill, lawma, PHCN, internet or rent - as recent as 3 months)"
+						/>
+					</div>
+					<div className="space-y-2">
+						<h3 className="text-lg font-semibold text-primary">
+							Authorization
+						</h3>
+						<div className="flex items-start space-x-3">
+							<input
+								type="checkbox"
+								id="terms"
+								{...register("terms")}
+								className="mt-1 w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+							/>
+							<label htmlFor="terms" className="text-sm text-gray-700">
+								I authorize Obana to share my information with the selected
+								financing partner for loan pre-qualification and underwriting
+								purposes, and I confirm that all uploaded documents are
+								authentic and accurate.
+							</label>
+						</div>
+						{errors.terms && (
+							<p className="text-sm text-error">{errors.terms.message}</p>
+						)}
+					</div>
+					<div className="flex flex-col sm:flex-row gap-4 pt-6">
+						<Button
+							onClick={() => setCurrentStep("main")}
+							variant="outline"
+							className="flex-1"
+							disabled={isLoading}
+						>
+							Back
+						</Button>
+						<Button
+							type="submit"
+							variant="primary"
+							animation="ripple"
+							className="flex-1"
+							disabled={isLoading || !isValid}
+						>
+							{isLoading
+								? "Submitting Application..."
+								: "Submit Application with Documents"}
+						</Button>
+					</div>
+				</form>
+			</FormProvider>
 		</div>
 	);
 
@@ -705,42 +846,36 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 			<CheckCircle className="w-16 h-16 text-green-500" />
 			<div className="text-center space-y-2">
 				<h2 className="text-2xl font-bold text-primary">
-					Application Submitted Successfully!
+					{errorMessage
+						? "Submission Received!"
+						: "Application Submitted Successfully!"}
 				</h2>
 				<p className="text-gray-600">
-					Your inventory financing application has been submitted. You will
-					receive a confirmation email shortly. You will be redirected to verify
-					your OTP.
+					{errorMessage ||
+						"Your inventory financing application and all documents have been submitted successfully. Confirmation emails have been sent to all relevant parties. You will be redirected to verify your OTP."}
 				</p>
+				<div className="bg-green-50 border border-green-200 rounded-lg p-4 mt-4">
+					<p className="text-sm text-green-700">
+						📧 Emails sent with your documents attached to Obana team and your
+						selected financing partner for review.
+					</p>
+				</div>
 			</div>
 			<div className="flex flex-col sm:flex-row gap-4 w-full max-w-sm">
 				<Button
 					onClick={() => {
-						// Get the stored request ID
-						const storedData = localStorage.getItem("pendingRegistration");
-
-						const requestId = storedData
-							? JSON.parse(storedData).requestId
-							: null;
-						const email = storedData ? JSON.parse(storedData).email : null;
-
-						console.log("REQUEST ID", requestId);
-						console.log("EMAIL", email);
-
-						const shopOtpUrl =
-							environment === "development"
-								? `https://shop.obana.africa/verify-otp?source=inventory-financing&requestId=${requestId}&isRegister=true`
-								: `https://staging.shop.obana.africa/verify-otp?source=inventory-financing&email=${encodeURIComponent(
-										email
-								  )}&requestId=${requestId}&isRegister=true`;
-						window.open(shopOtpUrl, "_blank");
+						const shopUrl =
+							environment === "production"
+								? "https://shop.obana.africa"
+								: "https://staging.shop.obana.africa";
+						window.open(shopUrl, "_blank");
 						onClose();
 					}}
 					variant="primary"
 					animation="ripple"
 					className="flex-1"
 				>
-					Verify OTP & Continue Shopping
+					Continue Shopping
 				</Button>
 				<Button onClick={onClose} variant="outline" className="flex-1">
 					Close
@@ -755,6 +890,12 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 			<div className="text-center space-y-2">
 				<h2 className="text-2xl font-bold text-red-600">Application Failed</h2>
 				<p className="text-gray-600">{errorMessage}</p>
+				<div className="bg-red-50 border border-red-200 rounded-lg p-4 mt-4">
+					<p className="text-sm text-red-700">
+						Please check your internet connection and try again. If the problem
+						persists, contact support.
+					</p>
+				</div>
 			</div>
 			<div className="flex flex-col sm:flex-row gap-4 w-full max-w-sm">
 				<Button

@@ -28,7 +28,7 @@ export interface ShipmentData {
 }
 
 export interface LogisticsPartner {
-	id: string;
+	id?: string;
 	name: string;
 	price: number;
 	estimatedDelivery: string;
