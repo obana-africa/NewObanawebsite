@@ -42,8 +42,8 @@ importers:
         specifier: ^0.479.0
         version: 0.479.0(react@19.1.1)
       next:
-        specifier: 15.2.1
-        version: 15.2.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        specifier: 15.2.6
+        version: 15.2.6(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       react:
         specifier: ^19.0.0
         version: 19.1.1
@@ -354,8 +354,8 @@ packages:
   '@napi-rs/wasm-runtime@0.2.12':
     resolution: {integrity: sha512-ZVWUcfwY4E/yPitQJl481FjFo3K22D6qF0DuFH6Y/nbnE11GY5uguDxZMGXPQ8WQ0128MXQD7TnfHyK4oWoIJQ==}
 
-  '@next/env@15.2.1':
-    resolution: {integrity: sha512-JmY0qvnPuS2NCWOz2bbby3Pe0VzdAQ7XpEB6uLIHmtXNfAsAO0KLQLkuAoc42Bxbo3/jMC3dcn9cdf+piCcG2Q==}
+  '@next/env@15.2.6':
+    resolution: {integrity: sha512-kp1Mpm4K1IzSSJ5ZALfek0JBD2jBw9VGMXR/aT7ykcA2q/ieDARyBzg+e8J1TkeIb5AFj/YjtZdoajdy5uNy6w==}
 
   '@next/eslint-plugin-next@15.2.1':
     resolution: {integrity: sha512-6ppeToFd02z38SllzWxayLxjjNfzvc7Wm07gQOKSLjyASvKcXjNStZrLXMHuaWkhjqxe+cnhb2uzfWXm1VEj/Q==}
@@ -2500,7 +2500,7 @@ snapshots:
       '@tybys/wasm-util': 0.10.1
     optional: true
 
-  '@next/env@15.2.1': {}
+  '@next/env@15.2.6': {}
 
   '@next/eslint-plugin-next@15.2.1':
     dependencies:
@@ -4055,7 +4055,7 @@ snapshots:
 
   natural-compare@1.4.0: {}
 
-  next@15.2.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1):
+  next@15.2.6(react-dom@19.1.1(react@19.1.1))(react@19.1.1):
     dependencies:
       '@next/env': 15.2.6
       '@swc/counter': 0.1.3
