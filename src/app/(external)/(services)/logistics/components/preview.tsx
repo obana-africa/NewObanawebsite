@@ -17,6 +17,7 @@ export interface PreviewComponentProps {
 	onProceedToBook: () => void;
 	onContactSupport: () => void;
 	isSubmitting?: boolean;
+	
 }
 
 const PreviewComponent: React.FC<PreviewComponentProps> = ({

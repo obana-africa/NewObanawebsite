@@ -384,6 +384,12 @@ const Header: React.FC = () => {
 									</div>
 								</div>
 							</div>
+							<Link
+								href="/track-shipment"
+								className="text-blue hover:text-blue-900 font-medium"
+							>
+								Track Your Shipment
+							</Link>
 						</nav>
 
 						<div className="hidden md:flex items-center space-x-4">
