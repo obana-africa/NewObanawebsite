@@ -417,11 +417,11 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 		// 	label: "Salad Africa (50/50 Split Financing)",
 		// 	description: "Pay 50% upfront, 50% later with flexible terms",
 		// },
-		// {
-		// 	value: "cabon_finance",
-		// 	label: "Cabon Finance (Pay in 3 Months)",
-		// 	description: "Get inventory now, pay the full amount in 3 months",
-		// },
+		{
+			value: "cabon_finance",
+			label: "Cabon Finance (Pay in 3 Months)",
+			description: "Get inventory now, pay the full amount in 3 months",
+		},
 		{
 			value: "stellar_bank",
 			label: "Stellas Bank (Flexible Financing)",

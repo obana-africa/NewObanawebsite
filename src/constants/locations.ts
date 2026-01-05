@@ -371,6 +371,7 @@ const allNonAfricanLocations = [
 	...NorthAmericanLocations,
 	...SouthAmericanLocations,
 	...OceaniaLocations,
+	...AfricanLocations,
 ];
 
 export {
