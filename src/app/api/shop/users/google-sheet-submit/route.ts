@@ -64,7 +64,8 @@ const FINANCING_PARTNERS: Record<string, FinancingPartner> = {
 	cabon_finance: {
 		name: "Cabon Finance",
 		email: "olaoluwajohn06@gmail.com",
-		displayName: "Cabon Finance (Pay in 3 Months)",
+		displayName:
+			"Carbon – 1–3 months (1st month interest-free, 4.5% for 2nd & 3rd month)",
 	},
 	stellar_bank: {
 		name: "Stellar Bank",

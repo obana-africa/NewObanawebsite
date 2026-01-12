@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { ChevronDown, Check, AlertCircle } from "lucide-react";
 import Seperator from "@/components/external/components/seperator";
 import stellas from "@/app/assets/images/logos/stellas.jpg";
+import carbon from "@/app/assets/images/logos/carbon.png";
 
 const InventoryPartners = () => {
 	const [expandedPartner, setExpandedPartner] = useState<string | null>(null);
@@ -50,30 +51,27 @@ const InventoryPartners = () => {
 		// 		"Default may limit future access to Salad's financing services.",
 		// 	],
 		// },
-		// {
-		// 	id: "carbon",
-		// 	name: "Carbon Zero",
-		// 	logo: "/logos/carbon.png",
-		// 	description:
-		// 		"Buy Now, Pay Later for Businesses - Carbon pays the full purchase amount upfront.",
-		// 	eligibility: [
-		// 		"Valid business account",
-		// 		"BVN and ID of business owners",
-		// 		"Must meet Carbon's KYC requirements",
-		// 	],
-		// 	payment:
-		// 		"Carbon pays the full purchase amount upfront; business repays in instalments.",
-		// 	repayment:
-		// 		"Instalments are collected as scheduled at the time of purchase.",
-		// 	feesInterest:
-		// 		"Zero fees and zero interest if repayment is made on time. Late repayment attracts penalties and may be reported to credit bureaus.",
-		// 	conditions: [
-		// 		"Repayment account must have adequate funds.",
-		// 		"Carbon may reject or delay a transaction if fraud or irregular activity is suspected.",
-		// 	],
-		// },
+		{
+			id: "carbon",
+			name: "Carbon Microfinance Bank",
+			logo: carbon,
+			description:
+				"Business Loans & Financing – Carbon provides flexible loan facilities for qualified businesses purchasing products on Obana.africa.",
+			eligibility: [
+				"Business must be registered on Obana.africa",
+				"Must meet Carbon’s internal credit assessment requirements",
+			],
+			payment:
+				"Loan is disbursed directly for product purchases on Obana.africa and Products purchased under this facility are VAT-free. Obana.africa covers the first month’s interest on behalf of the customer.",
+			repayment:
+				"Business repays according to the agreed loan schedule, with an option to extend repayment up to three months.",
+			feesInterest: "Interest-based loan at a 4.5% rate.",
+			conditions: [
+				"Carbon reserves the right to cancel the loan if obligations are not met.",
+				"Carbon will reject or delay a transaction if fraud or irregular activity is suspected.",
+			],
+		},
 
-		
 		{
 			id: "stellas",
 			name: "Stellas Microfinance Bank",
@@ -103,15 +101,11 @@ const InventoryPartners = () => {
 	return (
 		<section className="container mx-auto px-4 py-10 md:pt-2">
 			<div className="text-center mb-12 md:mb-14 items-center flex flex-col">
-				<h2
-					className="text-primary text-2xl md:text-3xl lg:text-4xl font-bold inline-block"
-				>
+				<h2 className="text-primary text-2xl md:text-3xl lg:text-4xl font-bold inline-block">
 					Our Financing Partners
 				</h2>
 				<Seperator />
-				<p
-					className="mt-3 text-[#222] text-sm md:text-base max-w-2xl mx-auto"
-				>
+				<p className="mt-3 text-[#222] text-sm md:text-base max-w-2xl mx-auto">
 					We collaborate with trusted financial institutions to provide you with
 					the best inventory financing options
 				</p>
