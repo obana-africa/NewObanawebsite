@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { useFormContext } from "react-hook-form";
 import { Upload, Info } from "lucide-react";
-import { FormDataType } from "@/app/(external)/(services)/inventory/types";
+import { FormDataType } from "@/app/(external)/(services)/obana-pss/types";
 
 type FileFieldId =
 	| "businessRegistrationFile"
@@ -18,7 +18,7 @@ interface FormFileUploadProps {
 		data: { url?: string; base64?: string; fileName?: string } | null
 	) => void;
 	required?: boolean;
-	helpText?: string; 
+	helpText?: string;
 }
 
 const FormFileUpload: React.FC<FormFileUploadProps> = ({

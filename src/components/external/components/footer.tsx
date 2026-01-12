@@ -62,7 +62,7 @@ const Footer = () => {
 		{ title: "Request Shipment", href: "/logistics" },
 		{
 			title: "Order Now & Pay Small Small (ONPSS)",
-			href: "https://shop.obana.africa/inventory-financing",
+			href: "https://shop.obana.africa/obana-pss",
 		},
 		{ title: "Partner With Us", href: "https://salesforce.obana.africa/" },
 	];

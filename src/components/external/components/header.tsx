@@ -156,7 +156,7 @@ const Header: React.FC = () => {
 				title: "Order Now, Pay Small Small (ONPSS)",
 				description:
 					"Now you can — thanks to Obana's Order Now, Pay Small Small feature.",
-				href: "/inventory",
+				href: "/obana-pss",
 			},
 			{
 				title: "Sell on Obana.Africa",
