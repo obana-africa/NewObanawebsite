@@ -15,7 +15,7 @@ import {
 import { inventoryFinancingSchema } from "../schemas";
 import PhoneInput from "@/components/ui/phone-input";
 import { FormDataType } from "../types";
-import FormFileUpload from "@/app/(external)/(services)/inventory/components/inventory-file-upload";
+import FormFileUpload from "@/app/(external)/(services)/obana-pss/components/inventory-file-upload";
 
 interface InventoryFinancingModalProps {
 	isOpen: boolean;
@@ -417,11 +417,12 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 		// 	label: "Salad Africa (50/50 Split Financing)",
 		// 	description: "Pay 50% upfront, 50% later with flexible terms",
 		// },
-		// {
-		// 	value: "cabon_finance",
-		// 	label: "Cabon Finance (Pay in 3 Months)",
-		// 	description: "Get inventory now, pay the full amount in 3 months",
-		// },
+		{
+			value: "cabon_finance",
+			label:
+				"Carbon – 1–3 months (1st month interest-free, 4.5% for 2nd & 3rd month)",
+			description: "Get inventory now, pay the full amount in 3 months",
+		},
 		{
 			value: "stellar_bank",
 			label: "Stellas Bank (Flexible Financing)",
@@ -805,7 +806,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 								className="mt-1 w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
 							/>
 							<label htmlFor="terms" className="text-sm text-gray-700">
-								I authorize Obana to share my information with the selected
+								I authorize Obana.Africa to share my information with the selected
 								financing partner for loan pre-qualification and underwriting
 								purposes, and I confirm that all uploaded documents are
 								authentic and accurate.

@@ -36,17 +36,43 @@ const Footer = () => {
 	};
 
 	const serviceLinks = [
-		{ title: "Inventory Financing", href: "/inventory" },
-		{ title: "Logistics Support", href: "/logistics" },
-		{ title: "Request for a quote", href: "/rfq" },
-		{ title: "Sign up as a Vendor", href: "https://vendor.obana.africa/" },
-		{ title: "Join our Sales Team", href: "https://salesforce.obana.africa/" },
+		{ title: "About Us", href: "/about" },
+		{ title: "Blog", href: "https://blog.obana.africa" },
+		{ title: "FAQs", href: "/faqs" },
+		// { title: "Logistics Support", href: "/logistics" },
+		// { title: "Inventory Financing", href: "/inventory" },
+		// { title: "Logistics Support", href: "/logistics" },
+		// { title: "Request for a quote", href: "/rfq" },
+		// { title: "Sign up as a Vendor", href: "https://vendor.obana.africa/" },
+		// { title: "Join our Sales Team", href: "https://salesforce.obana.africa/" },
+	];
+	const sourcingLinks = [
+		{
+			title: "Circular Sourcing ",
+			href: "https://shop.obana.africa/categories/Men",
+		},
+		{
+			title: "African Inspired Sourcing",
+			href: "https://shop.obana.africa/categories/Kids",
+		},
+		{ title: "Request for Sourcing", href: "/rfq" },
 	];
 
 	const companyLinks = [
-		{ title: "About Us", href: "/about" },
-		{ title: "Contact Us", href: "/contact" },
-		{ title: "FAQs", href: "/faqs" },
+		{ title: "Request Shipment", href: "/logistics" },
+		{
+			title: "Order Now & Pay Small Small (ONPSS)",
+			href: "https://shop.obana.africa/obana-pss",
+		},
+		{ title: "Partner With Us", href: "https://salesforce.obana.africa/" },
+	];
+	const tradeLinks = [
+		{ title: "Sell on Obana", href: "https://vendor.obana.africa/" },
+		{ title: "Buy in Bulk", href: "https://shop.obana.africa/" },
+		{
+			title: "Earn as a Sales Partner",
+			href: "https://salesforce.obana.africa/",
+		},
 	];
 
 	const socialLinks = [
@@ -85,7 +111,7 @@ const Footer = () => {
 
 			<div className="container mx-auto px-4 md:px-6">
 				<div className="px-4 py-10 max-w-7xl mx-auto">
-					<div className="md:grid md:grid-cols-4 md:gap-8">
+					<div className="md:grid md:grid-cols-5 md:gap-8">
 						<div className="flex flex-col items-center md:items-start">
 							<div className="bg-white rounded-md p-2 mb-6 ">
 								<Image
@@ -110,7 +136,7 @@ const Footer = () => {
 
 						<div className="grid grid-cols-2 gap-4 mt-8 md:hidden">
 							<div>
-								<h3 className="text-lg font-medium mb-4">Our Services</h3>
+								<h3 className="text-lg font-medium mb-4">About Obana</h3>
 								<ul className="space-y-2 ">
 									{serviceLinks.map((link, index) => (
 										<li key={index}>
@@ -123,7 +149,9 @@ const Footer = () => {
 							</div>
 
 							<div>
-								<h3 className="text-lg font-medium mb-4">Company</h3>
+								<h3 className="text-lg font-medium mb-4">
+									Partnership & Growth
+								</h3>
 								<ul className="space-y-2">
 									{companyLinks.map((link, index) => (
 										<li key={index}>
@@ -137,7 +165,7 @@ const Footer = () => {
 						</div>
 
 						<div className="hidden md:block">
-							<h3 className="text-lg font-medium mb-4">Our Services</h3>
+							<h3 className="text-lg font-medium mb-4">About Obana</h3>
 							<ul className="space-y-2">
 								{serviceLinks.map((link, index) => (
 									<li key={index}>
@@ -148,9 +176,21 @@ const Footer = () => {
 								))}
 							</ul>
 						</div>
+						<div className="hidden md:block">
+							<h3 className="text-lg font-medium mb-4">Sourcing Solutions</h3>
+							<ul className="space-y-2">
+								{sourcingLinks.map((link, index) => (
+									<li key={index}>
+										<Link href={link.href} className=" hover:underline">
+											{link.title}
+										</Link>
+									</li>
+								))}
+							</ul>
+						</div>
 
 						<div className="hidden md:block">
-							<h3 className="text-lg font-medium mb-4">Company</h3>
+							<h3 className="text-lg font-medium mb-4">Partnership & Growth</h3>
 							<ul className="space-y-2">
 								{companyLinks.map((link, index) => (
 									<li key={index}>
@@ -161,19 +201,51 @@ const Footer = () => {
 								))}
 							</ul>
 						</div>
+						<div className="hidden md:block">
+							<h3 className="text-lg font-medium mb-4">Start Trading</h3>
+							<ul className="space-y-2">
+								{tradeLinks.map((link, index) => (
+									<li key={index}>
+										<Link href={link.href} className=" hover:underline">
+											{link.title}
+										</Link>
+									</li>
+								))}
+							</ul>
+						</div>
+					</div>
 
-						<div className="mt-8 md:mt-0">
-							<h3 className="text-lg font-medium mb-4">Newsletter</h3>
+					<div className="border-t border-gray-600 my-8"></div>
+
+					<div className="flex flex-col-reverse md:flex-row justify-between items-center gap-10">
+						<div className="w-full md:w-[40%]">
+							<p className=" mb-4 md:mb-0">
+								Copyright © 2025 Icon Tech & Ecommerce Service Limited trading as Obana.Africa. All Rights Reserved.
+							</p>
+							<div className="flex gap-4 ">
+								{policyLinks.map((link, index) => (
+									<Link
+										key={index}
+										href={link.href}
+										className="hover:underline"
+									>
+										{link.title}
+									</Link>
+								))}
+							</div>
+						</div>
+						<div className=" md:mt-0 md:w-[30%]">
+							<h3 className="text-lg font-medium mb-4">Stay Connected</h3>
 							<p className="mb-4 ">
-								Subscribe to our weekly Newsletter and receive updates via
-								email.
+								Subscribe for updates on sourcing opportunities, vendor
+								programs, and African market trends. 
 							</p>
 							<form onSubmit={handleSubmit(onSubmit)}>
 								<div className="flex bg-white rounded-2xl">
 									<input
 										type="email"
 										placeholder="Enter your mail here..."
-										className={`px-4 py-2 w-full rounded-l-full text-primary-dark focus:outline-none ${
+										className={`px-4 py-2 w-full rounded-s-full text-primary-dark focus:outline-none ${
 											errors.email ? "border border-error" : ""
 										}`}
 										{...register("email")}
@@ -191,21 +263,6 @@ const Footer = () => {
 									</p>
 								)}
 							</form>
-						</div>
-					</div>
-
-					<div className="border-t border-gray-600 my-8"></div>
-
-					<div className="flex flex-col md:flex-row justify-between items-center">
-						<p className=" mb-4 md:mb-0">
-							Copyright ©ObanaAfrica. All Right Reserved.
-						</p>
-						<div className="flex gap-4 ">
-							{policyLinks.map((link, index) => (
-								<Link key={index} href={link.href} className="hover:underline">
-									{link.title}
-								</Link>
-							))}
 						</div>
 					</div>
 				</div>

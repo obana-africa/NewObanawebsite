@@ -320,6 +320,9 @@ const ImportForm: React.FC<ImportFormProps> = ({
 					onBack={() => setCurrentStep("preview")}
 					onSubmit={handleFinalSubmit}
 					isSubmitting={isSubmitting}
+					availableRates={[]}
+					
+
 				/>
 			)}
 		</div>
