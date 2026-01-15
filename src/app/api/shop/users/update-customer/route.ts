@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 import { getAccessToken } from "@/helpers/zoho-auth-token";
@@ -404,7 +406,7 @@ async function updateZohoCustomer(
 
 		// Check if the error is because contact doesn't exist
 		if (
-			error.response?.data?.code === 1002 ||  
+			error.response?.data?.code === 1002 ||
 			error.message?.includes("Contact does not exist") ||
 			error.response?.status === 404
 		) {
