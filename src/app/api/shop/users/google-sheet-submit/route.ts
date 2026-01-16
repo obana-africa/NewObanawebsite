@@ -62,7 +62,7 @@ const FINANCING_PARTNERS: Record<string, FinancingPartner> = {
 		displayName: "Salad Africa (50/50 Split Financing)",
 	},
 	cabon_finance: {
-		name: "Cabon Finance",
+		name: "Cabon MFB",
 		email: "olaoluwajohn06@gmail.com",
 		displayName:
 			"Carbon – 1–3 months (1st month interest-free, 4.5% for 2nd & 3rd month)",
