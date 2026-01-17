@@ -36,36 +36,36 @@ async function searchZohoCustomerByEmail(email: string, accessToken: string) {
 	return contacts[0];
 }
 
-// Helper to create CORS headers
-function getCorsHeaders(request: NextRequest) {
-	const allowedOrigins = [
-		"http://localhost:3000",
-		"https://staging.shop.obana.africa",
-		"https://shop.obana.africa",
-		"https://obana.africa",
-	];
+const allowedOrigins = [
+	"http://localhost:3000",
+	"https://staging.shop.obana.africa",
+	"https://shop.obana.africa",
+	"https://obana.africa",
+];
 
-	const origin = request.headers.get("origin") || "";
-	const isAllowed = allowedOrigins.includes(origin);
+function corsHeaders(origin: string | null) {
+	const isAllowed = origin && allowedOrigins.includes(origin);
 
 	return {
-		"Access-Control-Allow-Origin": isAllowed ? origin : allowedOrigins[0],
-		"Access-Control-Allow-Methods": "GET, OPTIONS",
-		"Access-Control-Allow-Headers": "Content-Type, Authorization, Accept",
-		"Access-Control-Allow-Credentials": "true",
+		"Access-Control-Allow-Origin": isAllowed ? origin : "*",
+		"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+		"Access-Control-Allow-Headers":
+			"Content-Type, Authorization, Accept, X-Requested-With",
+		"Access-Control-Max-Age": "86400",
 	};
 }
 
-// Handle OPTIONS request
 export async function OPTIONS(request: NextRequest) {
+	const origin = request.headers.get("origin");
 	return new NextResponse(null, {
-		status: 200,
-		headers: getCorsHeaders(request),
+		status: 204,
+		headers: corsHeaders(origin),
 	});
 }
 
 export async function GET(request: NextRequest) {
-	const headers = getCorsHeaders(request);
+	const origin = request.headers.get("origin");
+	const headers = corsHeaders(origin);
 
 	try {
 		const allow = request.nextUrl.searchParams.get("allow");
