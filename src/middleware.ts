@@ -8,7 +8,6 @@ export function middleware(request: NextRequest) {
 		"https://staging.shop.obana.africa",
 		"https://shop.obana.africa",
 		"https://obana.africa",
-		"https://shop.obana.africa/",
 	];
 
 	const origin = request.headers.get("origin") ?? "";
@@ -19,7 +18,7 @@ export function middleware(request: NextRequest) {
 		return new Response(null, {
 			status: 200,
 			headers: {
-				"Access-Control-Allow-Origin": isAllowedOrigin ? origin : "null",
+				"Access-Control-Allow-Origin": isAllowedOrigin ? origin : "*",
 				"Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
 				"Access-Control-Allow-Headers": "Content-Type, Authorization, Accept",
 				"Access-Control-Max-Age": "86400",
@@ -31,7 +30,7 @@ export function middleware(request: NextRequest) {
 	const response = NextResponse.next();
 
 	if (isAllowedOrigin) {
-		response.headers.set("Access-Control-Allow-Origin", origin);
+		response.headers.set("Access-Control-Allow-Origin", "*");
 		response.headers.set(
 			"Access-Control-Allow-Methods",
 			"GET,POST,PUT,DELETE,OPTIONS"
