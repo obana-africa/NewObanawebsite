@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
-	// Handle CORS
 	const allowedOrigins = [
 		"http://localhost:3000",
-		"http://localhost:3000/",
 		"https://staging.shop.obana.africa",
 		"https://shop.obana.africa",
 		"https://obana.africa",
@@ -18,10 +16,13 @@ export function middleware(request: NextRequest) {
 		return new Response(null, {
 			status: 200,
 			headers: {
-				"Access-Control-Allow-Origin": isAllowedOrigin ? origin : "*",
+				"Access-Control-Allow-Origin": isAllowedOrigin
+					? origin
+					: allowedOrigins[0],
 				"Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
 				"Access-Control-Allow-Headers": "Content-Type, Authorization, Accept",
 				"Access-Control-Max-Age": "86400",
+				"Access-Control-Allow-Credentials": "true",
 			},
 		});
 	}
@@ -30,7 +31,7 @@ export function middleware(request: NextRequest) {
 	const response = NextResponse.next();
 
 	if (isAllowedOrigin) {
-		response.headers.set("Access-Control-Allow-Origin", "*");
+		response.headers.set("Access-Control-Allow-Origin", origin);  
 		response.headers.set(
 			"Access-Control-Allow-Methods",
 			"GET,POST,PUT,DELETE,OPTIONS"
@@ -39,6 +40,7 @@ export function middleware(request: NextRequest) {
 			"Access-Control-Allow-Headers",
 			"Content-Type, Authorization, Accept"
 		);
+		response.headers.set("Access-Control-Allow-Credentials", "true");
 	}
 
 	return response;
