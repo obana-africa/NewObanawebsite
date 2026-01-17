@@ -36,18 +36,43 @@ async function searchZohoCustomerByEmail(email: string, accessToken: string) {
 	return contacts[0];
 }
 
-export async function GET(request: NextRequest) {
-	const headers = {
-		"Access-Control-Allow-Origin": request.headers.get("origin") || "*",
+// Helper to create CORS headers
+function getCorsHeaders(request: NextRequest) {
+	const allowedOrigins = [
+		"http://localhost:3000",
+		"https://staging.shop.obana.africa",
+		"https://shop.obana.africa",
+		"https://obana.africa",
+	];
+
+	const origin = request.headers.get("origin") || "";
+	const isAllowed = allowedOrigins.includes(origin);
+
+	return {
+		"Access-Control-Allow-Origin": isAllowed ? origin : allowedOrigins[0],
 		"Access-Control-Allow-Methods": "GET, OPTIONS",
-		"Access-Control-Allow-Headers": "Content-Type, Authorization",
+		"Access-Control-Allow-Headers": "Content-Type, Authorization, Accept",
+		"Access-Control-Allow-Credentials": "true",
 	};
+}
+
+// Handle OPTIONS request
+export async function OPTIONS(request: NextRequest) {
+	return new NextResponse(null, {
+		status: 200,
+		headers: getCorsHeaders(request),
+	});
+}
+
+export async function GET(request: NextRequest) {
+	const headers = getCorsHeaders(request);
+
 	try {
 		const allow = request.nextUrl.searchParams.get("allow");
 		if (allow !== "tajiro") {
 			return NextResponse.json(
 				{ success: false, message: "Unauthorized" },
-				{ status: 401 }
+				{ status: 401, headers }
 			);
 		}
 
@@ -59,7 +84,7 @@ export async function GET(request: NextRequest) {
 		if (!contactId) {
 			return NextResponse.json(
 				{ success: false, message: "Missing required parameter: ?id=" },
-				{ status: 400 }
+				{ status: 400, headers }
 			);
 		}
 
@@ -90,29 +115,14 @@ export async function GET(request: NextRequest) {
 		if (!customer) {
 			return NextResponse.json(
 				{ success: false, message: "Customer not found" },
-				{ status: 404 }
+				{ status: 404, headers }
 			);
 		}
 
-		// Optional: you can shape/reduce the response here if you want lighter payload
-		// Example:
-		// const slim = {
-		//   contact_id: customer.contact_id,
-		//   contact_name: customer.contact_name,
-		//   email: customer.email,
-		//   phone: customer.phone || customer.mobile,
-		//   company_name: customer.company_name,
-		//   custom_fields: customer.custom_fields,
-		//   billing_address: customer.billing_address,
-		//   // ... only what your frontend actually needs
-		// };
-
-		// console.log("[GET /customer] Retrieved Zoho customer:", customer);
 		return NextResponse.json(
 			{
 				success: true,
 				data: customer,
-				// data: slim,
 			},
 			{ headers }
 		);
@@ -131,7 +141,7 @@ export async function GET(request: NextRequest) {
 				message,
 				error: status >= 500 ? "Internal server error" : undefined,
 			},
-			{ status }
+			{ status, headers }
 		);
 	}
 }
