@@ -37,6 +37,11 @@ async function searchZohoCustomerByEmail(email: string, accessToken: string) {
 }
 
 export async function GET(request: NextRequest) {
+	const headers = {
+		"Access-Control-Allow-Origin": request.headers.get("origin") || "*",
+		"Access-Control-Allow-Methods": "GET, OPTIONS",
+		"Access-Control-Allow-Headers": "Content-Type, Authorization",
+	};
 	try {
 		const allow = request.nextUrl.searchParams.get("allow");
 		if (allow !== "tajiro") {
@@ -103,11 +108,14 @@ export async function GET(request: NextRequest) {
 		// };
 
 		// console.log("[GET /customer] Retrieved Zoho customer:", customer);
-		return NextResponse.json({
-			success: true,
-			data: customer,
-			// data: slim,
-		});
+		return NextResponse.json(
+			{
+				success: true,
+				data: customer,
+				// data: slim,
+			},
+			{ headers }
+		);
 	} catch (error: any) {
 		console.error("Error fetching Zoho customer:", error);
 
