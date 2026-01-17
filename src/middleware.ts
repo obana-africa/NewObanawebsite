@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
+	if (request.nextUrl.pathname.includes("/api/shop/users/get-customer")) {
+		return NextResponse.next();
+	}
+
 	const allowedOrigins = [
 		"http://localhost:3000",
 		"https://staging.shop.obana.africa",
@@ -11,7 +15,6 @@ export function middleware(request: NextRequest) {
 	const origin = request.headers.get("origin") ?? "";
 	const isAllowedOrigin = allowedOrigins.includes(origin);
 
-	// Handle preflight requests
 	if (request.method === "OPTIONS") {
 		const headers: Record<string, string> = {
 			"Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
@@ -27,7 +30,6 @@ export function middleware(request: NextRequest) {
 		return new Response(null, { status: 204, headers });
 	}
 
-	// Handle actual request
 	const response = NextResponse.next();
 
 	if (isAllowedOrigin) {
