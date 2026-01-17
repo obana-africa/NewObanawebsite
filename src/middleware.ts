@@ -7,6 +7,7 @@ export function middleware(request: NextRequest) {
 		"http://localhost:3000/",
 		"https://staging.shop.obana.africa",
 		"https://shop.obana.africa",
+		"https://obana.africa",
 		"https://shop.obana.africa/",
 	];
 
