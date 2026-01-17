@@ -102,7 +102,7 @@ export async function GET(request: NextRequest) {
 		//   // ... only what your frontend actually needs
 		// };
 
-		console.log("[GET /customer] Retrieved Zoho customer:", customer);
+		// console.log("[GET /customer] Retrieved Zoho customer:", customer);
 		return NextResponse.json({
 			success: true,
 			data: customer,
