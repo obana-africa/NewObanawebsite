@@ -26,10 +26,10 @@ const nextConfig: NextConfig = {
 			{
 				source: "/api/:path*",
 				headers: [
-					{ key: "Access-Control-Allow-Credentials", value: "true" },
-
-					{ key: "Access-Control-Allow-Origin", value: "*" },
-
+					{
+						key: "Access-Control-Allow-Origin",
+						value: "*",
+					},
 					{
 						key: "Access-Control-Allow-Methods",
 						value: "GET, POST, PUT, PATCH, DELETE, OPTIONS",
@@ -39,7 +39,10 @@ const nextConfig: NextConfig = {
 						value:
 							"Content-Type, Authorization, Accept, X-Requested-With, X-CSRF-Token, Accept-Version, Content-Length, Content-MD5, Date, X-Api-Version",
 					},
-					{ key: "Access-Control-Max-Age", value: "86400" },
+					{
+						key: "Access-Control-Max-Age",
+						value: "86400",
+					},
 				],
 			},
 		];

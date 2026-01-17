@@ -36,43 +36,13 @@ async function searchZohoCustomerByEmail(email: string, accessToken: string) {
 	return contacts[0];
 }
 
-const allowedOrigins = [
-	"http://localhost:3000",
-	"https://staging.shop.obana.africa",
-	"https://shop.obana.africa",
-	"https://obana.africa",
-];
-
-function corsHeaders(origin: string | null) {
-	const isAllowed = origin && allowedOrigins.includes(origin);
-
-	return {
-		"Access-Control-Allow-Origin": isAllowed ? origin : "*",
-		"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-		"Access-Control-Allow-Headers":
-			"Content-Type, Authorization, Accept, X-Requested-With",
-		"Access-Control-Max-Age": "86400",
-	};
-}
-
-export async function OPTIONS(request: NextRequest) {
-	const origin = request.headers.get("origin");
-	return new NextResponse(null, {
-		status: 204,
-		headers: corsHeaders(origin),
-	});
-}
-
 export async function GET(request: NextRequest) {
-	const origin = request.headers.get("origin");
-	const headers = corsHeaders(origin);
-
 	try {
 		const allow = request.nextUrl.searchParams.get("allow");
 		if (allow !== "tajiro") {
 			return NextResponse.json(
 				{ success: false, message: "Unauthorized" },
-				{ status: 401, headers }
+				{ status: 401 }
 			);
 		}
 
@@ -84,7 +54,7 @@ export async function GET(request: NextRequest) {
 		if (!contactId) {
 			return NextResponse.json(
 				{ success: false, message: "Missing required parameter: ?id=" },
-				{ status: 400, headers }
+				{ status: 400 }
 			);
 		}
 
@@ -115,17 +85,14 @@ export async function GET(request: NextRequest) {
 		if (!customer) {
 			return NextResponse.json(
 				{ success: false, message: "Customer not found" },
-				{ status: 404, headers }
+				{ status: 404 }
 			);
 		}
 
-		return NextResponse.json(
-			{
-				success: true,
-				data: customer,
-			},
-			{ headers }
-		);
+		return NextResponse.json({
+			success: true,
+			data: customer,
+		});
 	} catch (error: any) {
 		console.error("Error fetching Zoho customer:", error);
 
@@ -141,7 +108,7 @@ export async function GET(request: NextRequest) {
 				message,
 				error: status >= 500 ? "Internal server error" : undefined,
 			},
-			{ status, headers }
+			{ status }
 		);
 	}
 }
