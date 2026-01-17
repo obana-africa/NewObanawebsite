@@ -4,8 +4,10 @@ export function middleware(request: NextRequest) {
 	// Handle CORS
 	const allowedOrigins = [
 		"http://localhost:3000",
+		"http://localhost:3000/",
 		"https://staging.shop.obana.africa",
 		"https://shop.obana.africa",
+		"https://shop.obana.africa/",
 	];
 
 	const origin = request.headers.get("origin") ?? "";
