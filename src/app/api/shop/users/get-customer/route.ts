@@ -89,24 +89,9 @@ export async function GET(request: NextRequest) {
 			);
 		}
 
-		// Optional: you can shape/reduce the response here if you want lighter payload
-		// Example:
-		// const slim = {
-		//   contact_id: customer.contact_id,
-		//   contact_name: customer.contact_name,
-		//   email: customer.email,
-		//   phone: customer.phone || customer.mobile,
-		//   company_name: customer.company_name,
-		//   custom_fields: customer.custom_fields,
-		//   billing_address: customer.billing_address,
-		//   // ... only what your frontend actually needs
-		// };
-
-		console.log("[GET /customer] Retrieved Zoho customer:", customer);
 		return NextResponse.json({
 			success: true,
 			data: customer,
-			// data: slim,
 		});
 	} catch (error: any) {
 		console.error("Error fetching Zoho customer:", error);

@@ -63,7 +63,7 @@ const FINANCING_PARTNERS: Record<string, FinancingPartner> = {
 	},
 	cabon_finance: {
 		name: "Cabon MFB",
-		email: "olaoluwajohn06@gmail.com",
+		email: "olaoluwajohn06@gmail.com,koredebusuyicareer@gmail.com",
 		displayName:
 			"Carbon – 1–3 months (1st month interest-free, 4.5% for 2nd & 3rd month)",
 	},
@@ -817,6 +817,10 @@ export async function POST(request: NextRequest) {
 			};
 		}
 
+		const partnerEmails = partnerInfo.email
+			.split(",")
+			.map((email) => email.trim());
+
 		// Define email recipients and details
 		const emailTargets = [
 			{
@@ -831,18 +835,33 @@ export async function POST(request: NextRequest) {
 					partnerInfo
 				),
 			},
-			{
-				address: partnerInfo.email,
-				type: `Partner (${partnerInfo.name})`,
-				subject: `New Inventory Financing Request from ${formData.firstName} ${formData.lastName} - ${partnerInfo.displayName}`,
-				content: generateFinancingEmailContent(
-					formData,
-					"partner",
-					attachments.length,
-					attachmentNames,
-					partnerInfo
-				),
-			},
+			...(financingType === "cabon_finance"
+				? partnerEmails.map((email) => ({
+						address: email,
+						type: `Partner (${partnerInfo.name})`,
+						subject: `New Inventory Financing Request from ${formData.firstName} ${formData.lastName} - ${partnerInfo.displayName}`,
+						content: generateFinancingEmailContent(
+							formData,
+							"partner",
+							attachments.length,
+							attachmentNames,
+							partnerInfo
+						),
+				  }))
+				: [
+						{
+							address: partnerInfo.email,
+							type: `Partner (${partnerInfo.name})`,
+							subject: `New Inventory Financing Request from ${formData.firstName} ${formData.lastName} - ${partnerInfo.displayName}`,
+							content: generateFinancingEmailContent(
+								formData,
+								"partner",
+								attachments.length,
+								attachmentNames,
+								partnerInfo
+							),
+						},
+				  ]),
 			{
 				address: formData.email!,
 				type: "Customer",
@@ -893,39 +912,35 @@ export async function POST(request: NextRequest) {
 		const failedEmails = emailResults.filter((r) => !r.success);
 
 		// Return comprehensive response
-		return Response.json(
-			{
-				success: true,
-				message: `Form submitted successfully. ${successfulEmails.length}/${emailResults.length} emails sent successfully.`,
-				data: {
-					attachmentsProcessed: attachments.length,
-					emailsSent: successfulEmails.length,
-					emailsFailed: failedEmails.length,
-					successfulEmails: successfulEmails.map((e) => ({
-						type: e.type,
-						address: e.address,
-					})),
-					failedEmails: failedEmails.map((e) => ({
-						type: e.type,
-						address: e.address,
-						error: e.error,
-					})),
-					attachmentNames: attachments.map((att) => att.fileName),
-					detailedResults: emailResults,
-				},
+		return Response.json({
+			success: true,
+			message: `Form submitted successfully. ${successfulEmails.length}/${emailResults.length} emails sent successfully.`,
+			data: {
+				attachmentsProcessed: attachments.length,
+				emailsSent: successfulEmails.length,
+				emailsFailed: failedEmails.length,
+				successfulEmails: successfulEmails.map((e) => ({
+					type: e.type,
+					address: e.address,
+				})),
+				failedEmails: failedEmails.map((e) => ({
+					type: e.type,
+					address: e.address,
+					error: e.error,
+				})),
+				attachmentNames: attachments.map((att) => att.fileName),
+				detailedResults: emailResults,
 			},
-		);
+		});
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	} catch (error: any) {
-		return Response.json(
-			{
-				success: false,
-				message: "Failed to submit form",
-				error:
-					process.env.NODE_ENV === "development"
-						? error.message
-						: "Internal server error",
-			},
-		);
+		return Response.json({
+			success: false,
+			message: "Failed to submit form",
+			error:
+				process.env.NODE_ENV === "development"
+					? error.message
+					: "Internal server error",
+		});
 	}
 }
