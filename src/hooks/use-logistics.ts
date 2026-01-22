@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { toast } from "sonner";
 
 export const useLogistics = () => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const submitLogisticsForm = async (data: any, formType: string) => {
 		setIsSubmitting(true);
 		let toastId: string | number | undefined;

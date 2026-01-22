@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 import { getCrmAccessToken } from "@/helpers/zoho-auth-token";
@@ -11,7 +12,6 @@ export async function POST(request: NextRequest) {
 
 		const { name, email, phone, formType } = body;
 
-		// Validate required fields
 		if (!email || !name) {
 			return NextResponse.json(
 				{ error: "Missing required fields: email, name" },
@@ -19,7 +19,6 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
-		// Validate environment variables
 		if (!ZOHO_BASE_URL) {
 			console.error("❌ ZOHO_CRM_BASE_URL is not set");
 			return NextResponse.json(
@@ -28,7 +27,6 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
-		// Get Zoho access token
 		const accessToken = await getCrmAccessToken();
 
 		if (!accessToken) {
@@ -39,14 +37,12 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
-		// Owner object
 		const ownerObject = {
 			id: "6049617000000442001",
 			name: "OCHIJE NNANI",
 			email: "ochije.nnani@iconholding.africa",
 		};
 
-		// Format target price/budget
 		const formatPrice = (price: any): string | null => {
 			if (!price) return null;
 			if (typeof price === "object" && price.amount) {
@@ -55,7 +51,6 @@ export async function POST(request: NextRequest) {
 			return price.toString();
 		};
 
-		// Build record data dynamically based on form type
 		const recordData: any = {
 			Owner: ownerObject,
 			Name: name,
@@ -66,7 +61,6 @@ export async function POST(request: NextRequest) {
 
 		// Map fields based on form type
 		if (formType === "production") {
-			// Production/Custom Sourcing fields
 			recordData.What_brand_do_you_want_to_source = body.brandToSource || null;
 			recordData.Type_of_Product = body.productType || null;
 			recordData.What_style_do_you_want = body.style || null;
@@ -78,15 +72,11 @@ export async function POST(request: NextRequest) {
 			recordData.Item_Description = body.itemDescription || null;
 			recordData.Extra_Comment = body.comment || null;
 
-			// Handle sample product upload
 			if (body.sampleProductUrl) {
-				// Note: For file uploads, you may need to handle this differently
-				// Zoho might require a separate API call to upload files
 				recordData.Upload_a_sample_product_if_you_have = body.sampleProductUrl;
 			}
 		} else if (formType === "fabric") {
-			// Fabric sourcing fields
-			recordData.Type_of_Product = "Fabric"; // Set product type
+			recordData.Type_of_Product = "Fabric";
 			recordData.What_brand_do_you_want_to_source = body.preferredBrand || null;
 			recordData.Item_Description = `${body.fabricCategory || ""} - ${
 				body.fabricDescription || ""
@@ -109,7 +99,6 @@ export async function POST(request: NextRequest) {
 				recordData.Upload_a_sample_product_if_you_have = body.sampleProductUrl;
 			}
 		} else if (formType === "label") {
-			// Label sourcing fields
 			recordData.Type_of_Product = `Label - ${body.labelType || ""}`;
 			recordData.Item_Description = `Material: ${
 				body.materialType || ""
@@ -124,7 +113,6 @@ export async function POST(request: NextRequest) {
 				recordData.Upload_a_sample_product_if_you_have = body.sampleProductUrl;
 			}
 		} else if (formType === "raw_material") {
-			// Raw material sourcing fields
 			recordData.Type_of_Product = `Raw Material - ${
 				body.rawMaterialType || ""
 			}`;
@@ -166,7 +154,6 @@ export async function POST(request: NextRequest) {
 		let action;
 
 		if (existingRecords.length > 0) {
-			// Update existing record
 			const recordId = existingRecords[0].id;
 
 			response = await axios.put(
@@ -182,8 +169,6 @@ export async function POST(request: NextRequest) {
 			);
 			action = "updated";
 		} else {
-			// Create new record
-
 			response = await axios.post(
 				`${ZOHO_BASE_URL}/Custom_Sourcing_Quote`,
 				{ data: [recordData] },
@@ -232,7 +217,6 @@ export async function GET(request: NextRequest) {
 		const accessToken = await getCrmAccessToken();
 
 		if (recordId) {
-			// Get specific record by ID
 			const response = await axios.get(
 				`${ZOHO_BASE_URL}/Custom_Sourcing_Quote/${recordId}`,
 				{
@@ -247,7 +231,6 @@ export async function GET(request: NextRequest) {
 		}
 
 		if (email) {
-			// Search by email
 			const response = await axios.get(
 				`${ZOHO_BASE_URL}/Custom_Sourcing_Quote`,
 				{

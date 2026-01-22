@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { toast } from "sonner";
 
 export const useRfqForm = () => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const submitRfqForm = async (data: any, formType: string) => {
 		setIsSubmitting(true);
 		let toastId: string | number | undefined;
@@ -24,10 +24,9 @@ export const useRfqForm = () => {
 				try {
 					// Pass the COMPLETE data object with formType to CRM endpoint
 					const crmPayload = {
-						...data,  
-						formType, 
+						...data,
+						formType,
 					};
-
 
 					const crmResponse = await fetch("/api/crm/custom-sourcing", {
 						method: "POST",
@@ -38,7 +37,7 @@ export const useRfqForm = () => {
 					});
 
 					if (crmResponse.ok) {
-						const result = await crmResponse.json();
+						// const result = await crmResponse.json();
 					} else {
 						const errorData = await crmResponse.json();
 						console.warn("⚠️ CRM submission failed:", errorData);
