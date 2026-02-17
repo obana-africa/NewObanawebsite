@@ -12,7 +12,7 @@ const Page = () => {
 			<main>
 				<Breadcrumb
 					heading="About Us"
-					subheading="We are an technology infrastructure enabling SMEs in the fashion, beauty and lifestyle industries across sub saharan africa scale their business."
+					subheading="We are technology infrastructure that enables SMEs in the fashion, beauty, and lifestyle industries across Sub-Saharan Africa to scale their businesses."
 				/>
 				<FoundersJourney />
 				<Vision />
