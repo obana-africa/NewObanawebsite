@@ -22,3 +22,7 @@ export async function GET(request: Request) {
 		);
 	}
 }
+
+
+// https://secure.geonames.org/searchJSON?country=NG&featureClass=P&maxRows=1000&username=simple001
+

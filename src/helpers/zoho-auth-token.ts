@@ -60,12 +60,12 @@ class ZohoTokenManager {
 
 				console.log(`New ${this.tokenType} access token generated`);
 				return this.accessToken;
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			} catch (error: any) {
 				lastError = error;
 				console.error(`Attempt ${attempt} failed:`, error.message);
 				if (attempt < retries) {
-					await new Promise((resolve) => setTimeout(resolve, 2000 * attempt)); 
+					await new Promise((resolve) => setTimeout(resolve, 2000 * attempt));
 				}
 			}
 		}
@@ -86,6 +86,7 @@ const apiTokenManager = new ZohoTokenManager(
 	"API"
 );
 
+// Mail Token Manager
 // const mailTokenManager = new ZohoTokenManager(
 // 	{
 // 		authUrl: process.env.ZOHO_AUTH_URL || "",
@@ -96,5 +97,31 @@ const apiTokenManager = new ZohoTokenManager(
 // 	"Mail"
 // );
 
+// CRM Token Manager
+const crmTokenManager = new ZohoTokenManager(
+	{
+		authUrl: process.env.ZOHO_AUTH_URL || "",
+		refreshToken: process.env.ZOHO_CRM_REFRESH_TOKEN || "",
+		clientId: process.env.ZOHO_CLIENT_ID || "",
+		clientSecret: process.env.ZOHO_CLIENT_SECRET || "",
+	},
+	"CRM"
+);
+
+// Export functions for each token type
 export const getAccessToken = () => apiTokenManager.getAccessToken();
 export const getMailAccessToken = () => apiTokenManager.getAccessToken();
+export const getCrmAccessToken = () => crmTokenManager.getAccessToken();
+
+export async function getCrmAccessTokenLegacy(): Promise<string> {
+	try {
+		return await getCrmAccessToken();
+	} catch (error) {
+		const envToken = process.env.ZOHO_CRM_API_TOKEN;
+		if (envToken) {
+			console.log("Using CRM token from environment variable");
+			return envToken;
+		}
+		throw error;
+	}
+}

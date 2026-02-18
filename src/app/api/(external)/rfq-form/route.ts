@@ -41,6 +41,7 @@ export async function POST(request: Request) {
 		// console.log("Customer Email Data:", customerEmailData);
 		const apiUrl = `https://mail.zoho.com/api/accounts/${accountId}/messages`;
 
+		// Send admin email
 		await axios.post(apiUrl, adminEmailData, {
 			headers: {
 				Authorization: `Zoho-oauthtoken ${accessToken}`,
@@ -49,6 +50,7 @@ export async function POST(request: Request) {
 			},
 		});
 
+		// Send customer email
 		await axios.post(apiUrl, customerEmailData, {
 			headers: {
 				Authorization: `Zoho-oauthtoken ${accessToken}`,
