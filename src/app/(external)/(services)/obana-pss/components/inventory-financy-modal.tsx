@@ -305,7 +305,7 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 						const shopUrl =
 							environment === "production"
 								? "https://shop.obana.africa"
-								: "https://staging.shop.obana.africa";
+								: "https://shop.obana.africa";
 						window.open(shopUrl, "_blank");
 						onClose();
 					}, 2000);
