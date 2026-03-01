@@ -71,14 +71,11 @@ const HeroSection: React.FC = () => {
 						</h3>
 
 						<h2 className="mb-6 md:leading-12 w-full 2xl:w-[85%] md:text-[31px]">
-							Africa&apos;s circular sourcing ecosystem for Fashion & Beauty
-							SMEs — Powered by Technology.
+							The Operating System for Fashion & Beauty SMEs in Sub-Saharan Africa.
 						</h2>
 
 						<p className="mb-8 text-md 2xl:text-lg">
-							We connect global brands and African SMEs through tech-driven
-							supply chains, extending the life of fashion and beauty products
-							while unlocking sustainable growth across the continent
+							WPowering sourcing, financing, logistics, retail operations, and distribution — in one integrated ecosystem.
 						</p>
 
 						<Button
