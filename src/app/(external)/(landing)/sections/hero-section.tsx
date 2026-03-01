@@ -75,7 +75,7 @@ const HeroSection: React.FC = () => {
 						</h2>
 
 						<p className="mb-8 text-md 2xl:text-lg">
-							WPowering sourcing, financing, logistics, retail operations, and distribution — in one integrated ecosystem.
+							Powering sourcing, financing, logistics, retail operations, and distribution — in one integrated ecosystem.
 						</p>
 
 						<Button
