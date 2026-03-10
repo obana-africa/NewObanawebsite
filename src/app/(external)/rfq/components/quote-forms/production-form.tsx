@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useForm } from "react-hook-form";  // ← FIXED: removed UseFormReturn
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { productionQuoteSchema } from "@/schemas";
@@ -14,9 +14,7 @@ import Button from "@/components/ui/button";
 import { CurrencyInputField } from "@/components/ui/currency-input";
 import useBrandOptions from "@/hooks/use-active-brands";
 
-// ... rest of the file stays exactly the same
-
-// Infer the type from the schema instead of redeclaring it
+// Infer the type from the schema
 type ProductionFormData = z.infer<typeof productionQuoteSchema>;
 
 interface ProductionFormProps {
@@ -33,7 +31,6 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
   onSubmit,
   isSubmitting,
 }) => {
-  // The key fix: properly type the resolver
   const {
     register,
     handleSubmit,
@@ -41,7 +38,7 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
     setValue,
     formState: { errors },
   } = useForm<ProductionFormData>({
-    resolver: zodResolver(productionQuoteSchema) as ReturnType<typeof zodResolver>,
+    resolver: zodResolver(productionQuoteSchema), // ← REMOVED the type casting
     defaultValues: {
       name: "",
       email: "",
