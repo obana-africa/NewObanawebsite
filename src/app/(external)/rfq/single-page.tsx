@@ -258,28 +258,26 @@ export default function SinglePageRFQ() {
                 required
               />
 
-              {/* Brand & MOQ */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormSelect
-                  id="brandToSource"
-                  label="Target Brand"
-                  options={brandOptions}
-                  register={register("brandToSource")}
-                  error={errors.brandToSource?.message}
-                  placeholder="Select or type brand"
-                  searchable
-                  allowCustom
-                />
-                <FormInput
-                  id="moq"
-                  label="MOQ (units)"
-                  placeholder="Minimum order quantity"
-                  register={register("moq")}
-                  error={errors.moq?.message}
-                  type="number"
-                />
-              </div>
-
+{/* Brand & MOQ */}
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <FormSelect
+    id="brandToSource"
+    label="Target Brand"
+    options={brandOptions}
+    register={register("brandToSource")}
+    error={errors.brandToSource?.message}
+    placeholder="Select or type brand"
+    searchable
+  />
+  <FormInput
+    id="moq"
+    label="MOQ (units)"
+    placeholder="Minimum order quantity"
+    register={register("moq")}
+    error={errors.moq?.message}
+    type="number"
+  />
+</div>
               {/* Size Range & Price */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormInput
