@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -60,7 +59,6 @@ export const useLogistics = () => {
 				id: toastId,
 			});
 			return true;
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (error: any) {
 			toast.error(
 				error.message ||
