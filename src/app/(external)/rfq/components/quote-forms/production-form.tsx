@@ -14,14 +14,13 @@ import { CurrencyInputField } from "@/components/ui/currency-input";
 import useBrandOptions from "@/hooks/use-active-brands";
 
 interface ProductionFormProps {
-	onBack: () => void;
+	// Remove onBack since it's not needed
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	onSubmit: (data: any) => void;
 	isSubmitting: boolean;
 }
 
 const ProductionForm: React.FC<ProductionFormProps> = ({
-	onBack,
 	onSubmit,
 	isSubmitting,
 }) => {
@@ -53,14 +52,14 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 
 	// Enhanced product types for fashion/beauty SMEs
 	const productTypes = [
-		{ value: "Footwear", label: "Footwear" },
-		{ value: "Apparel", label: "Apparel" },
-		{ value: "Accessories", label: "Accessories" },
-		{ value: "Bags", label: "Bags" },
-		{ value: "Headwear", label: "Headwear" },
-		{ value: "Beauty Products", label: "Beauty Products" },
-		{ value: "Jewelry", label: "Jewelry" },
-		{ value: "Other", label: "Other" },
+		{ value: "Footwear", label: "👟 Footwear" },
+		{ value: "Apparel", label: "👕 Apparel" },
+		{ value: "Accessories", label: "📿 Accessories" },
+		{ value: "Bags", label: "👜 Bags & Luggage" },
+		{ value: "Headwear", label: "🧢 Headwear" },
+		{ value: "Beauty Products", label: "💄 Beauty & Cosmetics" },
+		{ value: "Jewelry", label: "💍 Jewelry" },
+		{ value: "Other", label: "✨ Other" },
 	];
 
 	const itemStyles = [
@@ -73,9 +72,9 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 		{ value: "Vintage", label: "Vintage" },
 		{ value: "Urban", label: "Urban" },
 		{ value: "Sportswear", label: "Sportswear" },
-		{ value: "Traditional/Cultural", label: "Traditional/Cultural" },
+		{ value: "Traditional", label: "Traditional/Cultural" },
 		{ value: "Minimalist", label: "Minimalist" },
-		{ value: "Avant-Garde", label: "Avant-Garde" },
+		{ value: "Luxury", label: "Luxury" },
 	];
 
 	const handleFileUploadComplete = (url: string | null) => {
@@ -91,95 +90,73 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 	};
 
 	return (
-		<div className="space-y-6">
-			<div className="text-center mb-8">
-				<h2 className="font-bold text-2xl text-primary">Production Quote Request</h2>
-				<p className="text-gray-600 mt-2">
-					Fill in your production requirements and we'll match you with the right manufacturers
-				</p>
+		<form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
+			<div className="text-center mb-6">
+				<h2 className="font-bold text-2xl text-primary">Request Production Quote</h2>
+				<p className="text-sm text-gray-600 mt-1">Fill in your requirements below</p>
 			</div>
 
-			<form onSubmit={handleSubmit(handleFormSubmit)}>
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-					<FormInput
-						id="name"
-						label="Name"
-						placeholder="Your Name"
-						register={register("name")}
-						error={errors.name?.message}
-						required
-					/>
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+				<FormInput
+					id="name"
+					label="Name"
+					placeholder="Your full name"
+					register={register("name")}
+					error={errors.name?.message}
+					required
+				/>
 
-					<FormInput
-						id="email"
-						label="Email"
-						placeholder="Your Email"
-						register={register("email")}
-						error={errors.email?.message}
-						type="email"
-						required
-					/>
-				</div>
+				<FormInput
+					id="email"
+					label="Email"
+					placeholder="your@email.com"
+					register={register("email")}
+					error={errors.email?.message}
+					type="email"
+					required
+				/>
+			</div>
 
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-					<PhoneInput
-						control={control}
-						name="phone"
-						label="Phone Number"
-						error={errors.phone?.message}
-						required
-					/>
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+				<PhoneInput
+					control={control}
+					name="phone"
+					label="Phone Number"
+					error={errors.phone?.message}
+					required
+				/>
 
-					<FormSelect
-						id="productType"
-						label="Type of Product"
-						placeholder="Select product type"
-						options={productTypes}
-						register={register("productType")}
-						error={errors.productType?.message}
-					/>
-				</div>
+				<FormSelect
+					id="productType"
+					label="Product Type"
+					placeholder="Select product type"
+					options={productTypes}
+					register={register("productType")}
+					error={errors.productType?.message}
+				/>
+			</div>
 
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-					<FormTextarea
-						id="itemDescription"
-						label="Item Description"
-						placeholder="Describe your product in detail - materials, colors, special features, etc."
-						register={register("itemDescription")}
-						error={errors.itemDescription?.message}
-						rows={3}
-						required
-					/>
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+				<FormTextarea
+					id="itemDescription"
+					label="Product Description"
+					placeholder="Describe your product: materials, colors, special features, etc."
+					register={register("itemDescription")}
+					error={errors.itemDescription?.message}
+					rows={3}
+					required
+				/>
 
+				<div className="space-y-4">
 					<FormSelect
 						id="brandToSource"
 						label="Target Brand/Market"
-						placeholder="Select brand or enter your own"
+						placeholder="Select or type brand"
 						options={brandOptions}
 						register={register("brandToSource")}
 						error={errors.brandToSource?.message || brandsError || undefined}
 						searchable
 						allowCustom
-					/>
-				</div>
-
-				<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-					<FormInput
-						id="moq"
-						label="MOQ (Minimum Order Quantity)"
-						placeholder="Number of units"
-						register={register("moq")}
-						error={errors.moq?.message}
-						type="number"
-					/>
-
-					<FormInput
-						id="sizeRange"
-						label="Size Range"
-						placeholder="e.g., XS-4XL, 35-45, etc."
-						register={register("sizeRange")}
-						error={errors.sizeRange?.message}
-						required
 					/>
 
 					<FormSelect
@@ -191,77 +168,75 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
 						placeholder="Select style"
 					/>
 				</div>
+			</div>
 
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-					<CurrencyInputField
-						name="targetPrice"
-						control={control}
-						label="Target Price Point"
-						placeholder="Per unit"
-						defaultValue={{ currency: "NGN", symbol: "₦" }}
-						required
-						className=""
-						error={
-							typeof errors.targetPrice?.message === "string"
-								? errors.targetPrice?.message
-								: undefined
-						}
-					/>
+			<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+				<FormInput
+					id="moq"
+					label="MOQ (units)"
+					placeholder="e.g., 500"
+					register={register("moq")}
+					error={errors.moq?.message}
+					type="number"
+				/>
 
-					<FormFileUpload
-						id="sampleProduct"
-						label="Upload Reference Images"
-						onUploadComplete={handleFileUploadComplete}
-						accept="image/*"
-						fileTypes="Images (PNG, JPG, JPEG)"
-						multiple
-					/>
-				</div>
+				<FormInput
+					id="sizeRange"
+					label="Size Range"
+					placeholder="XS-4XL, 35-45"
+					register={register("sizeRange")}
+					error={errors.sizeRange?.message}
+					required
+				/>
 
-				<div className="mb-4">
-					<FormTextarea
-						id="comment"
-						label="Additional Requirements"
-						placeholder="Any special requirements? Timeline expectations? Budget constraints? Specific materials or certifications needed?"
-						register={register("comment")}
-						error={errors.comment?.message}
-						rows={4}
-					/>
-				</div>
+				<CurrencyInputField
+					name="targetPrice"
+					control={control}
+					label="Target Price/unit"
+					placeholder="Price per unit"
+					defaultValue={{ currency: "NGN", symbol: "₦" }}
+					required
+					error={
+						typeof errors.targetPrice?.message === "string"
+							? errors.targetPrice?.message
+							: undefined
+					}
+				/>
+			</div>
 
-				<div className="bg-blue-50 p-4 rounded-lg mb-6">
-					<p className="text-sm text-blue-800">
-						<strong>Note for Fashion & Beauty SMEs:</strong> We'll match you with vetted manufacturers 
-						who specialize in your product category. All partners are verified for quality and reliability.
-					</p>
-				</div>
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+				<FormFileUpload
+					id="sampleProduct"
+					label="Reference Images"
+					onUploadComplete={handleFileUploadComplete}
+					accept="image/*"
+					fileTypes="Images (PNG, JPG, JPEG)"
+					multiple
+				/>
 
-				<div className="flex justify-between mt-6">
-					<Button
-						type="button"
-						onClick={onBack}
-						variant="outline"
-						className="border border-blue-900 text-blue-900"
-					>
-						Back
-					</Button>
-					{isSubmitting ? (
-						<Button variant="primary" disabled isLoading>
-							Submitting...
-						</Button>
-					) : (
-						<Button
-							type="submit"
-							variant="primary"
-							animation="ripple"
-							className="border border-primary"
-						>
-							Submit Quote Request
-						</Button>
-					)}
-				</div>
-			</form>
-		</div>
+				<FormTextarea
+					id="comment"
+					label="Additional Requirements"
+					placeholder="Timeline, special materials, certifications needed, etc."
+					register={register("comment")}
+					error={errors.comment?.message}
+					rows={3}
+				/>
+			</div>
+
+			<div className="pt-4">
+				<Button
+					type="submit"
+					variant="primary"
+					animation="ripple"
+					className="w-full border border-primary py-3"
+					disabled={isSubmitting}
+					isLoading={isSubmitting}
+				>
+					{isSubmitting ? "Submitting..." : "Submit Quote Request"}
+				</Button>
+			</div>
+		</form>
 	);
 };
 
