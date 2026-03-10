@@ -1,243 +1,139 @@
 "use client";
 
 import React from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { productionQuoteSchema } from "@/schemas";
-import FormInput from "@/components/ui/form-input";
-import FormSelect from "@/components/ui/form-select";
-import FormTextarea from "@/components/ui/form-textarea";
-import FormFileUpload from "@/components/ui/form-file-upload";
-import PhoneInput from "@/components/ui/phone-input";
-import Button from "@/components/ui/button";
-import { CurrencyInputField } from "@/components/ui/currency-input";
-import useBrandOptions from "@/hooks/use-active-brands";
+import ProductionForm from "./quote-forms/production-form";
+import { useRfqForm } from "@/hooks/use-rfq-form";
+import { 
+  CheckCircle, 
+  Clock, 
+  Shield, 
+  Truck, 
+  Palette, 
+  Ruler,
+  Star,
+  TrendingUp,
+  Users
+} from "lucide-react";
 
-interface ProductionFormProps {
-	// Remove onBack since it's not needed
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	onSubmit: (data: any) => void;
-	isSubmitting: boolean;
-}
+const ProductionOnlyForm: React.FC = () => {
+  const { submitRfqForm, isSubmitting } = useRfqForm();
 
-const ProductionForm: React.FC<ProductionFormProps> = ({
-	onSubmit,
-	isSubmitting,
-}) => {
-	const {
-		register,
-		handleSubmit,
-		control,
-		setValue,
-		formState: { errors },
-	} = useForm({
-		resolver: zodResolver(productionQuoteSchema),
-		defaultValues: {
-			name: "",
-			email: "",
-			phone: "",
-			productType: "",
-			itemDescription: "",
-			brandToSource: "",
-			moq: "",
-			sizeRange: "",
-			targetPrice: {},
-			style: "",
-			comment: "",
-			sampleProduct: null,
-			sampleProductUrl: "",
-		},
-	});
-	const { brands: brandOptions, error: brandsError } = useBrandOptions();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleSubmit = async (data: any) => {
+    try {
+      const success = await submitRfqForm({ ...data }, "production");
+      if (success) {
+        console.log("Form submitted successfully");
+        // You can add a success message here
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+    }
+  };
 
-	// Enhanced product types for fashion/beauty SMEs
-	const productTypes = [
-		{ value: "Footwear", label: "👟 Footwear" },
-		{ value: "Apparel", label: "👕 Apparel" },
-		{ value: "Accessories", label: "📿 Accessories" },
-		{ value: "Bags", label: "👜 Bags & Luggage" },
-		{ value: "Headwear", label: "🧢 Headwear" },
-		{ value: "Beauty Products", label: "💄 Beauty & Cosmetics" },
-		{ value: "Jewelry", label: "💍 Jewelry" },
-		{ value: "Other", label: "✨ Other" },
-	];
+  return (
+    <section className="container mx-auto px-4 py-8 md:py-12 max-w-7xl">
+      {/* Breadcrumb replacement - subtle context */}
+      <div className="mb-8">
+        <h1 className="text-3xl md:text-4xl font-bold text-primary">Request for Quote</h1>
+        <p className="text-gray-600 mt-2 max-w-2xl">
+          Get accurate pricing tailored to your production needs. 
+          Complete the form and we&apos;ll connect you with the right manufacturing partners.
+        </p>
+      </div>
 
-	const itemStyles = [
-		{ value: "Casual", label: "Casual" },
-		{ value: "Formal", label: "Formal" },
-		{ value: "Streetwear", label: "Streetwear" },
-		{ value: "Athleisure", label: "Athleisure" },
-		{ value: "Business Casual", label: "Business Casual" },
-		{ value: "Bohemian", label: "Bohemian" },
-		{ value: "Vintage", label: "Vintage" },
-		{ value: "Urban", label: "Urban" },
-		{ value: "Sportswear", label: "Sportswear" },
-		{ value: "Traditional", label: "Traditional/Cultural" },
-		{ value: "Minimalist", label: "Minimalist" },
-		{ value: "Luxury", label: "Luxury" },
-	];
+      {/* Main two-column layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* Left Column - Context & Benefits (5 columns) */}
+        <div className="lg:col-span-5 space-y-6">
+          {/* How It Works Card */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">How It Works</h2>
+            <div className="space-y-4">
+              {[
+                { step: "1", title: "Submit Requirements", desc: "Fill in your production needs and upload references" },
+                { step: "2", title: "Get Matched", desc: "We connect you with vetted manufacturers in 24-48h" },
+                { step: "3", title: "Receive Quotes", desc: "Compare options and choose the best partner" }
+              ].map((item) => (
+                <div key={item.step} className="flex gap-3">
+                  <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">
+                    {item.step}
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900">{item.title}</p>
+                    <p className="text-sm text-gray-600">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
 
-	const handleFileUploadComplete = (url: string | null) => {
-		setValue("sampleProductUrl", url || "");
-	};
+          {/* Why Choose Us Card */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Why Fashion SMEs Choose Us</h2>
+            <div className="space-y-3">
+              {[
+                { Icon: Shield, text: "Vetted & verified manufacturers" },
+                { Icon: Clock, text: "48-hour response guarantee" },
+                { Icon: Ruler, text: "Flexible MOQs (as low as 50 units)" },
+                { Icon: Palette, text: "Sample development support" },
+                { Icon: Truck, text: "End-to-end logistics" }
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <item.Icon className="w-4 h-4 text-primary flex-shrink-0" />
+                  <span className="text-sm text-gray-700">{item.text}</span>
+                </div>
+              ))}
+            </div>
+          </div>
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const handleFormSubmit = (data: any) => {
-		onSubmit({
-			...data,
-			sampleProduct: data.sampleProductUrl || null,
-		});
-	};
+          {/* What We Produce Card */}
+          <div className="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-xl p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-3">Products We Produce</h2>
+            <div className="grid grid-cols-2 gap-2">
+              {[
+                "👟 Footwear", "👕 Apparel", "👜 Bags", 
+                "🧢 Headwear", "💄 Beauty", "📿 Accessories",
+                "👗 Dresses", "🧥 Outerwear"
+              ].map((item) => (
+                <span key={item} className="text-sm bg-white/80 backdrop-blur-sm px-3 py-2 rounded-lg border border-gray-100">
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
 
-	return (
-		<form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
-			<div className="text-center mb-6">
-				<h2 className="font-bold text-2xl text-primary">Request Production Quote</h2>
-				<p className="text-sm text-gray-600 mt-1">Fill in your requirements below</p>
-			</div>
+          {/* Trust Indicators */}
+          <div className="flex items-center gap-6 text-sm text-gray-600 pt-2">
+            <div className="flex items-center gap-2">
+              <Users className="w-4 h-4" />
+              <span>500+ SMEs</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+              <span>4.8/5 Rating</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <TrendingUp className="w-4 h-4" />
+              <span>98% Match Rate</span>
+            </div>
+          </div>
+        </div>
 
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-				<FormInput
-					id="name"
-					label="Name"
-					placeholder="Your full name"
-					register={register("name")}
-					error={errors.name?.message}
-					required
-				/>
+        {/* Right Column - Form (7 columns) */}
+        <div className="lg:col-span-7">
+          <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6 md:p-8 lg:sticky lg:top-24">
+            <ProductionForm onSubmit={handleSubmit} isSubmitting={isSubmitting} />
+          </div>
+        </div>
+      </div>
 
-				<FormInput
-					id="email"
-					label="Email"
-					placeholder="your@email.com"
-					register={register("email")}
-					error={errors.email?.message}
-					type="email"
-					required
-				/>
-			</div>
-
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-				<PhoneInput
-					control={control}
-					name="phone"
-					label="Phone Number"
-					error={errors.phone?.message}
-					required
-				/>
-
-				<FormSelect
-					id="productType"
-					label="Product Type"
-					placeholder="Select product type"
-					options={productTypes}
-					register={register("productType")}
-					error={errors.productType?.message}
-				/>
-			</div>
-
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-				<FormTextarea
-					id="itemDescription"
-					label="Product Description"
-					placeholder="Describe your product: materials, colors, special features, etc."
-					register={register("itemDescription")}
-					error={errors.itemDescription?.message}
-					rows={3}
-					required
-				/>
-
-				<div className="space-y-4">
-					<FormSelect
-						id="brandToSource"
-						label="Target Brand/Market"
-						placeholder="Select or type brand"
-						options={brandOptions}
-						register={register("brandToSource")}
-						error={errors.brandToSource?.message || brandsError || undefined}
-						searchable
-						allowCustom
-					/>
-
-					<FormSelect
-						id="style"
-						label="Style/Aesthetic"
-						options={itemStyles}
-						register={register("style")}
-						error={errors.style?.message}
-						placeholder="Select style"
-					/>
-				</div>
-			</div>
-
-			<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-				<FormInput
-					id="moq"
-					label="MOQ (units)"
-					placeholder="e.g., 500"
-					register={register("moq")}
-					error={errors.moq?.message}
-					type="number"
-				/>
-
-				<FormInput
-					id="sizeRange"
-					label="Size Range"
-					placeholder="XS-4XL, 35-45"
-					register={register("sizeRange")}
-					error={errors.sizeRange?.message}
-					required
-				/>
-
-				<CurrencyInputField
-					name="targetPrice"
-					control={control}
-					label="Target Price/unit"
-					placeholder="Price per unit"
-					defaultValue={{ currency: "NGN", symbol: "₦" }}
-					required
-					error={
-						typeof errors.targetPrice?.message === "string"
-							? errors.targetPrice?.message
-							: undefined
-					}
-				/>
-			</div>
-
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-				<FormFileUpload
-					id="sampleProduct"
-					label="Reference Images"
-					onUploadComplete={handleFileUploadComplete}
-					accept="image/*"
-					fileTypes="Images (PNG, JPG, JPEG)"
-					multiple
-				/>
-
-				<FormTextarea
-					id="comment"
-					label="Additional Requirements"
-					placeholder="Timeline, special materials, certifications needed, etc."
-					register={register("comment")}
-					error={errors.comment?.message}
-					rows={3}
-				/>
-			</div>
-
-			<div className="pt-4">
-				<Button
-					type="submit"
-					variant="primary"
-					animation="ripple"
-					className="w-full border border-primary py-3"
-					disabled={isSubmitting}
-					isLoading={isSubmitting}
-				>
-					{isSubmitting ? "Submitting..." : "Submit Quote Request"}
-				</Button>
-			</div>
-		</form>
-	);
+      {/* Bottom Trust Banner */}
+      <div className="mt-12 text-center text-sm text-gray-500 border-t border-gray-100 pt-6">
+        <p>✓ All information is secure and confidential ✓ No obligation to proceed ✓ Free matching service</p>
+      </div>
+    </section>
+  );
 };
 
-export default ProductionForm;
+export default ProductionOnlyForm;
