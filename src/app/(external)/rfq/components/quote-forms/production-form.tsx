@@ -1,8 +1,9 @@
 "use client";
 
 import React from "react";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { productionQuoteSchema } from "@/schemas";
 import FormInput from "@/components/ui/form-input";
 import FormSelect from "@/components/ui/form-select";
@@ -13,29 +14,11 @@ import Button from "@/components/ui/button";
 import { CurrencyInputField } from "@/components/ui/currency-input";
 import useBrandOptions from "@/hooks/use-active-brands";
 
-// Define the form data type that matches your schema
-type ProductionFormData = {
-  name: string;
-  email: string;
-  phone: string;
-  productType: string;
-  itemDescription: string;
-  brandToSource?: string;
-  moq: string;
-  sizeRange: string;
-  targetPrice: {
-    amount: number;
-    currency: string;
-    symbol?: string;
-  };
-  style?: string;
-  comment?: string;
-  sampleProduct?: File | null;
-  sampleProductUrl?: string;
-};
+// Infer the type from the schema instead of redeclaring it
+type ProductionFormData = z.infer<typeof productionQuoteSchema>;
 
 interface ProductionFormProps {
-  onSubmit: (data: ProductionFormData) => void;
+  onSubmit: (data: ProductionFormData) => Promise<void> | void;
   isSubmitting: boolean;
 }
 
@@ -48,6 +31,7 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
   onSubmit,
   isSubmitting,
 }) => {
+  // The key fix: properly type the resolver
   const {
     register,
     handleSubmit,
@@ -55,7 +39,7 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
     setValue,
     formState: { errors },
   } = useForm<ProductionFormData>({
-    resolver: zodResolver(productionQuoteSchema) as any, // Use 'as any' to bypass type mismatch
+    resolver: zodResolver(productionQuoteSchema) as ReturnType<typeof zodResolver>,
     defaultValues: {
       name: "",
       email: "",
@@ -71,10 +55,10 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
       },
       style: "",
       comment: "",
-      sampleProduct: null,
       sampleProductUrl: "",
     },
   });
+
   const { brands: brandOptions, error: brandsError } = useBrandOptions();
 
   const productTypes: Option[] = [
@@ -102,12 +86,8 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
     setValue("sampleProductUrl", url || "");
   };
 
-  const handleFormSubmit = (data: ProductionFormData) => {
-    onSubmit(data);
-  };
-
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-5">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormInput
           id="name"
