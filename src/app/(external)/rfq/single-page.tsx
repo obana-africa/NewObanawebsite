@@ -124,7 +124,7 @@ export default function SinglePageRFQ() {
             <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
               <CheckCircle className="h-8 w-8 text-green-500 mx-auto mb-2" />
               <p className="text-green-800 font-medium">
-                Quote request submitted successfully! We'll contact you within 24-48 hours.
+                Quote request submitted successfully! We&apos;ll contact you within 24-48 hours.
               </p>
             </div>
           </div>
