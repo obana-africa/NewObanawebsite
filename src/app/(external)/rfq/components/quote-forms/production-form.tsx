@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useForm, UseFormReturn } from "react-hook-form";
+import { useForm } from "react-hook-form";  // ← FIXED: removed UseFormReturn
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { productionQuoteSchema } from "@/schemas";
@@ -13,6 +13,8 @@ import PhoneInput from "@/components/ui/phone-input";
 import Button from "@/components/ui/button";
 import { CurrencyInputField } from "@/components/ui/currency-input";
 import useBrandOptions from "@/hooks/use-active-brands";
+
+// ... rest of the file stays exactly the same
 
 // Infer the type from the schema instead of redeclaring it
 type ProductionFormData = z.infer<typeof productionQuoteSchema>;
