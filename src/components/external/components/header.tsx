@@ -22,7 +22,6 @@ const Header: React.FC = () => {
 	const { openGetStartedModal } = useModal();
 	const pathname = usePathname();
 
-	const sourcingDropdownRef = useRef<HTMLDivElement>(null);
 	const solutionsDropdownRef = useRef<HTMLDivElement>(null);
 	const resourcesDropdownRef = useRef<HTMLDivElement>(null);
 	const menuRef = useRef<HTMLDivElement>(null);
@@ -49,13 +48,6 @@ const Header: React.FC = () => {
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent): void => {
-			if (
-				sourcingDropdownRef.current &&
-				!sourcingDropdownRef.current.contains(event.target as Node)
-			) {
-				if (activeDropdown === "sourcing") setActiveDropdown(null);
-			}
-
 			if (
 				solutionsDropdownRef.current &&
 				!solutionsDropdownRef.current.contains(event.target as Node)
@@ -118,19 +110,6 @@ const Header: React.FC = () => {
 	};
 
 	const megaMenuItems = {
-		sourcing: [
-			{
-				title: "Circular Sourcing",
-				description: "Want to see how sustainable trade works at Obana?",
-				href: "https://shop.obana.africa/categories/Men",
-			},
-			{
-				title: "African Inspired Sourcing",
-				description:
-					"See how Obana.Africa connects culture and commerce through African-inspired Sourcing, made by local hands.",
-				href: "https://shop.obana.africa/categories/Beauty",
-			},
-		],
 		solutions: [
 			{
 				title: "Buy in Bulk",
@@ -218,55 +197,10 @@ const Header: React.FC = () => {
 								Home
 							</Link>
 
-							<div className="relative" ref={sourcingDropdownRef}>
-								<button
-									className="flex items-center text-primary font-medium"
-									onClick={() => toggleDesktopDropdown("sourcing")}
-									onMouseEnter={() => setActiveDropdown("sourcing")}
-									type="button"
-									aria-expanded={activeDropdown === "sourcing"}
-									aria-haspopup="true"
-								>
-									Sourcing
-									<ChevronDown className="ml-1 h-4 w-4" />
-								</button>
-
-								<div
-									className={`fixed top-[72px] left-0 right-0 bg-white shadow-xl border-t border-secondary-light transform transition-all duration-300 origin-top ${
-										activeDropdown === "sourcing"
-											? "opacity-100 scale-y-100 visible"
-											: "opacity-0 scale-y-95 invisible"
-									}`}
-									onMouseLeave={() => setActiveDropdown(null)}
-								>
-									<div className="container mx-auto px-4 md:px-6 py-8">
-										<div className="grid grid-cols-3 gap-6 max-w-5xl mx-auto">
-											{megaMenuItems.sourcing.map((item, idx) => (
-												<Link
-													key={idx}
-													href={item.href}
-													className="p-6 rounded-lg hover:bg-primary transition-colors group 	"
-												>
-													<h3 className="font-semibold text-gray-900 mb-2 group-hover:text-blue-900 text-lg  text-primary group-hover:text-primary-light">
-														{item.title}
-													</h3>
-													<p className="text-sm text-gray-600 mb-3  text-primary group-hover:text-primary-light">
-														{item.description}
-													</p>
-													<span className="text-sm text-blue-900 flex items-center font-medium  text-primary group-hover:text-primary-light">
-														Click here <ArrowRight className="ml-1 h-3 w-3" />
-													</span>
-												</Link>
-											))}
-										</div>
-									</div>
-								</div>
-							</div>
-
 							{/* Solutions Mega Menu */}
 							<div className="relative" ref={solutionsDropdownRef}>
 								<button
-									className="flex items-center text-primary  font-medium"
+									className="flex items-center text-primary font-medium"
 									onClick={() => toggleDesktopDropdown("solutions")}
 									onMouseEnter={() => setActiveDropdown("solutions")}
 									type="button"
@@ -307,7 +241,7 @@ const Header: React.FC = () => {
 																		<p className="text-xs text-primary group-hover:text-primary-light">
 																			{subItem.description}
 																		</p>
-																		<span className="text-sm flex items-center font-medium text-primary group-hover:text-primary-light ">
+																		<span className="text-sm flex items-center font-medium text-primary group-hover:text-primary-light">
 																			Click here
 																			<ArrowRight className="ml-1 h-3 w-3" />
 																		</span>
@@ -323,7 +257,7 @@ const Header: React.FC = () => {
 															<h3 className="font-semibold text-primary mb-2 group-hover:text-primary-light text-lg">
 																{item.title}
 															</h3>
-															<p className="text-sm  text-primary mb-3 group-hover:text-primary-light">
+															<p className="text-sm text-primary mb-3 group-hover:text-primary-light">
 																{item.description}
 															</p>
 															<span className="text-sm flex items-center font-medium text-primary group-hover:text-primary-light">
@@ -342,7 +276,7 @@ const Header: React.FC = () => {
 							{/* Resources Mega Menu */}
 							<div className="relative" ref={resourcesDropdownRef}>
 								<button
-									className="flex items-center  text-primary  font-medium"
+									className="flex items-center text-primary font-medium"
 									onClick={() => toggleDesktopDropdown("resources")}
 									onMouseEnter={() => setActiveDropdown("resources")}
 									type="button"
@@ -367,15 +301,15 @@ const Header: React.FC = () => {
 												<Link
 													key={idx}
 													href={item.href}
-													className="p-6 rounded-lg hover:bg-gray-50 transition-colors group  text-primary group-hover:text-primary-light hover:bg-primary"
+													className="p-6 rounded-lg hover:bg-gray-50 transition-colors group text-primary group-hover:text-primary-light hover:bg-primary"
 												>
 													<h3 className="font-semibold text-primary mb-2 group-hover:text-primary-light text-lg">
 														{item.title}
 													</h3>
-													<p className="text-sm  text-primary mb-3 group-hover:text-primary-light	">
+													<p className="text-sm text-primary mb-3 group-hover:text-primary-light">
 														{item.description}
 													</p>
-													<span className="text-sm  text-primary group-hover:text-primary-light flex items-center font-medium">
+													<span className="text-sm text-primary group-hover:text-primary-light flex items-center font-medium">
 														Click here <ArrowRight className="ml-1 h-3 w-3" />
 													</span>
 												</Link>
@@ -384,12 +318,6 @@ const Header: React.FC = () => {
 									</div>
 								</div>
 							</div>
-							<Link
-								href="/track-shipment"
-								className="text-blue hover:text-blue-900 font-medium"
-							>
-								Track Your Shipment
-							</Link>
 						</nav>
 
 						<div className="hidden md:flex items-center space-x-4">
@@ -456,39 +384,6 @@ const Header: React.FC = () => {
 						>
 							Home
 						</Link>
-
-						{/* Mobile Sourcing Dropdown */}
-						<div className="border-b border-primary-light">
-							<button
-								className="flex items-center justify-between w-full py-3 text-gray-800"
-								onClick={() => toggleMobileDropdown("sourcing")}
-								type="button"
-							>
-								<span>Sourcing</span>
-								{activeMobileDropdown === "sourcing" ? (
-									<ChevronUp className="h-4 w-4" />
-								) : (
-									<ChevronDown className="h-4 w-4" />
-								)}
-							</button>
-							<div
-								className={`ml-4 mb-2 transition-all duration-300 ${
-									activeMobileDropdown === "sourcing"
-										? "max-h-96 opacity-100"
-										: "max-h-0 opacity-0 overflow-hidden"
-								}`}
-							>
-								{megaMenuItems.sourcing.map((item, idx) => (
-									<Link
-										key={idx}
-										href={item.href}
-										className="block py-2 text-gray-700 hover:bg-primary hover:text-white hover:pl-2 transition-all duration-200"
-									>
-										{item.title}
-									</Link>
-								))}
-							</div>
-						</div>
 
 						{/* Mobile Solutions Dropdown */}
 						<div className="border-b border-primary-light">
