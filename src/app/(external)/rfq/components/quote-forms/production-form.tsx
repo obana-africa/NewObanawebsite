@@ -137,7 +137,7 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
         required
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
   <FormSelect
     id="brandToSource"
     label="Target Brand/Market"
@@ -146,7 +146,7 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
     register={register("brandToSource")}
     error={errors.brandToSource?.message || brandsError || undefined}
     searchable
-    allowCustom
+    // allowCustom  ← REMOVE THIS LINE
   />
 
   <FormSelect
@@ -157,7 +157,7 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
     error={errors.style?.message}
     placeholder="Select style"
   />
-      </div>
+</div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <FormInput
