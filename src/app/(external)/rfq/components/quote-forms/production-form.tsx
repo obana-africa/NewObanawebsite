@@ -138,25 +138,25 @@ const ProductionForm: React.FC<ProductionFormProps> = ({
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <FormSelect
-          id="brandToSource"
-          label="Target Brand/Market"
-          placeholder="Select or type brand"
-          options={brandOptions}
-          register={register("brandToSource")}
-          error={errors.brandToSource?.message || brandsError}
-          searchable
-          allowCustom
-        />
+  <FormSelect
+    id="brandToSource"
+    label="Target Brand/Market"
+    placeholder="Select or type brand"
+    options={brandOptions}
+    register={register("brandToSource")}
+    error={errors.brandToSource?.message || brandsError || undefined}
+    searchable
+    allowCustom
+  />
 
-        <FormSelect
-          id="style"
-          label="Style/Aesthetic"
-          options={itemStyles}
-          register={register("style")}
-          error={errors.style?.message}
-          placeholder="Select style"
-        />
+  <FormSelect
+    id="style"
+    label="Style/Aesthetic"
+    options={itemStyles}
+    register={register("style")}
+    error={errors.style?.message}
+    placeholder="Select style"
+  />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
