@@ -10,7 +10,7 @@ import EcosystemSectionTwo from "./sections/EcosystemSectionTwo";
 // import { serviceFeatures } from "./data/services";
 import { stakeholders } from "./data/stakeholders";
 // import ImpactSection from "./sections/impact-section";
-import { impactData } from "./data/impact";
+// import { impactData } from "./data/impact";
 import TestimonialSection from "./sections/testimonials-section";
 import { testimonials } from "./data/testimonials";
 
