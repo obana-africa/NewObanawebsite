@@ -87,15 +87,15 @@ const apiTokenManager = new ZohoTokenManager(
 );
 
 // Mail Token Manager
-const mailTokenManager = new ZohoTokenManager(
-	{
-		authUrl: process.env.ZOHO_AUTH_URL || "",
-		refreshToken: process.env.MAIL_REFRESH_TOKEN || "",
-		clientId: process.env.ZOHO_MAIL_CLIENT_ID || "",
-		clientSecret: process.env.ZOHO_MAIL_CLIENT_SECRET || "",
-	},
-	"Mail"
-);
+// const mailTokenManager = new ZohoTokenManager(
+// 	{
+// 		authUrl: process.env.ZOHO_AUTH_URL || "",
+// 		refreshToken: process.env.MAIL_REFRESH_TOKEN || "",
+// 		clientId: process.env.ZOHO_MAIL_CLIENT_ID || "",
+// 		clientSecret: process.env.ZOHO_MAIL_CLIENT_SECRET || "",
+// 	},
+// 	"Mail"
+// );
 
 // CRM Token Manager
 const crmTokenManager = new ZohoTokenManager(

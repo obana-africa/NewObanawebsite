@@ -1,24 +1,24 @@
-import sales from "@/app/assets/images/landing-page/sales.png";
-import sme from "@/app/assets/images/landing-page/sme.png";
-import vendor from "@/app/assets/images/landing-page/vendor.png";
+import sales from "@/app/assets/images/landing-page/phone-createShipment.png";
+import sme from "@/app/assets/images/landing-page/phone-obanaMobile.png";
+import vendor from "@/app/assets/images/landing-page/checkout.png";
 
 export const stakeholders = [
 	{
-		title: "SMEs",
+		title: "Buyers & Resellers",
 		description:
-			"Obana.Africa provides a technology-driven ecosystem that connects fashion and beauty SMEs with trusted vendors for sourcing, logistics partners for seamless delivery, and financial institutions for secure payments and accessible business loans.",
+			"Access global fashion at better prices through a system designed to give you more value, more options, and a smoother shopping experience. Get the products, pricing, and support you need to start selling.",
 		imageSrc: sme,
 	},
 	{
-		title: "Vendors",
+		title: "Fashion Business Owners",
 		description:
-			"Obana.Africa empowers young Africans to build wealth by linking SMEs to reliable products and suppliers — fueling employment, reducing poverty, and boosting Africa's GDP.",
+			"For fashion business owners, Taja provides a complete system to manage sales, organize products, track orders, and reach more customers — helping you grow your business smoothly within the Obana ecosystem with structure and ease.",
 		imageSrc: vendor,
 	},
 	{
-		title: "Sales Partner",
+		title: "Logistics Users",
 		description:
-			"Onboard sales partners from across Nigeria and Sub Saharan African to help connect SMEs to the right vendors ensuring the curation of sourcing to suit the need of the sme. Our sales partners are also helpful in our virtual distribution push and help provide insight into market entry opportunities",
+			"Import, export, and deliver products without the usual stress — with a logistics system designed for reliability and efficiency.",
 		imageSrc: sales,
 	},
 ];

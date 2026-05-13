@@ -1,6 +1,9 @@
+"use client";
+
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { productionQuoteSchema } from "@/schemas";
 import FormInput from "@/components/ui/form-input";
 import FormSelect from "@/components/ui/form-select";
@@ -10,228 +13,217 @@ import PhoneInput from "@/components/ui/phone-input";
 import Button from "@/components/ui/button";
 import { CurrencyInputField } from "@/components/ui/currency-input";
 import useBrandOptions from "@/hooks/use-active-brands";
-// import { toast } from "sonner";
+
+// Infer the type from the schema
+type ProductionFormData = z.infer<typeof productionQuoteSchema>;
 
 interface ProductionFormProps {
-	onBack: () => void;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	onSubmit: (data: any) => void;
-	isSubmitting: boolean;
+  onSubmit: (data: ProductionFormData) => Promise<void> | void;
+  isSubmitting: boolean;
+}
+
+interface Option {
+  value: string;
+  label: string;
 }
 
 const ProductionForm: React.FC<ProductionFormProps> = ({
-	onBack,
-	onSubmit,
-	isSubmitting,
+  onSubmit,
+  isSubmitting,
 }) => {
-	const {
-		register,
-		handleSubmit,
-		control,
-		setValue,
-		formState: { errors },
-	} = useForm({
-		resolver: zodResolver(productionQuoteSchema),
-		defaultValues: {
-			name: "",
-			email: "",
-			phone: "",
-			productType: "",
-			itemDescription: "",
-			brandToSource: "",
-			moq: "",
-			sizeRange: "",
-			targetPrice: {},
-			style: "",
-			comment: "",
-			sampleProduct: null,
-			sampleProductUrl: "",
-		},
-	});
-	const { brands: brandOptions, error: brandsError } = useBrandOptions();
+  const {
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    formState: { errors },
+  } = useForm<ProductionFormData>({
+    resolver: zodResolver(productionQuoteSchema), // ← REMOVED the type casting
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      productType: "",
+      itemDescription: "",
+      brandToSource: "",
+      moq: "",
+      sizeRange: "",
+      targetPrice: {
+        amount: 0,
+        currency: "NGN",
+      },
+      style: "",
+      comment: "",
+      sampleProductUrl: "",
+    },
+  });
 
-	const itemStyles = [
-		{ value: "Casual", label: "Casual" },
-		{ value: "Formal", label: "Formal" },
-		{ value: "Streetwear", label: "Streetwear" },
-		{ value: "Athleisure", label: "Athleisure" },
-		{ value: "Business Casual", label: "Business Casual" },
-		{ value: "Bohemian", label: "Bohemian" },
-		{ value: "Vintage", label: "Vintage" },
-		{ value: "Urban", label: "Urban" },
-		{ value: "Sportswear", label: "Sportswear" },
-		{ value: "Traditional/Cultural", label: "Traditional/Cultural" },
-	];
+  const { brands: brandOptions, error: brandsError } = useBrandOptions();
 
-	const handleFileUploadComplete = (url: string | null) => {
-		setValue("sampleProductUrl", url || "");
-	};
+  const productTypes: Option[] = [
+    { value: "Footwear", label: "Footwear (Shoes, Sandals, Boots)" },
+    { value: "Apparel", label: "Apparel (Tops, Dresses, Pants)" },
+    { value: "Accessories", label: "Accessories (Belts, Hats, Scarves)" },
+    { value: "Bags", label: "Bags & Luggage" },
+    { value: "Beauty", label: "Beauty & Cosmetics" },
+    { value: "Jewelry", label: "Jewelry" },
+    { value: "Other", label: "Other" },
+  ];
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const handleFormSubmit = (data: any) => {
-		// console.log("Form Data:", data);
-		onSubmit({
-			...data,
-			sampleProduct: data.sampleProductUrl || null,
-		});
-	};
+  const itemStyles: Option[] = [
+    { value: "Casual", label: "Casual" },
+    { value: "Formal", label: "Formal" },
+    { value: "Streetwear", label: "Streetwear" },
+    { value: "Athleisure", label: "Athleisure" },
+    { value: "Traditional", label: "Traditional" },
+    { value: "Minimalist", label: "Minimalist" },
+    { value: "Luxury", label: "Luxury" },
+    { value: "Sustainable", label: "Sustainable/Eco-friendly" },
+  ];
 
-	return (
-		<div className="space-y-6">
-			<h2 className=" font-bold text-center text-primary">Request For Quote</h2>
+  const handleFileUploadComplete = (url: string | null) => {
+    setValue("sampleProductUrl", url || "");
+  };
 
-			<form onSubmit={handleSubmit(handleFormSubmit)}>
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-					<FormInput
-						id="name"
-						label="Name"
-						placeholder="Your Name"
-						register={register("name")}
-						error={errors.name?.message}
-						required
-					/>
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <FormInput
+          id="name"
+          label="Full Name"
+          placeholder="Enter your full name"
+          register={register("name")}
+          error={errors.name?.message}
+          required
+        />
 
-					<FormInput
-						id="email"
-						label="Email"
-						placeholder="Your Email"
-						register={register("email")}
-						error={errors.email?.message}
-						type="email"
-						required
-					/>
-				</div>
+        <FormInput
+          id="email"
+          label="Email Address"
+          placeholder="you@example.com"
+          register={register("email")}
+          error={errors.email?.message}
+          type="email"
+          required
+        />
+      </div>
 
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-					<PhoneInput
-						control={control}
-						name="phone"
-						label="Phone Number"
-						error={errors.phone?.message}
-						required
-					/>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <PhoneInput
+          control={control}
+          name="phone"
+          label="Phone Number"
+          error={errors.phone?.message}
+          required
+        />
 
-					<FormInput
-						id="productType"
-						label="Type of Product"
-						placeholder="Preffered Product Type"
-						register={register("productType")}
-						error={errors.productType?.message}
-					/>
-				</div>
+        <FormSelect
+          id="productType"
+          label="Product Type"
+          placeholder="Select product category"
+          options={productTypes}
+          register={register("productType")}
+          error={errors.productType?.message}
+        />
+      </div>
 
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-					<FormInput
-						id="itemDescription"
-						label="Item Description"
-						placeholder="Item Description"
-						register={register("itemDescription")}
-						error={errors.itemDescription?.message}
-						required
-					/>
+      <FormTextarea
+        id="itemDescription"
+        label="Product Description"
+        placeholder="Describe your product in detail: materials, colors, special features, target market, etc."
+        register={register("itemDescription")}
+        error={errors.itemDescription?.message}
+        rows={3}
+        required
+      />
 
-					<FormSelect
-						id="brandToSource"
-						label="What brand do you want to source"
-						options={brandOptions}
-						register={register("brandToSource")}
-						error={errors.brandToSource?.message || brandsError || undefined}
-						searchable
-					/>
-				</div>
+     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <FormSelect
+    id="brandToSource"
+    label="Target Brand/Market"
+    placeholder="Select or type brand"
+    options={brandOptions}
+    register={register("brandToSource")}
+    error={errors.brandToSource?.message || brandsError || undefined}
+    searchable
+    // allowCustom  ← REMOVE THIS LINE
+  />
 
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-					<FormInput
-						id="moq"
-						label="MOQ (Minimum order input)"
-						placeholder="Number input"
-						register={register("moq")}
-						error={errors.moq?.message}
-						type="number"
-					/>
+  <FormSelect
+    id="style"
+    label="Style/Aesthetic"
+    options={itemStyles}
+    register={register("style")}
+    error={errors.style?.message}
+    placeholder="Select style"
+  />
+</div>
 
-					<FormInput
-						id="sizeRange"
-						label="Suggested Size Range"
-						placeholder="eg: XS - 4XL, 20 - 40 etc..."
-						register={register("sizeRange")}
-						error={errors.sizeRange?.message}
-						required
-					/>
-				</div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <FormInput
+          id="moq"
+          label="MOQ (units)"
+          placeholder="Minimum order quantity"
+          register={register("moq")}
+          error={errors.moq?.message}
+          type="number"
+        />
 
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-					<CurrencyInputField
-						name="targetPrice"
-						control={control}
-						label="What is your target sourcing price point"
-						placeholder="Per unit"
-						defaultValue={{ currency: "NGN", symbol: "₦" }}
-						required
-						className=""
-						error={
-							typeof errors.targetPrice?.message === "string"
-								? errors.targetPrice?.message
-								: undefined
-						}
-					/>
+        <FormInput
+          id="sizeRange"
+          label="Size Range"
+          placeholder="e.g., XS-4XL, 35-45"
+          register={register("sizeRange")}
+          error={errors.sizeRange?.message}
+          required
+        />
 
-					<FormSelect
-						id="style"
-						label="What style do you want"
-						options={itemStyles}
-						register={register("style")}
-						error={errors.style?.message}
-					/>
-				</div>
+        <CurrencyInputField
+          name="targetPrice"
+          control={control}
+          label="Target Price/unit"
+          placeholder="Per unit"
+          defaultValue={{ currency: "NGN", amount: 0 }}
+          required
+          error={errors.targetPrice?.message}
+        />
+      </div>
 
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-					<FormFileUpload
-						id="sampleProduct"
-						label="Upload a sample product if you have"
-						onUploadComplete={handleFileUploadComplete}
-						accept="image/*"
-						fileTypes="image/*"
-					/>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <FormFileUpload
+          id="sampleProduct"
+          label="Reference Images (Optional)"
+          onUploadComplete={handleFileUploadComplete}
+          accept="image/*"
+          fileTypes="PNG, JPG, JPEG"
+        />
 
-					<div className="col-span-1 md:col-span-2">
-						<FormTextarea
-							id="comment"
-							label="Extra Comment"
-							placeholder=""
-							register={register("comment")}
-							error={errors.comment?.message}
-							rows={4}
-						/>
-					</div>
-				</div>
+        <FormTextarea
+          id="comment"
+          label="Additional Requirements"
+          placeholder="Timeline, certifications needed, special requests..."
+          register={register("comment")}
+          error={errors.comment?.message}
+          rows={3}
+        />
+      </div>
 
-				<div className="flex justify-between mt-6">
-					<Button
-						onClick={onBack}
-						variant="outline"
-						className="border border-blue-900 text-blue-900"
-					>
-						Back
-					</Button>
-					{isSubmitting ? (
-						<Button variant="primary" disabled isLoading>
-							Submitting...
-						</Button>
-					) : (
-						<Button
-							type="submit"
-							variant="primary"
-							animation="ripple"
-							className="border border-primary"
-						>
-							Submit
-						</Button>
-					)}
-				</div>
-			</form>
-		</div>
-	);
+      <Button
+        type="submit"
+        variant="primary"
+        animation="ripple"
+        className="w-full py-3 text-base font-medium"
+        disabled={isSubmitting}
+        isLoading={isSubmitting}
+      >
+        {isSubmitting ? "Submitting..." : "Submit Quote Request"}
+      </Button>
+
+      <p className="text-xs text-gray-400 text-center mt-2">
+        By submitting, you agree to our Terms and Privacy Policy
+      </p>
+    </form>
+  );
 };
 
 export default ProductionForm;

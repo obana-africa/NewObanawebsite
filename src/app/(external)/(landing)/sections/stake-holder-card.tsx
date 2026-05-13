@@ -34,11 +34,11 @@ const StakeholderCard: React.FC<StakeholderCardProps> = ({
 				</div>
 			</div>
 
-			<div className="w-full md:w-[60%] bg-[#F5F7FA] rounded-b-2xl md:rounded-b-none md:rounded-r-2xl p-8 md:p-12 flex flex-col justify-center">
-				<h3 className="text-primary text-2xl md:text-2xl lg:text-3xl font-bold mb-4 md:mb-6">
+			<div className="w-full md:w-[60%] bg-[#1B3B5F] rounded-[17.28px] p-8 md:p-12 flex flex-col justify-center">
+				<h3 className="text-[#FFD56C] text-2xl md:text-2xl lg:text-3xl font-bold mb-4 md:mb-6">
 					{title}
 				</h3>
-				<p className="text-[#4A5568] text-base md:text-base  lg:text-md font-medium leading-relaxed">
+				<p className="text-[#FFFFFF] text-base md:text-base  lg:text-md font-medium leading-relaxed">
 					{description}
 				</p>
 			</div>
