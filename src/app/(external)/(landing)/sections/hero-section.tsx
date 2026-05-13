@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
+// import Image from "next/image";
 import Button from "@/components/ui/button";
 import { useModal } from "@/contexts/modal-context";
-import heroBgImage from "@/app/assets/images/landing-page/global-network.png";
+// import heroBgImage from "@/app/assets/images/landing-page/global-network.png";
 
 const HeroSection: React.FC = () => {
 	const { openGetStartedModal } = useModal();
