@@ -1,9 +1,12 @@
 import type { NextPage } from "next";
 import HeroSection from "./sections/hero-section";
 import GlobalBrands from "./sections/brands-section";
+import EcosystemSection from "./sections/ecosystemSection";
+import HowObanaWorks from "./sections/HowObanaWorks";
 import ServiceSection from "./sections/services-section";
 import shipbox from "@/app/assets/images/landing-page/shipping-boxes-globe.svg";
 import StakeholderSection from "./sections/stakeholder-section";
+import EcosystemSectionTwo from "./sections/EcosystemSectionTwo";
 import { serviceFeatures } from "./data/services";
 import { stakeholders } from "./data/stakeholders";
 import ImpactSection from "./sections/impact-section";
@@ -17,18 +20,21 @@ const Home: NextPage = () => {
 			<main>
 				<HeroSection />
 				<GlobalBrands />
-				<ServiceSection features={serviceFeatures} imageSrc={shipbox} />
+				<EcosystemSection />
+				{/* <HowObanaWorks /> */}
+				{/* <ServiceSection features={serviceFeatures} imageSrc={shipbox} /> */}
 				<StakeholderSection
-					title="Who We Serve & How You Benefit"
+					title="Built for Businesses Across Commerce"
 					stakeholders={stakeholders}
 				/>
+				<EcosystemSectionTwo/>
 				{/* <WhyObanaSection /> */}
-				<ImpactSection
+				{/* <ImpactSection
 					title={impactData.title}
 					description={impactData.description}
 					impactItems={impactData.impactItems}
 					backgroundImage={shipbox}
-				/>
+				/> */}
 				{/* <ImpactCarousel /> */}
 				{/* <CtaSection /> */}
 				{/* <Testimonials title="What Our Eco System Partners Says" /> */}
