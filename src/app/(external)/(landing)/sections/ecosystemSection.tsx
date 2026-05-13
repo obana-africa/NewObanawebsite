@@ -54,7 +54,7 @@ const EcosystemCard: React.FC<{
   description: string;
   buttonText: string;
   buttonHref: string;
-  previewImage: string;
+  previewImage: string | StaticImageData;
   index: number;
 }> = ({ title, description, buttonText, buttonHref, previewImage, index }) => {
   const [ref, isInView] = useInView({ threshold: 0.2 });
@@ -99,7 +99,7 @@ const EcosystemCard: React.FC<{
               target="_blank"
               rel="noopener noreferrer"
               className={`
-                inline-flex items-center gap-1 text-white bg-[#1B3B5F]  font-semibold text-sm
+                inline-flex items-center gap-1 p-3 rounded-md text-white bg-[#1B3B5F]  font-semibold text-sm
                 transition-colors duration-200
                 ${isHovered ? "text-primary-light" : ""}
               `}
