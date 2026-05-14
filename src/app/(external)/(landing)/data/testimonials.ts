@@ -4,6 +4,7 @@ import food from "@/app/assets/images/landing-page/food.png";
 import sparr from "@/app/assets/images/landing-page/sparr.png";
 import iconH from "@/app/assets/images/landing-page/iconH.png";
 import Essien from "@/app/assets/images/landing-page/Essien.png";
+import gig from "@/app/assets/images/landing-page/gig.png";
 
 export const testimonials = [
 	{
@@ -58,6 +59,15 @@ export const testimonials = [
 		name: "Essien Paulinus",
 		role: "Customer",
 		image: Essien,
+		date: "May 11, 2025",
+	},
+	{
+		quoteTitle: "Movement Made Easier",
+		quote:
+			"Through our partnership, Obana continues to build a stronger commerce ecosystem powered by reliable movement and operational efficiency",
+		name: "GIG Logistics",
+		role: "Logistics Partner",
+		image: gig,
 		date: "May 11, 2025",
 	},
 ];
