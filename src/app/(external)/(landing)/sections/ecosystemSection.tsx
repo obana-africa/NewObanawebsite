@@ -2,14 +2,50 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import  Image, { StaticImageData }  from "next/image";
+import Image, { StaticImageData } from "next/image";
 
-// ---------- your product screenshot imports ----------
+// ---------- product screenshots ----------
 import shopPreview from "@/app/assets/images/landing-page/obana-shop.png";
 import tajaPreview from "@/app/assets/images/landing-page/taja.png";
 import logisticsPreview from "@/app/assets/images/landing-page/obana-logistics.png";
+import salesforcePreview from "@/app/assets/images/landing-page/sales-force.png";
 
-// ---------- Intersection Observer hook (scroll‑in) ----------
+const cardsData = [
+  {
+    title: "B2B MARKETPLACE",
+    description:
+      "Obana Shop connects businesses and individuals to global products through a sourcing-driven commerce system built for accessibility and scale.",
+    buttonText: "Visit shop",
+    buttonHref: "https://shop.obana.africa/",
+    previewImage: shopPreview,
+  },
+  {
+    title: "TAJA POS/WEBSHOP",
+    description:
+      "Taja equips vendors and sales partners with the systems needed to distribute products, manage sales, and grow within the Obana ecosystem.",
+    buttonText: "Discover Taja",
+    buttonHref: "https://taja.obana.africa/",
+    previewImage: tajaPreview,
+  },
+  {
+    title: "OBANA LOGISTICS",
+    description:
+      "Handle imports, exports, shipping, and delivery through a logistics infrastructure designed to support smooth movement across borders and markets. Fully integrated, end-to-end logistics powered by electric vehicles for high‑quality deliveries across Africa.",
+    buttonText: "Explore Logistics",
+    buttonHref: "http://logistics.obana.africa/",
+    previewImage: logisticsPreview,
+  },
+  {
+    title: "SALES PARTNER",
+    description:
+      "Obana Sales Partners connects individuals and businesses to opportunities within the ecosystem – enabling smarter distribution, customer reach, and scalable growth through connected commerce tools.",
+    buttonText: "Become a Sales Partner",
+    buttonHref: "http://logistics.obana.africa/",
+    previewImage: salesforcePreview,
+  },
+];
+
+// ---------- Intersection Observer hook ----------
 const useInView = (options?: IntersectionObserverInit) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const [isInView, setIsInView] = useState(false);
@@ -17,14 +53,12 @@ const useInView = (options?: IntersectionObserverInit) => {
   useEffect(() => {
     const element = ref.current;
     if (!element) return;
-
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
         setIsInView(true);
         observer.unobserve(element);
       }
     }, options);
-
     observer.observe(element);
     return () => observer.disconnect();
   }, [options]);
@@ -32,23 +66,7 @@ const useInView = (options?: IntersectionObserverInit) => {
   return [ref, isInView] as const;
 };
 
-// ---------- Custom hover hook ----------
-const useHover = () => {
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleMouseEnter = () => setIsHovered(true);
-  const handleMouseLeave = () => setIsHovered(false);
-
-  return {
-    isHovered,
-    hoverHandlers: {
-      onMouseEnter: handleMouseEnter,
-      onMouseLeave: handleMouseLeave,
-    },
-  };
-};
-
-// =========== Card component ===========
+// ---------- Card ----------
 const EcosystemCard: React.FC<{
   title: string;
   description: string;
@@ -58,89 +76,101 @@ const EcosystemCard: React.FC<{
   index: number;
 }> = ({ title, description, buttonText, buttonHref, previewImage, index }) => {
   const [ref, isInView] = useInView({ threshold: 0.2 });
-  const { isHovered, hoverHandlers } = useHover();
+  const [isHovered, setIsHovered] = useState(false);
+
+  const isExternal = buttonHref.startsWith("http");
+
+  // Figma: wide pill button, generous padding, arrow with gap
+  const buttonClass =
+    "inline-flex items-center gap-3 px-8 py-3 rounded-lg text-white bg-[#1B3B5F] font-semibold text-sm tracking-wide transition-all duration-300 hover:bg-[#2a4d74]";
+
+  const arrowStyle: React.CSSProperties = {
+    display: "inline-block",
+    fontSize: "1rem",
+    transition: "transform 0.3s ease",
+    transform: isHovered ? "translateX(5px)" : "translateX(0px)",
+  };
 
   return (
     <div
       ref={ref}
-      {...hoverHandlers}
-      className={`
-        w-[404px] rounded-2xl overflow-hidden
-        transition-all duration-500 ease-out
-        ${isHovered ? "shadow-2xl -translate-y-1" : "shadow-sm translate-y-0"}
-        ${isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}
-        bg-[#EFFAFD] border border-[#EFFAFD]
-      `}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="rounded-3xl overflow-hidden transition-all duration-500 ease-out bg-[#EFFAFD]"
       style={{
-        transitionDelay: isInView ? `${index * 150}ms` : "0ms",
+        boxShadow: isHovered
+          ? "0 20px 40px rgba(27,59,95,0.18)"
+          : "0 2px 8px rgba(27,59,95,0.08)",
+        transform: isInView
+          ? isHovered
+            ? "translateY(-6px)"
+            : "translateY(0)"
+          : "translateY(40px)",
+        opacity: isInView ? 1 : 0,
+        transitionDelay: isInView ? `${index * 100}ms` : "0ms",
       }}
     >
-      {/* Full‑width screenshot image */}
-      <div className="w-full h-[200px] relative overflow-hidden">
+      {/* Image panel */}
+      <div className="w-full h-[280px] relative overflow-hidden">
         <Image
           src={previewImage}
           alt={title}
           fill
-          className="object-cover"
-          sizes="404px"
+          className="object-cover object-top"
+          style={{
+            transition: "transform 0.7s ease",
+            transform: isHovered ? "scale(1.06)" : "scale(1)",
+          }}
+          sizes="(max-width: 768px) 100vw, 50vw"
+        />
+
+        {/* Subtle fade — only last 50px, very gentle */}
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: "50px",
+            background: "linear-gradient(to bottom, transparent 0%, #EFFAFD 100%)",
+            pointerEvents: "none",
+          }}
         />
       </div>
 
-      {/* Text area – centered */}
-      <div className="p-6 flex flex-col items-center text-center gap-4">
-        <h3 className="text-lg font-bold text-primary">{title}</h3>
-        <p className="text-sm text-primary/70 leading-relaxed">{description}</p>
-
-        {/* Button */}
-        <div>
-          {buttonHref.startsWith("http") ? (
-            <a
-              href={buttonHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`
-                inline-flex items-center gap-1 p-3 rounded-md text-white bg-[#1B3B5F]  font-semibold text-sm
-                transition-colors duration-200
-                ${isHovered ? "text-primary-light" : ""}
-              `}
-            >
-              {buttonText}
-              <span
-                className={`
-                  transition-transform duration-300
-                  ${isHovered ? "translate-x-0.5" : ""}
-                `}
-              >
-                →
-              </span>
-            </a>
-          ) : (
-            <Link
-              href={buttonHref}
-              className={`
-                inline-flex items-center gap-1 text-primary font-semibold text-sm
-                transition-colors duration-200
-                ${isHovered ? "text-primary-light" : ""}
-              `}
-            >
-              {buttonText}
-              <span
-                className={`
-                  transition-transform duration-300
-                  ${isHovered ? "translate-x-0.5" : ""}
-                `}
-              >
-                →
-              </span>
-            </Link>
-          )}
-        </div>
+      {/* Description panel — marginTop: -1px closes the subpixel gap on hover */}
+      <div
+        className="flex flex-col items-center text-center"
+        style={{ padding: "1.25rem 2.5rem 2.5rem" }}
+      >
+        <h3 className="text-xl font-bold text-primary mb-3">{title}</h3>
+        <p className="text-sm text-primary/70 leading-relaxed max-w-[440px] mb-6">
+          {description}
+        </p>
+        {isExternal ? (
+          <a
+            href={buttonHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={buttonClass}
+          >
+            {buttonText}
+            <span style={arrowStyle}>↗</span>
+          </a>
+        ) : (
+          <Link href={buttonHref} className={buttonClass}>
+            {buttonText}
+            <span style={arrowStyle}>↗</span>
+          </Link>
+        )}
       </div>
     </div>
   );
 };
 
-// =========== Main Section (unchanged) ===========
+
+// ---------- Main Section ----------
 const EcosystemSection: React.FC = () => {
   return (
     <section
@@ -157,32 +187,19 @@ const EcosystemSection: React.FC = () => {
         </p>
       </div>
 
-      <div className="mx-auto max-w-[1271px] px-0">
-        <div className="flex justify-center gap-6 items-start">
-          <EcosystemCard
-            index={0}
-            title="OBANA SHOP"
-            description="Obana Shop connects businesses and individuals to global products through a sourcing-driven commerce system built for accessibility and scale."
-            buttonText="Visit shop"
-            buttonHref="https://shop.obana.africa/"
-            previewImage={shopPreview}
-          />
-          <EcosystemCard
-            index={1}
-            title="TAJA"
-            description="Taja equips vendors and sales partners with the systems needed to distribute products, manage sales, and grow within the Obana ecosystem."
-            buttonText="Discover Taja"
-            buttonHref="https://taja.obana.africa/"
-            previewImage={tajaPreview}
-          />
-          <EcosystemCard
-            index={2}
-            title="OBANA LOGISTICS"
-            description="Handle imports, exports, shipping, and delivery through a logistics infrastructure designed to support smooth movement across borders and markets."
-            buttonText="Explore Logistics"
-            buttonHref="http://logistics.obana.africa/"
-            previewImage={logisticsPreview}
-          />
+      <div className="mx-auto max-w-[1271px] px-4 md:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {cardsData.map((card, idx) => (
+            <EcosystemCard
+              key={card.title}
+              index={idx}
+              title={card.title}
+              description={card.description}
+              buttonText={card.buttonText}
+              buttonHref={card.buttonHref}
+              previewImage={card.previewImage}
+            />
+          ))}
         </div>
       </div>
     </section>

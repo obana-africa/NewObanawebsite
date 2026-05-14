@@ -2,10 +2,10 @@ import type { NextPage } from "next";
 import HeroSection from "./sections/hero-section";
 import GlobalBrands from "./sections/brands-section";
 import EcosystemSection from "./sections/ecosystemSection";
-// import HowObanaWorks from "./sections/HowObanaWorks";
+import HowObanaWorks from "./sections/HowObanaWorks";
 // import ServiceSection from "./sections/services-section";
 // import shipbox from "@/app/assets/images/landing-page/shipping-boxes-globe.svg";
-import StakeholderSection from "./sections/stakeholder-section";
+// import StakeholderSection from "./sections/stakeholder-section";
 import EcosystemSectionTwo from "./sections/EcosystemSectionTwo";
 // import { serviceFeatures } from "./data/services";
 import { stakeholders } from "./data/stakeholders";
@@ -21,12 +21,12 @@ const Home: NextPage = () => {
 				<HeroSection />
 				<GlobalBrands />
 				<EcosystemSection />
-				{/* <HowObanaWorks /> */}
+				<HowObanaWorks />
 				{/* <ServiceSection features={serviceFeatures} imageSrc={shipbox} /> */}
-				<StakeholderSection
+				{/* <StakeholderSection
 					title="Built for Businesses Across Commerce"
 					stakeholders={stakeholders}
-				/>
+				/> */}
 				<EcosystemSectionTwo/>
 				{/* <WhyObanaSection /> */}
 				{/* <ImpactSection

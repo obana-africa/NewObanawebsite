@@ -1,10 +1,9 @@
 "use client";
 
 import React from "react";
-// import Image from "next/image";
 import Button from "@/components/ui/button";
 import { useModal } from "@/contexts/modal-context";
-// import heroBgImage from "@/app/assets/images/landing-page/global-network.png";
+
 
 const HeroSection: React.FC = () => {
 	const { openGetStartedModal } = useModal();
@@ -20,9 +19,7 @@ const HeroSection: React.FC = () => {
 	};
 
 	return (
-		<section className=" relative overflow-hidden w-full h-[830px] md:h-[830px] bg-white">
-			
-
+		<section className=" relative overflow-hidden w-full h-[522px] md:h-[522px] bg-white">
 			
 			<div
 				className="absolute top-[151px] left-[804px] w-[182px] h-[56px] opacity-28 blur-[50px] bg-white rounded-full z-20"
@@ -71,17 +68,6 @@ const HeroSection: React.FC = () => {
 				</div>
 			</div>
 
-			
-			{/* <div className="absolute bottom-0 left-0 right-0 z-10 flex justify-center">
-				<Image
-					src={heroBgImage}
-					alt="Global network illustration"
-					width={1440}
-					height={830}
-					className="object-contain w-full h-auto max-h-[500px]"
-					priority
-				/>
-			</div> */}
 		</section>
 	);
 };
