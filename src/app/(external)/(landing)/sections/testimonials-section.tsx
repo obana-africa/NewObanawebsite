@@ -200,11 +200,11 @@ import Image, { StaticImageData } from "next/image";
 
 interface Testimonial {
   quote: string;
-  quoteTitle: string;
+  quoteTitle?: string;
   name: string;
   role: string;
   image: string | StaticImageData;
-  date: string;
+  date?: string;
 }
 
 interface TestimonialSectionProps {
