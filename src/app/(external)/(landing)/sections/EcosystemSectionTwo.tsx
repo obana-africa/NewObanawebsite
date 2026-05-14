@@ -219,7 +219,7 @@ const CommerceMoveBetter: React.FC = () => {
                 <Button
                   variant="primary"
                   animation="ripple"
-                  className="bg-white hover:bg-secondary text-primary font-medium shadow-md"
+                  className="bg-white hover:bg-secondary !text-primary font-medium shadow-md"
                   onClick={openGetStartedModal}
                 >
                   Explore Ecosystem
@@ -228,7 +228,7 @@ const CommerceMoveBetter: React.FC = () => {
                 <Button
                   variant="primary"
                   animation="ripple"
-                  className="border border-white text-primary bg-transparent hover:bg-white transition-all duration-300 font-medium"
+                  className="border border-white-2x1 text-primary bg-transparent hover:bg-white transition-all duration-300 font-medium"
                   onClick={openGetStartedModal}
                 >
                   Become a Partner

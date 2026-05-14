@@ -815,7 +815,7 @@ const Header: React.FC = () => {
 							<Button
 								variant="primary"
 								animation="ripple"
-								className="bg-secondary text-primary font-semibold"
+								className=" !text-[#1B3B5F] !bg-[#ECEDF0] font-bold"
 								href="/contact"
 							>
 								Contact Us
