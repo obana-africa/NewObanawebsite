@@ -14,12 +14,13 @@ export const testimonials = [
 		image: food,
 	},
 	{
+		quoteTitle: "Earning & Growing",
 		quote:
 			"Being an Obana.Africa Sales Partner has empowered me to earn, grow and connect businesses to limitless sourcing opportunities.",
-		rating: "10/10 recommended",
 		name: "Adenike Folorunsho",
 		role: "Sales Partner",
 		image: adenike,
+		date: "May 11, 2026",
 	},
 	{
 		quote:
@@ -39,7 +40,6 @@ export const testimonials = [
 	{
 		quote:
 			"We used Obana.Africa to restock SPAR shelves — smooth process, great value, zero stress!",
-		rating: "10/10 recommended",
 		name: "Blessing Abdulsalam",
 		role: "Head of Apparel - Spar",
 		image: sparr,
@@ -47,7 +47,6 @@ export const testimonials = [
 	{
 		quote:
 			"Didn’t know sourcing could be this easy! Obana.Africahhh linked me to trusted suppliers with quality products at great prices.",
-		rating: "10/10 recommended",
 		name: "Essien Paulinus",
 		role: "Customer",
 		image: Essien,

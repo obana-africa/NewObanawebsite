@@ -667,14 +667,14 @@ const Header: React.FC = () => {
 						</div>
 
 						<nav className="hidden lg:flex items-center space-x-8">
-							<Link href="/" className="text-primary font-medium">
+							<Link href="/" className="text-[#464545] font-semibold">
 								Home
 							</Link>
 
 							{/* Products Mega Menu */}
 							<div className="relative" ref={productsDropdownRef}>
 								<button
-									className="flex items-center text-primary font-medium"
+									className="flex items-center text-[#464545] font-semibold"
 									onClick={() => toggleDesktopDropdown("products")}
 									onMouseEnter={() => setActiveDropdown("products")}
 									type="button"
@@ -720,7 +720,7 @@ const Header: React.FC = () => {
 							{/* Solutions Mega Menu (unchanged) */}
 							<div className="relative" ref={solutionsDropdownRef}>
 								<button
-									className="flex items-center text-primary font-medium"
+									className="flex items-center text-[#464545] font-semibold"
 									onClick={() => toggleDesktopDropdown("solutions")}
 									onMouseEnter={() => setActiveDropdown("solutions")}
 									type="button"
@@ -793,13 +793,21 @@ const Header: React.FC = () => {
 							</div>
 
 							{/* FAQ – standalone link */}
-							<Link href="/faqs" className="text-primary font-medium">
+							<Link href="/faqs" className="text-[#464545] font-semibold">
 								FAQ
 							</Link>
 
 							{/* Features – standalone link */}
-							<Link href="/features" className="text-primary font-medium">
-								Features
+							<Link href="/vendors" className="text-[#464545] font-semibold">
+								Vendors
+							</Link>
+
+							<Link href="/vendors" className="text-[#464545] font-semibold">
+								Buyers
+							</Link>
+
+							<Link href="/#" className="text-[#464545] font-semibold">
+							     Ecosystem Partners
 							</Link>
 						</nav>
 
@@ -807,7 +815,7 @@ const Header: React.FC = () => {
 							<Button
 								variant="primary"
 								animation="ripple"
-								className="bg-secondary !text-primary"
+								className="bg-secondary !text-primary font-semibold"
 								href="/contact"
 							>
 								Contact Us

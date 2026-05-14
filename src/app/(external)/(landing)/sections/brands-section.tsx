@@ -7,7 +7,7 @@ import asos from "@/app/assets/images/landing-page/asos.png";
 import boohoo from "@/app/assets/images/landing-page/boohoo.png";
 import tommy from "@/app/assets/images/landing-page/tommy.png";
 import zara from "@/app/assets/images/landing-page/zara.png";
-import gap from "@/app/assets/images/landing-page/gap.png";
+import gap from "@/app/assets/images/landing-page/cargplug.png";
 import hacket from "@/app/assets/images/landing-page/hacket.png";
 import adidas from "@/app/assets/images/landing-page/adidas.png";
 import jack from "@/app/assets/images/landing-page/jack.png";
@@ -82,7 +82,7 @@ const logoImages = [
 
 const GlobalBrands = () => {
 	return (
-		<div className="w-full pt-10 md:py-12 bg-secondary relative overflow-hidden z-10">
+	<div className="w-full h-[220px] pt-10 md:py-12 bg-secondary relative overflow-hidden z-10">
 			<div
 				className="absolute w-[182px] h-[56px] opacity-30 blur-[50px] bg-[#222] rounded-full"
 				style={{
