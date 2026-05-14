@@ -82,7 +82,7 @@ const EcosystemCard: React.FC<{
 
   // Figma: wide pill button, generous padding, arrow with gap
   const buttonClass =
-    "inline-flex items-center gap-3 px-7 py-3 rounded-full text-white bg-[#1B3B5F] font-semibold text-sm tracking-wide transition-all duration-300 hover:bg-[#2a4d74]";
+    "inline-flex items-center gap-3 px-8 py-3 rounded-lg text-white bg-[#1B3B5F] font-semibold text-sm tracking-wide transition-all duration-300 hover:bg-[#2a4d74]";
 
   const arrowStyle: React.CSSProperties = {
     display: "inline-block",

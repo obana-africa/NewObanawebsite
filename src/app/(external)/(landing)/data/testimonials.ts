@@ -23,16 +23,17 @@ export const testimonials = [
 		date: "May 11, 2026",
 	},
 	{
+		quoteTitle: "Earning & Growing",
 		quote:
 			"I was able to help enterpeneurs access quality products hassle-free while building my own sucess on the platform.",
 		name: "Mitchel Ahisu",
 		role: "Sales Partner",
 		image: mitchel,
+		date: "May 11, 2026",
 	},
 	{
 		quote:
 			"Obana made it easy for us at ICON Wholesale to reach more buyers and move inventory faster. The process is smooth and transparent!",
-		rating: "10/10 recommended",
 		name: "Promise Ehhohon",
 		role: "Vendor Manager - Iconwholesale",
 		image: iconH,
