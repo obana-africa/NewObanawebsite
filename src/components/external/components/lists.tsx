@@ -19,9 +19,9 @@ const ListItem: React.FC<ListItemProps> = ({
 		>
 			<div className="flex items-start w-full gap-2">
 				{customIcon ? (
-					<span className={`flex-shrink-0 ${iconClassName}`}>{customIcon}</span>
+					<span className={`shrink-0 ${iconClassName}`}>{customIcon}</span>
 				) : icon ? (
-					<span className={`flex-shrink-0 ${iconClassName}`}>{icon}</span>
+					<span className={`shrink-0 ${iconClassName}`}>{icon}</span>
 				) : null}
 				<span className={`flex-1 ${contentClassName}`}>{children}</span>
 			</div>

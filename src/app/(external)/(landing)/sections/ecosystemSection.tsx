@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image, { StaticImageData } from "next/image";
 
-// ---------- product screenshots ----------
 import shopPreview from "@/app/assets/images/landing-page/obana-shop.png";
 import tajaPreview from "@/app/assets/images/landing-page/taja.png";
 import logisticsPreview from "@/app/assets/images/landing-page/obana-logistics.png";
@@ -30,7 +29,7 @@ const cardsData = [
   {
     title: "OBANA LOGISTICS",
     description:
-      "Handle imports, exports, shipping, and delivery through a logistics infrastructure designed to support smooth movement across borders and markets. Fully integrated, end-to-end logistics powered by electric vehicles for high‑quality deliveries across Africa.",
+      "Handle imports, exports, shipping, and delivery through a logistics infrastructure designed to support smooth movement across borders and markets.",
     buttonText: "Explore Logistics",
     buttonHref: "http://logistics.obana.africa/",
     previewImage: logisticsPreview,
@@ -45,7 +44,6 @@ const cardsData = [
   },
 ];
 
-// ---------- Intersection Observer hook ----------
 const useInView = (options?: IntersectionObserverInit) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const [isInView, setIsInView] = useState(false);
@@ -66,7 +64,6 @@ const useInView = (options?: IntersectionObserverInit) => {
   return [ref, isInView] as const;
 };
 
-// ---------- Card ----------
 const EcosystemCard: React.FC<{
   title: string;
   description: string;
@@ -80,7 +77,6 @@ const EcosystemCard: React.FC<{
 
   const isExternal = buttonHref.startsWith("http");
 
-  // Figma: wide pill button, generous padding, arrow with gap
   const buttonClass =
     "inline-flex items-center gap-3 px-8 py-3 rounded-lg text-white bg-[#1B3B5F] font-semibold text-sm tracking-wide transition-all duration-300 hover:bg-[#2a4d74]";
 
@@ -96,8 +92,9 @@ const EcosystemCard: React.FC<{
       ref={ref}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="rounded-3xl overflow-hidden transition-all duration-500 ease-out bg-[#EFFAFD]"
+      className="rounded-3xl overflow-hidden transition-all duration-300 ease-out"
       style={{
+        backgroundColor: "#EFFAFD",
         boxShadow: isHovered
           ? "0 20px 40px rgba(27,59,95,0.18)"
           : "0 2px 8px rgba(27,59,95,0.08)",
@@ -110,8 +107,13 @@ const EcosystemCard: React.FC<{
         transitionDelay: isInView ? `${index * 100}ms` : "0ms",
       }}
     >
-      {/* Image panel */}
-      <div className="w-full h-[280px] relative overflow-hidden">
+      {/*
+        Image and description share one continuous #EFFAFD background (the card itself).
+        The image has top rounded corners only; the card's overflow-hidden clips it.
+        The fade at the bottom of the image blends into the card bg — no separate
+        panel, no margin, no gap possible at any point during the hover animation.
+      */}
+      <div style={{ position: "relative", height: "280px", overflow: "hidden" }}>
         <Image
           src={previewImage}
           alt={title}
@@ -119,12 +121,11 @@ const EcosystemCard: React.FC<{
           className="object-cover object-top"
           style={{
             transition: "transform 0.7s ease",
-            transform: isHovered ? "scale(1.06)" : "scale(1)",
+            transform: isHovered ? "scale(1.02)" : "scale(1)",
+            borderRadius: "24px 24px 0 0",
           }}
           sizes="(max-width: 768px) 100vw, 50vw"
         />
-
-        {/* Subtle fade — only last 50px, very gentle */}
         <div
           aria-hidden
           style={{
@@ -132,20 +133,21 @@ const EcosystemCard: React.FC<{
             bottom: 0,
             left: 0,
             right: 0,
-            height: "50px",
-            background: "linear-gradient(to bottom, transparent 0%, #EFFAFD 100%)",
+            height: "20px",
+            background:
+              "linear-gradient(to bottom, transparent, #EFFAFD 100%)",
             pointerEvents: "none",
           }}
         />
       </div>
 
-      {/* Description panel — marginTop: -1px closes the subpixel gap on hover */}
+     
       <div
         className="flex flex-col items-center text-center"
-        style={{ padding: "1.25rem 2.5rem 2.5rem" }}
+        style={{ padding: "0.5rem 2.5rem 2.5rem" }}
       >
-        <h3 className="text-xl font-bold text-primary mb-3">{title}</h3>
-        <p className="text-sm text-primary/70 leading-relaxed max-w-[440px] mb-6">
+        <h3 className="text-3xl font-bold text-primary mb-3">{title}</h3>
+        <p className="text-md text-primary/70 leading-relaxed max-w-[440px] mb-6">
           {description}
         </p>
         {isExternal ? (
@@ -169,8 +171,6 @@ const EcosystemCard: React.FC<{
   );
 };
 
-
-// ---------- Main Section ----------
 const EcosystemSection: React.FC = () => {
   return (
     <section
