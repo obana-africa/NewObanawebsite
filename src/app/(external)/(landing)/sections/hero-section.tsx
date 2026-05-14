@@ -60,7 +60,7 @@ const HeroSection: React.FC = () => {
 					<Button
 						variant="primary"
 						animation="ripple"
-						className="border border-primary !text-primary bg-transparent hover:bg-primary hover:text-primary transition-all duration-300 ease-in-out text-lg font-medium"
+						className="border border-primary text-primary bg-transparent hover:bg-primary hover:text-primary transition-all duration-300 ease-in-out text-lg font-medium"
 						onClick={handleBecomePartner}
 					>
 						Become a Partner

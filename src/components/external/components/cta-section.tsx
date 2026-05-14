@@ -42,13 +42,13 @@ const CtaSection: React.FC<CtaSectionProps> = ({
 				{showBlurEffects && (
 					<>
 						<div
-							className="absolute top-[250px] left-[0] w-[182px] h-[56px] opacity-38 blur-[50px] bg-[#fff] rounded-full"
+							className="absolute top-[250px] left-0 w-[182px] h-[56px] opacity-38 blur-[50px] bg-white rounded-full"
 							style={{
 								transform: "translate(-50%, -50%)",
 							}}
 						></div>
 						<div
-							className="absolute top-[0] right-[0] w-[182px] h-[56px] opacity-38 blur-[50px] bg-[#fff] rounded-full"
+							className="absolute top-0 right-0 w-[182px] h-[56px] opacity-38 blur-[50px] bg-white rounded-full"
 							style={{
 								transform: "translate(-50%, -50%)",
 							}}

@@ -125,7 +125,7 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 											animation="ripple"
 											icon={<ChevronsRight />}
 											iconPosition="right"
-											className="rounded-sm w-full !bg-[#3D6188] py-2"
+											className="rounded-sm w-full bg-[#3D6188] py-2"
 										>
 											Sell on Obana.Africa
 										</Button>
@@ -167,7 +167,7 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 											animation="ripple"
 											icon={<ChevronsRight />}
 											iconPosition="right"
-											className="rounded-sm w-full !bg-[#3D6188] py-2"
+											className="rounded-sm w-full bg-[#3D6188] py-2"
 										>
 											Buy in Bulk
 										</Button>
@@ -209,7 +209,7 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({
 											animation="ripple"
 											icon={<ChevronsRight />}
 											iconPosition="right"
-											className="rounded-sm w-full !bg-[#3D6188] py-2"
+											className="rounded-sm w-full bg-[#3D6188] py-2"
 										>
 											Earn as a Sales Partner
 										</Button>

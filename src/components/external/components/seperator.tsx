@@ -2,7 +2,7 @@ import React from "react";
 
 const Seperator = () => {
 	return (
-		<div className="relative bg-[#DCFBF9] border-b-2 border-primary w-[150px] sm:w-[336px] h-[4px] sm:h-[8px] ">
+		<div className="relative bg-[#DCFBF9] border-b-2 border-primary w-[150px] sm:w-[336px] h-1 sm:h-2 ">
 			<div
 				className="absolute w-full  rounded-[5px]"
 				style={{ height: "2px", top: "3px" }}
