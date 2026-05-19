@@ -122,11 +122,7 @@ const Header: React.FC = () => {
 				description: "You can now join us and start selling to thousands of verified SMEs across Africa",
 				href: "https://vendor.obana.africa/",
 			},
-			{
-				title: "Earn as a Salespartner",
-				description: "Your next side hustle might just start here — ready to earn as an Obana.Africa Sales Partner?",
-				href: "https://salesforce.obana.africa/",
-			},
+			
 			{
 				title: "Request Shipment",
 				description: "From market to your doorstep — we'll make it happen",
@@ -142,66 +138,21 @@ const Header: React.FC = () => {
 					isScrolled ? "bg-white shadow-md" : "bg-white"
 				}`}
 			>
-				<div className="container mx-auto px-4 md:px-6 mt-6">
+				<div className="container mx-auto px-6 md:px-10">
 					<div className="flex items-center justify-between py-4">
-						<div className="shrink-0">
+						<div className="shrink-0 pb-4">
 							<Link href="/" className="flex items-center">
-								<div className="relative h-10 w-28">
-									<Image src={logoImage} alt="Obana Logo" width={100} height={40} priority />
+								<div className="relative h-12 w-30">
+									<Image src={logoImage} alt="Obana Logo" width={140} height={60} priority />
 								</div>
 							</Link>
 						</div>
 
 						<nav className="hidden lg:flex items-center space-x-8">
-							<Link href="/" className="text-[#464545] font-semibold">
-								Home
+							<Link href="/about" className="text-[#464545] font-semibold">
+								About us
 							</Link>
 
-							{/* Products Mega Menu */}
-							<div className="relative" ref={productsDropdownRef}>
-								<button
-									className="flex items-center text-[#464545] font-semibold"
-									onClick={() => toggleDesktopDropdown("products")}
-									onMouseEnter={() => setActiveDropdown("products")}
-									type="button"
-									aria-expanded={activeDropdown === "products"}
-									aria-haspopup="true"
-								>
-									Products
-									<ChevronDown className="ml-1 h-4 w-4" />
-								</button>
-
-								<div
-									className={`fixed top-[72px] left-0 right-0 bg-white shadow-xl border-t border-secondary-light transform transition-all duration-300 origin-top ${
-										activeDropdown === "products"
-											? "opacity-100 scale-y-100 visible"
-											: "opacity-0 scale-y-95 invisible"
-									}`}
-									onMouseLeave={() => setActiveDropdown(null)}
-								>
-									<div className="container mx-auto px-4 md:px-6 py-8">
-										<div className="grid grid-cols-2 gap-6 max-w-4xl mx-auto">
-											{megaMenuItems.products.map((item, idx) => (
-												<Link
-													key={idx}
-													href={item.href}
-													className="p-6 rounded-lg hover:bg-primary transition-colors group"
-												>
-													<h3 className="font-semibold text-primary mb-2 group-hover:text-white text-lg">
-														{item.title}
-													</h3>
-													<p className="text-sm text-primary mb-3 group-hover:text-white">
-														{item.description}
-													</p>
-													<span className="text-sm flex items-center font-medium text-primary group-hover:text-white">
-														Click here <ArrowRight className="ml-1 h-3 w-3" />
-													</span>
-												</Link>
-											))}
-										</div>
-									</div>
-								</div>
-							</div>
 
 							{/* Solutions Mega Menu (unchanged) */}
 							<div className="relative" ref={solutionsDropdownRef}>
@@ -226,7 +177,7 @@ const Header: React.FC = () => {
 									onMouseLeave={() => setActiveDropdown(null)}
 								>
 									<div className="container mx-auto px-4 md:px-6 py-8">
-										<div className="grid grid-cols-3 gap-6 max-w-6xl mx-auto">
+										<div className="grid grid-cols-4 gap-6 max-w-3xl mx-auto">
 											{megaMenuItems.solutions.map((item, idx) => (
 												<div key={idx}>
 													{item.hasSubMenu && item.subItems ? (
@@ -280,20 +231,11 @@ const Header: React.FC = () => {
 
 							{/* FAQ – standalone link */}
 							<Link href="/faqs" className="text-[#464545] font-semibold">
-								FAQ
+								FAQs
 							</Link>
 
-							{/* Features – standalone link */}
-							<Link href="/vendors" className="text-[#464545] font-semibold">
-								Vendors
-							</Link>
-
-							<Link href="/vendors" className="text-[#464545] font-semibold">
-								Buyers
-							</Link>
-
-							<Link href="/#" className="text-[#464545] font-semibold">
-							     Ecosystem Partners
+							<Link href="http://blog.obana.africa" className="text-[#464545] font-semibold">
+							     Blog
 							</Link>
 						</nav>
 
@@ -491,3 +433,4 @@ const Header: React.FC = () => {
 };
 
 export default Header;
+

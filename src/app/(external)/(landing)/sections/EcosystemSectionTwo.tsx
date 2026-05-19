@@ -206,7 +206,7 @@ const CommerceMoveBetter: React.FC = () => {
                   className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#F9C319] mb-4 leading-tight"
                   style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}
                 >
-                  Let Commerce Move Better
+                  Let Trade Flow
                 </h2>
                 <p className="text-base md:text-lg text-white/80 leading-relaxed">
                   Obana is building connected systems that reduce friction in
