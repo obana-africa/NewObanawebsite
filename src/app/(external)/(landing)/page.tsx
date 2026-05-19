@@ -13,14 +13,16 @@ import  EcosystemSectionTwo from "./sections/EcosystemSectionTwo";
 // import { impactData } from "./data/impact";
 import TestimonialSection from "./sections/testimonials-section";
 import { testimonials } from "./data/testimonials";
+import WhyUsSection from "./sections/WhyUsSection";
 
 const Home: NextPage = () => {
 	return (
 		<div className="min-h-screen">
 			<main>
 				<HeroSection />
-				<GlobalBrands />
+				
 				<EcosystemSection />
+				<GlobalBrands />
 				<HowObanaWorks />
 				{/* <ServiceSection features={serviceFeatures} imageSrc={shipbox} /> */}
 				{/* <StakeholderSection
@@ -28,6 +30,8 @@ const Home: NextPage = () => {
 					stakeholders={stakeholders}
 				/> */}
 				<EcosystemSectionTwo/>
+				<WhyUsSection />
+				
 				{/* <WhyObanaSection /> */}
 				{/* <ImpactSection
 					title={impactData.title}
