@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import { Recycle, Users, TrendingUp, Landmark, ArrowRight } from "lucide-react";
+import { Recycle, Users, TrendingUp, Landmark,} from "lucide-react";
 
 /* ── Impact pillars — top row ─────────────────────────────── */
 const PILLARS = [
@@ -172,7 +172,7 @@ export default function HowObanaWorksSection() {
       ` }} />
 
       <section
-        className="relative overflow-hidden w-full"
+        className="relative overflow-hidden w-full rounded-tl-[60px] rounded-tr-[60px]"
         style={{
           background: "linear-gradient(160deg, #0a1628 0%, #1b3b5f 45%, #0d2240 100%)",
           padding: "clamp(60px,8vw,100px) 0",

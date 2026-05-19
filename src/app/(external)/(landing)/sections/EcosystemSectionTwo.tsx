@@ -1,128 +1,3 @@
-// "use client";
-
-// import React, { useEffect, useRef, useState } from "react";
-// import Image from "next/image";
-// import Button from "@/components/ui/button";
-// import { ArrowRight } from "lucide-react";
-// import { useModal } from "@/contexts/modal-context";
-
-// // Replace with your actual ecosystem illustration
-// import ecosystemDiagram from "@/app/assets/images/landing-page/ecosystem-diagram.png";
-
-// // ---------- Hooks ----------
-// const useInView = (options?: IntersectionObserverInit) => {
-//   const ref = useRef<HTMLDivElement | null>(null);
-//   const [isInView, setIsInView] = useState(false);
-
-//   useEffect(() => {
-//     const element = ref.current;
-//     if (!element) return;
-
-//     const observer = new IntersectionObserver(([entry]) => {
-//       if (entry.isIntersecting) {
-//         setIsInView(true);
-//         observer.unobserve(element);
-//       }
-//     }, options);
-
-//     observer.observe(element);
-//     return () => observer.disconnect();
-//   }, [options]);
-
-//   return [ref, isInView] as const;
-// };
-
-// // ---------- Main Section ----------
-// const CommerceMoveBetter: React.FC = () => {
-//   const { openGetStartedModal } = useModal();
-//   const [sectionRef, isSectionInView] = useInView({ threshold: 0.1 });
-
-//   const handleExploreEcosystem = () => {
-//     openGetStartedModal();
-//   };
-
-//   const handleBecomePartner = () => {
-//     // route to partner page or modal – adjust as needed
-//     openGetStartedModal(); // placeholder
-//   };
-
-//   return (
-//     <section
-//       className="w-full py-20 bg-white overflow-hidden"
-//       style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}
-//     >
-//       <div className="mx-auto max-w-[1271px] px-4 md:px-0">
-//         {/* Card container with exact Figma dimensions */}
-//         <div
-//           ref={sectionRef as React.RefObject<HTMLDivElement>}
-//           className={`
-//             w-full h-[602px] bg-[#1B3B5F] rounded-[30px]
-//             px-[49px] py-[48px]
-//             transition-all duration-700 ease-out
-//             hover:shadow-2xl hover:scale-[1.01]
-//             shadow-lg
-//             ${isSectionInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}
-//           `}
-//         >
-//           <div className="flex h-full gap-[30px]">
-//             {/* LEFT SIDE – Text & Buttons – width exactly 492px, height 342px (centered vertically) */}
-//             <div className="w-[492px] h-full flex flex-col justify-center gap-[41px]">
-//               <div>
-//                 <h2
-//                   className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#F9C319] mb-4 leading-tight"
-//                   style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}
-//                 >
-//                   Let Commerce Move Better
-//                 </h2>
-//                 <p className="text-base md:text-lg text-white/80 leading-relaxed">
-//                   Obana is building connected systems that reduce friction in
-//                   sourcing, logistics, and distribution – creating smarter
-//                   pathways for businesses to grow.
-//                 </p>
-//               </div>
-
-//               <div className="flex flex-col sm:flex-row gap-4">
-//                 <Button
-//                   variant="primary"
-//                   animation="ripple"
-//                   className="bg-white hover:bg-secondary !text-primary font-medium shadow-md"
-//                   onClick={handleExploreEcosystem}
-//                 >
-//                   Explore Ecosystem
-//                   <ArrowRight className="ml-2 h-4 w-4 rotate-[-40deg] transition-transform group-hover:translate-x-0.5" />
-//                 </Button>
-//                 <Button
-//                   variant="primary"
-//                   animation="ripple"
-//                   className="border border-white text-primary bg-transparent hover:bg-white  transition-all duration-300 font-medium"
-//                   onClick={handleBecomePartner}
-//                 >
-//                   Become a Partner
-//                   <ArrowRight className="ml-2 h-4 w-4 rotate-[-40deg] transition-transform group-hover:translate-x-0.5" />
-//                 </Button>
-//               </div>
-//             </div>
-
-//             {/* RIGHT SIDE – Ecosystem Diagram */}
-//             <div className="flex-1 h-full relative">
-//               <Image
-//                 src={ecosystemDiagram}
-//                 alt="Obana ecosystem diagram"
-//                 fill
-//                 className="object-contain"
-//                 sizes="(max-width: 1271px) 100vw, 651px"
-//               />
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default CommerceMoveBetter;
-
-
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
@@ -156,13 +31,133 @@ const useInView = (options?: IntersectionObserverInit) => {
 const CommerceMoveBetter: React.FC = () => {
   const { openGetStartedModal } = useModal();
   const [sectionRef, isSectionInView] = useInView({ threshold: 0.1 });
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  /* ── Particle canvas background ── */
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    let raf: number;
+    let W = 0, H = 0;
+    const DOTS = 70;
+    type Dot = { x: number; y: number; vx: number; vy: number; r: number; alpha: number; color: string };
+    const PALETTE = ["27,59,95","27,59,95","36,80,127","251,191,36","251,191,36","255,255,255"];
+    let dots: Dot[] = [];
+
+    const resize = () => {
+      W = canvas.offsetWidth; H = canvas.offsetHeight;
+      canvas.width = W; canvas.height = H;
+      dots = Array.from({ length: DOTS }, () => ({
+        x: Math.random() * W, y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.45, vy: (Math.random() - 0.5) * 0.45,
+        r: Math.random() * 2.4 + 0.8,
+        alpha: Math.random() * 0.45 + 0.18,
+        color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
+      }));
+    };
+
+    const draw = () => {
+      ctx.clearRect(0, 0, W, H);
+      for (let i = 0; i < dots.length; i++) {
+        for (let j = i + 1; j < dots.length; j++) {
+          const dx = dots[i].x - dots[j].x, dy = dots[i].y - dots[j].y;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          if (d < 135) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(27,59,95,${0.15 * (1 - d / 135)})`;
+            ctx.lineWidth = 1;
+            ctx.moveTo(dots[i].x, dots[i].y);
+            ctx.lineTo(dots[j].x, dots[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      dots.forEach(d => {
+        const g = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, d.r * 3.5);
+        g.addColorStop(0, `rgba(${d.color},${d.alpha * 0.75})`);
+        g.addColorStop(1, `rgba(${d.color},0)`);
+        ctx.beginPath(); ctx.arc(d.x, d.y, d.r * 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = g; ctx.fill();
+        ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${d.color},${d.alpha})`; ctx.fill();
+        d.x += d.vx; d.y += d.vy;
+        if (d.x < 0 || d.x > W) d.vx *= -1;
+        if (d.y < 0 || d.y > H) d.vy *= -1;
+      });
+      raf = requestAnimationFrame(draw);
+    };
+
+    resize(); draw();
+    window.addEventListener("resize", resize);
+    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
+  }, []);
 
   return (
     <section
-      className="w-full py-20 bg-white overflow-hidden"
-      style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}
+      className="w-full py-20 relative overflow-hidden"
+      style={{
+        fontFamily: "'Bricolage Grotesque', sans-serif",
+        background: "linear-gradient(135deg, #f8faff 0%, #eef3fb 50%, #f5f8ff 100%)",
+      }}
     >
-      <style>{`
+      {/* ── Animated particle canvas ── */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        style={{ zIndex: 0 }}
+      />
+
+      {/* ── Floating orbs ── */}
+      <div className="absolute pointer-events-none"
+        style={{
+          top: "-70px", left: "-70px",
+          width: "450px", height: "450px", borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(27,59,95,0.13) 0%, transparent 65%)",
+          animation: "ecoOrb1 8s ease-in-out infinite", zIndex: 1,
+        }}
+      />
+      <div className="absolute pointer-events-none"
+        style={{
+          bottom: "-50px", right: "-50px",
+          width: "380px", height: "380px", borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(251,191,36,0.16) 0%, transparent 65%)",
+          animation: "ecoOrb2 10s ease-in-out infinite", zIndex: 1,
+        }}
+      />
+      <div className="absolute pointer-events-none"
+        style={{
+          top: "35%", left: "42%",
+          width: "260px", height: "260px", borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(27,59,95,0.08) 0%, transparent 65%)",
+          animation: "ecoOrb3 7s ease-in-out infinite", zIndex: 1,
+        }}
+      />
+
+      {/* ── Dot grid overlay ── */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: "radial-gradient(circle, rgba(27,59,95,0.10) 1.2px, transparent 1.2px)",
+          backgroundSize: "30px 30px",
+          zIndex: 1,
+        }}
+      />
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes ecoOrb1 {
+          0%,100% { transform: translate(0,0) scale(1); }
+          50%      { transform: translate(22px,-18px) scale(1.08); }
+        }
+        @keyframes ecoOrb2 {
+          0%,100% { transform: translate(0,0) scale(1); }
+          50%      { transform: translate(-20px,15px) scale(1.06); }
+        }
+        @keyframes ecoOrb3 {
+          0%,100% { transform: translate(0,0) scale(1); }
+          50%      { transform: translate(14px,20px) scale(1.05); }
+        }
         @keyframes dashFlow {
           0%   { stroke-dashoffset: 300; opacity: 0.25; }
           50%  { opacity: 1; }
@@ -183,9 +178,9 @@ const CommerceMoveBetter: React.FC = () => {
         .lf5 { animation: dashFlow 2.4s ease-in-out infinite 0.3s; }
         .np  { animation: nodePulse 2s ease-in-out infinite; }
         .diagram-svg { animation: glowPulse 3s ease-in-out infinite; }
-      `}</style>
+      `}} />
 
-      <div className="mx-auto max-w-[1271px] px-4 md:px-0">
+      <div className="mx-auto max-w-[1271px] px-4 md:px-0 relative" style={{ zIndex: 10 }}>
         <div
           ref={sectionRef as React.RefObject<HTMLDivElement>}
           className={`

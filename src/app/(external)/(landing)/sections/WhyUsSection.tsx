@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { ArrowRight, TrendingUp, Users, Zap, Clock } from "lucide-react";
+import { ArrowRight, TrendingUp, Zap, Clock } from "lucide-react";
 
 /* ------------------------------------------------------------------
    Data for the left column: SME Journey steps
@@ -226,7 +226,7 @@ const WhyUsSection: React.FC = () => {
       `}</style>
 
       <section
-        className="relative w-full overflow-hidden"
+        className="relative w-full overflow-hidden rounded-bl-[60px] rounded-br-[60px]"
         style={{
           background: "linear-gradient(160deg, #0a1628 0%, #1b3b5f 45%, #0d2240 100%)",
           fontFamily: "'Bricolage Grotesque', sans-serif",
