@@ -256,10 +256,7 @@ const useInView = (options?: IntersectionObserverInit) => {
     const element = ref.current;
     if (!element) return;
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setIsInView(true);
-        observer.unobserve(element);
-      }
+      setIsInView(entry.isIntersecting);
     }, options);
     observer.observe(element);
     return () => observer.disconnect();

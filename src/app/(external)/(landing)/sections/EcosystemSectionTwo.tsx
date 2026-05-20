@@ -1,3 +1,128 @@
+// "use client";
+
+// import React, { useEffect, useRef, useState } from "react";
+// import Image from "next/image";
+// import Button from "@/components/ui/button";
+// import { ArrowRight } from "lucide-react";
+// import { useModal } from "@/contexts/modal-context";
+
+// // Replace with your actual ecosystem illustration
+// import ecosystemDiagram from "@/app/assets/images/landing-page/ecosystem-diagram.png";
+
+// // ---------- Hooks ----------
+// const useInView = (options?: IntersectionObserverInit) => {
+//   const ref = useRef<HTMLDivElement | null>(null);
+//   const [isInView, setIsInView] = useState(false);
+
+//   useEffect(() => {
+//     const element = ref.current;
+//     if (!element) return;
+
+//     const observer = new IntersectionObserver(([entry]) => {
+//       if (entry.isIntersecting) {
+//         setIsInView(true);
+//         observer.unobserve(element);
+//       }
+//     }, options);
+
+//     observer.observe(element);
+//     return () => observer.disconnect();
+//   }, [options]);
+
+//   return [ref, isInView] as const;
+// };
+
+// // ---------- Main Section ----------
+// const CommerceMoveBetter: React.FC = () => {
+//   const { openGetStartedModal } = useModal();
+//   const [sectionRef, isSectionInView] = useInView({ threshold: 0.1 });
+
+//   const handleExploreEcosystem = () => {
+//     openGetStartedModal();
+//   };
+
+//   const handleBecomePartner = () => {
+//     // route to partner page or modal – adjust as needed
+//     openGetStartedModal(); // placeholder
+//   };
+
+//   return (
+//     <section
+//       className="w-full py-20 bg-white overflow-hidden"
+//       style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}
+//     >
+//       <div className="mx-auto max-w-[1271px] px-4 md:px-0">
+//         {/* Card container with exact Figma dimensions */}
+//         <div
+//           ref={sectionRef as React.RefObject<HTMLDivElement>}
+//           className={`
+//             w-full h-[602px] bg-[#1B3B5F] rounded-[30px]
+//             px-[49px] py-[48px]
+//             transition-all duration-700 ease-out
+//             hover:shadow-2xl hover:scale-[1.01]
+//             shadow-lg
+//             ${isSectionInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}
+//           `}
+//         >
+//           <div className="flex h-full gap-[30px]">
+//             {/* LEFT SIDE – Text & Buttons – width exactly 492px, height 342px (centered vertically) */}
+//             <div className="w-[492px] h-full flex flex-col justify-center gap-[41px]">
+//               <div>
+//                 <h2
+//                   className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#F9C319] mb-4 leading-tight"
+//                   style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}
+//                 >
+//                   Let Commerce Move Better
+//                 </h2>
+//                 <p className="text-base md:text-lg text-white/80 leading-relaxed">
+//                   Obana is building connected systems that reduce friction in
+//                   sourcing, logistics, and distribution – creating smarter
+//                   pathways for businesses to grow.
+//                 </p>
+//               </div>
+
+//               <div className="flex flex-col sm:flex-row gap-4">
+//                 <Button
+//                   variant="primary"
+//                   animation="ripple"
+//                   className="bg-white hover:bg-secondary !text-primary font-medium shadow-md"
+//                   onClick={handleExploreEcosystem}
+//                 >
+//                   Explore Ecosystem
+//                   <ArrowRight className="ml-2 h-4 w-4 rotate-[-40deg] transition-transform group-hover:translate-x-0.5" />
+//                 </Button>
+//                 <Button
+//                   variant="primary"
+//                   animation="ripple"
+//                   className="border border-white text-primary bg-transparent hover:bg-white  transition-all duration-300 font-medium"
+//                   onClick={handleBecomePartner}
+//                 >
+//                   Become a Partner
+//                   <ArrowRight className="ml-2 h-4 w-4 rotate-[-40deg] transition-transform group-hover:translate-x-0.5" />
+//                 </Button>
+//               </div>
+//             </div>
+
+//             {/* RIGHT SIDE – Ecosystem Diagram */}
+//             <div className="flex-1 h-full relative">
+//               <Image
+//                 src={ecosystemDiagram}
+//                 alt="Obana ecosystem diagram"
+//                 fill
+//                 className="object-contain"
+//                 sizes="(max-width: 1271px) 100vw, 651px"
+//               />
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </section>
+//   );
+// };
+
+// export default CommerceMoveBetter;
+
+
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
@@ -16,10 +141,7 @@ const useInView = (options?: IntersectionObserverInit) => {
     const element = ref.current;
     if (!element) return;
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setIsInView(true);
-        observer.unobserve(element);
-      }
+      setIsInView(entry.isIntersecting);
     }, options);
     observer.observe(element);
     return () => observer.disconnect();
@@ -67,7 +189,7 @@ const CommerceMoveBetter: React.FC = () => {
           if (d < 135) {
             ctx.beginPath();
             ctx.strokeStyle = `rgba(27,59,95,${0.15 * (1 - d / 135)})`;
-            ctx.lineWidth = 1;
+            ctx.lineWidth = 3;
             ctx.moveTo(dots[i].x, dots[i].y);
             ctx.lineTo(dots[j].x, dots[j].y);
             ctx.stroke();
@@ -158,6 +280,18 @@ const CommerceMoveBetter: React.FC = () => {
           0%,100% { transform: translate(0,0) scale(1); }
           50%      { transform: translate(14px,20px) scale(1.05); }
         }
+        @keyframes cardDeco1 {
+          0%,100% { transform: rotate(0deg) scale(1); opacity: 0.07; }
+          50%      { transform: rotate(6deg) scale(1.04); opacity: 0.12; }
+        }
+        @keyframes cardDeco2 {
+          0%,100% { transform: translate(0,0); opacity: 0.08; }
+          50%      { transform: translate(6px,-6px); opacity: 0.14; }
+        }
+        @keyframes cardDeco3 {
+          0%,100% { transform: translateY(-50%) rotate(0deg); opacity: 0.05; }
+          50%      { transform: translateY(-50%) rotate(15deg); opacity: 0.09; }
+        }
         @keyframes dashFlow {
           0%   { stroke-dashoffset: 300; opacity: 0.25; }
           50%  { opacity: 1; }
@@ -191,6 +325,57 @@ const CommerceMoveBetter: React.FC = () => {
             ${isSectionInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}
           `}
         >
+          {/* ── Card decorative design layer ── */}
+
+          {/* Large hexagon outline — top right */}
+          <svg className="absolute pointer-events-none" style={{ top: "-30px", right: "120px", opacity: 0.07, animation: "cardDeco1 8s ease-in-out infinite" }}
+            width="200" height="200" viewBox="0 0 200 200" fill="none">
+            <polygon points="100,5 191,52 191,148 100,195 9,148 9,52"
+              stroke="#F9C319" strokeWidth="2" fill="none" strokeDasharray="12 6" />
+            <polygon points="100,25 171,62 171,138 100,175 29,138 29,62"
+              stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" fill="none" />
+          </svg>
+
+          {/* Circuit-board style lines — bottom left */}
+          <svg className="absolute pointer-events-none" style={{ bottom: "0", left: "0", opacity: 0.08, animation: "cardDeco2 10s ease-in-out infinite" }}
+            width="260" height="180" viewBox="0 0 260 180" fill="none">
+            {/* Horizontal rails */}
+            <line x1="0" y1="60" x2="180" y2="60" stroke="#F9C319" strokeWidth="1.5" strokeDasharray="8 5" />
+            <line x1="0" y1="100" x2="140" y2="100" stroke="white" strokeWidth="1" strokeDasharray="6 4" />
+            <line x1="0" y1="140" x2="100" y2="140" stroke="#F9C319" strokeWidth="1.5" strokeDasharray="8 5" />
+            {/* Vertical connectors */}
+            <line x1="60" y1="60" x2="60" y2="180" stroke="white" strokeWidth="1" strokeDasharray="5 4" />
+            <line x1="120" y1="60" x2="120" y2="140" stroke="#F9C319" strokeWidth="1.5" strokeDasharray="6 4" />
+            <line x1="100" y1="100" x2="100" y2="180" stroke="white" strokeWidth="1" strokeDasharray="5 4" />
+            {/* Junction nodes */}
+            <circle cx="60" cy="60" r="5" fill="#F9C319" opacity="0.7" />
+            <circle cx="120" cy="60" r="4" fill="white" opacity="0.5" />
+            <circle cx="100" cy="100" r="4" fill="#F9C319" opacity="0.6" />
+            <circle cx="60" cy="140" r="3" fill="white" opacity="0.4" />
+            <circle cx="120" cy="140" r="5" fill="#F9C319" opacity="0.7" />
+          </svg>
+
+          {/* Concentric rings — far right center */}
+          <svg className="absolute pointer-events-none" style={{ right: "-60px", top: "50%", transform: "translateY(-50%)", opacity: 0.05, animation: "cardDeco3 6s ease-in-out infinite" }}
+            width="300" height="300" viewBox="0 0 300 300" fill="none">
+            <circle cx="150" cy="150" r="130" stroke="#F9C319" strokeWidth="1.5" strokeDasharray="10 8" />
+            <circle cx="150" cy="150" r="100" stroke="white" strokeWidth="1" strokeDasharray="8 6" />
+            <circle cx="150" cy="150" r="70"  stroke="#F9C319" strokeWidth="1.5" strokeDasharray="6 5" />
+            <circle cx="150" cy="150" r="40"  stroke="white" strokeWidth="1" strokeDasharray="4 4" />
+            <circle cx="150" cy="150" r="12"  fill="rgba(249,195,25,0.3)" />
+          </svg>
+
+          {/* Floating data bars — top left area */}
+          <svg className="absolute pointer-events-none" style={{ top: "24px", left: "24px", opacity: 0.06, animation: "cardDeco1 9s ease-in-out infinite 1s" }}
+            width="120" height="60" viewBox="0 0 120 60" fill="none">
+            <rect x="0"  y="40" width="14" height="20" rx="3" fill="#F9C319" />
+            <rect x="20" y="25" width="14" height="35" rx="3" fill="white" opacity="0.7" />
+            <rect x="40" y="10" width="14" height="50" rx="3" fill="#F9C319" />
+            <rect x="60" y="30" width="14" height="30" rx="3" fill="white" opacity="0.7" />
+            <rect x="80" y="15" width="14" height="45" rx="3" fill="#F9C319" />
+            <rect x="100" y="35" width="14" height="25" rx="3" fill="white" opacity="0.7" />
+          </svg>
+
           {/* Mobile: stacked. Desktop: exact original side-by-side at h-[602px] */}
           <div className="flex flex-col md:flex-row md:h-full gap-8 md:gap-[30px]">
 

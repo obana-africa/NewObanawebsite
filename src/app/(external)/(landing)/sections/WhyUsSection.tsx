@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { ArrowRight, TrendingUp, Zap, Clock } from "lucide-react";
+import { useModal } from "@/contexts/modal-context";
 
 /* ------------------------------------------------------------------
    Data for the left column: SME Journey steps
@@ -48,10 +49,7 @@ const useInView = (options?: IntersectionObserverInit) => {
     const element = ref.current;
     if (!element) return;
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setIsInView(true);
-        observer.unobserve(element);
-      }
+      setIsInView(entry.isIntersecting);
     }, options);
     observer.observe(element);
     return () => observer.disconnect();
@@ -98,10 +96,10 @@ const useAnimatedCanvas = (canvasRef: React.RefObject<HTMLCanvasElement | null>)
       particles = Array.from({ length: PARTICLE_COUNT }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
-        radius: Math.random() * 2 + 0.8,
-        alpha: Math.random() * 0.4 + 0.15,
+        vx: (Math.random() - 0.7) * 0.5,
+        vy: (Math.random() - 0.7) * 0.5,
+        radius: Math.random() * 4 + 1.0,
+        alpha: Math.random() * 0.6 + 0.17,
         color: COLORS[Math.floor(Math.random() * COLORS.length)],
       }));
     };
@@ -118,9 +116,9 @@ const useAnimatedCanvas = (canvasRef: React.RefObject<HTMLCanvasElement | null>)
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < CONNECTION_DISTANCE) {
             ctx.beginPath();
-            const opacity = 0.08 * (1 - dist / CONNECTION_DISTANCE);
+            const opacity = 1.00 * (1 - dist / CONNECTION_DISTANCE);
             ctx.strokeStyle = `rgba(200,220,255,${opacity})`;
-            ctx.lineWidth = 1;
+            ctx.lineWidth = 2;
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
             ctx.stroke();
@@ -130,15 +128,15 @@ const useAnimatedCanvas = (canvasRef: React.RefObject<HTMLCanvasElement | null>)
 
       // Draw particles with glow
       particles.forEach((p) => {
-        const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius * 5);
-        grad.addColorStop(0, `rgba(${p.color}, ${p.alpha * 0.6})`);
+        const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius * 7);
+        grad.addColorStop(0, `rgba(${p.color}, ${p.alpha * 0.8})`);
         grad.addColorStop(1, `rgba(${p.color}, 0)`);
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius * 4, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, p.radius * 4, 0, Math.PI * 4);
         ctx.fillStyle = grad;
         ctx.fill();
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 4);
         ctx.fillStyle = `rgba(${p.color}, ${p.alpha + 0.2})`;
         ctx.fill();
 
@@ -172,6 +170,7 @@ const JourneyStep: React.FC<{
 }> = ({ title, description, icon: Icon, index }) => {
   const [ref, isInView] = useInView({ threshold: 0.2 });
   const [isHovered, setIsHovered] = useState(false);
+  
 
   return (
     <div
@@ -212,6 +211,14 @@ const WhyUsSection: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   useAnimatedCanvas(canvasRef);
   const [ref, isInView] = useInView({ threshold: 0.1 });
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { openGetStartedModal } = useModal();
+
+
+  const handleGetStarted = (): void => {
+		openGetStartedModal();
+		setIsOpen(false);
+	};
 
   return (
     <>
@@ -335,8 +342,8 @@ const WhyUsSection: React.FC = () => {
 
               {/* Button */}
               <button
-                className="group inline-flex items-center gap-2 px-6 py-3 rounded-md cursor-pointer bg-white text-primary font-semibold text-sm transition-all duration-300 hover:bg-white/80 hover:shadow-lg hover:shadow-yellow-500/20"
-                onClick={() => { }}
+                className="group inline-flex items-center gap-2 px-6 py-3 rounded-md cursor-pointer bg-white text-primary font-semibold text-sm transition-all duration-300 hover:bg-primary/80 hover:shadow-lg hover:shadow-yellow-500/20"
+                onClick={handleGetStarted}
                 
               >
                 Learn how it works
