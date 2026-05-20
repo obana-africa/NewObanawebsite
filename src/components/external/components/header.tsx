@@ -126,8 +126,8 @@ const Header: React.FC = () => {
 					isScrolled ? "bg-white shadow-md" : "bg-white"
 				}`}
 			>
-				<div className="container mx-auto px-6 md:px-10">
-					<div className="flex items-center justify-between py-4">
+				<div className="container mx-auto px-6 md:px-10 py- md:py-">
+					<div className="flex items-center justify-between py-2">
 						<div className="shrink-0 pb-4">
 							<Link href="/" className="flex items-center">
 								<div className="relative h-12 w-30">

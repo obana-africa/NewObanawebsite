@@ -226,9 +226,9 @@ const HeroSection: React.FC = () => {
         <div
           className="relative container mx-auto px-4 md:px-8 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12"
           style={{ 
-			zIndex: 10, 
-			paddingTop: "clamp(64px,10vw,100px)", 
-			paddingBottom: "clamp(20px,4vw,20px)" }}
+			    zIndex: 10, 
+			    paddingTop: "clamp(60px,20vw,70px)", 
+			    paddingBottom: "clamp(20px,4vw,20px)" }}
         >
 
           {/* ── LEFT: Text content ── */}
@@ -271,11 +271,11 @@ const HeroSection: React.FC = () => {
             </p>
 
            {/* Buttons */}
-				<div className="flex flex-col sm:flex-row gap-4 items-center">
+				<div className="flex flex-row gap-3 items-center">
  					<Button
  						variant="primary"
  						animation="ripple"
- 						className="bg-primary hover:bg-primary-dark text-primary hover:text-primary text-lg font-medium shadow-lg shadow-primary/30"
+ 						className="bg-primary hover:bg-primary-dark text-primary hover:text-primary text-sm px-4 py-2 md:text-base md:px-6 md:py-3 font-medium shadow-lg shadow-primary/30"
  						onClick={handleExploreEcosystem}
  					>
  						Explore Ecosystem
@@ -283,7 +283,7 @@ const HeroSection: React.FC = () => {
  					<Button
  						variant="primary"
  						animation="ripple"
- 						className="shadow-lg !text-primary bg-transparent hover:bg-primary hover:text-primary transition-all duration-300 ease-in-out text-lg font-medium"
+ 						className="shadow-lg !text-primary bg-transparent hover:bg-primary hover:text-primary transition-all duration-300 ease-in-out text-sm px-4 py-2 md:text-base md:px-6 md:py-3 font-medium"
  						onClick={handleBecomePartner}
  					>
  						Become a Partner
