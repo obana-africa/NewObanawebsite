@@ -1,230 +1,6 @@
-// "use client";
-// import React, { useState, useEffect, useCallback } from "react";
-// import { ChevronLeft, ChevronRight } from "lucide-react";
-// import Image, { StaticImageData } from "next/image";
-
-// interface Testimonial {
-//   quote: string;
-//   quoteTitle: string;
-//   name: string;
-//   role: string;
-//   image: string | StaticImageData;
-//   date: string;
-// }
-
-// interface TestimonialSectionProps {
-//   title: string;
-//   testimonials: Testimonial[];
-//   autoPlayInterval?: number;
-// }
-
-// // ─── Single Testimonial Card ─────────────────────────────────────────────────
-// interface TestimonialCardProps {
-//   testimonial: Testimonial;
-//   /** Alternates the card between light and dark variants */
-//   variant: "light" | "dark";
-// }
-
-// const TestimonialCard: React.FC<TestimonialCardProps> = ({
-//   testimonial,
-//   variant,
-// }) => {
-//   const { quote, quoteTitle, name, role, image, date } = testimonial;
-
-//   const isDark = variant === "dark";
-
-//   const textColor = isDark ? "#FFFFFF" : "#1B3B5F";
-//   const subColor = isDark ? "rgba(255,255,255,0.55)" : "rgba(27,59,95,0.55)";
-//   const bodyColor = isDark ? "rgba(255,255,255,0.82)" : "rgba(27,59,95,0.82)";
-//   const dateColor = isDark ? "rgba(255,255,255,0.45)" : "rgba(27,59,95,0.45)";
-//   const bgColor = isDark ? "#1B3B5F" : "#E9F9FF";
-
-//   return (
-//     <div className="flex flex-row items-stretch gap-3 h-[280px] md:h-[300px] lg:h-[340px]">
-//       {/* Left panel: Image — standalone rounded card */}
-//       <div className="relative w-[44%] shrink-0 rounded-2xl overflow-hidden shadow-md">
-//         <Image
-//           src={image}
-//           alt={name}
-//           fill
-//           quality={100}
-//           className="object-cover object-top"
-//           sizes="(max-width: 768px) 44vw, 210px"
-//           priority
-//         />
-//       </div>
-
-//       {/* Right panel: Description — separate rounded card, narrower */}
-//       <div
-//         className="flex flex-col rounded-2xl p-4 md:p-5 shadow-md min-w-0 w-[56%]"
-//         style={{ backgroundColor: bgColor }}
-//       >
-//         {/* Top: name + role */}
-//         <div className="mt-4">
-//           <h4
-//             className="font-bold text-sm md:text-base leading-tight"
-//             style={{ color: textColor }}
-//           >
-//             {name}
-//           </h4>
-//           <p className="text-xs md:text-sm font-bold mt-0.5" style={{ color: subColor }}>
-//             {role}
-//           </p>
-//         </div>
-
-//         {/* Middle: quote title + quote body */}
-//         <div className="mt-4 flex-1 flex flex-col">
-//           <h5
-//             className="font-bold text-md md:text-base mb-2 leading-snug mt-10"
-//             style={{ color: textColor }}
-//           >
-//             {quoteTitle}
-//           </h5>
-//           <p
-//             className="text-xs md:text-sm leading-relaxed line-clamp-4"
-//             style={{ color: bodyColor }}
-//           >
-//             {quote}
-//           </p>
-//         </div>
-
-//         {/* Bottom: date pinned to bottom-right */}
-//         <div className="flex justify-end pt-2 font-bold">
-//           <p className="text-xs" style={{ color: dateColor }}>
-//             {date}
-//           </p>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// // Card width + gap constants — used for offset calculation
-// const CARD_WIDTH = 560; // px
-// const CARD_GAP   = 24;  // px
-// const STEP       = CARD_WIDTH + CARD_GAP;
-
-// // ─── Main Section ─────────────────────────────────────────────────────────────
-// const TestimonialSection: React.FC<TestimonialSectionProps> = ({
-//   title,
-//   testimonials,
-//   autoPlayInterval = 4000,
-// }) => {
-//   const [offset, setOffset]   = useState(0);
-//   const [animated, setAnimated] = useState(true);
-//   const [isPaused, setIsPaused] = useState(false);
-
-//   // Duplicate for seamless infinite loop
-//   const looped = [...testimonials, ...testimonials];
-//   const loopWidth = testimonials.length * STEP;
-
-//   const advance = useCallback(() => {
-//     setAnimated(true);
-//     setOffset((prev) => {
-//       const next = prev + STEP;
-//       if (next >= loopWidth) {
-//         setTimeout(() => {
-//           setAnimated(false);
-//           setOffset(0);
-//         }, 500);
-//       }
-//       return next;
-//     });
-//   }, [loopWidth]);
-
-//   const retreat = useCallback(() => {
-//     setAnimated(true);
-//     setOffset((prev) => {
-//       if (prev <= 0) {
-//         // Jump to end of first copy instantly, then animate back one step
-//         setAnimated(false);
-//         setOffset(loopWidth);
-//         setTimeout(() => {
-//           setAnimated(true);
-//           setOffset(loopWidth - STEP);
-//         }, 20);
-//         return prev;
-//       }
-//       return prev - STEP;
-//     });
-//   }, [loopWidth]);
-
-//   useEffect(() => {
-//     if (isPaused) return;
-//     const id = setInterval(advance, autoPlayInterval);
-//     return () => clearInterval(id);
-//   }, [isPaused, advance, autoPlayInterval]);
-
-//   if (testimonials.length === 0) return null;
-
-//   return (
-//     <section className="w-full py-0 md:py-2 bg-white relative">
-//       <div className="container mx-auto px-4 md:px-6">
-//         {/* Header */}
-//         <div className="text-center mb-8 md:mb-10">
-//           <h2 className="text-primary text-3xl md:text-4xl lg:text-5xl font-bold">
-//             {title}
-//           </h2>
-//         </div>
-//       </div>
-
-//       {/* Full-width slider viewport — overflow hidden, left-aligned so peek shows on right */}
-//       <div
-//         className="overflow-hidden"
-//         style={{ paddingLeft: "max(1rem, calc((100vw - 1152px) / 2))" }}
-//         onMouseEnter={() => setIsPaused(true)}
-//         onMouseLeave={() => setIsPaused(false)}
-//       >
-//         <div
-//           className="flex"
-//           style={{
-//             gap: `${CARD_GAP}px`,
-//             transform: `translateX(-${offset}px)`,
-//             transition: animated
-//               ? "transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
-//               : "none",
-//           }}
-//         >
-//           {looped.map((testimonial, idx) => (
-//             <div
-//               key={idx}
-//               style={{ width: `${CARD_WIDTH}px`, flexShrink: 0 }}
-//             >
-//               <TestimonialCard
-//                 testimonial={testimonial}
-//                 variant={idx % 2 === 0 ? "light" : "light"}
-//               />
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-
-//       {/* Navigation */}
-//       <div className="flex justify-center items-center gap-4 mt-8 mb-4">
-//         <button
-//           onClick={retreat}
-//           className="w-12 h-12 rounded-full bg-white border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center shadow-md hover:shadow-lg hover:cursor-pointer"
-//           aria-label="Previous testimonial"
-//         >
-//           <ChevronLeft size={24} />
-//         </button>
-//         <button
-//           onClick={advance}
-//           className="w-12 h-12 rounded-full border-primary border-2 hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center shadow-md hover:shadow-lg hover:cursor-pointer"
-//           aria-label="Next testimonial"
-//         >
-//           <ChevronRight size={24} />
-//         </button>
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default TestimonialSection;
-
 "use client";
-import React, { useState, useEffect, useCallback } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import Image, { StaticImageData } from "next/image";
 
 interface Testimonial {
@@ -242,66 +18,113 @@ interface TestimonialSectionProps {
   autoPlayInterval?: number;
 }
 
-// ─── Single Testimonial Card ─────────────────────────────────────────────────
 interface TestimonialCardProps {
   testimonial: Testimonial;
   variant: "light" | "dark";
 }
 
+// ─── Single Testimonial Card ─────────────────────────────────────────────────
 const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
   const { quote, quoteTitle, name, role, image, date } = testimonial;
 
   return (
     <div
-      className="flex flex-col rounded-3xl bg-white p-6 shadow-lg"
-      style={{ minHeight: "360px" }}
+      className="flex flex-col rounded-2xl bg-white relative overflow-hidden"
+      style={{
+        width: "300px",
+        minHeight: "310px",
+        padding: "20px",
+        boxShadow: "0 4px 24px rgba(27,59,95,0.10), 0 1px 4px rgba(27,59,95,0.06)",
+        border: "1px solid rgba(27,59,95,0.07)",
+      }}
     >
+      {/* ── Decorative elements ── */}
+      <div className="absolute pointer-events-none"
+        style={{ top: "-40px", right: "-40px", width: "140px", height: "140px",
+          borderRadius: "50%", background: "radial-gradient(circle, rgba(27,59,95,0.06) 0%, transparent 70%)" }} />
+      <div className="absolute pointer-events-none"
+        style={{ bottom: "-24px", left: "-24px", width: "90px", height: "90px",
+          borderRadius: "50%", background: "radial-gradient(circle, rgba(251,191,36,0.1) 0%, transparent 70%)" }} />
+      <div className="absolute top-0 left-0 pointer-events-none opacity-25"
+        style={{ width: "70px", height: "70px",
+          backgroundImage: "radial-gradient(circle, rgba(27,59,95,0.4) 1.2px, transparent 1.2px)",
+          backgroundSize: "10px 10px" }} />
+      <div className="absolute top-4 right-4 pointer-events-none" style={{ opacity: 0.06 }}>
+        <Quote size={44} color="#1b3b5f" fill="#1b3b5f" />
+      </div>
 
-      {/* Top: circular avatar + name + role */}
-      <div className="flex items-center gap-3 mb-5">
-        <div className="relative w-16 h-16 rounded-full overflow-hidden flex-shrink-0 shadow-md">
+      {/* ── Avatar + name + role ── */}
+      <div className="flex items-center gap-3 mb-4 relative z-10">
+        {/* Fixed-size container — required for next/image fill to render */}
+        <div style={{
+          position: "relative",
+          width: "52px",
+          height: "52px",
+          borderRadius: "50%",
+          overflow: "hidden",
+          flexShrink: 0,
+          boxShadow: "0 0 0 3px rgba(27,59,95,0.1), 0 2px 8px rgba(27,59,95,0.15)",
+        }}>
           <Image
             src={image}
             alt={name}
             fill
             className="object-cover object-top"
-            sizes="58px"
+            sizes="52px"
             priority
           />
         </div>
         <div className="min-w-0">
-          <h4 className="font-bold text-md md:text-base text-gray-900 leading-tight truncate">
+          <h4 className="font-bold text-sm text-gray-900 leading-tight truncate"
+            style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>
             {name}
           </h4>
-          <p className="text-sm text-primary font-semibold mt-0.5 truncate">
+          <p className="text-xs font-semibold mt-0.5 truncate"
+            style={{ color: "#1b3b5f", opacity: 0.6, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
             {role}
           </p>
         </div>
       </div>
 
+      {/* Divider */}
+      <div className="w-full h-px mb-3 relative z-10"
+        style={{ background: "linear-gradient(90deg, rgba(27,59,95,0.13), rgba(251,191,36,0.25), transparent)" }} />
+
       {/* Quote title */}
       {quoteTitle && (
-        <h5 className="font-bold text-md md:text-[15px] text-primary mb-2 leading-snug">
+        <h5 className="font-bold text-sm mb-2 leading-snug relative z-10"
+          style={{ color: "#1b3b5f", fontFamily: "'Bricolage Grotesque', sans-serif" }}>
           {quoteTitle}
         </h5>
       )}
 
       {/* Quote body */}
-      <p className="text-[12px] text-primary leading-relaxed flex-1 line-clamp-6">
+      <p className="text-[12px] leading-relaxed flex-1 line-clamp-5 relative z-10"
+        style={{ color: "rgba(27,59,95,0.7)", fontFamily: "'Bricolage Grotesque', sans-serif" }}>
         {quote}
       </p>
 
-      {/* Date — bottom right */}
-      <div className="flex justify-end mt-4 pt-3 border-t border-primary/20">
-        <p className="text-sm font-semibold text-primary/60">{date}</p>
+      {/* Date */}
+      <div className="flex justify-between items-center mt-3 pt-3 relative z-10"
+        style={{ borderTop: "1px solid rgba(27,59,95,0.08)" }}>
+        <div className="flex gap-1">
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className="w-1.5 h-1.5 rounded-full"
+              style={{ background: "#fbbf24" }} />
+          ))}
+        </div>
+        <p className="text-xs font-semibold"
+          style={{ color: "rgba(27,59,95,0.45)", fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+          {date}
+        </p>
       </div>
     </div>
   );
 };
 
-// Card width + gap constants — used for offset calculation
-const CARD_WIDTH = 340; // px — slightly narrower
-const CARD_GAP   = 20;  // px
+// Card width + gap constants
+const CARD_WIDTH = 300;
+const CARD_GAP   = 20;
 const STEP       = CARD_WIDTH + CARD_GAP;
 
 // ─── Main Section ─────────────────────────────────────────────────────────────
@@ -310,39 +133,90 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
   testimonials,
   autoPlayInterval = 4000,
 }) => {
-  const [offset, setOffset]   = useState(0);
+  const [offset,   setOffset]   = useState(0);
   const [animated, setAnimated] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // Duplicate for seamless infinite loop
-  const looped = [...testimonials, ...testimonials];
+  const looped    = [...testimonials, ...testimonials];
   const loopWidth = testimonials.length * STEP;
+
+  /* ── Particle canvas — same style as hero ── */
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    let raf: number;
+    let W = 0, H = 0;
+    const DOTS = 60;
+    type Dot = { x: number; y: number; vx: number; vy: number; r: number; alpha: number; color: string };
+    const PALETTE = ["27,59,95","27,59,95","36,80,127","251,191,36","251,191,36"];
+    let dots: Dot[] = [];
+
+    const resize = () => {
+      W = canvas.offsetWidth; H = canvas.offsetHeight;
+      canvas.width = W; canvas.height = H;
+      dots = Array.from({ length: DOTS }, () => ({
+        x: Math.random() * W, y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4,
+        r: Math.random() * 2.2 + 0.8,
+        alpha: Math.random() * 0.45 + 0.2,
+        color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
+      }));
+    };
+
+    const draw = () => {
+      ctx.clearRect(0, 0, W, H);
+      for (let i = 0; i < dots.length; i++) {
+        for (let j = i + 1; j < dots.length; j++) {
+          const dx = dots[i].x - dots[j].x, dy = dots[i].y - dots[j].y;
+          const d = Math.sqrt(dx*dx + dy*dy);
+          if (d < 130) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(27,59,95,${0.13 * (1 - d/130)})`;
+            ctx.lineWidth = 1;
+            ctx.moveTo(dots[i].x, dots[i].y);
+            ctx.lineTo(dots[j].x, dots[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      dots.forEach(d => {
+        const g = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, d.r * 3.5);
+        g.addColorStop(0, `rgba(${d.color},${d.alpha * 0.7})`);
+        g.addColorStop(1, `rgba(${d.color},0)`);
+        ctx.beginPath(); ctx.arc(d.x, d.y, d.r * 3.5, 0, Math.PI*2);
+        ctx.fillStyle = g; ctx.fill();
+        ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(${d.color},${d.alpha})`; ctx.fill();
+        d.x += d.vx; d.y += d.vy;
+        if (d.x < 0 || d.x > W) d.vx *= -1;
+        if (d.y < 0 || d.y > H) d.vy *= -1;
+      });
+      raf = requestAnimationFrame(draw);
+    };
+
+    resize(); draw();
+    window.addEventListener("resize", resize);
+    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
+  }, []);
 
   const advance = useCallback(() => {
     setAnimated(true);
-    setOffset((prev) => {
+    setOffset(prev => {
       const next = prev + STEP;
-      if (next >= loopWidth) {
-        setTimeout(() => {
-          setAnimated(false);
-          setOffset(0);
-        }, 500);
-      }
+      if (next >= loopWidth) setTimeout(() => { setAnimated(false); setOffset(0); }, 500);
       return next;
     });
   }, [loopWidth]);
 
   const retreat = useCallback(() => {
     setAnimated(true);
-    setOffset((prev) => {
+    setOffset(prev => {
       if (prev <= 0) {
-        // Jump to end of first copy instantly, then animate back one step
-        setAnimated(false);
-        setOffset(loopWidth);
-        setTimeout(() => {
-          setAnimated(true);
-          setOffset(loopWidth - STEP);
-        }, 20);
+        setAnimated(false); setOffset(loopWidth);
+        setTimeout(() => { setAnimated(true); setOffset(loopWidth - STEP); }, 20);
         return prev;
       }
       return prev - STEP;
@@ -358,23 +232,68 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
   if (testimonials.length === 0) return null;
 
   return (
-    <section className="w-full py-12 md:py-16 bg-gray-50 relative">
-      <div className="container mx-auto px-4 md:px-6">
-        {/* Header */}
+    <section className="w-full py-12 md:py-16 relative overflow-hidden"
+      style={{ background: "linear-gradient(135deg, #f8faff 0%, #eef3fb 50%, #f5f8ff 100%)" }}
+    >
+      {/* ── Animated canvas ── */}
+      <canvas ref={canvasRef}
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        style={{ zIndex: 0 }} />
+
+      {/* ── Vivid orbs ── */}
+      <div className="absolute top-[-60px] left-[-60px] w-[400px] h-[400px] rounded-full pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(27,59,95,0.12) 0%, transparent 65%)", zIndex: 1,
+          animation: "orbFloat1 8s ease-in-out infinite" }} />
+      <div className="absolute bottom-[-40px] right-[-40px] w-[350px] h-[350px] rounded-full pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(251,191,36,0.14) 0%, transparent 65%)", zIndex: 1,
+          animation: "orbFloat2 10s ease-in-out infinite" }} />
+      <div className="absolute top-[40%] left-[45%] w-[250px] h-[250px] rounded-full pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(27,59,95,0.07) 0%, transparent 65%)", zIndex: 1,
+          animation: "orbFloat3 7s ease-in-out infinite" }} />
+
+      {/* ── Dot grid overlay ── */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        backgroundImage: "radial-gradient(circle, rgba(27,59,95,0.09) 1.2px, transparent 1.2px)",
+        backgroundSize: "30px 30px", zIndex: 1,
+      }} />
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes orbFloat1 {
+          0%,100% { transform: translate(0,0) scale(1); }
+          50%      { transform: translate(20px,-16px) scale(1.07); }
+        }
+        @keyframes orbFloat2 {
+          0%,100% { transform: translate(0,0) scale(1); }
+          50%      { transform: translate(-18px,14px) scale(1.06); }
+        }
+        @keyframes orbFloat3 {
+          0%,100% { transform: translate(0,0) scale(1); }
+          50%      { transform: translate(12px,18px) scale(1.05); }
+        }
+      `}} />
+
+      {/* ── Header ── */}
+      <div className="container mx-auto px-4 md:px-6 relative" style={{ zIndex: 10 }}>
         <div className="text-center mb-10 md:mb-12">
-          <h2 className="text-primary text-3xl md:text-4xl lg:text-5xl font-bold">
+          <h2
+            className="text-primary text-3xl md:text-4xl lg:text-5xl font-bold"
+            style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}
+          >
             {title}
           </h2>
+          {/* Gold underline accent */}
+          <div className="mx-auto mt-3 w-16 h-1 rounded-full"
+            style={{ background: "linear-gradient(90deg, transparent, #fbbf24, transparent)" }} />
         </div>
       </div>
 
-      {/* Full-width slider viewport — py exposes top/bottom shadow, overflow-x clips sides */}
+      {/* ── Slider ── */}
       <div
-        className="overflow-x-hidden"
+        className="overflow-x-hidden relative"
         style={{
           paddingLeft: "max(1rem, calc((100vw - 1152px) / 2))",
-          paddingTop: "16px",
-          paddingBottom: "16px",
+          paddingTop: "16px", paddingBottom: "20px",
+          zIndex: 10,
         }}
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
@@ -384,39 +303,27 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
           style={{
             gap: `${CARD_GAP}px`,
             transform: `translateX(-${offset}px)`,
-            transition: animated
-              ? "transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
-              : "none",
+            transition: animated ? "transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94)" : "none",
           }}
         >
           {looped.map((testimonial, idx) => (
-            <div
-              key={idx}
-              style={{ width: `${CARD_WIDTH}px`, flexShrink: 0 }}
-            >
-              <TestimonialCard
-                testimonial={testimonial}
-                variant={idx % 2 === 0 ? "light" : "light"}
-              />
+            <div key={idx} style={{ width: `${CARD_WIDTH}px`, flexShrink: 0 }}>
+              <TestimonialCard testimonial={testimonial} variant="light" />
             </div>
           ))}
         </div>
       </div>
 
-      {/* Navigation */}
-      <div className="flex justify-center items-center gap-4 mt-8 mb-4">
-        <button
-          onClick={retreat}
-          className="w-12 h-12 rounded-full bg-white border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center shadow-md hover:shadow-lg hover:cursor-pointer"
-          aria-label="Previous testimonial"
-        >
+      {/* ── Navigation ── */}
+      <div className="flex justify-center items-center gap-4 mt-6 mb-2 relative" style={{ zIndex: 10 }}>
+        <button onClick={retreat}
+          className="w-12 h-12 rounded-full bg-white border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center shadow-md hover:shadow-lg cursor-pointer"
+          aria-label="Previous testimonial">
           <ChevronLeft size={24} />
         </button>
-        <button
-          onClick={advance}
-          className="w-12 h-12 rounded-full border-primary border-2 hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center shadow-md hover:shadow-lg hover:cursor-pointer"
-          aria-label="Next testimonial"
-        >
+        <button onClick={advance}
+          className="w-12 h-12 rounded-full border-primary border-2 bg-white hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center shadow-md hover:shadow-lg cursor-pointer"
+          aria-label="Next testimonial">
           <ChevronRight size={24} />
         </button>
       </div>

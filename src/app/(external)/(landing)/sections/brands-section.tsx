@@ -106,7 +106,7 @@
 // export default GlobalBrands;
 
 "use client";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, } from "react";
 import Image from "next/image";
 import asos     from "@/app/assets/images/landing-page/gig.png";
 import boohoo   from "@/app/assets/images/landing-page/boohoo.png";

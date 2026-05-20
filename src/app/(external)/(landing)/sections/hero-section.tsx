@@ -80,8 +80,8 @@ import React, { useEffect, useRef, useState } from "react";
 import Button from "@/components/ui/button";
 import { useModal } from "@/contexts/modal-context";
 import {
-  Package, Truck, Globe, TrendingUp,
-  ShoppingBag, Users, ArrowRight, Play,
+  Package, Globe, TrendingUp,
+   Users,
 } from "lucide-react";
 
 /* ── Stat card data — right panel ── */

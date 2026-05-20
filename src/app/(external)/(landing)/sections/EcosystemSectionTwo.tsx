@@ -141,10 +141,7 @@ const useInView = (options?: IntersectionObserverInit) => {
     const element = ref.current;
     if (!element) return;
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setIsInView(true);
-        observer.unobserve(element);
-      }
+      setIsInView(entry.isIntersecting);
     }, options);
     observer.observe(element);
     return () => observer.disconnect();
@@ -156,13 +153,145 @@ const useInView = (options?: IntersectionObserverInit) => {
 const CommerceMoveBetter: React.FC = () => {
   const { openGetStartedModal } = useModal();
   const [sectionRef, isSectionInView] = useInView({ threshold: 0.1 });
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  /* ── Particle canvas background ── */
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    let raf: number;
+    let W = 0, H = 0;
+    const DOTS = 70;
+    type Dot = { x: number; y: number; vx: number; vy: number; r: number; alpha: number; color: string };
+    const PALETTE = ["27,59,95","27,59,95","36,80,127","251,191,36","251,191,36","255,255,255"];
+    let dots: Dot[] = [];
+
+    const resize = () => {
+      W = canvas.offsetWidth; H = canvas.offsetHeight;
+      canvas.width = W; canvas.height = H;
+      dots = Array.from({ length: DOTS }, () => ({
+        x: Math.random() * W, y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.45, vy: (Math.random() - 0.5) * 0.45,
+        r: Math.random() * 2.4 + 0.8,
+        alpha: Math.random() * 0.45 + 0.18,
+        color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
+      }));
+    };
+
+    const draw = () => {
+      ctx.clearRect(0, 0, W, H);
+      for (let i = 0; i < dots.length; i++) {
+        for (let j = i + 1; j < dots.length; j++) {
+          const dx = dots[i].x - dots[j].x, dy = dots[i].y - dots[j].y;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          if (d < 135) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(27,59,95,${0.15 * (1 - d / 135)})`;
+            ctx.lineWidth = 3;
+            ctx.moveTo(dots[i].x, dots[i].y);
+            ctx.lineTo(dots[j].x, dots[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      dots.forEach(d => {
+        const g = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, d.r * 3.5);
+        g.addColorStop(0, `rgba(${d.color},${d.alpha * 0.75})`);
+        g.addColorStop(1, `rgba(${d.color},0)`);
+        ctx.beginPath(); ctx.arc(d.x, d.y, d.r * 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = g; ctx.fill();
+        ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${d.color},${d.alpha})`; ctx.fill();
+        d.x += d.vx; d.y += d.vy;
+        if (d.x < 0 || d.x > W) d.vx *= -1;
+        if (d.y < 0 || d.y > H) d.vy *= -1;
+      });
+      raf = requestAnimationFrame(draw);
+    };
+
+    resize(); draw();
+    window.addEventListener("resize", resize);
+    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
+  }, []);
 
   return (
     <section
-      className="w-full py-20 bg-white overflow-hidden"
-      style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}
+      className="w-full py-20 relative overflow-hidden"
+      style={{
+        fontFamily: "'Bricolage Grotesque', sans-serif",
+        background: "linear-gradient(135deg, #f8faff 0%, #eef3fb 50%, #f5f8ff 100%)",
+      }}
     >
-      <style>{`
+      {/* ── Animated particle canvas ── */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        style={{ zIndex: 0 }}
+      />
+
+      {/* ── Floating orbs ── */}
+      <div className="absolute pointer-events-none"
+        style={{
+          top: "-70px", left: "-70px",
+          width: "450px", height: "450px", borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(27,59,95,0.13) 0%, transparent 65%)",
+          animation: "ecoOrb1 8s ease-in-out infinite", zIndex: 1,
+        }}
+      />
+      <div className="absolute pointer-events-none"
+        style={{
+          bottom: "-50px", right: "-50px",
+          width: "380px", height: "380px", borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(251,191,36,0.16) 0%, transparent 65%)",
+          animation: "ecoOrb2 10s ease-in-out infinite", zIndex: 1,
+        }}
+      />
+      <div className="absolute pointer-events-none"
+        style={{
+          top: "35%", left: "42%",
+          width: "260px", height: "260px", borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(27,59,95,0.08) 0%, transparent 65%)",
+          animation: "ecoOrb3 7s ease-in-out infinite", zIndex: 1,
+        }}
+      />
+
+      {/* ── Dot grid overlay ── */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: "radial-gradient(circle, rgba(27,59,95,0.10) 1.2px, transparent 1.2px)",
+          backgroundSize: "30px 30px",
+          zIndex: 1,
+        }}
+      />
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes ecoOrb1 {
+          0%,100% { transform: translate(0,0) scale(1); }
+          50%      { transform: translate(22px,-18px) scale(1.08); }
+        }
+        @keyframes ecoOrb2 {
+          0%,100% { transform: translate(0,0) scale(1); }
+          50%      { transform: translate(-20px,15px) scale(1.06); }
+        }
+        @keyframes ecoOrb3 {
+          0%,100% { transform: translate(0,0) scale(1); }
+          50%      { transform: translate(14px,20px) scale(1.05); }
+        }
+        @keyframes cardDeco1 {
+          0%,100% { transform: rotate(0deg) scale(1); opacity: 0.07; }
+          50%      { transform: rotate(6deg) scale(1.04); opacity: 0.12; }
+        }
+        @keyframes cardDeco2 {
+          0%,100% { transform: translate(0,0); opacity: 0.08; }
+          50%      { transform: translate(6px,-6px); opacity: 0.14; }
+        }
+        @keyframes cardDeco3 {
+          0%,100% { transform: translateY(-50%) rotate(0deg); opacity: 0.05; }
+          50%      { transform: translateY(-50%) rotate(15deg); opacity: 0.09; }
+        }
         @keyframes dashFlow {
           0%   { stroke-dashoffset: 300; opacity: 0.25; }
           50%  { opacity: 1; }
@@ -183,9 +312,9 @@ const CommerceMoveBetter: React.FC = () => {
         .lf5 { animation: dashFlow 2.4s ease-in-out infinite 0.3s; }
         .np  { animation: nodePulse 2s ease-in-out infinite; }
         .diagram-svg { animation: glowPulse 3s ease-in-out infinite; }
-      `}</style>
+      `}} />
 
-      <div className="mx-auto max-w-[1271px] px-4 md:px-0">
+      <div className="mx-auto max-w-[1271px] px-4 md:px-0 relative" style={{ zIndex: 10 }}>
         <div
           ref={sectionRef as React.RefObject<HTMLDivElement>}
           className={`
@@ -196,6 +325,57 @@ const CommerceMoveBetter: React.FC = () => {
             ${isSectionInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}
           `}
         >
+          {/* ── Card decorative design layer ── */}
+
+          {/* Large hexagon outline — top right */}
+          <svg className="absolute pointer-events-none" style={{ top: "-30px", right: "120px", opacity: 0.07, animation: "cardDeco1 8s ease-in-out infinite" }}
+            width="200" height="200" viewBox="0 0 200 200" fill="none">
+            <polygon points="100,5 191,52 191,148 100,195 9,148 9,52"
+              stroke="#F9C319" strokeWidth="2" fill="none" strokeDasharray="12 6" />
+            <polygon points="100,25 171,62 171,138 100,175 29,138 29,62"
+              stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" fill="none" />
+          </svg>
+
+          {/* Circuit-board style lines — bottom left */}
+          <svg className="absolute pointer-events-none" style={{ bottom: "0", left: "0", opacity: 0.08, animation: "cardDeco2 10s ease-in-out infinite" }}
+            width="260" height="180" viewBox="0 0 260 180" fill="none">
+            {/* Horizontal rails */}
+            <line x1="0" y1="60" x2="180" y2="60" stroke="#F9C319" strokeWidth="1.5" strokeDasharray="8 5" />
+            <line x1="0" y1="100" x2="140" y2="100" stroke="white" strokeWidth="1" strokeDasharray="6 4" />
+            <line x1="0" y1="140" x2="100" y2="140" stroke="#F9C319" strokeWidth="1.5" strokeDasharray="8 5" />
+            {/* Vertical connectors */}
+            <line x1="60" y1="60" x2="60" y2="180" stroke="white" strokeWidth="1" strokeDasharray="5 4" />
+            <line x1="120" y1="60" x2="120" y2="140" stroke="#F9C319" strokeWidth="1.5" strokeDasharray="6 4" />
+            <line x1="100" y1="100" x2="100" y2="180" stroke="white" strokeWidth="1" strokeDasharray="5 4" />
+            {/* Junction nodes */}
+            <circle cx="60" cy="60" r="5" fill="#F9C319" opacity="0.7" />
+            <circle cx="120" cy="60" r="4" fill="white" opacity="0.5" />
+            <circle cx="100" cy="100" r="4" fill="#F9C319" opacity="0.6" />
+            <circle cx="60" cy="140" r="3" fill="white" opacity="0.4" />
+            <circle cx="120" cy="140" r="5" fill="#F9C319" opacity="0.7" />
+          </svg>
+
+          {/* Concentric rings — far right center */}
+          <svg className="absolute pointer-events-none" style={{ right: "-60px", top: "50%", transform: "translateY(-50%)", opacity: 0.05, animation: "cardDeco3 6s ease-in-out infinite" }}
+            width="300" height="300" viewBox="0 0 300 300" fill="none">
+            <circle cx="150" cy="150" r="130" stroke="#F9C319" strokeWidth="1.5" strokeDasharray="10 8" />
+            <circle cx="150" cy="150" r="100" stroke="white" strokeWidth="1" strokeDasharray="8 6" />
+            <circle cx="150" cy="150" r="70"  stroke="#F9C319" strokeWidth="1.5" strokeDasharray="6 5" />
+            <circle cx="150" cy="150" r="40"  stroke="white" strokeWidth="1" strokeDasharray="4 4" />
+            <circle cx="150" cy="150" r="12"  fill="rgba(249,195,25,0.3)" />
+          </svg>
+
+          {/* Floating data bars — top left area */}
+          <svg className="absolute pointer-events-none" style={{ top: "24px", left: "24px", opacity: 0.06, animation: "cardDeco1 9s ease-in-out infinite 1s" }}
+            width="120" height="60" viewBox="0 0 120 60" fill="none">
+            <rect x="0"  y="40" width="14" height="20" rx="3" fill="#F9C319" />
+            <rect x="20" y="25" width="14" height="35" rx="3" fill="white" opacity="0.7" />
+            <rect x="40" y="10" width="14" height="50" rx="3" fill="#F9C319" />
+            <rect x="60" y="30" width="14" height="30" rx="3" fill="white" opacity="0.7" />
+            <rect x="80" y="15" width="14" height="45" rx="3" fill="#F9C319" />
+            <rect x="100" y="35" width="14" height="25" rx="3" fill="white" opacity="0.7" />
+          </svg>
+
           {/* Mobile: stacked. Desktop: exact original side-by-side at h-[602px] */}
           <div className="flex flex-col md:flex-row md:h-full gap-8 md:gap-[30px]">
 
