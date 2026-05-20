@@ -164,45 +164,6 @@ const GlobalBrands = () => {
         }
         .marquee-track:hover { animation-play-state: paused; }
 
-        @keyframes bgShift {
-          0%   { background-position: 0% 50%; }
-          50%  { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        .brands-bg {
-          background: #f0f2f5;
-        }
-
-        @keyframes scanLine {
-          0%   { transform: translateY(-100%); opacity: 0; }
-          10%  { opacity: 0.04; }
-          90%  { opacity: 0.04; }
-          100% { transform: translateY(100vh); opacity: 0; }
-        }
-        .scan-line {
-          position: absolute;
-          left: 0; right: 0;
-          height: 1px;
-          background: linear-gradient(90deg, transparent, rgba(27,59,95,0.3), transparent);
-          animation: scanLine 8s ease-in-out infinite;
-          pointer-events: none;
-        }
-      ` }} />
-
-      <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes marquee {
-          0%   { transform: translateX(0); }
-          100% { transform: translateX(-33.333%); }
-        }
-        .marquee-track {
-          display: flex;
-          align-items: center;
-          width: max-content;
-          animation: marquee 28s linear infinite;
-          will-change: transform;
-        }
-        .marquee-track:hover { animation-play-state: paused; }
-
         @keyframes dotNavy {
           0%, 100% { opacity: 0.55; transform: scale(1);   box-shadow: 0 0 0px 0px rgba(27,59,95,0); }
           50%       { opacity: 1;   transform: scale(1.6); box-shadow: 0 0 7px 3px rgba(27,59,95,0.35); }
@@ -229,17 +190,9 @@ const GlobalBrands = () => {
         .orb-1 { animation: orbFloat1 7s ease-in-out infinite; }
         .orb-2 { animation: orbFloat2 9s ease-in-out infinite; }
         .orb-3 { animation: orbFloat3 6s ease-in-out infinite; }
-
-        @keyframes dotPulse {
-          0%, 100% { opacity: 0.7;  transform: scale(1);   }
-          50%       { opacity: 1;    transform: scale(1.4); }
-        }
-        .logo-dot { animation: dotPulse 2.5s ease-in-out infinite; }
       ` }} />
 
       <div className="w-full py-5 relative overflow-hidden z-10 bg-white">
-
-        {/* ── Dynamic background design ── */}
 
         {/* Dot grid pattern */}
         <div className="absolute inset-0 pointer-events-none"
@@ -249,7 +202,7 @@ const GlobalBrands = () => {
           }}
         />
 
-        {/* Large floating orbs */}
+        {/* Floating orbs */}
         <div className="orb-1 absolute top-[-40px] left-[10%] w-[220px] h-[220px] rounded-full pointer-events-none"
           style={{ background: "radial-gradient(circle, rgba(27,59,95,0.1) 0%, transparent 70%)", filter: "blur(30px)" }} />
         <div className="orb-2 absolute bottom-[-50px] right-[12%] w-[200px] h-[200px] rounded-full pointer-events-none"
@@ -269,10 +222,10 @@ const GlobalBrands = () => {
             style={{ background: "linear-gradient(90deg, transparent, #1b3b5f, transparent)" }} />
         </div>
 
-        {/* Edge fade masks — white */}
-        <div className="absolute left-0 top-0 bottom-0 w-24 z-20 pointer-events-none"
+        {/* Edge fades */}
+        <div className="absolute left-0 top-0 bottom-0 w-12 md:w-24 z-20 pointer-events-none"
           style={{ background: "linear-gradient(90deg, #ffffff 0%, transparent 100%)" }} />
-        <div className="absolute right-0 top-0 bottom-0 w-24 z-20 pointer-events-none"
+        <div className="absolute right-0 top-0 bottom-0 w-12 md:w-24 z-20 pointer-events-none"
           style={{ background: "linear-gradient(270deg, #ffffff 0%, transparent 100%)" }} />
 
         {/* Marquee */}
@@ -285,21 +238,29 @@ const GlobalBrands = () => {
             {marqueeLogos.map((image, idx) => (
               <div
                 key={`${image.id}-${idx}`}
-                className="flex items-center gap-0 flex-shrink-0"
+                className="flex items-center flex-shrink-0"
               >
-                {/* Logo */}
-                <div className="flex items-center justify-center px-4 md:px-5">
-                  <div className="relative h-9 md:h-11 lg:h-12 w-[90px] md:w-[110px] lg:w-[130px]">
+                {/* Logo — explicit px sizes so mobile never collapses to 0 */}
+                <div className="flex items-center justify-center"
+                  style={{ paddingLeft: "14px", paddingRight: "14px" }}>
+                  <div style={{
+                    position: "relative",
+                    height: "36px",
+                    width: "80px",
+                    flexShrink: 0,
+                  }}>
                     <Image
                       src={image.src}
                       alt={image.alt}
                       fill
-                      className="object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
-                      sizes="(max-width: 768px) 90px, 130px"
+                      className="object-contain"
+                      style={{ opacity: 0.85 }}
+                      sizes="80px"
                     />
                   </div>
                 </div>
-                {/* Dot separator — bright pulsing */}
+
+                {/* Dot separator */}
                 <span
                   className={`flex-shrink-0 rounded-full ${idx % 2 === 0 ? "dot-navy" : "dot-gold"}`}
                   style={{
