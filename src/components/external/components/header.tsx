@@ -82,18 +82,6 @@ const Header: React.FC = () => {
 	};
 
 	const megaMenuItems = {
-		products: [
-			{
-				title: "Browse Products",
-				description: "Explore our wide range of products and start buying in bulk.",
-				href: "https://shop.obana.africa/",
-			},
-			{
-				title: "Custom Sourcing",
-				description: "Can't find what you're looking for? Tell us — we'll source it for you.",
-				href: "/rfq",
-			},
-		],
 		solutions: [
 			{
 				title: "Buy in Bulk",
@@ -237,6 +225,10 @@ const Header: React.FC = () => {
 							<Link href="http://blog.obana.africa" className="text-[#464545] font-semibold">
 							     Blog
 							</Link>
+							<Link href="/#our-impact" className="text-[#464545] font-semibold">
+								Our Impact
+							</Link>
+								
 						</nav>
 
 						<div className="hidden md:flex items-center space-x-4">
@@ -293,39 +285,6 @@ const Header: React.FC = () => {
 						>
 							Home
 						</Link>
-
-						{/* Mobile Products Dropdown */}
-						<div className="border-b border-primary-light">
-							<button
-								className="flex items-center justify-between w-full py-3 text-gray-800"
-								onClick={() => toggleMobileDropdown("products")}
-								type="button"
-							>
-								<span>Products</span>
-								{activeMobileDropdown === "products" ? (
-									<ChevronUp className="h-4 w-4" />
-								) : (
-									<ChevronDown className="h-4 w-4" />
-								)}
-							</button>
-							<div
-								className={`ml-4 mb-2 transition-all duration-300 ${
-									activeMobileDropdown === "products"
-										? "max-h-96 opacity-100"
-										: "max-h-0 opacity-0 overflow-hidden"
-								}`}
-							>
-								{megaMenuItems.products.map((item, idx) => (
-									<Link
-										key={idx}
-										href={item.href}
-										className="block py-2 text-gray-700 hover:bg-primary hover:text-white hover:pl-2 transition-all duration-200"
-									>
-										{item.title}
-									</Link>
-								))}
-							</div>
-						</div>
 
 						{/* Mobile Solutions Dropdown (unchanged) */}
 						<div className="border-b border-primary-light">

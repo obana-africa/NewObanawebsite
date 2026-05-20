@@ -172,6 +172,7 @@ export default function HowObanaWorksSection() {
       ` }} />
 
       <section
+        id="our-impact"
         className="relative overflow-hidden w-full rounded-tl-[60px] rounded-tr-[60px]"
         style={{
           background: "linear-gradient(160deg, #0a1628 0%, #1b3b5f 45%, #0d2240 100%)",
