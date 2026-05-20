@@ -211,13 +211,11 @@ const WhyUsSection: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   useAnimatedCanvas(canvasRef);
   const [ref, isInView] = useInView({ threshold: 0.1 });
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const { openGetStartedModal } = useModal();
 
 
   const handleGetStarted = (): void => {
 		openGetStartedModal();
-		setIsOpen(false);
 	};
 
   return (

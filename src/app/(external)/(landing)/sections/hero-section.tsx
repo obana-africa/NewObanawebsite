@@ -1,82 +1,6 @@
-// "use client";
-
-// import React from "react";
-// import Button from "@/components/ui/button";
-// import { useModal } from "@/contexts/modal-context";
-
-
-// const HeroSection: React.FC = () => {
-// 	const { openGetStartedModal } = useModal();
-
-// 	const handleExploreEcosystem = (): void => {
-// 		openGetStartedModal();
-// 	};
-
-// 	const handleBecomePartner = (): void => {
-// 		// Route to partner sign-up or a dedicated partner page
-// 		// TODO: Replace with actual partner route or modal
-// 		openGetStartedModal(); // placeholder – adjust as needed
-// 	};
-
-// 	return (
-// 		<section className=" relative overflow-hidden w-full h-[522px] md:h-[522px] bg-white">
-			
-// 			<div
-// 				className="absolute top-[151px] left-[804px] w-[182px] h-[56px] opacity-28 blur-[50px] bg-white rounded-full z-20"
-// 				style={{ transform: "translate(-50%, -50%)" }}
-// 			></div>
-
-			
-// 			<div className="container mx-auto px-4 md:px-6 relative z-30 text-center max-w-[1440px] h-full flex flex-col justify-start pt-24 md:pt-32 lg:pt-36">
-// 				{/* Main heading */}
-// 				<h1
-// 					className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 max-w-4xl mx-auto text-primary"
-// 					style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}
-// 				>
-// 					Powering the Movement of Commerce Across Africa
-// 				</h1>
-
-				
-// 				<p
-// 					className="text-lg md:text-xl lg:text-2xl mb-10 max-w-3xl mx-auto opacity-90 text-primary"
-// 					style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}
-// 				>
-// 					Obana.Africa connects sourcing, logistics, distribution, and commerce
-// 					into one ecosystem <br />
-// 					designed to help businesses move smarter, scale faster, and operate
-// 					without limits.
-// 				</p>
-
-// 				{/* Buttons */}
-// 				<div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-// 					<Button
-// 						variant="primary"
-// 						animation="ripple"
-// 						className="bg-primary hover:bg-primary-dark text-primary hover:text-primary text-lg font-medium shadow-lg shadow-primary/30"
-// 						onClick={handleExploreEcosystem}
-// 					>
-// 						Explore Ecosystem
-// 					</Button>
-// 					<Button
-// 						variant="primary"
-// 						animation="ripple"
-// 						className="border !border-primary !text-primary bg-transparent hover:bg-primary hover:text-primary transition-all duration-300 ease-in-out text-lg font-medium"
-// 						onClick={handleBecomePartner}
-// 					>
-// 						Become a Partner
-// 					</Button>
-// 				</div>
-// 			</div>
-
-// 		</section>
-// 	);
-// };
-
-// export default HeroSection;
-
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef,} from "react";
 import Button from "@/components/ui/button";
 import { useModal } from "@/contexts/modal-context";
 import {
@@ -89,8 +13,8 @@ const STAT_CARDS = [
   {
     id: "card-1",
     icon: Package,
-    value: "50k+",
-    label: "Packages Delivered",
+    value: "10,000+",
+    label: "Metric tons of produce supplied",
     gradient: "linear-gradient(135deg, #1b3b5f 0%, #24507f 100%)",
     iconBg: "rgba(255,255,255,0.15)",
     delay: 0,
@@ -129,16 +53,16 @@ const STAT_CARDS = [
 const HeroSection: React.FC = () => {
   const { openGetStartedModal } = useModal();
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [mounted, setMounted] = useState(false);
+//   const [setMounted] = useState(false);
 
   const handleExploreEcosystem = (): void => openGetStartedModal();
   const handleBecomePartner = (): void => openGetStartedModal();
 
   /* ── Mount animation trigger ── */
-  useEffect(() => {
-    const t = setTimeout(() => setMounted(true), 80);
-    return () => clearTimeout(t);
-  }, []);
+//   useEffect(() => {
+//     const t = setTimeout(() => setMounted(true), 80);
+//     return () => clearTimeout(t);
+//   }, []);
 
   /* ── Animated particle / line canvas background ── */
   useEffect(() => {
@@ -327,7 +251,7 @@ const HeroSection: React.FC = () => {
             >
               The digital platform powering{" "}
               <span style={{ color: "#fbbf24", fontStyle: "italic" }}>
-                Africa's
+                Africa&apos;s
               </span>{" "}
               Fashion&Beauty SMEs.
             </h1>
