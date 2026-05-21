@@ -137,10 +137,9 @@ const Header: React.FC = () => {
 						</div>
 
 						<nav className="hidden lg:flex items-center space-x-8">
-							<Link href="/about" className="text-[#464545] font-semibold">
-								About us
+							<Link href="/#our-impact" className="text-[#464545] font-semibold">
+								Our Impact
 							</Link>
-
 
 							{/* Solutions Mega Menu (unchanged) */}
 							<div className="relative" ref={solutionsDropdownRef}>
@@ -216,6 +215,9 @@ const Header: React.FC = () => {
 									</div>
 								</div>
 							</div>
+							<Link href="/about" className="text-[#464545] font-semibold">
+								About us
+							</Link>
 
 							{/* FAQ – standalone link */}
 							<Link href="/faqs" className="text-[#464545] font-semibold">
@@ -225,9 +227,7 @@ const Header: React.FC = () => {
 							<Link href="http://blog.obana.africa" className="text-[#464545] font-semibold">
 							     Blog
 							</Link>
-							<Link href="/#our-impact" className="text-[#464545] font-semibold">
-								Our Impact
-							</Link>
+							
 								
 						</nav>
 
