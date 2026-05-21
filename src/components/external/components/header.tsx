@@ -362,12 +362,18 @@ const Header: React.FC = () => {
 							FAQ
 						</Link>
 
-						{/* Mobile Features link */}
+						{/* Mobile blog link */}
 						<Link
-							href="/features"
+							href="http://blog.obana.africa"
 							className="py-3 border-b border-primary-light text-gray-800 hover:bg-primary hover:text-white hover:pl-2 transition-all duration-200"
 						>
-							Features
+							Blog
+						</Link>
+						<Link
+							href="/#our-impact"
+							className="py-3 border-b border-primary-light text-gray-800 hover:bg-primary hover:text-white hover:pl-2 transition-all duration-200"
+						>
+							Our Impact
 						</Link>
 
 						<Button

@@ -74,7 +74,7 @@ const HeroSection: React.FC = () => {
     let raf: number;
     let W = 0, H = 0;
 
-    const DOTS = 90;
+    const DOTS = 60;
     type Dot = { x: number; y: number; vx: number; vy: number; r: number; alpha: number; color:string };
     let dots: Dot[] = [];
 
@@ -111,9 +111,9 @@ const HeroSection: React.FC = () => {
           const dx = dots[i].x - dots[j].x;
           const dy = dots[i].y - dots[j].y;
           const d  = Math.sqrt(dx * dx + dy * dy);
-          if (d < 160) {
+          if (d < 120) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(27,59,95,${0.16 * (1 - d / 160)})`;
+            ctx.strokeStyle = `rgba(27,59,95,${0.10 * (1 - d / 120)})`;
             ctx.lineWidth = 1.2;
             ctx.moveTo(dots[i].x, dots[i].y);
             ctx.lineTo(dots[j].x, dots[j].y);
@@ -125,8 +125,8 @@ const HeroSection: React.FC = () => {
       /* ── Dots ── */
       dots.forEach(d => {
 		 /* glow */
-        const grd = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, d.r * 4);
-        grd.addColorStop(0, `rgba(${d.color},${d.alpha * 0.6})`);
+        const grd = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, d.r * 2);
+        grd.addColorStop(0, `rgba(${d.color},${d.alpha * 0.4})`);
         grd.addColorStop(1, `rgba(${d.color},0)`);
         ctx.beginPath();
         ctx.arc(d.x, d.y, d.r * 4, 0, Math.PI * 2);
@@ -173,7 +173,7 @@ const HeroSection: React.FC = () => {
           50%       { transform: translateY(-6px); }
         }
         @keyframes bgPulse {
-          0%, 100% { opacity: 0.6; }
+          0%, 100% { opacity: 0.4; }
           50%       { opacity: 1;   }
         }
         .hero-tag     { animation: heroFadeUp    0.6s ease 0.1s both; }
@@ -186,22 +186,7 @@ const HeroSection: React.FC = () => {
         .stat-card-2  { animation: cardFloat 5.5s ease-in-out 0.8s  infinite; }
         .stat-card-3  { animation: cardFloat 5.5s ease-in-out 1.2s  infinite; }
         .bg-orb       { animation: bgPulse 6s ease-in-out infinite; }
-        .hero-btn-primary {
-          transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1),
-                      box-shadow 0.25s ease;
-        }
-        .hero-btn-primary:hover {
-          transform: translateY(-2px) scale(1.02);
-          box-shadow: 0 10px 30px rgba(27,59,95,0.35);
-        }
-        .hero-btn-outline {
-          transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1),
-                      background 0.2s ease, color 0.2s ease;
-        }
-        .hero-btn-outline:hover {
-          transform: translateY(-2px) scale(1.02);
-        }
-      ` }} />
+       `}} />
 
       <section
         className="relative overflow-hidden w-full bg-white"
@@ -243,7 +228,7 @@ const HeroSection: React.FC = () => {
 
             {/* Heading — fashion typography with accent word */}
             <h1
-              className="hero-heading font-extrabold leading-[1.1] mb-6 text-primary"
+              className="hero-heading font-extrabold leading-[1.1] mb-2 text-primary"
               style={{
                 fontFamily: "'Bricolage Grotesque', sans-serif",
                 fontSize: "clamp(2.4rem, 5vw, 3.8rem)",
