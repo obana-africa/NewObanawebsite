@@ -247,7 +247,7 @@
 
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Landmark, Truck, LayoutDashboard, Box } from "lucide-react";
 
 const ECOSYSTEM_FEATURES = [
@@ -280,51 +280,6 @@ const ECOSYSTEM_FEATURES = [
   },
 ];
 
-const useAnimatedCanvas = (canvasRef: React.RefObject<HTMLCanvasElement | null>) => {
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    let raf: number;
-    let W = 0, H = 0;
-    const COUNT = 50;
-    const DIST = 140;
-    const COLORS = ["27,59,95", "36,80,127", "251,191,36"];
-    interface P { x: number; y: number; vx: number; vy: number; r: number; a: number; c: string }
-    let ps: P[] = [];
-    const resize = () => {
-      W = canvas.offsetWidth; H = canvas.offsetHeight;
-      canvas.width = W; canvas.height = H;
-      ps = Array.from({ length: COUNT }, () => ({
-        x: Math.random() * W, y: Math.random() * H,
-        vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
-        r: Math.random() * 2 + 0.8, a: Math.random() * 0.4 + 0.2,
-        c: COLORS[Math.floor(Math.random() * COLORS.length)],
-      }));
-    };
-    const draw = () => {
-      ctx.clearRect(0, 0, W, H);
-      for (let i = 0; i < ps.length; i++) for (let j = i + 1; j < ps.length; j++) {
-        const dx = ps[i].x - ps[j].x, dy = ps[i].y - ps[j].y, d = Math.sqrt(dx * dx + dy * dy);
-        if (d < DIST) { ctx.beginPath(); ctx.strokeStyle = `rgba(27,59,95,${0.1 * (1 - d / DIST)})`; ctx.lineWidth = 1; ctx.moveTo(ps[i].x, ps[i].y); ctx.lineTo(ps[j].x, ps[j].y); ctx.stroke(); }
-      }
-      ps.forEach(p => {
-        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 5);
-        g.addColorStop(0, `rgba(${p.c},${p.a * 0.5})`); g.addColorStop(1, `rgba(${p.c},0)`);
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 4, 0, Math.PI * 2); ctx.fillStyle = g; ctx.fill();
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fillStyle = `rgba(${p.c},${p.a + 0.2})`; ctx.fill();
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0 || p.x > W) p.vx *= -1;
-        if (p.y < 0 || p.y > H) p.vy *= -1;
-      });
-      raf = requestAnimationFrame(draw);
-    };
-    resize(); draw();
-    window.addEventListener("resize", resize);
-    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
-  }, [canvasRef]);
-};
 
 // ── Separate card component so useState is at component level ──
 const EcoCard: React.FC<{
@@ -337,7 +292,7 @@ const EcoCard: React.FC<{
   return (
     <div
       className="flex flex-col items-center text-center"
-      style={{ width: "200px", flexShrink: 0, animationDelay: `${idx * 100}ms` }}
+      style={{ width: "250px", flexShrink: 0, animationDelay: `${idx * 100}ms` }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -372,8 +327,8 @@ const EcoCard: React.FC<{
       </h3>
 
       <p
-        className="text-primary/65 text-sm leading-relaxed"
-        style={{ fontFamily: "'Bricolage Grotesque', sans-serif", maxWidth: "170px" }}
+        className="text-primary/65 text-sm leading-relaxed font-semibold"
+        style={{ fontFamily: "'Bricolage Grotesque', sans-serif", maxWidth: "190px" }}
       >
         {feature.description}
       </p>
@@ -383,7 +338,6 @@ const EcoCard: React.FC<{
 
 const EcosystemSection: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  useAnimatedCanvas(canvasRef);
 
   return (
     <>
@@ -409,10 +363,10 @@ const EcosystemSection: React.FC = () => {
         {/* Orbs */}
         <div className="eco-orb absolute -top-24 -left-24 w-80 h-80 rounded-full pointer-events-none"
           style={{ background: "radial-gradient(circle, rgba(27,59,95,0.1) 0%, transparent 70%)", zIndex: 0 }} />
-        <div className="eco-orb absolute bottom-10 right-10 w-72 h-72 rounded-full pointer-events-none"
+          <div className="eco-orb absolute bottom-10 right-10 w-72 h-72 rounded-full pointer-events-none"
           style={{ background: "radial-gradient(circle, rgba(251,191,36,0.08) 0%, transparent 70%)", zIndex: 0, animationDelay: "2s" }} />
 
-        <div className="relative z-10 max-w-[1200px] mx-auto px-5 md:px-8">
+          <div className="relative z-10 max-w-[1200px] mx-auto px-5 md:px-8">
 
           {/* Header */}
           <div className="text-center mb-12 md:mb-16">
@@ -431,14 +385,26 @@ const EcosystemSection: React.FC = () => {
                 <EcoCard feature={feature} idx={idx} />
                 {idx < ECOSYSTEM_FEATURES.length - 1 && (
                   <>
-                    <div className="hidden md:block flex-shrink-0" style={{ marginTop: "45px", width: "60px" }}>
+                    <div className="hidden md:block flex-shrink-0" style={{ marginTop: "45px", width: "80px" }}>
                       <svg width="60" height="40" viewBox="0 0 60 40" fill="none">
-                        <path d="M0 20 Q15 4 30 20 Q45 36 60 20" stroke="#1b3b5f" strokeWidth="2" strokeDasharray="5 4" strokeLinecap="round" fill="none" opacity="0.4" />
+                        <path 
+                        d="M2 20 Q15 4 30 20 Q45 36 60 20" 
+                        stroke="#1b3b5f" 
+                        strokeWidth="2" 
+                        strokeDasharray="5 4" 
+                        strokeLinecap="round" 
+                        fill="none" />
                       </svg>
                     </div>
                     <div className="flex md:hidden justify-center my-1" style={{ width: "200px" }}>
                       <svg width="40" height="36" viewBox="0 0 40 36" fill="none">
-                        <path d="M20 0 Q4 9 20 18 Q36 27 20 36" stroke="#1b3b5f" strokeWidth="2" strokeDasharray="5 4" strokeLinecap="round" fill="none" opacity="0.4" />
+                        <path 
+                        d="M20 0 Q4 9 20 18 Q36 27 20 36" 
+                        stroke="#1b3b5f" 
+                        strokeWidth="2" 
+                        strokeDasharray="5 4" 
+                        strokeLinecap="round" 
+                        fill="none" />
                       </svg>
                     </div>
                   </>
