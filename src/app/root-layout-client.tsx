@@ -1,13 +1,12 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { usePathname } from "next/navigation";
 
 import "./globals.css";
 import Header from "@/components/external/components/header";
 import { Bricolage_Grotesque, Inter } from "next/font/google";
 import Footer from "@/components/external/components/footer";
-// import "slick-carousel/slick/slick-theme.css";
-// import "slick-carousel/slick/slick.css";
 import { ModalProvider } from "@/contexts/modal-context";
 import { Toaster } from "sonner";
 import Aos from "aos";
@@ -42,11 +41,16 @@ const inter = Inter({
 	variable: "--font-inter",
 });
 
+const ROUTES_WITHOUT_GLOBAL_HEADER = ["/custom-sourcing"];
+
 export default function RootLayout({
 	children,
-}: Readonly<{
-	children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
+	const pathname = usePathname();
+	const hideGlobalHeader = ROUTES_WITHOUT_GLOBAL_HEADER.some((r) =>
+		pathname?.startsWith(r)
+	);
+
 	useEffect(() => {
 		Aos.init({
 			once: false,
@@ -57,12 +61,13 @@ export default function RootLayout({
 			// easing: "ease-in-sine",
 		});
 	}, []);
+
 	return (
 		<html lang="en">
 			<body className={`${bricolage.variable} ${inter.variable}`}>
 				<QueryClientProvider client={queryClient}>
 					<ModalProvider>
-						<Header />
+						{!hideGlobalHeader && <Header />}
 						<main>{children}</main>
 						<Footer />
 						<Toaster richColors duration={5000} />

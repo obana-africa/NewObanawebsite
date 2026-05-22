@@ -10,6 +10,14 @@ const nextConfig: NextConfig = {
 			},
 			{
 				protocol: "https",
+				hostname: "**.cloudinary.com",
+			},
+			{
+				protocol: "https",
+				hostname: "**.amazonaws.com",
+			},
+			{
+				protocol: "https",
 				hostname: "1.bp.blogspot.com",
 			},
 			{

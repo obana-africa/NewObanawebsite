@@ -39,6 +39,7 @@ const Footer = () => {
     { title: "About Us",  href: "/about" },
     { title: "Blog",      href: "https://blog.obana.africa" },
     { title: "FAQs",      href: "/faqs" },
+    { title: "Custom Sourcing",      href: "/custom-sourcing" },
   ];
 
   const productsLinks = [
