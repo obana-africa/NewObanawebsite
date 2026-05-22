@@ -182,7 +182,7 @@ const Footer = () => {
           {/* Left — copyright + policy */}
           <div className="flex flex-col gap-1.5 mt-8">
             <p className="text-white/70 text-[15px] leading-snug" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>
-              © 2025 Obana.Africa (An ICON Tech & Ecom Services Ltd Trademark).
+              © {new Date().getFullYear()} Obana.Africa (An ICON Tech & Ecom Services Ltd Trademark).
             </p>
             <p className="text-white/70 text-[15px] leading-none" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>
               All Rights Reserved.
