@@ -46,3 +46,62 @@ export interface NormalListProps {
 	aosDelayIncrement?: number;
 	hideBullets?: boolean;
 }
+
+export interface SourcingCategory {
+	id: number;
+	name: string;
+	slug: string;
+	section: string;
+	section_color: string | null;
+	image_url: string | null;
+	description: string | null;
+	min_budget: number;
+	max_budget: number;
+	currency: string;
+	sort_order: number;
+	is_active: boolean;
+}
+
+export interface SourcingSection {
+	section: string;
+	section_color: string;
+	items: SourcingCategory[];
+}
+
+export interface SelectedCategoryItem {
+	id: number;
+	name: string;
+	slug: string;
+	section: string;
+	min_budget: number;
+	max_budget: number;
+	budget_amount: number;
+	images: string[];
+}
+
+export interface CustomSourcingPayload {
+	business_name: string;
+	contact_name: string;
+	phone: string;
+	email: string;
+	business_country?: string;
+	business_state?: string;
+	business_city?: string;
+	business_location?: string;
+	categories: Array<{
+		id: number;
+		name: string;
+		slug: string;
+		section: string;
+		budget_amount: number;
+		images: string[];
+	}>;
+	estimated_budget?: string;
+	budget_total: number;
+	currency: string;
+	currency_symbol?: string;
+	timeline?: string;
+	financing_interest?: string;
+	additional_details?: string;
+	attachments?: string[];
+}
