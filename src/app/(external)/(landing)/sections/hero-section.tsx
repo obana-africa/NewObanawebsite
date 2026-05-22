@@ -458,15 +458,15 @@ const HeroSection: React.FC = () => {
           </div>
 
           {/* RIGHT — stat cards */}
-          <div className="hero-cards w-full md:w-auto hidden md:flex justify-center md:flex-shrink-0">
+          <div className="hero-cards w-full md:w-auto hidden md:flex md:flex-shrink-0">
             <div className="grid grid-cols-2 gap-4" style={{ width:"min(380px,100%)" }}>
               {STAT_CARDS.map((card, idx) => {
                 const Icon = card.icon;
                 return (
-                  <div key={card.id} className={`stat-card-${idx} rounded-2xl p-5 flex flex-col gap-3`}
+                  <div key={card.id} className={`stat-card-${idx} rounded-2xl p-6 flex flex-col gap-3 items-start`}
                     style={{ background:card.gradient, boxShadow:"0 8px 32px rgba(27,59,95,0.2)", minHeight:"140px", border:card.dark?"1px solid rgba(27,59,95,0.08)":"none" }}>
                     <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background:card.iconBg }}>
-                      <Icon size={17} color={card.dark?"#1b3b5f":"#fff"} />
+                      <Icon size={25} color={card.dark?"#1b3b5f":"#fff"} />
                     </div>
                     <p className="font-extrabold leading-none"
                       style={{ fontFamily:"'Bricolage Grotesque',sans-serif", fontSize:"clamp(1.3rem,3vw,1.8rem)", color:card.dark?"#1b3b5f":"#fff" }}>
