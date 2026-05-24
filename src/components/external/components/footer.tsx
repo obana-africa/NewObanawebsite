@@ -51,6 +51,8 @@ const Footer = () => {
     { title: "Overview",    href: "/about" },
     { title: "Ecosystem",   href: "/ecosystem" },
     { title: "How It Works",href: "/how-it-works" },
+    { title: "task",href: "/task/new" },
+
   ];
 
   const partnerLinks = [
