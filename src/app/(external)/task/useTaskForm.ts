@@ -54,7 +54,7 @@ export function useTaskForm({
 
     setSaveState("saving");
     try {
-      const taskId = (initialData as any)?.id as string | undefined;
+      const taskId = (initialData as (Partial<TaskForm> & { id?: string }) | null)?.id;
       const result = taskId
         ? await taskService.update(taskId, form)
         : await taskService.create(form);

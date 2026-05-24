@@ -3,7 +3,7 @@
 // TaskDetailsForm.tsx — pure UI, all styles via Tailwind
 
 import React from "react";
-import type { TaskDetailsFormProps, TaskPriority } from "./Task-types";
+import type { ReminderOption, TaskDetailsFormProps, TaskPriority, TaskForm } from "./Task-types";
 import {
   STAFF_OPTIONS,
   PRIORITY_OPTIONS,
@@ -74,7 +74,7 @@ const TaskDetailsForm: React.FC<TaskDetailsFormProps> = ({
   const { form, errors, saveState, setField, submit } = useTaskForm({ initialData, onSave });
 
   const priorityColor = PRIORITY_COLORS[form.priority];
-  const isEdit        = !!(initialData as any)?.id;
+  const isEdit = !!(initialData as (Partial<TaskForm> & { id?: string }) | null)?.id;
 
   /* ── Reusable row pattern (mobile) ── */
   const MobileRow = ({
@@ -220,7 +220,7 @@ const TaskDetailsForm: React.FC<TaskDetailsFormProps> = ({
                   form.reminder !== "none" ? "text-black" : "text-[#c7c7cc]"
                 }`}
                 value={form.reminder}
-                onChange={(e) => setField("reminder", e.target.value as any)}
+                onChange={(e) => setField("reminder", e.target.value as ReminderOption)}
                 aria-label="Reminder"
               >
                 {REMINDER_OPTIONS.map((o) => (
@@ -426,7 +426,7 @@ const TaskDetailsForm: React.FC<TaskDetailsFormProps> = ({
                         paddingRight: "32px",
                       }}
                       value={form.reminder}
-                      onChange={(e) => setField("reminder", e.target.value as any)}
+                      onChange={(e) => setField("reminder", e.target.value as ReminderOption)}
                       aria-label="Reminder"
                     >
                       {REMINDER_OPTIONS.map((o) => (
