@@ -313,7 +313,7 @@ const StepHeader = ({
 );
 
 const Hero = () => (
-	<div className="w-full py-10 px-5" style={{ background: NAVY }}>
+	<div className="w-full py-10 px-5 mt-20" style={{ background: NAVY }}>
 		<div className="mx-auto" style={{ maxWidth: 560 }}>
 			<div
 				className="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-5 text-[10px] font-semibold tracking-widest uppercase"
@@ -1443,7 +1443,7 @@ export default function TasksPage() {
 
 	return (
 		<div
-			className="min-h-screen"
+			// className="min-h-screen"
 			style={{
 				background: "#f5f7fa",
 				fontFamily: "'Bricolage Grotesque', Inter, sans-serif",
