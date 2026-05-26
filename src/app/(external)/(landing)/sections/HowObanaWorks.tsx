@@ -272,7 +272,7 @@ export default function HowObanaWorksSection() {
           </div>
 
           {/* ── BOTTOM ROW: Stat cards ── */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
+          <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-5 mb-12 ">
             {STATS.map((stat, idx) => (
               <div
                 key={idx}

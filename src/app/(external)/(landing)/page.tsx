@@ -23,13 +23,13 @@ const Home: NextPage = () => {
 				
 				<EcosystemSection />
 				<GlobalBrands />
+				<EcosystemSectionTwo/>
 				<HowObanaWorks />
 				{/* <ServiceSection features={serviceFeatures} imageSrc={shipbox} /> */}
 				{/* <StakeholderSection
 					title="Built for Businesses Across Commerce"
 					stakeholders={stakeholders}
 				/> */}
-				<EcosystemSectionTwo/>
 				<WhyUsSection />
 				
 				{/* <WhyObanaSection /> */}

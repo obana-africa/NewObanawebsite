@@ -29,7 +29,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
 
   return (
     <div
-      className="flex flex-col rounded-2xl bg-white relative overflow-hidden"
+      className="flex flex-col rounded-2xl bg-[#E9F9FF] relative overflow-hidden"
       style={{
         width: "300px",
         minHeight: "310px",
@@ -141,67 +141,6 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
   const looped    = [...testimonials, ...testimonials];
   const loopWidth = testimonials.length * STEP;
 
-  /* ── Particle canvas — same style as hero ── */
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    let raf: number;
-    let W = 0, H = 0;
-    const DOTS = 60;
-    type Dot = { x: number; y: number; vx: number; vy: number; r: number; alpha: number; color: string };
-    const PALETTE = ["27,59,95","27,59,95","36,80,127","251,191,36","251,191,36"];
-    let dots: Dot[] = [];
-
-    const resize = () => {
-      W = canvas.offsetWidth; H = canvas.offsetHeight;
-      canvas.width = W; canvas.height = H;
-      dots = Array.from({ length: DOTS }, () => ({
-        x: Math.random() * W, y: Math.random() * H,
-        vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4,
-        r: Math.random() * 2.2 + 0.8,
-        alpha: Math.random() * 0.45 + 0.2,
-        color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
-      }));
-    };
-
-    const draw = () => {
-      ctx.clearRect(0, 0, W, H);
-      for (let i = 0; i < dots.length; i++) {
-        for (let j = i + 1; j < dots.length; j++) {
-          const dx = dots[i].x - dots[j].x, dy = dots[i].y - dots[j].y;
-          const d = Math.sqrt(dx*dx + dy*dy);
-          if (d < 130) {
-            ctx.beginPath();
-            ctx.strokeStyle = `rgba(27,59,95,${0.13 * (1 - d/130)})`;
-            ctx.lineWidth = 1;
-            ctx.moveTo(dots[i].x, dots[i].y);
-            ctx.lineTo(dots[j].x, dots[j].y);
-            ctx.stroke();
-          }
-        }
-      }
-      dots.forEach(d => {
-        const g = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, d.r * 3.5);
-        g.addColorStop(0, `rgba(${d.color},${d.alpha * 0.7})`);
-        g.addColorStop(1, `rgba(${d.color},0)`);
-        ctx.beginPath(); ctx.arc(d.x, d.y, d.r * 3.5, 0, Math.PI*2);
-        ctx.fillStyle = g; ctx.fill();
-        ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI*2);
-        ctx.fillStyle = `rgba(${d.color},${d.alpha})`; ctx.fill();
-        d.x += d.vx; d.y += d.vy;
-        if (d.x < 0 || d.x > W) d.vx *= -1;
-        if (d.y < 0 || d.y > H) d.vy *= -1;
-      });
-      raf = requestAnimationFrame(draw);
-    };
-
-    resize(); draw();
-    window.addEventListener("resize", resize);
-    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
-  }, []);
-
   const advance = useCallback(() => {
     setAnimated(true);
     setOffset(prev => {
@@ -256,21 +195,6 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
         backgroundImage: "radial-gradient(circle, rgba(27,59,95,0.09) 1.2px, transparent 1.2px)",
         backgroundSize: "30px 30px", zIndex: 1,
       }} />
-
-      <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes orbFloat1 {
-          0%,100% { transform: translate(0,0) scale(1); }
-          50%      { transform: translate(20px,-16px) scale(1.07); }
-        }
-        @keyframes orbFloat2 {
-          0%,100% { transform: translate(0,0) scale(1); }
-          50%      { transform: translate(-18px,14px) scale(1.06); }
-        }
-        @keyframes orbFloat3 {
-          0%,100% { transform: translate(0,0) scale(1); }
-          50%      { transform: translate(12px,18px) scale(1.05); }
-        }
-      `}} />
 
       {/* ── Header ── */}
       <div className="container mx-auto px-4 md:px-6 relative" style={{ zIndex: 10 }}>
