@@ -12,7 +12,7 @@ interface Props {
 
 const SLIDES = [customImage, warehouseImg];
 
-const CustomSourcingHero: React.FC<Props> = ({ onSubmitDeal, onBrowseCategories }) => {
+const CustomSourcingHero: React.FC<Props> = ({}) => {
   const canvasRef   = useRef<HTMLCanvasElement>(null);
   const [current,   setCurrent]   = useState(0);
   const [animating, setAnimating] = useState(false);

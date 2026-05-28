@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React from "react";
 
 const STEPS = [
   {
@@ -151,7 +151,7 @@ const HowItWorks: React.FC = () => {
 
           {/* ── Mobile layout — 2×2 grid ── */}
           <div className="grid grid-cols-2 gap-6 md:hidden">
-            {STEPS.map((step, idx) => (
+            {STEPS.map((step) => (
               <div
                 key={step.n}
                 className="step-card flex flex-col items-center text-center"

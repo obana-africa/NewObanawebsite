@@ -3,7 +3,7 @@
 // WhySourceWithObana.tsx
 
 import React from "react";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 
 // ── Assets — update these paths to match your project ──────────
 import warehouseImg  from "@/app/assets/images/custom-sourcing-image/warehouseImg.png";
@@ -50,7 +50,7 @@ const PARTNERS = [
 ];
 
 const FeatureCard: React.FC<{
-  icon:  any;
+  icon:  StaticImageData;
   title: string;
   desc:  string;
 }> = ({ icon, title, desc }) => (
