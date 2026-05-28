@@ -53,18 +53,7 @@ const SourcingHeader: React.FC<Props> = ({ onSubmitDeal }) => {
 					</Link>
 
 					<nav className="hidden md:flex items-center gap-10">
-						<button
-							onClick={() => scrollToSection("categories")}
-							className="text-white/90 hover:text-white text-sm font-medium transition-colors"
-						>
-							Categories
-						</button>
-						<button
-							onClick={() => scrollToSection("how-it-works")}
-							className="text-white/90 hover:text-white text-sm font-medium transition-colors"
-						>
-							How it works
-						</button>
+						
 						<Button
 							onClick={handleSubmit}
 							variant="primary"

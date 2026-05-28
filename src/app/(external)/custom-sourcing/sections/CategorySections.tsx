@@ -18,16 +18,7 @@ const CategorySections: React.FC<Props> = ({ onCategoryClick }) => {
 		>
 			<div className="container mx-auto max-w-7xl">
 				<div className="text-center mb-8 md:mb-10">
-					<h2
-						className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1B3B5F] mb-1"
-						style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}
-					>
-						What are you sourcing?
-					</h2>
-					<p className="text-sm md:text-lg text-gray-600 md:max-w-[50%] mx-auto px-4 ">
-						Browse our active deal pipelines. Each category connects you to
-						verified vendors, competitive pricing, and embedded financing.
-					</p>
+					
 				</div>
 
 				{isLoading && (
