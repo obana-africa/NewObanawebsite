@@ -336,7 +336,7 @@ const DealSubmissionModal: React.FC<Props> = ({
 							animation="ripple"
 							className="border border-primary flex items-center justify-center font-bold w-full hover:!bg-[#FFDE76]"
 						>
-							Submit Deal Request
+							Submit Sourcing Request
 						</Button>
 					) : (
 						<button
