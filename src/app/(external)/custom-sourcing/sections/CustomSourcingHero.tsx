@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import customImage from "@/app/assets/customImage.png";
+import customImage from "@/app/assets/customImg.png";
 
 interface Props {
   onSubmitDeal?:       () => void;
@@ -256,7 +256,7 @@ const CustomSourcingHero: React.FC<Props> = () => {
           background: "#ffffff",
           fontFamily: "'Bricolage Grotesque', sans-serif",
           paddingTop: "84px",
-          paddingBottom: "72px",
+          paddingBottom: "40px",
           position: "relative",
           overflow: "hidden",
         }}
@@ -266,9 +266,9 @@ const CustomSourcingHero: React.FC<Props> = () => {
           className="cs-img hero-image-desktop"
           style={{
             position: "absolute",
-            top:      "84px",
+            top:      "70px",
             right:    0,
-            bottom:   "72px",
+            bottom:   0,
             width:    "50%",
             zIndex:   0,
           }}

@@ -61,7 +61,7 @@ const SourcingHeader: React.FC<Props> = ({ onSubmitDeal }) => {
 							className=" !text-[#1B3B5F] !bg-[#ECEDF0] font-bold !hover:bg-[#FFDE76]"
 							// href="/contact"
 						>
-							Submit a Deal
+							Submit request
 						</Button>
 					</nav>
 
