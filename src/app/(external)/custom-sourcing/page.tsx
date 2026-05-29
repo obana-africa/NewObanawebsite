@@ -6,7 +6,7 @@ import CustomSourcingHero from "./sections/CustomSourcingHero";
 import CategorySections from "./sections/CategorySections";
 import DealSubmissionModal from "./components/DealSubmissionModal";
 import type { SourcingCategory } from "@/types";
-import HowItWorks from "./sections/HowItWorks";
+// import HowItWorks from "./sections/HowItWorks";
 import WhySourceWithObana from "./sections/WhySourceWithObana";
 
 export default function CustomSourcingPage() {
@@ -38,7 +38,7 @@ export default function CustomSourcingPage() {
 				onSubmitDeal={handleSubmitDeal}
 				onBrowseCategories={handleBrowseCategories}
 			/>
-			<HowItWorks />
+			{/* <HowItWorks /> */}
 
 			<CategorySections onCategoryClick={handleCategoryClick} />
 			<WhySourceWithObana />

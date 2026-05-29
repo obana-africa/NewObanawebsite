@@ -1,250 +1,528 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import Image from "next/image";
-import customImage   from "@/app/assets/customImage.png";
-import warehouseImg  from "@/app/assets/images/custom-sourcing-image/warehouseImg.png";
+import customImage from "@/app/assets/customImage.png";
 
 interface Props {
-  onSubmitDeal:       () => void;
-  onBrowseCategories: () => void;
+  onSubmitDeal?:       () => void;
+  onBrowseCategories?: () => void;
 }
 
-const SLIDES = [customImage, warehouseImg];
+/* Brand palette */
+const NAVY = "#1B3B5F";
+const CYAN = "#DCF8F9";
 
-const CustomSourcingHero: React.FC<Props> = ({}) => {
-  const canvasRef   = useRef<HTMLCanvasElement>(null);
-  const [current,   setCurrent]   = useState(0);
-  const [animating, setAnimating] = useState(false);
-  const [direction, setDirection] = useState<"in" | "out">("in");
+/* ──────────────────────────────────────────────
+   ICONS
+   ────────────────────────────────────────────── */
+const IconGrid = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+    <rect x="3"  y="3"  width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="2" />
+    <rect x="14" y="3"  width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="2" />
+    <rect x="3"  y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="2" />
+    <rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="2" />
+  </svg>
+);
+const IconDoc = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+    <path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9l-6-6z"
+          stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+    <path d="M14 3v6h6 M8 13h8 M8 17h5"
+          stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+const IconLink = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+    <path d="M10 14a5 5 0 007.07 0l3-3a5 5 0 00-7.07-7.07l-1.5 1.5"
+          stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M14 10a5 5 0 00-7.07 0l-3 3a5 5 0 007.07 7.07l1.5-1.5"
+          stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+const IconTrend = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+    <path d="M3 17l6-6 4 4 8-8 M14 7h7v7"
+          stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+const IconShield = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+    <path d="M12 2L4 6v6c0 5 3.5 9.5 8 10 4.5-.5 8-5 8-10V6l-8-4z"
+          stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+    <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="2"
+          strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+const IconTag = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+    <path d="M20.59 13.41L13.42 20.58a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"
+          stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+    <circle cx="7" cy="7" r="1.5" fill="currentColor" />
+  </svg>
+);
+const IconWallet = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+    <path d="M20 8H6a2 2 0 010-4h12v4z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+    <path d="M4 6v12a2 2 0 002 2h14V8" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+    <circle cx="17" cy="14" r="1.5" fill="currentColor" />
+  </svg>
+);
 
-  /* ── Auto-slide every 4s ── */
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setDirection("out");
-      setAnimating(true);
-      setTimeout(() => {
-        setCurrent(prev => (prev + 1) % SLIDES.length);
-        setDirection("in");
-        setTimeout(() => setAnimating(false), 600);
-      }, 400);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
+const STEPS = [
+  { title: "Browse Categories",     desc: "Explore verified fashion, beauty, fabrics, trims & equipment.", Icon: IconGrid  },
+  { title: "Tell Us What You Need", desc: "Share product details, quantities & target pricing.",           Icon: IconDoc   },
+  { title: "Get Matched",           desc: "Receive verified quotations & logistics support.",               Icon: IconLink  },
+  { title: "Secure & Scale",        desc: "Access embedded financing & cross-border logistics.",            Icon: IconTrend },
+];
 
-  /* ── Particle canvas ── */
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    let raf: number, W = 0, H = 0;
-    type Dot = { x:number; y:number; vx:number; vy:number; r:number; a:number; c:string };
-    const COLORS = ["255,255,255","255,255,255","249,195,25"];
-    let dots: Dot[] = [];
-    const resize = () => {
-      W = canvas.offsetWidth; H = canvas.offsetHeight;
-      canvas.width = W; canvas.height = H;
-      dots = Array.from({ length: 55 }, () => ({
-        x: Math.random()*W, y: Math.random()*H,
-        vx: (Math.random()-0.5)*0.35, vy: (Math.random()-0.5)*0.35,
-        r: Math.random()*2+0.6, a: Math.random()*0.35+0.1,
-        c: COLORS[Math.floor(Math.random()*COLORS.length)],
-      }));
-    };
-    const draw = () => {
-      ctx.clearRect(0,0,W,H);
-      for (let i=0;i<dots.length;i++) for (let j=i+1;j<dots.length;j++){
-        const dx=dots[i].x-dots[j].x, dy=dots[i].y-dots[j].y, d=Math.sqrt(dx*dx+dy*dy);
-        if(d<130){ ctx.beginPath(); ctx.strokeStyle=`rgba(255,255,255,${0.08*(1-d/130)})`; ctx.lineWidth=0.8; ctx.moveTo(dots[i].x,dots[i].y); ctx.lineTo(dots[j].x,dots[j].y); ctx.stroke(); }
-      }
-      dots.forEach(d=>{
-        const g=ctx.createRadialGradient(d.x,d.y,0,d.x,d.y,d.r*4);
-        g.addColorStop(0,`rgba(${d.c},${d.a*0.6})`); g.addColorStop(1,`rgba(${d.c},0)`);
-        ctx.beginPath(); ctx.arc(d.x,d.y,d.r*4,0,Math.PI*2); ctx.fillStyle=g; ctx.fill();
-        ctx.beginPath(); ctx.arc(d.x,d.y,d.r,0,Math.PI*2); ctx.fillStyle=`rgba(${d.c},${d.a})`; ctx.fill();
-        d.x+=d.vx; d.y+=d.vy;
-        if(d.x<0||d.x>W)d.vx*=-1; if(d.y<0||d.y>H)d.vy*=-1;
-      });
-      raf=requestAnimationFrame(draw);
-    };
-    resize(); draw(); window.addEventListener("resize",resize);
-    return ()=>{ cancelAnimationFrame(raf); window.removeEventListener("resize",resize); };
-  }, []);
+/* ──────────────────────────────────────────────
+   Floating value-card
+   ────────────────────────────────────────────── */
+type FloatingCardProps = {
+  icon:      React.ReactNode;
+  title:     string;
+  desc:      string;
+  style:     React.CSSProperties;
+  className: string;
+};
 
-  const slideStyle: React.CSSProperties = {
-    opacity:   animating && direction === "out" ? 0 : 1,
-    transform: animating
-      ? direction === "out"
-        ? "translateX(20px) scale(0.97)"
-        : "translateX(-20px) scale(0.97)"
-      : "translateX(0) scale(1)",
-    transition: "opacity 0.4s ease, transform 0.4s ease",
-  };
+const FloatingCard: React.FC<FloatingCardProps> = ({
+  icon, title, desc, style, className,
+}) => (
+  <div
+    className={`floating-card ${className}`}
+    tabIndex={0}
+    style={{
+      position:        "absolute",
+      background:      "rgba(255,255,255,0.97)",
+      backdropFilter:  "blur(10px)",
+      WebkitBackdropFilter: "blur(10px)",
+      borderRadius:    "12px",
+      padding:         "9px 12px 9px 9px",
+      display:         "flex",
+      alignItems:      "center",
+      gap:             "9px",
+      boxShadow:       "0 8px 22px rgba(27,59,95,0.14), 0 1px 4px rgba(27,59,95,0.05)",
+      border:          "1px solid rgba(255,255,255,0.7)",
+      minWidth:        "158px",
+      cursor:          "default",
+      outline:         "none",
+      ...style,
+    }}
+  >
+    <div style={{ flexShrink: 0 }}>{icon}</div>
+    <div style={{ minWidth: 0 }}>
+      <h5 className="fc-title" style={{
+        margin: 0, fontSize: "11.5px", fontWeight: 700,
+        color: NAVY, lineHeight: 1.2,
+      }}>
+        {title}
+      </h5>
+      <p className="fc-desc" style={{
+        margin: "2px 0 0", fontSize: "9.5px",
+        color: "#647186", lineHeight: 1.35,
+      }}>
+        {desc}
+      </p>
+    </div>
+  </div>
+);
 
+const IconBadge: React.FC<{ bg: string; fg: string; size?: number; children: React.ReactNode }> =
+  ({ bg, fg, size = 32, children }) => (
+    <div style={{
+      width: size, height: size, borderRadius: 9,
+      background: bg, color: fg,
+      display: "flex", alignItems: "center", justifyContent: "center",
+      flexShrink: 0,
+    }}>
+      {children}
+    </div>
+  );
+
+/* ──────────────────────────────────────────────
+   Main
+   ────────────────────────────────────────────── */
+const CustomSourcingHero: React.FC<Props> = () => {
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: `
         @keyframes fadeUp {
-          from { opacity:0; transform:translateY(24px); }
-          to   { opacity:1; transform:translateY(0); }
+          from { opacity: 0; transform: translateY(24px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
         @keyframes fadeRight {
-          from { opacity:0; transform:translateX(32px); }
-          to   { opacity:1; transform:translateX(0); }
+          from { opacity: 0; transform: translateX(32px); }
+          to   { opacity: 1; transform: translateX(0); }
         }
-        @keyframes orbFloat {
-          0%,100% { transform:translate(0,0) scale(1); }
-          50%      { transform:translate(16px,-12px) scale(1.06); }
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to   { opacity: 1; }
         }
-        @keyframes orbFloat2 {
-          0%,100% { transform:translate(0,0) scale(1); }
-          50%      { transform:translate(-12px,16px) scale(1.05); }
+
+        .cs-headline { animation: fadeUp    0.7s ease 0.10s both; }
+        .cs-desc     { animation: fadeUp    0.7s ease 0.25s both; }
+        .cs-steps    { animation: fadeUp    0.7s ease 0.40s both; }
+        .cs-img      { animation: fadeIn    1.0s ease 0.20s both; }
+        .deco        { animation: fadeIn    1.2s ease 0.05s both; }
+
+        .float-card-1 { animation: fadeRight 0.55s ease 0.55s both; }
+        .float-card-2 { animation: fadeRight 0.55s ease 0.70s both; }
+        .float-card-3 { animation: fadeRight 0.55s ease 0.85s both; }
+
+        .floating-card {
+          transition:
+            transform 0.35s cubic-bezier(.2,.7,.3,1),
+            box-shadow 0.35s ease,
+            border-color 0.35s ease;
         }
-        @keyframes shimmer {
-          0%   { background-position:-200% center; }
-          100% { background-position: 200% center; }
+        .floating-card:hover,
+        .floating-card:focus-visible {
+          transform: translateY(-6px) scale(1.02);
+          box-shadow: 0 18px 38px rgba(27,59,95,0.25), 0 2px 6px rgba(27,59,95,0.08);
+          border-color: rgba(27,59,95,0.35);
         }
-        .cs-h1   { animation:fadeUp    0.7s ease 0.2s  both; }
-        .cs-desc { animation:fadeUp    0.7s ease 0.35s both; }
-        .cs-img  { animation:fadeRight 0.8s ease 0.3s  both; }
-        .orb-a   { animation:orbFloat  9s ease-in-out infinite; }
-        .orb-b   { animation:orbFloat2 7s ease-in-out infinite; }
-        .gold-text {
-          background: linear-gradient(90deg,#fbbf24 0%,#fde68a 50%,#fbbf24 100%);
-          background-size: 200% auto;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          animation: shimmer 4s linear infinite;
+
+        .step-item {
+          transition:
+            transform 0.3s cubic-bezier(.2,.7,.3,1),
+            box-shadow 0.3s ease,
+            border-color 0.3s ease,
+            background 0.3s ease;
         }
-      ` }} />
+        .step-item:hover,
+        .step-item:focus-visible {
+          transform: translateY(-4px);
+          box-shadow: 0 16px 32px rgba(27,59,95,0.14);
+          border-color: rgba(27,59,95,0.28);
+        }
+        .step-item:hover .step-icon,
+        .step-item:focus-visible .step-icon {
+          background: ${NAVY};
+          color: ${CYAN};
+        }
+
+        /* Desktop full-bleed image — fades from white into image as it goes right */
+        .hero-image-desktop {
+          -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 18%, #000 100%);
+                  mask-image: linear-gradient(to right, transparent 0%, #000 18%, #000 100%);
+        }
+
+        /* Tablet inline image — soft radial blend */
+        .hero-image-tablet {
+          -webkit-mask-image: radial-gradient(ellipse at center, #000 65%, transparent 100%);
+                  mask-image: radial-gradient(ellipse at center, #000 65%, transparent 100%);
+        }
+
+        /* ── Responsive visibility ── */
+        .hero-image-desktop { display: block; }
+        .hero-image-tablet  { display: none; }
+
+        /* ── Tablet ── */
+        @media (max-width: 1023px) {
+          .hero-section { padding: 88px 0 64px !important; }
+          .hero-inner {
+            flex-direction: column !important;
+            gap: 40px !important;
+          }
+          .hero-left, .hero-right {
+            width: 100% !important;
+            flex: none !important;
+          }
+          .hero-right { height: 420px !important; }
+          .hero-headline { font-size: clamp(2rem, 6vw, 3rem) !important; }
+          .hero-image-desktop { display: none !important; }
+          .hero-image-tablet  { display: block !important; }
+        }
+
+        /* ── Mobile (image fully hidden) ── */
+        @media (max-width: 640px) {
+          .hero-section { padding: 72px 0 48px !important; }
+          .hero-inner { padding: 0 16px !important; gap: 28px !important; }
+          .hero-right { display: none !important; }
+          .steps-row {
+            display: grid !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 12px !important;
+          }
+          .deco-large { display: none !important; }
+        }
+      `}} />
 
       <section
-        className="relative overflow-hidden pt-20 md:pt-0"
+        className="hero-section"
         style={{
-          background: "linear-gradient(135deg,#0a1628 0%,#1b3b5f 55%,#0d2240 100%)",
-          fontFamily: "'Bricolage Grotesque',sans-serif",
-          minHeight:  "420px",
+          background: "#ffffff",
+          fontFamily: "'Bricolage Grotesque', sans-serif",
+          paddingTop: "84px",
+          paddingBottom: "72px",
+          position: "relative",
+          overflow: "hidden",
         }}
       >
-        {/* Canvas */}
-        <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex:0, opacity:0.6 }} />
-
-        {/* Orbs */}
-        <div className="orb-a absolute pointer-events-none"
-          style={{ top:"-60px", left:"-60px", width:"380px", height:"380px", borderRadius:"50%",
-            background:"radial-gradient(circle,rgba(251,191,36,0.12)0%,transparent 65%)", filter:"blur(40px)", zIndex:0 }} />
-        <div className="orb-b absolute pointer-events-none"
-          style={{ bottom:"-40px", right:"5%", width:"300px", height:"300px", borderRadius:"50%",
-            background:"radial-gradient(circle,rgba(255,255,255,0.05)0%,transparent 65%)", filter:"blur(32px)", zIndex:0, animationDelay:"3s" }} />
-
-        {/* Gold top accent */}
-        <div className="absolute top-0 left-0 right-0 h-[3px] pointer-events-none"
-          style={{ background:"linear-gradient(90deg,transparent,#fbbf24 40%,#f59e0b 60%,transparent)", zIndex:1 }} />
-
-        {/* ── Main content ── */}
+        {/* ─── Full-bleed image (DESKTOP) ─── */}
         <div
-          className="relative z-10 mx-auto w-full px-6 md:px-10 lg:px-16"
-          style={{ maxWidth:"1280px", paddingTop:"clamp(52px,8vw,80px)", paddingBottom:"clamp(40px,6vw,64px)" }}
+          className="cs-img hero-image-desktop"
+          style={{
+            position: "absolute",
+            top:      "84px",
+            right:    0,
+            bottom:   "72px",
+            width:    "50%",
+            zIndex:   0,
+          }}
         >
-          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+          <Image
+            src={customImage}
+            alt="Obana Africa sourcing"
+            fill
+            priority
+            quality={95}
+            sizes="50vw"
+            style={{ objectFit: "cover", objectPosition: "center" }}
+          />
+        </div>
 
-            {/* ── LEFT ── */}
-            <div className="flex-1 flex flex-col gap-5 max-w-[580px]">
-              <h1 className="cs-h1 font-extrabold text-white leading-[1.08]"
-                style={{ fontSize:"clamp(2.2rem,5vw,3.6rem)" }}>
-                What are you{" "}
-                <span className="gold-text">sourcing?</span>
-              </h1>
-              <p className="cs-desc leading-relaxed"
-                style={{ color:"rgba(255,255,255,0.65)", fontSize:"clamp(0.95rem,1.6vw,1.08rem)", maxWidth:"460px" }}>
-                Browse our active deal pipelines. Each category connects you to
-                verified vendors, competitive pricing, and embedded financing —
-                built for African SMEs.
-              </p>
+        {/* ─── Decorative background objects ─── */}
+
+        {/* Top-left navy dot cluster */}
+        <div
+          className="deco deco-large"
+          aria-hidden
+          style={{
+            position: "absolute",
+            top:      "70px",
+            left:     "24px",
+            width:    "110px",
+            height:   "110px",
+            opacity:  0.30,
+            backgroundImage: `radial-gradient(${NAVY} 1.2px, transparent 1.2px)`,
+            backgroundSize: "14px 14px",
+            pointerEvents: "none",
+            zIndex: 0,
+          }}
+        />
+
+        {/* Bottom-left soft cyan blob */}
+        <div
+          className="deco deco-large"
+          aria-hidden
+          style={{
+            position: "absolute",
+            bottom:   "-100px",
+            left:     "-80px",
+            width:    "320px",
+            height:   "320px",
+            background:
+              `radial-gradient(circle at center, ${CYAN} 0%, rgba(220,248,249,0) 70%)`,
+            borderRadius: "50%",
+            opacity: 0.75,
+            zIndex: 0,
+            pointerEvents: "none",
+          }}
+        />
+
+        {/* ─── Content ─── */}
+        <div
+          className="hero-inner"
+          style={{
+            maxWidth:   "1320px",
+            margin:     "0 auto",
+            padding:    "0 40px",
+            display:    "flex",
+            alignItems: "center",
+            gap:        "64px",
+            position:   "relative",
+            zIndex:     1,
+          }}
+        >
+          {/* ── LEFT ── */}
+          <div className="hero-left" style={{ flex: "1 1 0", minWidth: 0 }}>
+            <h1
+              className="cs-headline hero-headline"
+              style={{
+                fontSize:      "clamp(2.4rem, 4.8vw, 3.8rem)",
+                fontWeight:    800,
+                lineHeight:    1.04,
+                margin:        0,
+                color:         NAVY,
+                letterSpacing: "-0.02em",
+              }}
+            >
+              What Are You<br />
+              <span style={{ position: "relative", display: "inline-block", color: NAVY }}>
+                Sourcing?
+                <span
+                  aria-hidden
+                  style={{
+                    position:     "absolute",
+                    left:         0,
+                    bottom:       "-2px",
+                    width:        "55%",
+                    height:       "3px",
+                    background:   NAVY,
+                    borderRadius: "2px",
+                    opacity:      0.55,
+                  }}
+                />
+              </span>
+            </h1>
+
+            <p
+              className="cs-desc"
+              style={{
+                color:      "#3D5573",
+                fontSize:   "clamp(0.94rem, 1.1vw, 1.05rem)",
+                lineHeight: 1.65,
+                margin:     "26px 0 0",
+                maxWidth:   "560px",
+              }}
+            >
+              Are you an SME looking to source fashion, beauty, safety wears,
+              school uniforms, or everyday retail products? Connect with verified
+              vendors, competitive pricing, and flexible financing solutions —
+              built to help African businesses source smarter and grow faster.
+            </p>
+
+            {/* Steps */}
+            <div
+              className="cs-steps steps-row"
+              style={{
+                marginTop:  "36px",
+                display:    "flex",
+                gap:        "14px",
+                alignItems: "stretch",
+              }}
+            >
+              {STEPS.map(({ title, desc, Icon }, i) => (
+                <div
+                  key={i}
+                  className="step-item"
+                  tabIndex={0}
+                  style={{
+                    flex:           "1 1 0",
+                    minWidth:       0,
+                    padding:        "22px 14px 22px",
+                    background:     CYAN,
+                    border:         "1px solid rgba(27,59,95,0.10)",
+                    borderRadius:   "10px",
+                    boxShadow:      "0 2px 8px rgba(27,59,95,0.04)",
+                    display:        "flex",
+                    flexDirection:  "column",
+                    alignItems:     "center",
+                    textAlign:      "center",
+                    gap:            "14px",
+                    outline:        "none",
+                    cursor:         "default",
+                  }}
+                >
+                  <div
+                    className="step-icon"
+                    style={{
+                      width:        "38px",
+                      height:       "38px",
+                      borderRadius: "8px",
+                      background:   "#ffffff",
+                      color:        NAVY,
+                      display:      "flex",
+                      alignItems:   "center",
+                      justifyContent: "center",
+                      transition:   "background 0.3s ease, color 0.3s ease",
+                      boxShadow:    "0 2px 6px rgba(27,59,95,0.06)",
+                    }}
+                  >
+                    <Icon />
+                  </div>
+                  <h4 style={{
+                    margin:     0,
+                    fontSize:   "13.5px",
+                    fontWeight: 700,
+                    color:      NAVY,
+                    lineHeight: 1.3,
+                  }}>
+                    {title}
+                  </h4>
+                  <p style={{
+                    margin:     0,
+                    fontSize:   "11.5px",
+                    lineHeight: 1.55,
+                    color:      "#3D5573",
+                  }}>
+                    {desc}
+                  </p>
+                </div>
+              ))}
             </div>
+          </div>
 
-            {/* ── RIGHT — Sliding images ── */}
-            <div className="cs-img hidden lg:block flex-shrink-0 relative mt-6">
-
-              {/* Decorative frame */}
-              <div className="absolute -inset-3 rounded-3xl pointer-events-none"
-                style={{
-                  background: "linear-gradient(135deg,rgba(251,191,36,0.15),transparent,rgba(255,255,255,0.05))",
-                  border:     "1px solid rgba(251,191,36,0.2)",
-                }}
+          {/* ── RIGHT — holds floating cards + tablet image ── */}
+          <div
+            className="hero-right"
+            style={{
+              flex:     "1 1 0",
+              minWidth: 0,
+              position: "relative",
+              height:   "520px",
+            }}
+          >
+            {/* Tablet image (hidden on desktop & mobile) */}
+            <div
+              className="hero-image-tablet"
+              style={{
+                position:     "absolute",
+                inset:        0,
+                borderRadius: "20px",
+                overflow:     "hidden",
+                zIndex:       1,
+              }}
+            >
+              <Image
+                src={customImage}
+                alt="Obana Africa sourcing"
+                fill
+                quality={95}
+                sizes="100vw"
+                style={{ objectFit: "cover", objectPosition: "center" }}
               />
-
-              {/* Image container */}
-              <div
-                className="relative rounded-2xl overflow-hidden"
-                style={{
-                  width:     "340px",
-                  height:    "400px",
-                  boxShadow: "0 24px 64px rgba(0,0,0,0.4), 0 4px 16px rgba(0,0,0,0.2)",
-                }}
-              >
-                {/* Slides */}
-                <div style={{ ...slideStyle }}>
-                  <Image
-                    src={SLIDES[current]}
-                    alt="Obana Africa sourcing"
-                    width={340}
-                    height={400}
-                    priority
-                    unoptimized
-                    className="object-cover object-center w-full h-full"
-                    quality={100}
-                  />
-                </div>
-
-                {/* Bottom label */}
-                <div
-                  className="absolute bottom-0 left-0 right-0 px-4 py-3"
-                  style={{ background:"linear-gradient(to top,rgba(10,22,40,0.92),transparent)", zIndex: 2 }}
-                >
-                  <p className="text-white text-[12px] font-semibold">Verified Warehouse Sourcing</p>
-                  <p className="text-white/55 text-[10px]">Direct from trusted suppliers</p>
-                </div>
-
-                {/* Dot indicators */}
-                <div
-                  className="absolute bottom-12 left-0 right-0 flex justify-center gap-1.5"
-                  style={{ zIndex: 3 }}
-                >
-                  {SLIDES.map((_, i) => (
-                    <button
-                      key={i}
-                      type="button"
-                      onClick={() => {
-                        if (i === current || animating) return;
-                        setDirection("out");
-                        setAnimating(true);
-                        setTimeout(() => {
-                          setCurrent(i);
-                          setDirection("in");
-                          setTimeout(() => setAnimating(false), 500);
-                        }, 350);
-                      }}
-                      style={{
-                        width:        i === current ? "20px" : "6px",
-                        height:       "6px",
-                        borderRadius: "3px",
-                        background:   i === current ? "#fbbf24" : "rgba(255,255,255,0.4)",
-                        border:       "none",
-                        cursor:       "pointer",
-                        transition:   "all 0.3s ease",
-                        padding:      0,
-                      }}
-                      aria-label={`Slide ${i + 1}`}
-                    />
-                  ))}
-                </div>
-
-              </div>
             </div>
 
+            {/* Floating cards — clustered upper-middle on the image */}
+            <FloatingCard
+              className="float-card-1"
+              style={{ top: "16%", left: "-4%", zIndex: 3 }}
+              icon={
+                <IconBadge bg={NAVY} fg={CYAN}>
+                  <IconShield />
+                </IconBadge>
+              }
+              title="Verified Vendors"
+              desc="Trusted partners, quality assured."
+            />
+
+            <FloatingCard
+              className="float-card-2"
+              style={{ top: "38%", left: "-7%", zIndex: 3 }}
+              icon={
+                <IconBadge bg={CYAN} fg={NAVY}>
+                  <IconTag />
+                </IconBadge>
+              }
+              title="Competitive Pricing"
+              desc="Get the best value for your business."
+            />
+
+            <FloatingCard
+              className="float-card-3"
+              style={{ top: "60%", left: "-3%", zIndex: 3 }}
+              icon={
+                <IconBadge bg={NAVY} fg={CYAN}>
+                  <IconWallet />
+                </IconBadge>
+              }
+              title="Flexible Financing"
+              desc="Access funds to grow your business."
+            />
           </div>
         </div>
       </section>

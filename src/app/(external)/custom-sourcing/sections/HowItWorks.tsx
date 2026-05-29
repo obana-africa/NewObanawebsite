@@ -50,9 +50,9 @@ const HowItWorks: React.FC = () => {
       <section
         style={{
         //   background: "linear-gradient(180deg, #dff4f4 0%, #e8f8f8 40%, #f0fafa 70%, #ffffff 100%)",
-            background: "rgba(223,244,244,0.8)",
+          background: "rgba(223,244,244,0.8)",
           fontFamily: "'Bricolage Grotesque', sans-serif",
-          padding: "clamp(30px, 8vw, 30px) 0",
+          padding: "clamp(10px, 8vw, 10px) 0",
         }}
       >
         <div className="mx-auto w-full px-4 sm:px-6 md:px-10" style={{ maxWidth: "1300px" }}>
