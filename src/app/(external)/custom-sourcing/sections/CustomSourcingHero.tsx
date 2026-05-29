@@ -238,7 +238,7 @@ const CustomSourcingHero: React.FC<Props> = () => {
 
         /* ── Mobile (image fully hidden) ── */
         @media (max-width: 640px) {
-          .hero-section { padding: 72px 0 48px !important; }
+          .hero-section { padding: 82px 0 48px !important; }
           .hero-inner { padding: 0 16px !important; gap: 28px !important; }
           .hero-right { display: none !important; }
           .steps-row {
@@ -255,8 +255,8 @@ const CustomSourcingHero: React.FC<Props> = () => {
         style={{
           background: "#ffffff",
           fontFamily: "'Bricolage Grotesque', sans-serif",
-          paddingTop: "84px",
-          paddingBottom: "40px",
+          paddingTop: "82px",
+          paddingBottom: "20px",
           position: "relative",
           overflow: "hidden",
         }}
