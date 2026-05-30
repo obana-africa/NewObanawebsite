@@ -1,7 +1,5 @@
 "use client";
 
-// WhySourceWithObana.tsx
-
 import React from "react";
 import Image, { StaticImageData } from "next/image";
 
@@ -37,16 +35,6 @@ const FEATURES = [
     desc:  "Source globally, fashion, beauty, textiles, and equipment from verified brands.",
     side:  "right",
   },
-];
-
-const PARTNERS = [
-  "Adidas Recommerce",
-  "Jack & Jones",
-  "Darling",
-  "ICON Wholesale",
-  "GIG Logistics",
-  "Stellas Finance",
-  "Fazsion.ng",
 ];
 
 const FeatureCard: React.FC<{
@@ -105,162 +93,113 @@ const WhySourceWithObana: React.FC = () => {
   const rightCards = FEATURES.filter(f => f.side === "right");
 
   return (
-    <>
-      <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes marquee {
-          from { transform: translateX(0); }
-          to   { transform: translateX(-50%); }
-        }
-        .marquee-track {
-          display: flex;
-          animation: marquee 22s linear infinite;
-          width: max-content;
-        }
-        .marquee-track:hover { animation-play-state: paused; }
-      ` }} />
-
-      <section
-        className="w-full"
-        style={{
-          background: "#ffffff",
-          fontFamily: "'Bricolage Grotesque', sans-serif",
-          padding:    "clamp(48px,7vw,80px) 0 0",
-        }}
+    <section
+      className="w-full"
+      style={{
+        background: "#ffffff",
+        fontFamily: "'Bricolage Grotesque', sans-serif",
+        padding:    "clamp(48px,7vw,80px) 0",
+      }}
+    >
+      <div
+        className="mx-auto px-4 sm:px-6 md:px-10"
+        style={{ maxWidth: "1200px" }}
       >
-        <div
-          className="mx-auto px-4 sm:px-6 md:px-10"
-          style={{ maxWidth: "1200px" }}
-        >
 
-          {/* ── Header ── */}
-          <div className="text-center mb-10">
-            <h2
-              className="font-extrabold leading-tight mb-3"
-              style={{
-                color:      "#1B3B5F",
-                fontSize:   "clamp(1.8rem, 4vw, 2.8rem)",
-                fontFamily: "'Bricolage Grotesque', sans-serif",
-              }}
-            >
-              Why Source With Obana
-            </h2>
-            <p
-              className="mx-auto"
-              style={{
-                color:     "rgba(27,59,95,0.6)",
-                fontSize:  "clamp(0.9rem, 1.6vw, 1rem)",
-                maxWidth:  "520px",
-                lineHeight: 1.65,
-              }}
-            >
-              Built to simplify sourcing, reduce operational stress, and connect
-              businesses to verified supply opportunities globally.
-            </p>
-          </div>
-
-          {/* ── 3-column grid ── */}
-          <div
-            className="hidden md:grid"
+        {/* ── Header ── */}
+        <div className="text-center mb-10">
+          <h2
+            className="font-extrabold leading-tight mb-3"
             style={{
-              gridTemplateColumns: "1fr 340px 1fr",
-              gap:    "16px",
-              alignItems: "stretch",
+              color:      "#1B3B5F",
+              fontSize:   "clamp(1.8rem, 4vw, 2.8rem)",
+              fontFamily: "'Bricolage Grotesque', sans-serif",
             }}
           >
+            Why Source With Obana
+          </h2>
+          <p
+            className="mx-auto"
+            style={{
+              color:      "rgba(27,59,95,0.6)",
+              fontSize:   "clamp(0.9rem, 1.6vw, 1rem)",
+              maxWidth:   "520px",
+              lineHeight: 1.65,
+            }}
+          >
+            Built to simplify sourcing, reduce operational stress, and connect
+            businesses to verified supply opportunities globally.
+          </p>
+        </div>
 
-            {/* Left column */}
-            <div className="flex flex-col gap-4">
-              {leftCards.map(c => (
-                <FeatureCard key={c.title} icon={c.icon} title={c.title} desc={c.desc} />
-              ))}
-            </div>
+        {/* ── 3-column grid ── */}
+        <div
+          className="hidden md:grid"
+          style={{
+            gridTemplateColumns: "1fr 340px 1fr",
+            gap:        "16px",
+            alignItems: "stretch",
+          }}
+        >
 
-            {/* Center — warehouse image */}
-            <div
-              className="rounded-2xl overflow-hidden flex-shrink-0"
-              style={{ position: "relative" }}
-            >
-              <Image
-                src={warehouseImg}
-                alt="Obana warehouse"
-                fill
-                className="object-cover object-center"
-                sizes="340px"
-                priority
-                unoptimized
-              />
-            </div>
-
-            {/* Right column */}
-            <div className="flex flex-col gap-4">
-              {rightCards.map(c => (
-                <FeatureCard key={c.title} icon={c.icon} title={c.title} desc={c.desc} />
-              ))}
-            </div>
-
+          {/* Left column */}
+          <div className="flex flex-col gap-4">
+            {leftCards.map(c => (
+              <FeatureCard key={c.title} icon={c.icon} title={c.title} desc={c.desc} />
+            ))}
           </div>
 
-          {/* ── Mobile — 2 col grid ── */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:hidden">
-            {/* Warehouse image on mobile */}
-            <div
-              className="sm:col-span-2 rounded-2xl overflow-hidden"
-              style={{ height: "220px", position: "relative" }}
-            >
-              <Image
-                src={warehouseImg}
-                alt="Obana warehouse"
-                fill
-                className="object-cover object-center"
-                sizes="100vw"
-                priority
-                unoptimized
-              />
-            </div>
+          {/* Center — warehouse image */}
+          <div
+            className="rounded-2xl overflow-hidden flex-shrink-0"
+            style={{ position: "relative" }}
+          >
+            <Image
+              src={warehouseImg}
+              alt="Obana warehouse"
+              fill
+              className="object-cover object-center"
+              sizes="340px"
+              priority
+              unoptimized
+            />
+          </div>
 
-            {/* Feature cards */}
-            {FEATURES.map(c => (
+          {/* Right column */}
+          <div className="flex flex-col gap-4">
+            {rightCards.map(c => (
               <FeatureCard key={c.title} icon={c.icon} title={c.title} desc={c.desc} />
             ))}
           </div>
 
         </div>
 
-        {/* ── Trusted Partners strip ── */}
-        <div
-          className="mt-12 overflow-hidden"
-          style={{
-            borderTop:    "1px solid rgba(27,59,95,0.08)",
-            borderBottom: "1px solid rgba(27,59,95,0.08)",
-            padding:      "14px 0",
-            background:   "#ffffff",
-          }}
-        >
-          <div className="flex items-center gap-6 px-6 mb-0">
-            <p
-              className="text-[11px] font-bold uppercase tracking-[0.14em] flex-shrink-0"
-              style={{ color: "rgba(27,59,95,0.4)" }}
-            >
-              Trusted Partners
-            </p>
-            <div className="flex-1 overflow-hidden">
-              <div className="marquee-track">
-                {[...PARTNERS, ...PARTNERS].map((p, i) => (
-                  <span
-                    key={i}
-                    className="flex-shrink-0 mx-8 text-sm font-semibold"
-                    style={{ color: "rgba(27,59,95,0.55)" }}
-                  >
-                    {p}
-                  </span>
-                ))}
-              </div>
-            </div>
+        {/* ── Mobile — 2 col grid ── */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:hidden">
+          {/* Warehouse image on mobile */}
+          <div
+            className="sm:col-span-2 rounded-2xl overflow-hidden"
+            style={{ height: "220px", position: "relative" }}
+          >
+            <Image
+              src={warehouseImg}
+              alt="Obana warehouse"
+              fill
+              className="object-cover object-center"
+              sizes="100vw"
+              priority
+              unoptimized
+            />
           </div>
+
+          {/* Feature cards */}
+          {FEATURES.map(c => (
+            <FeatureCard key={c.title} icon={c.icon} title={c.title} desc={c.desc} />
+          ))}
         </div>
 
-      </section>
-    </>
+      </div>
+    </section>
   );
 };
 

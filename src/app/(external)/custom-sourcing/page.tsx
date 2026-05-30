@@ -8,6 +8,7 @@ import DealSubmissionModal from "./components/DealSubmissionModal";
 import type { SourcingCategory } from "@/types";
 // import HowItWorks from "./sections/HowItWorks";
 import WhySourceWithObana from "./sections/WhySourceWithObana";
+import TrustedPartners from "./sections/TrustedPartners";
 
 export default function CustomSourcingPage() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -38,6 +39,7 @@ export default function CustomSourcingPage() {
 				onSubmitDeal={handleSubmitDeal}
 				onBrowseCategories={handleBrowseCategories}
 			/>
+			<TrustedPartners />
 			{/* <HowItWorks /> */}
 
 			<CategorySections onCategoryClick={handleCategoryClick} />
