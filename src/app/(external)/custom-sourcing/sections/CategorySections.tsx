@@ -17,9 +17,9 @@ const CategorySections: React.FC<Props> = ({ onCategoryClick }) => {
 			id="categories"
 		>
 			<div className="container mx-auto max-w-7xl">
-				<div className="text-center mb-8 md:mb-10">
+				{/* <div className="text-center mb-8 md:mb-10">
 					
-				</div>
+				</div> */}
 
 				{isLoading && (
 					<div className="space-y-6">
