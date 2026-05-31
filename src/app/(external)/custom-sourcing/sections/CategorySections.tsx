@@ -13,22 +13,13 @@ const CategorySections: React.FC<Props> = ({ onCategoryClick }) => {
 
 	return (
 		<section
-			className="py-10 md:py-16 px-4 sm:px-6 md:px-10 bg-white"
+			className="pt-0 pb-6 md:pt-0 md:pb-16 px-4 sm:px-6 md:px-10 bg-white"
 			id="categories"
 		>
 			<div className="container mx-auto max-w-7xl">
-				<div className="text-center mb-8 md:mb-10">
-					<h2
-						className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1B3B5F] mb-1"
-						style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}
-					>
-						What are you sourcing?
-					</h2>
-					<p className="text-sm md:text-lg text-gray-600 md:max-w-[50%] mx-auto px-4 ">
-						Browse our active deal pipelines. Each category connects you to
-						verified vendors, competitive pricing, and embedded financing.
-					</p>
-				</div>
+				{/* <div className="text-center mb-8 md:mb-10">
+					
+				</div> */}
 
 				{isLoading && (
 					<div className="space-y-6">
