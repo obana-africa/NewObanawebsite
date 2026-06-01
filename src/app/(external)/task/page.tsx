@@ -61,7 +61,7 @@
 // 	"Tobi",
 // 	"Ola",
 // 	"Helen",
-// 	"Jessica",
+// 	"Josh Agbeja",
 // 	"Uche",
 // 	"Peter",
 // 	"Mitch",
@@ -1568,7 +1568,7 @@ type StatusValue   = "pending" | "in_progress" | "review" | "completed" | "cance
 const EMPTY_TASKS: PublicTask[] = [];  // stable reference
 
 const STAFF_OPTIONS = [
-	"Somto", "Tobi", "Ola", "Helen", "Jessica", "Uche", "Peter",
+	"Somto", "Tobi", "Ola", "Helen", "Josh Agbeja", "Uche", "Peter",
 	"Mitch", "Tomiwa", "Michael", "Promise", "Nike", "Tunmise", "Joke",
 ];
 
