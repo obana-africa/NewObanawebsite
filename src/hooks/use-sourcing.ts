@@ -19,6 +19,14 @@ export const useSourcingCategories = () =>
 			};
 		},
 		staleTime: 10 * 60 * 1000,
+		select: (response) => ({
+  ...response,
+  grouped: [...response.grouped].sort((a, b) => {
+    const aOldest = Math.min(...a.items.map((i) => new Date(i.createdAt).getTime()));
+    const bOldest = Math.min(...b.items.map((i) => new Date(i.createdAt).getTime()));
+    return aOldest - bOldest;
+  }),
+}),
 	});
 
 export const useSubmitCustomSourcing = () =>

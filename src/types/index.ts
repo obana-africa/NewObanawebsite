@@ -60,6 +60,7 @@ export interface SourcingCategory {
 	currency: string;
 	sort_order: number;
 	is_active: boolean;
+	createdAt: string;
 }
 
 export interface SourcingSection {
