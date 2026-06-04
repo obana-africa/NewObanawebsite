@@ -1649,15 +1649,56 @@ const Label = memo(function Label({ icon: Icon, text, required }: LabelProps) {
 });
 
 type FocusInputProps = React.InputHTMLAttributes<HTMLInputElement>;
-const FocusInput = memo(function FocusInput({ style, ...props }: FocusInputProps) {
+/**
+ * iOS-safe controlled input.
+ *
+ * The problem this solves: on iOS Safari, when a parent re-renders on
+ * every keystroke (because `setState` fires), the input's `style` /
+ * `value` props change identity. iOS's IME treats this as the element
+ * being "modified" and either drops focus or jumps the cursor.
+ *
+ * The fix: we keep our OWN internal value state for display, sync TO
+ * parent via onChange, and sync FROM parent only when it changes from
+ * the outside (e.g., a reset). This breaks the re-render loop.
+ */
+const FocusInput = memo(function FocusInput({
+	style, value, onChange, ...props
+}: FocusInputProps) {
 	const [focused, setFocused] = useState(false);
+	const [localValue, setLocalValue] = useState<string>(
+		(value as string | undefined) ?? ""
+	);
+	const isComposing = useRef(false);
+
+	// Sync FROM parent only when parent value changes AND we're not focused
+	// (i.e., the value was changed externally, not by user typing here)
+	useEffect(() => {
+		if (focused || isComposing.current) return;
+		const incoming = (value as string | undefined) ?? "";
+		if (incoming !== localValue) setLocalValue(incoming);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [value, focused]);
+
 	const merged = useMemo(
 		() => ({ ...(focused ? INPUT_STYLE_FOCUS : INPUT_STYLE_BLUR), ...style }),
 		[focused, style]
 	);
+
+	const handleChange = useCallback(
+		(e: React.ChangeEvent<HTMLInputElement>) => {
+			setLocalValue(e.target.value);   // update display immediately
+			onChange?.(e);                    // notify parent
+		},
+		[onChange]
+	);
+
 	return (
 		<input
 			{...props}
+			value={localValue}
+			onChange={handleChange}
+			onCompositionStart={(e) => { isComposing.current = true;  props.onCompositionStart?.(e); }}
+			onCompositionEnd={(e)   => { isComposing.current = false; props.onCompositionEnd?.(e);   }}
 			className={INPUT_CLS}
 			style={merged}
 			onFocus={(e) => { setFocused(true);  props.onFocus?.(e); }}
@@ -1700,16 +1741,41 @@ const FocusSelect = memo(function FocusSelect({
 
 type FocusTextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 const FocusTextarea = memo(function FocusTextarea({
-	className = "", style, ...props
+	className = "", style, value, onChange, ...props
 }: FocusTextareaProps) {
 	const [focused, setFocused] = useState(false);
+	const [localValue, setLocalValue] = useState<string>(
+		(value as string | undefined) ?? ""
+	);
+	const isComposing = useRef(false);
+
+	useEffect(() => {
+		if (focused || isComposing.current) return;
+		const incoming = (value as string | undefined) ?? "";
+		if (incoming !== localValue) setLocalValue(incoming);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [value, focused]);
+
 	const merged = useMemo(
 		() => ({ ...(focused ? INPUT_STYLE_FOCUS : INPUT_STYLE_BLUR), ...style }),
 		[focused, style]
 	);
+
+	const handleChange = useCallback(
+		(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+			setLocalValue(e.target.value);
+			onChange?.(e);
+		},
+		[onChange]
+	);
+
 	return (
 		<textarea
 			{...props}
+			value={localValue}
+			onChange={handleChange}
+			onCompositionStart={(e) => { isComposing.current = true;  props.onCompositionStart?.(e); }}
+			onCompositionEnd={(e)   => { isComposing.current = false; props.onCompositionEnd?.(e);   }}
 			className={`${INPUT_CLS} resize-none leading-relaxed ${className}`}
 			style={merged}
 			onFocus={(e) => { setFocused(true);  props.onFocus?.(e); }}
@@ -2395,26 +2461,30 @@ const StepList = memo(function StepList({
 
 					<div className="space-y-2">
 						<div className="flex items-center gap-2">
-							<div className="flex-1 relative">
-								<MdSearch
-									size={15}
-									className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"
+							<div
+								className="flex-1 flex items-center rounded-xl"
+								style={{ background: "#ffffff", border: "1px solid #e8edf5" }}
+							>
+								<div
+									className="flex items-center justify-center pl-3 pr-2 flex-shrink-0"
 									style={{ color: "#8896ae" }}
-								/>
+								>
+									<MdSearch size={16} />
+								</div>
 								<input
 									type="text"
 									value={search}
 									onChange={onSearchChange}
 									placeholder="Search tasks..."
-									className="w-full pl-9 pr-4 py-2 text-sm rounded-xl outline-none transition-colors"
-									style={{ background: "#ffffff", border: "1px solid #e8edf5", color: "#1a1a2e" }}
+									className="flex-1 pt-2 pb-2 py-2.5 pr-3 text-sm outline-none bg-transparent placeholder:text-[#8896ae]"
+									style={{ color: "#1a1a2e", minWidth: 0 }}
 									aria-label="Search tasks"
 								/>
 							</div>
 							<button
 								type="button"
 								onClick={() => setShowFilters((v) => !v)}
-								className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold transition-colors flex-shrink-0"
+								className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-semibold transition-colors flex-shrink-0"
 								style={{
 									background: showFilters ? NAVY : "#ffffff",
 									color:      showFilters ? "#ffffff" : NAVY,

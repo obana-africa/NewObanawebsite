@@ -40,7 +40,10 @@ const useCountries = (): UseCountriesReturn => {
         });
 
         if (!response.ok) {
-          throw new Error('Failed to fetch countries');
+           const body = await response.text().catch(() => "");
+             throw new Error(
+              `Failed to fetch countries: ${response.status} ${response.statusText} — ${body}`
+        );
         }
 
         const result = await response.json();

@@ -39,7 +39,7 @@ const STATS = [
   { value: "500+",  label: "Sales Partners",        sub: "Earning across the network"     },
 ];
 
-export default function HowObanaWorksSection() {
+export default function OurImpactSection() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   /* ── Dynamic canvas background ── */

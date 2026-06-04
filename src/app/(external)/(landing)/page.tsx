@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import HeroSection from "./sections/hero-section";
 import GlobalBrands from "./sections/brands-section";
 import EcosystemSection from "./sections/ecosystemSection";
-import HowObanaWorks from "./sections/HowObanaWorks";
+import HowObanaWorks from "./sections/OurImpact";
 // import ServiceSection from "./sections/services-section";
 // import shipbox from "@/app/assets/images/landing-page/shipping-boxes-globe.svg";
 // import StakeholderSection from "./sections/stakeholder-section";
