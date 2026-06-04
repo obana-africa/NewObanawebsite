@@ -1,105 +1,430 @@
+// "use client";
+// import React, { useState, useEffect } from "react";
+// import Link from "next/link";
+// import Image from "next/image";
+// import { Menu, X } from "lucide-react";
+// import logoWhite from "@/app/assets/images/logos/obana-logo-white.svg";
+// import Button from "@/components/ui/button";
+
+// interface Props {
+// 	onSubmitDeal?: () => void;
+// }
+
+// const SourcingHeader: React.FC<Props> = ({ onSubmitDeal }) => {
+// 	const [isOpen, setIsOpen] = useState(false);
+// 	const [isScrolled, setIsScrolled] = useState(false);
+
+// 	useEffect(() => {
+// 		const handleScroll = () => setIsScrolled(window.scrollY > 10);
+// 		window.addEventListener("scroll", handleScroll);
+// 		return () => window.removeEventListener("scroll", handleScroll);
+// 	}, []);
+
+// 	const scrollToSection = (id: string) => {
+// 		document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+// 		setIsOpen(false);
+// 	};
+
+// 	const handleSubmit = () => {
+// 		onSubmitDeal?.();
+// 		setIsOpen(false);
+// 	};
+
+// 	return (
+// 		<header
+// 			className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+// 				isScrolled ? "shadow-lg" : ""
+// 			}`}
+// 			style={{ background: "#1B3B5F" }}
+// 		>
+// 			<div className="container mx-auto px-6 md:px-10">
+// 				<div className="flex items-center justify-between py-4">
+// 					<Link href="/" className="flex items-center">
+// 						<div className="relative h-10 w-28">
+// 							<Image
+// 								src={logoWhite}
+// 								alt="Obana Logo"
+// 								width={120}
+// 								height={50}
+// 								priority
+// 								className="object-contain"
+// 							/>
+// 						</div>
+// 					</Link>
+
+// 					<nav className="hidden md:flex items-center gap-10">
+						
+// 						<Button
+// 							onClick={handleSubmit}
+// 							variant="primary"
+// 							animation="ripple"
+// 							className=" !text-[#1B3B5F] !bg-[#ECEDF0] font-bold !hover:bg-[#FFDE76]"
+// 							// href="/contact"
+// 						>
+// 							Submit request
+// 						</Button>
+// 					</nav>
+
+// 					<button
+// 						className="md:hidden text-white focus:outline-none"
+// 						onClick={() => setIsOpen(!isOpen)}
+// 						aria-label="Toggle menu"
+// 						type="button"
+// 					>
+// 						{isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+// 					</button>
+// 				</div>
+
+// 				{isOpen && (
+// 					<div className="md:hidden pb-6 space-y-3 border-t border-white/10 pt-4">
+// 						<button
+// 							onClick={() => scrollToSection("categories")}
+// 							className="block w-full text-left text-white/90 hover:text-white py-2 font-medium"
+// 						>
+// 							Categories
+// 						</button>
+// 						<button
+// 							onClick={() => scrollToSection("how-it-works")}
+// 							className="block w-full text-left text-white/90 hover:text-white py-2 font-medium"
+// 						>
+// 							How it works
+// 						</button>
+// 						<button
+// 							onClick={handleSubmit}
+// 							className="w-full mt-2 px-5 py-2.5 bg-white text-[#1B3B5F] font-semibold rounded-lg"
+// 						>
+// 							Submit a Deal
+// 						</button>
+// 					</div>
+// 				)}
+// 			</div>
+// 		</header>
+// 	);
+// };
+
+// export default SourcingHeader;
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X } from "lucide-react";
-import logoWhite from "@/app/assets/images/logos/obana-logo-white.svg";
+import { Menu, X, ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
 import Button from "@/components/ui/button";
+import logoImage from "@/app/assets/images/logos/obana-logo-white.svg";
+import { useModal } from "@/contexts/modal-context";
+import { usePathname } from "next/navigation";
 
-interface Props {
-	onSubmitDeal?: () => void;
-}
+const Header: React.FC = () => {
+	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const [isScrolled, setIsScrolled] = useState<boolean>(false);
+	const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+	const [activeMobileDropdown, setActiveMobileDropdown] = useState<string | null>(null);
 
-const SourcingHeader: React.FC<Props> = ({ onSubmitDeal }) => {
-	const [isOpen, setIsOpen] = useState(false);
-	const [isScrolled, setIsScrolled] = useState(false);
+	const { openGetStartedModal } = useModal();
+	const pathname = usePathname();
+
+	const solutionsDropdownRef = useRef<HTMLDivElement>(null);
+	const productsDropdownRef = useRef<HTMLDivElement>(null);
+	const menuRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
-		const handleScroll = () => setIsScrolled(window.scrollY > 10);
+		const handleScroll = (): void => {
+			setIsScrolled(window.scrollY > 10);
+		};
 		window.addEventListener("scroll", handleScroll);
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, []);
 
-	const scrollToSection = (id: string) => {
-		document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+	useEffect(() => {
+		setIsOpen(false);
+		setActiveDropdown(null);
+		setActiveMobileDropdown(null);
+	}, [pathname]);
+
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent): void => {
+			if (solutionsDropdownRef.current && !solutionsDropdownRef.current.contains(event.target as Node)) {
+				if (activeDropdown === "solutions") setActiveDropdown(null);
+			}
+			if (productsDropdownRef.current && !productsDropdownRef.current.contains(event.target as Node)) {
+				if (activeDropdown === "products") setActiveDropdown(null);
+			}
+			if (isOpen && menuRef.current && !menuRef.current.contains(event.target as Node)) {
+				setIsOpen(false);
+			}
+		};
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => document.removeEventListener("mousedown", handleClickOutside);
+	}, [isOpen, activeDropdown]);
+
+	const toggleMenu = (): void => {
+		setIsOpen(!isOpen);
+		if (isOpen) {
+			setActiveMobileDropdown(null);
+		}
+	};
+
+	const handleGetStarted = (): void => {
+		openGetStartedModal();
 		setIsOpen(false);
 	};
 
-	const handleSubmit = () => {
-		onSubmitDeal?.();
-		setIsOpen(false);
+	const toggleDesktopDropdown = (dropdown: string): void => {
+		setActiveDropdown(activeDropdown === dropdown ? null : dropdown);
+	};
+
+	const toggleMobileDropdown = (dropdown: string): void => {
+		setActiveMobileDropdown(activeMobileDropdown === dropdown ? null : dropdown);
+		if (activeMobileDropdown !== dropdown) {
+	
+		}
+	};
+
+
+	const megaMenuItems = {
+		solutions: [
+			{
+			title: "Buy in Bulk",
+				description: "Explore our Buy in Bulk deals and grow your hustle the easy way.",
+				href: "https://shop.obana.africa/",
+			},
+					
+			{
+						title: "Custom Sourcing",
+						description: "Can't find what you're looking for? Tell us — we'll source it for you.",
+						href: "http://obana.africa/custom-sourcing",
+			},
+			{
+				title: "Order Now, Pay Small Small (ONPSS)",
+				description: "Now you can — thanks to Obana's Order Now, Pay Small Small feature.",
+				href: "/obana-pss",
+			},
+			{
+				title: "Sell on Obana.Africa",
+				description: "You can now join us and start selling to thousands of verified SMEs across Africa",
+				href: "https://vendor.obana.africa/",
+			},
+			
+			{
+				title: "Request Shipment",
+				description: "From market to your doorstep — we'll make it happen",
+				href: "/logistics",
+			},
+		],
 	};
 
 	return (
-		<header
-			className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-				isScrolled ? "shadow-lg" : ""
-			}`}
-			style={{ background: "#1B3B5F" }}
-		>
-			<div className="container mx-auto px-6 md:px-10">
-				<div className="flex items-center justify-between py-4">
-					<Link href="/" className="flex items-center">
-						<div className="relative h-10 w-28">
-							<Image
-								src={logoWhite}
-								alt="Obana Logo"
-								width={120}
-								height={50}
-								priority
-								className="object-contain"
-							/>
+		<>
+			<header
+				className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+					isScrolled ? "bg-[#1B3B5F] shadow-md" : "bg-[#1B3B5F]"
+				}`}
+			>
+				<div className="container mx-auto px-6 md:px-10 py- md:py-">
+					<div className="flex items-center justify-between py-2">
+						<div className="shrink-0 pb-4">
+							<Link href="/" className="flex items-center">
+								<div className="relative h-12 w-30 mt-1">
+									<Image src={logoImage} alt="Obana Logo" width={140} height={60} priority />
+								</div>
+							</Link>
 						</div>
-					</Link>
 
-					<nav className="hidden md:flex items-center gap-10">
-						
-						<Button
-							onClick={handleSubmit}
-							variant="primary"
-							animation="ripple"
-							className=" !text-[#1B3B5F] !bg-[#ECEDF0] font-bold !hover:bg-[#FFDE76]"
-							// href="/contact"
+						<nav className="hidden lg:flex items-center space-x-8">
+							<Link href="/#our-impact" className="text-white font-semibold">
+								Our Impact
+							</Link>
+
+							{/* Solutions Mega Menu (unchanged) */}
+							<div className="relative" ref={solutionsDropdownRef}>
+								<button
+									className="flex items-center text-white font-semibold"
+									onClick={() => toggleDesktopDropdown("solutions")}
+									onMouseEnter={() => setActiveDropdown("solutions")}
+									type="button"
+									aria-expanded={activeDropdown === "solutions"}
+									aria-haspopup="true"
+								>
+									Solutions
+									<ChevronDown className="ml-1 h-4 w-4" />
+								</button>
+
+								<div
+									className={`fixed top-[72px] left-0 right-0 bg-white shadow-xl border-t border-secondary-light transform transition-all duration-300 origin-top ${
+										activeDropdown === "solutions"
+											? "opacity-100 scale-y-100 visible"
+											: "opacity-0 scale-y-95 invisible"
+									}`}
+									onMouseLeave={() => setActiveDropdown(null)}
+								>
+									<div className="container mx-auto px-4 md:px-6 py-8">
+										<div className="grid grid-cols-4 gap-6 max-w-3xl mx-auto">
+											{megaMenuItems.solutions.map((item, idx) => (
+  <Link
+	key={idx}
+	href={item.href || "#"}
+	className="p-6 rounded-lg hover:bg-primary transition-colors group"
+  >
+	<h3 className="font-semibold text-primary mb-2 group-hover:text-white text-lg">
+	  {item.title}
+	</h3>
+	<p className="text-sm text-primary mb-3 group-hover:text-white">
+	  {item.description}
+	</p>
+	<span className="text-sm flex items-center font-medium text-primary group-hover:text-white">
+	  Click here <ArrowRight className="ml-1 h-3 w-3" />
+	</span>
+  </Link>
+))}
+										</div>
+									</div>
+								</div>
+							</div>
+							<Link href="/about" className="text-white font-semibold">
+								About us
+							</Link>
+
+							{/* FAQ – standalone link */}
+							<Link href="/faqs" className="text-white font-semibold">
+								FAQs
+							</Link>
+
+							<Link href="http://blog.obana.africa" className="text-white font-semibold">
+								 Blog
+							</Link>
+							
+								
+						</nav>
+
+						<div className="hidden md:flex items-center space-x-4">
+							<Button
+								variant="primary"
+								animation="ripple"
+								className=" !text-[#1B3B5F] !bg-[#ECEDF0] font-bold"
+								href="/contact"
+							>
+								Contact Us
+							</Button>
+							<Button
+								onClick={handleGetStarted}
+								variant="primary"
+								animation="ripple"
+								className="border border-primary"
+							>
+								Explore Ecosystem
+							</Button>
+						</div>
+
+						<button
+							className="lg:hidden text-gray-800 focus:outline-none"
+							onClick={toggleMenu}
+							aria-label="Toggle menu"
+							type="button"
 						>
-							Submit request
+							<Menu className="h-6 w-6" />
+						</button>
+					</div>
+				</div>
+
+				{/* Mobile Menu */}
+				<div
+					ref={menuRef}
+					className={`fixed top-0 -left-1 h-full w-3/4 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50 overflow-y-auto ${
+						isOpen ? "translate-x-0" : "-translate-x-full"
+					}`}
+					aria-hidden={!isOpen}
+				>
+					<div className="p-4 flex justify-between items-center">
+						<div className="relative h-8 w-24">
+							<Image src={logoImage} alt="Obana Logo" width={100} height={40} priority />
+						</div>
+						<button className="text-gray-800 focus:outline-none" onClick={toggleMenu} aria-label="Close menu">
+							<X className="h-6 w-6" />
+						</button>
+					</div>
+
+					<nav className="flex flex-col p-4">
+						<Link
+							href="/"
+							className="py-3 border-b border-primary-light text-gray-800 hover:bg-primary hover:text-white hover:pl-2 transition-all duration-200"
+						>
+							Home
+						</Link>
+
+						{/* Mobile Solutions Dropdown (unchanged) */}
+						<div className="border-b border-primary-light">
+							<button
+								className="flex items-center justify-between w-full py-3 text-gray-800"
+								onClick={() => toggleMobileDropdown("solutions")}
+								type="button"
+							>
+								<span>Solutions</span>
+								{activeMobileDropdown === "solutions" ? (
+									<ChevronUp className="h-4 w-4" />
+								) : (
+									<ChevronDown className="h-4 w-4" />
+								)}
+							</button>
+							<div
+								className={`ml-4 mb-2 transition-all duration-300 ${
+									activeMobileDropdown === "solutions"
+										? "max-h-[600px] opacity-100"
+										: "max-h-0 opacity-0 overflow-hidden"
+								}`}
+							>
+								{megaMenuItems.solutions.map((item, idx) => (
+  <Link
+	key={idx}
+	href={item.href || "#"}
+	className="block py-2 text-gray-700 hover:bg-primary hover:text-white hover:pl-2 transition-all duration-200"
+  >
+	{item.title}
+  </Link>
+))}
+							</div>
+						</div>
+
+						{/* Mobile FAQ link */}
+						<Link
+							href="/faqs"
+							className="py-3 border-b border-primary-light text-gray-800 hover:bg-primary hover:text-white hover:pl-2 transition-all duration-200"
+						>
+							FAQ
+						</Link>
+
+						{/* Mobile blog link */}
+						<Link
+							href="http://blog.obana.africa"
+							className="py-3 border-b border-primary-light text-gray-800 hover:bg-primary hover:text-white hover:pl-2 transition-all duration-200"
+						>
+							Blog
+						</Link>
+						<Link
+							href="/#our-impact"
+							className="py-3 border-b border-primary-light text-gray-800 hover:bg-primary hover:text-white hover:pl-2 transition-all duration-200"
+						>
+							Our Impact
+						</Link>
+
+						<Button
+							onClick={handleGetStarted}
+							className="mt-4 bg-blue-900 text-white px-4 py-2 rounded-md text-center"
+						>
+							Get Started
 						</Button>
 					</nav>
-
-					<button
-						className="md:hidden text-white focus:outline-none"
-						onClick={() => setIsOpen(!isOpen)}
-						aria-label="Toggle menu"
-						type="button"
-					>
-						{isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-					</button>
 				</div>
 
 				{isOpen && (
-					<div className="md:hidden pb-6 space-y-3 border-t border-white/10 pt-4">
-						<button
-							onClick={() => scrollToSection("categories")}
-							className="block w-full text-left text-white/90 hover:text-white py-2 font-medium"
-						>
-							Categories
-						</button>
-						<button
-							onClick={() => scrollToSection("how-it-works")}
-							className="block w-full text-left text-white/90 hover:text-white py-2 font-medium"
-						>
-							How it works
-						</button>
-						<button
-							onClick={handleSubmit}
-							className="w-full mt-2 px-5 py-2.5 bg-white text-[#1B3B5F] font-semibold rounded-lg"
-						>
-							Submit a Deal
-						</button>
-					</div>
+					<div
+						className="fixed inset-0 bg-primary/80 bg-opacity-10 md:hidden z-40"
+						onClick={toggleMenu}
+						aria-hidden="true"
+					></div>
 				)}
-			</div>
-		</header>
+			</header>
+		</>
 	);
 };
 
-export default SourcingHeader;
+export default Header;
+

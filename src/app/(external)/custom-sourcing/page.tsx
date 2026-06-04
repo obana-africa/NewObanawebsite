@@ -33,7 +33,7 @@ export default function CustomSourcingPage() {
 
 	return (
 		<div className="min-h-screen bg-white">
-			<SourcingHeader onSubmitDeal={handleSubmitDeal} />
+			<SourcingHeader />
 
 			<CustomSourcingHero
 				onSubmitDeal={handleSubmitDeal}
