@@ -1346,7 +1346,7 @@ const DealSubmissionModal: React.FC<Props> = ({
 				aria-modal="true"
 				aria-labelledby="deal-modal-title"
 				aria-describedby="deal-modal-desc"
-				className="bg-white w-full sm:w-[700px] sm:max-w-[700px] sm:rounded-2xl rounded-t-2xl shadow-2xl max-h-[94vh] sm:max-h-[90vh] overflow-hidden flex flex-col outline-none"
+				className="bg-white w-full sm:w-[700px] sm:max-w-[700px] sm:rounded-2xl rounded-t-2xl shadow-2xl max-h-[94dvh] sm:max-h-[90dvh] overflow-hidden flex flex-col outline-none"
 			>
 				{/* ── Header ───────────────────────────────────────── */}
 				<div className="flex items-center gap-3 px-5 py-4 border-b border-secondary flex-shrink-0">

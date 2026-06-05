@@ -69,13 +69,15 @@ const Footer = () => {
     { icon: <Linkedin  size={18} />, href: "https://www.linkedin.com/company/obana-africa",      label: "LinkedIn"  },
   ];
 
+  // Updated policyLinks with Company Policy
   const policyLinks = [
+    { title: "Company Policy", href: "https://workdrive.zohoexternal.com/folder/kobh66aa2f90c21fc4c52880b9c4e5adcc687", target: "_blank" },
     { title: "Terms & Conditions", href: "" },
-    { title: "Privacy Policy",     href: "" },
+    { title: "Privacy Policy", href: "" },
   ];
 
   /* ── Reusable link column ── */
-  const NavColumn = ({ title, links }: { title: string; links: { title: string; href: string }[] }) => (
+  const NavColumn = ({ title, links }: { title: string; links: { title: string; href: string; target?: string }[] }) => (
     <div>
       <h3
         className="text-base font-semibold text-white mb-4 tracking-wide leading-none"
@@ -88,6 +90,8 @@ const Footer = () => {
           <li key={i}>
             <Link
               href={link.href}
+              target={link.target || "_self"}
+              rel={link.target === "blank" ? "noopener noreferrer" : undefined}
               className="text-white/75 text-[15px] hover:text-white transition-colors duration-200 block"
               style={{ fontFamily: "'Bricolage Grotesque', sans-serif", lineHeight: "2" }}
             >
@@ -190,12 +194,14 @@ const Footer = () => {
             <p className="text-white/70 text-[15px] leading-none" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>
               All Rights Reserved.
             </p>
-            <div className="flex items-center gap-2 mt-1">
+            <div className="flex items-center gap-2 mt-1 flex-wrap">
               {policyLinks.map((link, i) => (
                 <React.Fragment key={i}>
                   {i > 0 && <span className="text-white/40 text-[15px]">|</span>}
                   <Link
                     href={link.href}
+                    target={link.target || "_self"}
+                    rel={link.target === "_blank" ? "noopener noreferrer" : undefined}
                     className="text-white/70 text-[15px] leading-none hover:text-white transition-colors duration-200"
                     style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}
                   >
