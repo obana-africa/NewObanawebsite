@@ -93,6 +93,7 @@ const CommerceMoveBetter: React.FC = () => {
 
   return (
     <section
+      id="ecosystem"
       className="w-full py-20 relative overflow-hidden"
       style={{
         fontFamily: "'Bricolage Grotesque', sans-serif",

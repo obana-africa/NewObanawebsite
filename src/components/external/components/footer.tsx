@@ -50,8 +50,8 @@ const Footer = () => {
 
   const learnLinks = [
     { title: "Overview",    href: "/about" },
-    { title: "Ecosystem",   href: "/ecosystem" },
-    { title: "How It Works",href: "/how-it-works" },
+    { title: "Ecosystem",   href: "#ecosystem" },
+    { title: "How It Works",href: "#how-it-works" },
     { title: "Your Tasks",href: "/task" },
 
   ];
