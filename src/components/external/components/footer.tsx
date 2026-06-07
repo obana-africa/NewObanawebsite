@@ -44,7 +44,7 @@ const Footer = () => {
 
   const productsLinks = [
     { title: "Visit Obana Shop",      href: "https://shop.obana.africa/" },
-    { title: "Use Obana Logistics",   href: "/logistics" },
+    { title: "Use Obana Logistics",   href: "https://logistics.obana.africa/" },
     { title: "Start Selling with Taja", href: "https://salesforce.obana.africa/" },
   ];
 
