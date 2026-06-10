@@ -1007,11 +1007,11 @@ const TIMELINES = [
 	"3+ months",
 ];
 
-const FINANCING_OPTIONS = [
-	"Working capital needs",
-	"Order Now, Pay Small Small (ONPSS)",
-	"No financing needed",
-];
+// const FINANCING_OPTIONS = [
+// 	"Working capital needs",
+// 	"Order Now, Pay Small Small (ONPSS)",
+// 	"No financing needed",
+// ];
 
 const CURRENCY_OPTIONS: CurrencyState[] = [
 	{ currency: "NGN", symbol: "₦" },
@@ -1066,7 +1066,7 @@ const DealSubmissionModal: React.FC<Props> = ({
 	const [selected,      setSelected]      = useState<SelectedCategoryItem[]>([]);
 	const [attachments,   setAttachments]   = useState<Attachment[]>([]);
 	const [showTimeline,  setShowTimeline]  = useState(false);
-	const [showFinancing, setShowFinancing] = useState(false);
+	// const [showFinancing, setShowFinancing] = useState(false);
 	const [mounted,       setMounted]       = useState(false);
 
 	/* ── Portal mount guard (SSR-safe) ─────────────────────────── */
@@ -1083,7 +1083,7 @@ const DealSubmissionModal: React.FC<Props> = ({
 		setSelected([]);
 		setAttachments([]);
 		setShowTimeline(false);
-		setShowFinancing(false);
+		// setShowFinancing(false);
 	}, []);
 
 	/* ── Seed selected categories when modal opens ─────────────── */
@@ -1403,8 +1403,8 @@ const DealSubmissionModal: React.FC<Props> = ({
 							totalBudget={totalBudget}
 							showTimeline={showTimeline}
 							setShowTimeline={setShowTimeline}
-							showFinancing={showFinancing}
-							setShowFinancing={setShowFinancing}
+							// showFinancing={showFinancing}
+							// setShowFinancing={setShowFinancing}
 							attachments={attachments}
 							removeAttachment={removeAttachment}
 							fileInputRef={fileInputRef}
@@ -1472,8 +1472,8 @@ interface FormStepProps {
 	totalBudget:           number;
 	showTimeline:          boolean;
 	setShowTimeline:       React.Dispatch<React.SetStateAction<boolean>>;
-	showFinancing:         boolean;
-	setShowFinancing:      React.Dispatch<React.SetStateAction<boolean>>;
+	// showFinancing:         boolean;
+	// setShowFinancing:      React.Dispatch<React.SetStateAction<boolean>>;
 	attachments:           Attachment[];
 	removeAttachment:      (index: number) => void;
 	fileInputRef:          React.RefObject<HTMLInputElement | null>;
@@ -1493,8 +1493,8 @@ const FormStep: React.FC<FormStepProps> = memo(function FormStep({
 	totalBudget,
 	showTimeline,
 	setShowTimeline,
-	showFinancing,
-	setShowFinancing,
+	// showFinancing,
+	// setShowFinancing,
 	attachments,
 	removeAttachment,
 	fileInputRef,
@@ -1622,7 +1622,7 @@ const FormStep: React.FC<FormStepProps> = memo(function FormStep({
 			)}
 
 			<div className="grid grid-cols-2 gap-3">
-				<Field label="Interested in Financing">
+				{/* <Field label="Interested in Financing">
 					<Dropdown
 						value={form.financing_interest}
 						placeholder="Working capital needs"
@@ -1634,6 +1634,12 @@ const FormStep: React.FC<FormStepProps> = memo(function FormStep({
 						}}
 						options={FINANCING_OPTIONS}
 					/>
+				</Field> */}
+				<Field label="Interested in Financing">
+  						<YesNoToggle
+    						value={form.financing_interest}
+    						onChange={(v) => updateField("financing_interest", v)}
+  						/>
 				</Field>
 				<Field label="When do you need it?">
 					<Dropdown
@@ -1760,9 +1766,15 @@ const PreviewStep: React.FC<PreviewStepProps> = memo(function PreviewStep({
 			label: "Estimated Budget",
 			value: `${currency.symbol}${totalBudget.toLocaleString()}`,
 		},
-		...(form.financing_interest
-			? [{ label: "Interested in Financing", value: form.financing_interest }]
-			: []),
+		// ...(form.financing_interest
+			// ? [{ label: "Interested in Financing", value: form.financing_interest }]
+			// : []),
+			...(form.financing_interest
+  		  ? [{
+      			label: "Interested in Financing",
+      			value: form.financing_interest === "yes" ? "Yes" : "No",
+    		}]
+  		 : []),
 		...(form.timeline
 			? [{ label: "Timeline", value: form.timeline }]
 			: []),
@@ -1935,6 +1947,42 @@ const SourcingTextarea = memo(function SourcingTextarea({
 			}}
 		/>
 	);
+});
+
+const YesNoToggle = memo(function YesNoToggle({
+  value,
+  onChange,
+}: {
+  value:    string;
+  onChange: (v: "yes" | "no") => void;
+}) {
+  const hasValue = value === "yes" || value === "no";
+  const bg       = hasValue ? "#FFFFFF" : "#FAFBFC";
+  return (
+    <div
+      className="grid grid-cols-2 gap-1 rounded-lg p-1"
+      style={{ background: bg, border: "1px solid #D9E2EC" }}
+    >
+      {(["yes", "no"] as const).map((opt) => {
+        const active = value === opt;
+        return (
+          <button
+            key={opt}
+            type="button"
+            onClick={() => onChange(opt)}
+            className={`py-1.5 rounded-md text-[12px] font-semibold capitalize transition-all duration-150 ${
+              active
+                ? "bg-[#1B3B5F] text-white shadow-sm"
+                : "bg-transparent text-[#6B7B8E] hover:bg-[#EBF0F8] hover:text-[#1B3B5F]"
+            }`}
+            aria-pressed={active}
+          >
+            {opt}
+          </button>
+        );
+      })}
+    </div>
+  );
 });
 
 const Dropdown = memo(function Dropdown({

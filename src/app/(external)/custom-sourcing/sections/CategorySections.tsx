@@ -90,7 +90,7 @@ const CategorySections: React.FC<Props> = ({ onCategoryClick }) => {
 
 	return (
 		<section
-			className="pt-0 pb-6 md:pt-0 md:pb-16 px-4 sm:px-6 md:px-10 bg-white"
+			className="px-4 sm:px-6 md:px-10 bg-white"
 			id="categories"
 		>
 			<div className="container mx-auto w-[1450px]">
