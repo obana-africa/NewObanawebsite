@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, {
 	useState,
 	useMemo,
@@ -20,7 +19,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { useSubmitCustomSourcing } from "@/hooks/use-sourcing";
-import type { SourcingCategory, SelectedCategoryItem } from "@/types/return.types";
+import type { SourcingCategory, SelectedCategoryItem } from "@/types";
 import { uploadToCloudinary } from "@/utils/upload";
 import SourcingPhoneInput from "./sourcing-phone-input";
 import LocationSelectors from "./location-selectors";
@@ -201,12 +200,13 @@ const DealSubmissionModal: React.FC<Props> = ({
 		};
 	}, [isOpen]);
 
-	/* ── iOS keyboard scroll-into-view ─────────────────────────── */
+	/* ── iOS keyboard: scroll focused input into view ──────────── */
 	useEffect(() => {
 		if (!isOpen) return;
 		const onInputFocus = (e: FocusEvent) => {
 			const target = e.target as HTMLElement;
 			if (!target.matches?.("input, textarea, select")) return;
+			// Wait for the iOS keyboard to render, then center the input
 			setTimeout(() => {
 				target.scrollIntoView({ block: "center", behavior: "smooth" });
 			}, 300);
@@ -216,6 +216,8 @@ const DealSubmissionModal: React.FC<Props> = ({
 	}, [isOpen]);
 
 	/* ── Focus management: save previous, restore on close ─────── */
+	/* Note: do NOT auto-focus the modal on open. On iOS that steals the
+	   first tap and forces users to tap twice to bring up the keyboard. */
 	useEffect(() => {
 		if (!isOpen) return;
 		previousFocusRef.current = document.activeElement as HTMLElement | null;
@@ -373,6 +375,7 @@ const DealSubmissionModal: React.FC<Props> = ({
 				.filter(Boolean)
 				.join(", ");
 
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			const res: any = await mutateAsync({
 				business_name:      form.business_name,
 				contact_name:       form.contact_name,
@@ -526,7 +529,7 @@ const DealSubmissionModal: React.FC<Props> = ({
 							onClick={goToPreview}
 							variant="primary"
 							animation="ripple"
-							className="border border-[#1B3B5F] bg-[#1B3B5F] flex items-center justify-center font-bold w-full hover:!bg-[#FFDE76]"
+							className="border border-primary flex items-center justify-center font-bold w-full hover:!bg-[#FFDE76]"
 						>
 							Submit Sourcing Request
 						</Button>
