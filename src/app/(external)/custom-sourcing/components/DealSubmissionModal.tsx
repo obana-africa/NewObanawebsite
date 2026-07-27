@@ -949,9 +949,7 @@ const PreviewStep: React.FC<PreviewStepProps> = memo(function PreviewStep({
 					<path d="M7 6V10" stroke="#1B3B5F" strokeWidth="1.2" strokeLinecap="round" />
 					<circle cx="7" cy="4.5" r="0.6" fill="#1B3B5F" />
 				</svg>
-				<p className="text-[11px] text-[#1B3B5F]/70">
-					Your request will be processed shortly.
-				</p>
+				
 			</div>
 		</div>
 	);

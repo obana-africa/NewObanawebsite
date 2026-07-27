@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -391,7 +392,24 @@ export default function SinglePageRFQ() {
               </Button>
 
               <p className="text-xs text-gray-400 text-center mt-2">
-                By submitting, you agree to our Terms and Privacy Policy
+                By submitting, you agree to our{" "}
+                <Link
+                  href="/terms"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline underline-offset-2 hover:text-primary"
+                >
+                  Terms
+                </Link>{" "}
+                and{" "}
+                <Link
+                  href="/privacy-policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline underline-offset-2 hover:text-primary"
+                >
+                  Privacy Policy
+                </Link>
               </p>
             </form>
           </div>

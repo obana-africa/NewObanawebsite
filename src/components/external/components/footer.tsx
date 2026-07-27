@@ -10,6 +10,7 @@ import {
   Twitter,
   Linkedin,
   SendHorizonal,
+  ShieldCheck,
 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -72,9 +73,22 @@ const Footer = () => {
   // Updated policyLinks with Company Policy
   const policyLinks = [
     { title: "Company Policy", href: "https://workdrive.zohoexternal.com/folder/kobh66aa2f90c21fc4c52880b9c4e5adcc687", target: "_blank" },
-    { title: "Terms & Conditions", href: "" },
-    { title: "Privacy Policy", href: "" },
+    { title: "Terms & Conditions", href: "/terms" },
+    { title: "Privacy Policy", href: "/privacy-policy" },
+    { title: "Cookies", href: "/cookie-policy" },
   ];
+
+  /* ── NDPC compliance badge — links through to the certificate on /ndpa ── */
+  const NdpcBadge = () => (
+    <Link
+      href="/ndpa"
+      aria-label="NDPC compliant — view our Nigeria Data Protection Commission registration"
+      className="inline-flex items-center gap-2 self-start rounded-md bg-white px-3 py-2 text-md font-semibold text-legal shadow-sm transition-opacity duration-200 hover:opacity-90"
+    >
+      <ShieldCheck size={28} className="shrink-0 fill-success stroke-white" />
+      <span className="font-bold text-2xl">NDPC</span> Compliant
+    </Link>
+  );
 
   /* ── Reusable link column ── */
   const NavColumn = ({ title, links }: { title: string; links: { title: string; href: string; target?: string }[] }) => (
@@ -137,6 +151,7 @@ const Footer = () => {
                   </Link>
                 ))}
               </div>
+              <NdpcBadge />
             </div>
 
             {/* Nav columns — right-aligned to sit above Stay Connected */}
@@ -168,6 +183,7 @@ const Footer = () => {
                   </Link>
                 ))}
               </div>
+              <NdpcBadge />
             </div>
 
             {/* 2-column nav grid */}
