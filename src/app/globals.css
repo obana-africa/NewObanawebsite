@@ -14,6 +14,9 @@ body {
 	--color-primary-light: #dcfbf9;
 	--color-primary-dark: #111111;
 
+	/* Navy used for legal document text and the NDPC compliance badge. */
+	--color-legal: #1A3B60;
+
 	--color-secondary: #ecedf0;
 	--color-secondary-light: #B8B4B480;
 	--color-secondary-dark: #49494D;
