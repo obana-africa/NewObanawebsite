@@ -11,7 +11,7 @@ import {
 
 const NdpcCertificate = () => {
 	return (
-		<figure className="mb-6 max-w-xl">
+		<figure className="mb-4 max-w-[660px]">
 			<a
 				href={NDPC_CERTIFICATE_PDF}
 				target="_blank"
@@ -23,7 +23,7 @@ const NdpcCertificate = () => {
 					src={certificate}
 					alt={`NDPC certificate of registration issued to ${NDPC_REGISTERED_NAME}, registration ID ${NDPC_REGISTRATION_NUMBER}, valid from ${NDPC_VALID_FROM} to ${NDPC_VALID_TO}.`}
 					placeholder="blur"
-					sizes="(min-width: 440px) 476px, 80vw"
+					sizes="660px"
 					className="w-full h-auto"
 				/>
 			</a>
