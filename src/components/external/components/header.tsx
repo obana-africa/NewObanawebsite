@@ -13,6 +13,7 @@ const Header: React.FC = () => {
 	const [isScrolled, setIsScrolled] = useState<boolean>(false);
 	const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 	const [activeMobileDropdown, setActiveMobileDropdown] = useState<string | null>(null);
+	const [activeMobileSubmenu, setActiveMobileSubmenu] = useState<string | null>(null);
 
 	const { openGetStartedModal } = useModal();
 	const pathname = usePathname();
@@ -33,6 +34,7 @@ const Header: React.FC = () => {
 		setIsOpen(false);
 		setActiveDropdown(null);
 		setActiveMobileDropdown(null);
+		setActiveMobileSubmenu(null);
 	}, [pathname]);
 
 	useEffect(() => {
@@ -55,6 +57,7 @@ const Header: React.FC = () => {
 		setIsOpen(!isOpen);
 		if (isOpen) {
 			setActiveMobileDropdown(null);
+			setActiveMobileSubmenu(null);
 		}
 	};
 
@@ -68,17 +71,22 @@ const Header: React.FC = () => {
 	};
 
 	const toggleMobileDropdown = (dropdown: string): void => {
-		setActiveMobileDropdown(activeMobileDropdown === dropdown ? null : dropdown);
-		if (activeMobileDropdown !== dropdown) {
-	
-		}
+		const next = activeMobileDropdown === dropdown ? null : dropdown;
+		setActiveMobileDropdown(next);
+		// Collapsing a section should also collapse whatever was open inside it.
+		if (!next) setActiveMobileSubmenu(null);
+	};
+
+	const toggleMobileSubmenu = (submenu: string): void => {
+		setActiveMobileSubmenu(activeMobileSubmenu === submenu ? null : submenu);
 	};
 
 
-	const megaMenuItems = {
-		solutions: [
-			{
-			title: "Buy in Bulk",
+	/* Marketplace offerings — shared by the desktop mega menu and the mobile
+	   "Solutions › Marketplace" submodule so the two cannot drift apart. */
+	const marketplaceItems = [
+		{
+		title: "Buy in Bulk",
 				description: "Explore our Buy in Bulk deals and grow your hustle the easy way.",
 				href: "https://shop.obana.africa/",
 			},
@@ -104,7 +112,14 @@ const Header: React.FC = () => {
 				description: "From market to your doorstep — we'll make it happen",
 				href: "/logistics",
 			},
-		],
+	];
+
+	/* Second Solutions submodule — an external product, so it is a plain link
+	   rather than a list of offerings. */
+	const WEBSHOP_POS_URL = "https://thaja.africa";
+
+	const megaMenuItems = {
+		solutions: marketplaceItems,
 	};
 
 	return (
@@ -245,12 +260,14 @@ const Header: React.FC = () => {
 							Home
 						</Link>
 
-						{/* Mobile Solutions Dropdown (unchanged) */}
+						{/* Mobile Solutions dropdown — two submodules: Marketplace
+						    (expands to the offerings) and Webshop/POS (external). */}
 						<div className="border-b border-primary-light">
 							<button
 								className="flex items-center justify-between w-full py-3 text-gray-800"
 								onClick={() => toggleMobileDropdown("solutions")}
 								type="button"
+								aria-expanded={activeMobileDropdown === "solutions"}
 							>
 								<span>Solutions</span>
 								{activeMobileDropdown === "solutions" ? (
@@ -262,19 +279,51 @@ const Header: React.FC = () => {
 							<div
 								className={`ml-4 mb-2 transition-all duration-300 ${
 									activeMobileDropdown === "solutions"
-										? "max-h-[600px] opacity-100"
+										? "max-h-[800px] opacity-100"
 										: "max-h-0 opacity-0 overflow-hidden"
 								}`}
 							>
-								{megaMenuItems.solutions.map((item, idx) => (
-  <Link
-    key={idx}
-    href={item.href || "#"}
-    className="block py-2 text-gray-700 hover:bg-primary hover:text-white hover:pl-2 transition-all duration-200"
-  >
-    {item.title}
-  </Link>
-))}
+								{/* Submodule 1 — Marketplace */}
+								<button
+									className="flex items-center justify-between w-full py-2 text-gray-800 font-medium"
+									onClick={() => toggleMobileSubmenu("marketplace")}
+									type="button"
+									aria-expanded={activeMobileSubmenu === "marketplace"}
+								>
+									<span>Marketplace</span>
+									{activeMobileSubmenu === "marketplace" ? (
+										<ChevronUp className="h-4 w-4" />
+									) : (
+										<ChevronDown className="h-4 w-4" />
+									)}
+								</button>
+								<div
+									className={`ml-4 transition-all duration-300 ${
+										activeMobileSubmenu === "marketplace"
+											? "max-h-[600px] opacity-100"
+											: "max-h-0 opacity-0 overflow-hidden"
+									}`}
+								>
+									{marketplaceItems.map((item, idx) => (
+										<Link
+											key={idx}
+											href={item.href || "#"}
+											className="block py-2 text-gray-700 hover:bg-primary hover:text-white hover:pl-2 transition-all duration-200"
+										>
+											{item.title}
+										</Link>
+									))}
+								</div>
+
+								{/* Submodule 2 — Webshop/POS */}
+								<Link
+									href={WEBSHOP_POS_URL}
+									target="_blank"
+									rel="noopener noreferrer"
+									className="block py-2 text-gray-800 font-medium hover:bg-primary hover:text-white hover:pl-2 transition-all duration-200"
+								>
+									Webshop/POS
+								</Link>
 							</div>
 						</div>
 

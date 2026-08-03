@@ -31,13 +31,8 @@ const useCities = (countryCode: string | null, stateCode: string | null): UseCit
         setIsLoading(true);
         setError(null);
         
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_TERMINAL_AFRICA_BASE_URL}/cities?country_code=${countryCode}&state_code=${stateCode}`,
-          {
-            headers: {
-              'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TERMINAL_AFRICA_SECRET_KEY}`,
-            },
-          }
+         const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/requests/terminalAfrica/get-cities?country_code=${countryCode}&state_code=${stateCode}`
         );
 
         if (!response.ok) {

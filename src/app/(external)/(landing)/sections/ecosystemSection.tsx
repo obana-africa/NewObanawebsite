@@ -30,7 +30,7 @@ const ECOSYSTEM_FEATURES = [
     title: "Digitalise",
     description: "POS, online storefront, inventory management, and analytics — in one seamless dashboard.",
     icon: LayoutDashboard,
-    href: "http://taja.obana.africa", 
+    href: "http://thaja.africa", 
   },
 ];
 

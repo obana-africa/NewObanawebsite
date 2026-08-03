@@ -17,6 +17,11 @@ body {
 	/* Navy used for legal document text and the NDPC compliance badge. */
 	--color-legal: #1A3B60;
 
+	/* Contact page palette (Figma) */
+	--color-navy: #1A324D;
+	--color-gold: #F9C319;
+	--color-surface: #FBFDFF;
+
 	--color-secondary: #ecedf0;
 	--color-secondary-light: #B8B4B480;
 	--color-secondary-dark: #49494D;
@@ -46,6 +51,7 @@ body {
 	--text-3xl: 1.875rem;
 	--text-4xl: 2.5rem;
 	--text-5xl: 3rem;
+	--text-6xl: 3.75rem;
 
 	--font-weight-normal: 400;
 	--font-weight-medium: 500;
