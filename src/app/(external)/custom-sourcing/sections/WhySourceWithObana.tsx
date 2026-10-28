@@ -98,7 +98,7 @@ const WhySourceWithObana: React.FC = () => {
       style={{
         background: "#ffffff",
         fontFamily: "'Bricolage Grotesque', sans-serif",
-        padding:    "clamp(48px,7vw,80px) 0",
+        paddingBottom: "15px",
       }}
     >
       <div
