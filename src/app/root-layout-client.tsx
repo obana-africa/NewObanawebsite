@@ -7,6 +7,7 @@ import "./globals.css";
 import Header from "@/components/external/components/header";
 import { Bricolage_Grotesque, Inter } from "next/font/google";
 import Footer from "@/components/external/components/footer";
+import CookieConsent from "@/components/external/components/cookie-consent";
 import { ModalProvider } from "@/contexts/modal-context";
 import { Toaster } from "sonner";
 import Aos from "aos";
@@ -71,6 +72,9 @@ export default function RootLayout({
 						<main>{children}</main>
 						<Footer />
 						<Toaster richColors duration={5000} />
+						{/* Last in the tree and fixed to the bottom, so it sits
+						    over the page without moving anything on it. */}
+						<CookieConsent />
 					</ModalProvider>
 				</QueryClientProvider>
 			</body>
