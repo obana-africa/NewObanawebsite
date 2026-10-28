@@ -35,32 +35,45 @@ const Footer = () => {
     reset();
   };
 
-  /* ── Nav columns — matching Figma exactly ── */
-  const aboutLinks = [
-    { title: "About Us",  href: "/about" },
-    { title: "Blog",      href: "https://blog.obana.africa" },
-    { title: "FAQs",      href: "/faqs" },
-    { title: "Custom Sourcing",      href: "http://obana.africa/custom-sourcing/", target:"blank"  },
+  /* ── Nav columns ──
+   *
+   * Grouped by what a reader is trying to do, not by how the company is
+   * organised. Products are the four the ecosystem section names — Source,
+   * Finance, Deliver, Digitalise — in that same order, under the names
+   * customers already use for them, matching the navbar word for word. A
+   * footer that renames them reads as a second company.
+   *
+   * Custom sourcing is not a product of its own: it is one of the ways of
+   * sourcing, so it sits under Support.
+   */
+  const productsLinks = [
+    { title: "Buy in Bulk",            href: "https://shop.obana.africa/", target: "_blank" },
+    { title: "Order Now, Pay Small Small", href: "/obana-pss" },
+    { title: "Request Shipment",       href: "/logistics" },
+    { title: "Thaja (Online Store & POS)", href: "https://taja.obana.africa/", target: "_blank" },
   ];
 
-  const productsLinks = [
-    { title: "Visit Obana Shop",      href: "https://shop.obana.africa/" },
-    { title: "Use Obana Logistics",   href: "https://logistics.obana.africa/" },
-    { title: "Start Selling with Taja", href: "https://salesforce.obana.africa/" },
+
+
+  const aboutLinks = [
+    { title: "About Us",  href: "/about" },
+    { title: "How It Works", href: "#how-it-works" },
+    { title: "Our Ecosystem", href: "#ecosystem" },
+    { title: "Blog",      href: "https://blog.obana.africa", target: "_blank" },
+    { title: "FAQs",      href: "/faqs" },
   ];
 
   const learnLinks = [
-    { title: "Overview",    href: "/about" },
-    { title: "Ecosystem",   href: "#ecosystem" },
-    { title: "How It Works",href: "#how-it-works" },
-    { title: "Your Tasks",href: "/task" },
-
+    { title: "Custom Sourcing", href: "/custom-sourcing" },
+    { title: "Request a Quote", href: "/rfq" },
+    { title: "Contact Us",  href: "/contact" },
+    { title: "Your Tasks",  href: "/task" },
   ];
 
   const partnerLinks = [
-    { title: "Join US",      href: "https://salesforce.obana.africa/" },
-    { title: "Collaborate",  href: "/contact" },
-    { title: "Apply",        href: "https://vendor.obana.africa/" },
+    { title: "Become a Sales Partner", href: "https://partners.obana.africa/", target: "_blank" },
+    { title: "Sell as a Vendor",       href: "https://vendor.obana.africa/", target: "_blank" },
+    { title: "Partner with Us",        href: "/contact" },
   ];
 
   const socialLinks = [
@@ -156,9 +169,9 @@ const Footer = () => {
 
             {/* Nav columns — right-aligned to sit above Stay Connected */}
             <div className="flex flex-1 justify-evenly gap-16 xl:gap-16">
-              <NavColumn title="About Obana"        links={aboutLinks}    />
               <NavColumn title="Our Products"        links={productsLinks} />
-              <NavColumn title="Learn How It Works"  links={learnLinks}    />
+              <NavColumn title="About Obana"         links={aboutLinks}    />
+              <NavColumn title="Support"  links={learnLinks}    />
               <NavColumn title="Become a Partner"    links={partnerLinks}  />
             </div>
           </div>
@@ -188,9 +201,9 @@ const Footer = () => {
 
             {/* 2-column nav grid */}
             <div className="grid grid-cols-2 gap-6">
-              <NavColumn title="About Obana"       links={aboutLinks}    />
               <NavColumn title="Our Products"       links={productsLinks} />
-              <NavColumn title="Learn How It Works" links={learnLinks}    />
+              <NavColumn title="About Obana"        links={aboutLinks}    />
+              <NavColumn title="Support" links={learnLinks}    />
               <NavColumn title="Become a Partner"   links={partnerLinks}  />
             </div>
           </div>

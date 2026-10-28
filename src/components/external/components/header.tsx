@@ -75,18 +75,28 @@ const Header: React.FC = () => {
 	};
 
 
+	/* The same four as the ecosystem section on the home page, in the same
+	 * order: Source, Finance, Deliver, Digitalise.
+	 *
+	 * The section titles them by what they do for the business; here they
+	 * carry the names customers and partners already use for them — Buy in
+	 * Bulk, ONPSS, Request Shipment, Thaja — so someone clicking a menu item
+	 * recognises what they are getting. Same four, same order, familiar words.
+	 *
+	 * Thaja carries its plain description in brackets, as ONPSS does: the
+	 * brand name on its own tells a first-time visitor nothing.
+	 *
+	 * Nothing outside those four belongs here. Custom sourcing is one of the
+	 * ways of sourcing, and joining as a vendor or a sales partner is how
+	 * someone signs up rather than something they buy — those live in the
+	 * footer instead.
+	 */
 	const megaMenuItems = {
 		solutions: [
 			{
-			title: "Buy in Bulk",
+				title: "Buy in Bulk",
 				description: "Explore our Buy in Bulk deals and grow your hustle the easy way.",
 				href: "https://shop.obana.africa/",
-			},
-					
-			{
-						title: "Custom Sourcing",
-						description: "Can't find what you're looking for? Tell us — we'll source it for you.",
-						href: "http://obana.africa/custom-sourcing",
 			},
 			{
 				title: "Order Now, Pay Small Small (ONPSS)",
@@ -94,15 +104,14 @@ const Header: React.FC = () => {
 				href: "/obana-pss",
 			},
 			{
-				title: "Sell on Obana.Africa",
-				description: "You can now join us and start selling to thousands of verified SMEs across Africa",
-				href: "https://vendor.obana.africa/",
-			},
-			
-			{
 				title: "Request Shipment",
-				description: "From market to your doorstep — we'll make it happen",
+				description: "From market to your doorstep — we'll make it happen.",
 				href: "/logistics",
+			},
+			{
+				title: "Thaja (Online Store & POS)",
+				description: "POS, online storefront, inventory management, and analytics — in one seamless dashboard.",
+				href: "https://taja.obana.africa/",
 			},
 		],
 	};
