@@ -5,32 +5,32 @@ import { Landmark, Truck, LayoutDashboard, Box } from "lucide-react";
 
 const ECOSYSTEM_FEATURES = [
   {
-    id: "source",
-    title: "Source",
+    id: "marketplace",
+    title: "Marketplace",
     description: "Discover & procure inventory from verified local and global suppliers at competitive prices.",
     icon: Box,
-    href: "http://shop.obana.africa",
+    href: "https://marketplace.obana.africa",
   },
   {
-    id: "finance",
-    title: "Finance",
+    id: "financing",
+    title: "Financing",
     description: "Flexible credit, ONPSS for stock, and working capital tools built for fashion & beauty cash flows.",
     icon: Landmark,
     href: "/obana-pss",
   },
   {
-    id: "deliver",
-    title: "Deliver",
-    description: "logistics across cities and cross-border — trackable, reliable, affordable.",
+    id: "logistics",
+    title: "Logistics",
+    description: "Delivery across cities and cross-border — trackable, reliable, affordable.",
     icon: Truck,
-    href: "http://logistics.obana.africa",
+    href: "https://logistics.obana.africa",
   },
   {
-    id: "digitalise",
-    title: "Digitalise",
+    id: "thaja",
+    title: "Thaja (Online Store & POS)",
     description: "POS, online storefront, inventory management, and analytics — in one seamless dashboard.",
     icon: LayoutDashboard,
-    href: "http://taja.obana.africa", 
+    href: "https://thaja.africa",
   },
 ];
 

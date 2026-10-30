@@ -39,19 +39,21 @@ const Footer = () => {
    *
    * Grouped by what a reader is trying to do, not by how the company is
    * organised. Products are the four the ecosystem section names — Source,
-   * Finance, Deliver, Digitalise — in that same order, under the names
-   * customers already use for them, matching the navbar word for word. A
-   * footer that renames them reads as a second company.
+   * organised. Products are the four the ecosystem section names —
+   * Marketplace, Financing, Logistics, Thaja — in that same order and in the
+   * same words, matching the navbar exactly. A footer that renames them reads
+   * as a second company.
    *
    * Custom sourcing is not a product of its own: it is one of the ways of
    * sourcing, so it sits under Support.
    */
   const productsLinks = [
-    { title: "Buy in Bulk",            href: "https://shop.obana.africa/", target: "_blank" },
-    { title: "Order Now, Pay Small Small", href: "/obana-pss" },
-    { title: "Request Shipment",       href: "/logistics" },
-    { title: "Thaja (Online Store & POS)", href: "https://taja.obana.africa/", target: "_blank" },
+    { title: "Marketplace",                href: "https://marketplace.obana.africa/", target: "_blank" },
+    { title: "Financing",                  href: "/obana-pss" },
+    { title: "Logistics",                  href: "https://logistics.obana.africa/", target: "_blank" },
+    { title: "Thaja (Online Store & POS)", href: "https://thaja.africa/", target: "_blank" },
   ];
+
 
 
 

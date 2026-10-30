@@ -75,43 +75,39 @@ const Header: React.FC = () => {
 	};
 
 
-	/* The same four as the ecosystem section on the home page, in the same
-	 * order: Source, Finance, Deliver, Digitalise.
+	/* The same four as the ecosystem section on the home page: same names,
+	 * same order, same words.
 	 *
-	 * The section titles them by what they do for the business; here they
-	 * carry the names customers and partners already use for them — Buy in
-	 * Bulk, ONPSS, Request Shipment, Thaja — so someone clicking a menu item
-	 * recognises what they are getting. Same four, same order, familiar words.
+	 * Named the way the business names them — Marketplace, Financing,
+	 * Logistics, Thaja — rather than by what a shopper does on each. This is
+	 * the company's own home page, read by partners and investors as much as
+	 * by buyers, and a menu that calls the marketplace "Buy in Bulk" while the
+	 * section below it says "Source" reads as two companies.
 	 *
-	 * Thaja carries its plain description in brackets, as ONPSS does: the
-	 * brand name on its own tells a first-time visitor nothing.
-	 *
-	 * Nothing outside those four belongs here. Custom sourcing is one of the
-	 * ways of sourcing, and joining as a vendor or a sales partner is how
-	 * someone signs up rather than something they buy — those live in the
-	 * footer instead.
+	 * Thaja carries its plain description in brackets: the brand name on its
+	 * own tells a first-time reader nothing.
 	 */
 	const megaMenuItems = {
 		solutions: [
 			{
-				title: "Buy in Bulk",
-				description: "Explore our Buy in Bulk deals and grow your hustle the easy way.",
-				href: "https://shop.obana.africa/",
+				title: "Marketplace",
+				description: "Discover & procure inventory from verified local and global suppliers at competitive prices.",
+				href: "https://marketplace.obana.africa/",
 			},
 			{
-				title: "Order Now, Pay Small Small (ONPSS)",
-				description: "Now you can — thanks to Obana's Order Now, Pay Small Small feature.",
+				title: "Financing",
+				description: "Flexible credit, ONPSS for stock, and working capital tools built for fashion & beauty cash flows.",
 				href: "/obana-pss",
 			},
 			{
-				title: "Request Shipment",
-				description: "From market to your doorstep — we'll make it happen.",
-				href: "/logistics",
+				title: "Logistics",
+				description: "Delivery across cities and cross-border — trackable, reliable, affordable.",
+				href: "https://logistics.obana.africa/",
 			},
 			{
 				title: "Thaja (Online Store & POS)",
 				description: "POS, online storefront, inventory management, and analytics — in one seamless dashboard.",
-				href: "https://taja.obana.africa/",
+				href: "https://thaja.africa/",
 			},
 		],
 	};
