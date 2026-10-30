@@ -18,6 +18,15 @@ import { emailSchema } from "@/schemas";
 import { EmailFormData } from "@/types";
 import useNewsletter from "@/hooks/use-newsletter";
 
+/* Financing lives on the marketplace, which answers on a different address in
+   each environment: staging.shop.obana.africa on staging,
+   marketplace.obana.africa on production.
+
+   Set NEXT_PUBLIC_MARKETPLACE_URL on the staging deployment. Production needs
+   nothing — the default is production, so a missing variable sends people to
+   the live marketplace rather than nowhere. */
+const MARKETPLACE_URL = (process.env.NEXT_PUBLIC_MARKETPLACE_URL || "https://marketplace.obana.africa").replace(/\/+$/, "");
+
 const Footer = () => {
   const {
     register,
@@ -39,19 +48,23 @@ const Footer = () => {
    *
    * Grouped by what a reader is trying to do, not by how the company is
    * organised. Products are the four the ecosystem section names — Source,
-   * Finance, Deliver, Digitalise — in that same order, under the names
-   * customers already use for them, matching the navbar word for word. A
-   * footer that renames them reads as a second company.
+   * organised. Products are the four the ecosystem section names —
+   * Marketplace, Financing, Logistics, Thaja — in that same order and in the
+   * same words, matching the navbar exactly. A footer that renames them reads
+   * as a second company.
    *
    * Custom sourcing is not a product of its own: it is one of the ways of
    * sourcing, so it sits under Support.
    */
   const productsLinks = [
-    { title: "Buy in Bulk",            href: "https://shop.obana.africa/", target: "_blank" },
-    { title: "Order Now, Pay Small Small", href: "/obana-pss" },
-    { title: "Request Shipment",       href: "/logistics" },
-    { title: "Thaja (Online Store & POS)", href: "https://taja.obana.africa/", target: "_blank" },
+    { title: "Marketplace",          href: "https://marketplace.obana.africa/", target: "_blank" },
+    { title: "Financing (ONPSS)",    href: `${MARKETPLACE_URL}/obana-pss`, target: "_blank" },
+    { title: "Thaja (Online/POS)",   href: "https://thaja.africa/", target: "_blank" },
+    { title: "Distribution (Sales Partners)", href: "https://partners.obana.africa/", target: "_blank" },
+    { title: "Logistics",            href: "https://logistics.obana.africa/", target: "_blank" },
   ];
+
+
 
 
 
@@ -118,7 +131,7 @@ const Footer = () => {
             <Link
               href={link.href}
               target={link.target || "_self"}
-              rel={link.target === "blank" ? "noopener noreferrer" : undefined}
+              rel={link.target === "_blank" ? "noopener noreferrer" : undefined}
               className="text-white/75 text-[15px] hover:text-white transition-colors duration-200 block"
               style={{ fontFamily: "'Bricolage Grotesque', sans-serif", lineHeight: "2" }}
             >
