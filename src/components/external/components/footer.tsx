@@ -48,7 +48,7 @@ const Footer = () => {
    */
   const productsLinks = [
     { title: "Buy in Bulk",            href: "https://shop.obana.africa/", target: "_blank" },
-    { title: "Order Now, Pay Small Small", href: "/obana-pss" },
+    { title: "Order Now, Pay Small Small", href: "https://shop.obana.africa/obana-pss", target: "_blank" },
     { title: "Request Shipment",       href: "/logistics" },
     { title: "Thaja (Online Store & POS)", href: "https://taja.obana.africa/", target: "_blank" },
   ];

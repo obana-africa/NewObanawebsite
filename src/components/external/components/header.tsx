@@ -101,7 +101,7 @@ const Header: React.FC = () => {
 			{
 				title: "Order Now, Pay Small Small (ONPSS)",
 				description: "Now you can — thanks to Obana's Order Now, Pay Small Small feature.",
-				href: "/obana-pss",
+				href: "https://shop.obana.africa/obana-pss",
 			},
 			{
 				title: "Request Shipment",
@@ -166,6 +166,8 @@ const Header: React.FC = () => {
   <Link
     key={idx}
     href={item.href || "#"}
+    target={item.href.startsWith("http") ? "_blank" : undefined}
+    rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
     className="p-6 rounded-lg hover:bg-primary transition-colors group"
   >
     <h3 className="font-semibold text-primary mb-2 group-hover:text-white text-lg">
@@ -279,6 +281,8 @@ const Header: React.FC = () => {
   <Link
     key={idx}
     href={item.href || "#"}
+    target={item.href.startsWith("http") ? "_blank" : undefined}
+    rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
     className="block py-2 text-gray-700 hover:bg-primary hover:text-white hover:pl-2 transition-all duration-200"
   >
     {item.title}

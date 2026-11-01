@@ -12,6 +12,7 @@ import {
 	useGetStatesByCountryId,
 	useGetCitiesByStateId,
 } from "@/hooks/use-locations";
+import usePlatformCategories from "@/hooks/use-platform-categories";
 import { inventoryFinancingSchema } from "../schemas";
 import PhoneInput from "@/components/ui/phone-input";
 import { FormDataType } from "../types";
@@ -55,6 +56,11 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 	});
 
 	const { data: countries } = useGetCountries();
+	const {
+		categories: categoryOptions,
+		loading: categoriesLoading,
+		error: categoriesError,
+	} = usePlatformCategories();
 	const [selectedCountry, setSelectedCountry] = useState("");
 	const [selectedState, setSelectedState] = useState("");
 	const { data: states } = useGetStatesByCountryId(selectedCountry);
@@ -396,13 +402,6 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 		{ value: "Sterling Bank", label: "Sterling Bank" },
 	];
 
-	const categoryOptions = [
-		{ value: "Women", label: "Women" },
-		{ value: "Beauty", label: "Beauty" },
-		{ value: "Men", label: "Men" },
-		{ value: "Kids", label: "Kids" },
-	];
-
 	const brandOptions = [
 		{ value: "Addidas", label: "ADIDAS" },
 		{ value: "BOOHOOMAN", label: "BOOHOOMAN" },
@@ -732,6 +731,14 @@ const InventoryFinancingModal: React.FC<InventoryFinancingModalProps> = ({
 								options={categoryOptions}
 								register={register("categoryOfInterest")}
 								error={errors.categoryOfInterest?.message}
+								isLoading={categoriesLoading}
+								placeholder={
+									categoriesError
+										? "Couldn't load categories"
+										: categoryOptions.length === 0 && !categoriesLoading
+											? "No categories available"
+											: "Select categories"
+								}
 								multiple
 								searchable
 							/>
