@@ -6,8 +6,8 @@ import { useModal } from "@/contexts/modal-context";
 import { Package, Globe, TrendingUp, Users } from "lucide-react";
 
 const STAT_CARDS = [
-  { id: "card-1", icon: Package, value: "10,000+", label: "Metric tons of produce supplied", gradient: "linear-gradient(135deg, #1b3b5f 0%, #24507f 100%)", iconBg: "rgba(255,255,255,0.15)", delay: 0 },
-  { id: "card-2", icon: Globe,   value: "20+",     label: "Brands & Partners",               gradient: "linear-gradient(135deg, #1b3b5f 0%, #24507f 100%)", iconBg: "rgba(255,255,255,0.15)", delay: 0.15 },
+  { id: "card-1", icon: Package, value: "10,000+", label: "Products supplied", gradient: "linear-gradient(135deg, #1b3b5f 0%, #24507f 100%)", iconBg: "rgba(255,255,255,0.15)", delay: 0 },
+  { id: "card-2", icon: Globe,   value: "20+",     label: "Strategic partners",               gradient: "linear-gradient(135deg, #1b3b5f 0%, #24507f 100%)", iconBg: "rgba(255,255,255,0.15)", delay: 0.15 },
   { id: "card-3", icon: TrendingUp, value: "₦2B+", label: "Commerce Enabled",               gradient: "linear-gradient(135deg, #ffffff 0%, #f0f4f8 100%)", iconBg: "rgba(27,59,95,0.08)", dark: true, delay: 0.3 },
   { id: "card-4", icon: Users,   value: "5k+",     label: "Registered Businesses",           gradient: "linear-gradient(135deg, #ffffff 0%, #f0f4f8 100%)", iconBg: "rgba(27,59,95,0.08)", dark: true, delay: 0.45 },
 ];

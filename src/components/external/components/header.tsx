@@ -13,7 +13,6 @@ const Header: React.FC = () => {
 	const [isScrolled, setIsScrolled] = useState<boolean>(false);
 	const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 	const [activeMobileDropdown, setActiveMobileDropdown] = useState<string | null>(null);
-	const [activeMobileSubmenu, setActiveMobileSubmenu] = useState<string | null>(null);
 
 	const { openGetStartedModal } = useModal();
 	const pathname = usePathname();
@@ -34,7 +33,6 @@ const Header: React.FC = () => {
 		setIsOpen(false);
 		setActiveDropdown(null);
 		setActiveMobileDropdown(null);
-		setActiveMobileSubmenu(null);
 	}, [pathname]);
 
 	useEffect(() => {
@@ -55,10 +53,7 @@ const Header: React.FC = () => {
 
 	const toggleMenu = (): void => {
 		setIsOpen(!isOpen);
-		if (isOpen) {
-			setActiveMobileDropdown(null);
-			setActiveMobileSubmenu(null);
-		}
+		if (isOpen) setActiveMobileDropdown(null);
 	};
 
 	const handleGetStarted = (): void => {
@@ -71,58 +66,34 @@ const Header: React.FC = () => {
 	};
 
 	const toggleMobileDropdown = (dropdown: string): void => {
-		const next = activeMobileDropdown === dropdown ? null : dropdown;
-		setActiveMobileDropdown(next);
-		// Collapsing a section should also collapse whatever was open inside it.
-		if (!next) setActiveMobileSubmenu(null);
-	};
-
-	const toggleMobileSubmenu = (submenu: string): void => {
-		setActiveMobileSubmenu(activeMobileSubmenu === submenu ? null : submenu);
+		setActiveMobileDropdown(activeMobileDropdown === dropdown ? null : dropdown);
 	};
 
 
-	/* Marketplace offerings — shared by the desktop mega menu and the mobile
-	   "Solutions › Marketplace" submodule so the two cannot drift apart. */
-	const marketplaceItems = [
-		{
-		title: "Buy in Bulk",
+
+	const megaMenuItems = {
+		solutions: [
+			{
+				title: "Buy in Bulk",
 				description: "Explore our Buy in Bulk deals and grow your hustle the easy way.",
 				href: "https://shop.obana.africa/",
-			},
-					
-			{
-						title: "Custom Sourcing",
-						description: "Can't find what you're looking for? Tell us — we'll source it for you.",
-						href: "http://obana.africa/custom-sourcing",
 			},
 			{
 				title: "Order Now, Pay Small Small (ONPSS)",
 				description: "Now you can — thanks to Obana's Order Now, Pay Small Small feature.",
-				href: "/obana-pss",
+				href: "https://shop.obana.africa/obana-pss",
 			},
-			{
-				title: "Sell on Obana.Africa",
-				description: "You can now join us and start selling to thousands of verified SMEs across Africa",
-				href: "https://vendor.obana.africa/",
-			},
-			
 			{
 				title: "Request Shipment",
-				description: "From market to your doorstep — we'll make it happen",
+				description: "From market to your doorstep — we'll make it happen.",
 				href: "/logistics",
 			},
-	];
-
-	/* Second Solutions submodule — a single external product rather than a list
-	   of offerings. Shared by the desktop mega menu and the mobile menu. */
-	const webshopPos = {
-		title: "Webshop/POS",
-		/* Shown inside the card, where the section heading already says
-		   "Webshop/POS" and repeating it would read as a duplicate. */
-		productName: "Thaja",
-		description: "Your online storefront and point of sale, powered by Thaja.",
-		href: "https://thaja.africa",
+			{
+				title: "Thaja (Online Store & POS)",
+				description: "POS, online storefront, inventory management, and analytics — in one seamless dashboard.",
+				href: "https://taja.obana.africa/",
+			},
+		],
 	};
 
 	return (
@@ -170,56 +141,26 @@ const Header: React.FC = () => {
 									onMouseLeave={() => setActiveDropdown(null)}
 								>
 									<div className="container mx-auto px-4 md:px-6 py-8">
-										<div className="grid gap-8 lg:grid-cols-[3fr_1fr]">
-
-											{/* Submodule 1 — Marketplace */}
-											<section>
-												<h2 className="text-sm font-bold uppercase tracking-wider text-primary/60 mb-4 px-2">
-													Marketplace
-												</h2>
-												<div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-2">
-													{marketplaceItems.map((item, idx) => (
-														<Link
-															key={idx}
-															href={item.href || "#"}
-															className="p-4 rounded-lg hover:bg-primary transition-colors group"
-														>
-															<h3 className="font-semibold text-primary mb-2 group-hover:text-white text-lg">
-																{item.title}
-															</h3>
-															<p className="text-sm text-primary mb-3 group-hover:text-white">
-																{item.description}
-															</p>
-															<span className="text-sm flex items-center font-medium text-primary group-hover:text-white">
-																Click here <ArrowRight className="ml-1 h-3 w-3" />
-															</span>
-														</Link>
-													))}
-												</div>
-											</section>
-
-											{/* Submodule 2 — Webshop/POS */}
-											<section className="lg:border-l lg:border-secondary-light lg:pl-8">
-												<h2 className="text-sm font-bold uppercase tracking-wider text-primary/60 mb-4 px-2">
-													{webshopPos.title}
-												</h2>
-												<Link
-													href={webshopPos.href}
-													target="_blank"
-													rel="noopener noreferrer"
-													className="block p-4 rounded-lg hover:bg-primary transition-colors group"
-												>
-													<h3 className="font-semibold text-primary mb-2 group-hover:text-white text-lg">
-														{webshopPos.productName}
-													</h3>
-													<p className="text-sm text-primary mb-3 group-hover:text-white">
-														{webshopPos.description}
-													</p>
-													<span className="text-sm flex items-center font-medium text-primary group-hover:text-white">
-														Click here <ArrowRight className="ml-1 h-3 w-3" />
-													</span>
-												</Link>
-											</section>
+										<div className="grid grid-cols-4 gap-6 max-w-3xl mx-auto">
+											{megaMenuItems.solutions.map((item, idx) => (
+  <Link
+    key={idx}
+    href={item.href || "#"}
+    target={item.href.startsWith("http") ? "_blank" : undefined}
+    rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+    className="p-6 rounded-lg hover:bg-primary transition-colors group"
+  >
+    <h3 className="font-semibold text-primary mb-2 group-hover:text-white text-lg">
+      {item.title}
+    </h3>
+    <p className="text-sm text-primary mb-3 group-hover:text-white">
+      {item.description}
+    </p>
+    <span className="text-sm flex items-center font-medium text-primary group-hover:text-white">
+      Click here <ArrowRight className="ml-1 h-3 w-3" />
+    </span>
+  </Link>
+))}
 										</div>
 									</div>
 								</div>
@@ -318,47 +259,17 @@ const Header: React.FC = () => {
 										: "max-h-0 opacity-0 overflow-hidden"
 								}`}
 							>
-								{/* Submodule 1 — Marketplace */}
-								<button
-									className="flex items-center justify-between w-full py-2 text-gray-800 font-medium"
-									onClick={() => toggleMobileSubmenu("marketplace")}
-									type="button"
-									aria-expanded={activeMobileSubmenu === "marketplace"}
-								>
-									<span>Marketplace</span>
-									{activeMobileSubmenu === "marketplace" ? (
-										<ChevronUp className="h-4 w-4" />
-									) : (
-										<ChevronDown className="h-4 w-4" />
-									)}
-								</button>
-								<div
-									className={`ml-4 transition-all duration-300 ${
-										activeMobileSubmenu === "marketplace"
-											? "max-h-[600px] opacity-100"
-											: "max-h-0 opacity-0 overflow-hidden"
-									}`}
-								>
-									{marketplaceItems.map((item, idx) => (
-										<Link
-											key={idx}
-											href={item.href || "#"}
-											className="block py-2 text-gray-700 hover:bg-primary hover:text-white hover:pl-2 transition-all duration-200"
-										>
-											{item.title}
-										</Link>
-									))}
-								</div>
-
-								{/* Submodule 2 — Webshop/POS */}
-								<Link
-									href={webshopPos.href}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="block py-2 text-gray-800 font-medium hover:bg-primary hover:text-white hover:pl-2 transition-all duration-200"
-								>
-									{webshopPos.title}
-								</Link>
+								{megaMenuItems.solutions.map((item, idx) => (
+  <Link
+    key={idx}
+    href={item.href || "#"}
+    target={item.href.startsWith("http") ? "_blank" : undefined}
+    rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+    className="block py-2 text-gray-700 hover:bg-primary hover:text-white hover:pl-2 transition-all duration-200"
+  >
+    {item.title}
+  </Link>
+))}
 							</div>
 						</div>
 

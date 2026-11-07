@@ -56,6 +56,16 @@ const nextConfig: NextConfig = {
 		];
 	},
 
+	async redirects() {
+		return [
+			{
+				source: "/obana-pss",
+				destination: "https://shop.obana.africa/obana-pss",
+				permanent: false,
+			},
+		];
+	},
+
 	experimental: {},
 };
 
