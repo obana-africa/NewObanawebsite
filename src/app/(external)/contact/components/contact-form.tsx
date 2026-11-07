@@ -25,6 +25,9 @@ const fieldClasses = (hasError: boolean) =>
 		hasError ? "border-error" : "border-gold"
 	}`;
 
+
+const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+
 const ContactForm: React.FC = () => {
 	const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null);
 	const { submitForm, isSubmitting } = useContactForm();
@@ -185,20 +188,33 @@ const ContactForm: React.FC = () => {
 				</div>
 
 				<div className="mb-6">
-					<ReCAPTCHA
-						sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
-						onChange={(value) => setRecaptchaValue(value)}
-					/>
-					{!recaptchaValue && (
-						<p className="mt-1 text-sm text-error">
-							Please complete the reCAPTCHA
+					{RECAPTCHA_SITE_KEY ? (
+						<>
+							<ReCAPTCHA
+								sitekey={RECAPTCHA_SITE_KEY}
+								onChange={(value) => setRecaptchaValue(value)}
+							/>
+							{!recaptchaValue && (
+								<p className="mt-1 text-sm text-error">
+									Please complete the reCAPTCHA
+								</p>
+							)}
+						</>
+					) : (
+						<p className="text-sm text-error">
+							Verification is unavailable, so this form cannot be submitted
+							right now. Please email{" "}
+							<a href="mailto:contact@obana.africa" className="underline">
+								contact@obana.africa
+							</a>{" "}
+							instead.
 						</p>
 					)}
 				</div>
 
 				<button
 					type="submit"
-					disabled={isSubmitting}
+					disabled={isSubmitting || !RECAPTCHA_SITE_KEY}
 					className="flex w-full items-center justify-center gap-2 rounded-md bg-navy px-4 py-4 text-md font-semibold text-white transition-opacity duration-200 hover:opacity-90 disabled:opacity-50 disabled:pointer-events-none cursor-pointer"
 				>
 					{isSubmitting && (

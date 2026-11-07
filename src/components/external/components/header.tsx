@@ -114,12 +114,15 @@ const Header: React.FC = () => {
 			},
 	];
 
-	/* Second Solutions submodule — an external product, so it is a plain link
-	   rather than a list of offerings. */
-	const WEBSHOP_POS_URL = "https://thaja.africa";
-
-	const megaMenuItems = {
-		solutions: marketplaceItems,
+	/* Second Solutions submodule — a single external product rather than a list
+	   of offerings. Shared by the desktop mega menu and the mobile menu. */
+	const webshopPos = {
+		title: "Webshop/POS",
+		/* Shown inside the card, where the section heading already says
+		   "Webshop/POS" and repeating it would read as a duplicate. */
+		productName: "Thaja",
+		description: "Your online storefront and point of sale, powered by Thaja.",
+		href: "https://thaja.africa",
 	};
 
 	return (
@@ -167,24 +170,56 @@ const Header: React.FC = () => {
 									onMouseLeave={() => setActiveDropdown(null)}
 								>
 									<div className="container mx-auto px-4 md:px-6 py-8">
-										<div className="grid grid-cols-4 gap-6 max-w-3xl mx-auto">
-											{megaMenuItems.solutions.map((item, idx) => (
-  <Link
-    key={idx}
-    href={item.href || "#"}
-    className="p-6 rounded-lg hover:bg-primary transition-colors group"
-  >
-    <h3 className="font-semibold text-primary mb-2 group-hover:text-white text-lg">
-      {item.title}
-    </h3>
-    <p className="text-sm text-primary mb-3 group-hover:text-white">
-      {item.description}
-    </p>
-    <span className="text-sm flex items-center font-medium text-primary group-hover:text-white">
-      Click here <ArrowRight className="ml-1 h-3 w-3" />
-    </span>
-  </Link>
-))}
+										<div className="grid gap-8 lg:grid-cols-[3fr_1fr]">
+
+											{/* Submodule 1 — Marketplace */}
+											<section>
+												<h2 className="text-sm font-bold uppercase tracking-wider text-primary/60 mb-4 px-2">
+													Marketplace
+												</h2>
+												<div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-2">
+													{marketplaceItems.map((item, idx) => (
+														<Link
+															key={idx}
+															href={item.href || "#"}
+															className="p-4 rounded-lg hover:bg-primary transition-colors group"
+														>
+															<h3 className="font-semibold text-primary mb-2 group-hover:text-white text-lg">
+																{item.title}
+															</h3>
+															<p className="text-sm text-primary mb-3 group-hover:text-white">
+																{item.description}
+															</p>
+															<span className="text-sm flex items-center font-medium text-primary group-hover:text-white">
+																Click here <ArrowRight className="ml-1 h-3 w-3" />
+															</span>
+														</Link>
+													))}
+												</div>
+											</section>
+
+											{/* Submodule 2 — Webshop/POS */}
+											<section className="lg:border-l lg:border-secondary-light lg:pl-8">
+												<h2 className="text-sm font-bold uppercase tracking-wider text-primary/60 mb-4 px-2">
+													{webshopPos.title}
+												</h2>
+												<Link
+													href={webshopPos.href}
+													target="_blank"
+													rel="noopener noreferrer"
+													className="block p-4 rounded-lg hover:bg-primary transition-colors group"
+												>
+													<h3 className="font-semibold text-primary mb-2 group-hover:text-white text-lg">
+														{webshopPos.productName}
+													</h3>
+													<p className="text-sm text-primary mb-3 group-hover:text-white">
+														{webshopPos.description}
+													</p>
+													<span className="text-sm flex items-center font-medium text-primary group-hover:text-white">
+														Click here <ArrowRight className="ml-1 h-3 w-3" />
+													</span>
+												</Link>
+											</section>
 										</div>
 									</div>
 								</div>
@@ -317,12 +352,12 @@ const Header: React.FC = () => {
 
 								{/* Submodule 2 — Webshop/POS */}
 								<Link
-									href={WEBSHOP_POS_URL}
+									href={webshopPos.href}
 									target="_blank"
 									rel="noopener noreferrer"
 									className="block py-2 text-gray-800 font-medium hover:bg-primary hover:text-white hover:pl-2 transition-all duration-200"
 								>
-									Webshop/POS
+									{webshopPos.title}
 								</Link>
 							</div>
 						</div>
