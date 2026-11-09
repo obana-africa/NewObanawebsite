@@ -8,13 +8,6 @@ import logoImage from "@/app/assets/images/logos/obana-logo-wordmark.png";
 import { useModal } from "@/contexts/modal-context";
 import { usePathname } from "next/navigation";
 
-/* Financing lives on the marketplace, which answers on a different address in
-   each environment: staging.shop.obana.africa on staging,
-   marketplace.obana.africa on production.
-
-   Set NEXT_PUBLIC_MARKETPLACE_URL on the staging deployment. Production needs
-   nothing — the default is production, so a missing variable sends people to
-   the live marketplace rather than nowhere. */
 const MARKETPLACE_URL = (process.env.NEXT_PUBLIC_MARKETPLACE_URL || "https://marketplace.obana.africa").replace(/\/+$/, "");
 
 const Header: React.FC = () => {
@@ -82,27 +75,6 @@ const Header: React.FC = () => {
 	};
 
 
-	/* The five things Obana sells, named the way the business names them.
-	 *
-	 * Marketplace, Financing, Thaja, Distribution, Logistics — what each part
-	 * does for a retailer, rather than what a shopper clicks. This is the
-	 * company's own home page, read by partners and investors as much as by
-	 * buyers.
-	 *
-	 * Financing, Thaja and Distribution carry a plain word in brackets,
-	 * because ONPSS, Thaja and "distribution" on their own tell a first-time
-	 * reader nothing.
-	 *
-	 * Order: where stock comes from, how it is paid for, how a retailer sells
-	 * it themselves, how it reaches customers they do not own, how it moves.
-	 *
-	 * Each opens in its own tab. Every one of them is a separate site, and
-	 * somebody who clicks through to read about financing has not finished
-	 * with this page.
-	 *
-	 * The ecosystem section further down the page keeps its own wording and is
-	 * not touched by this.
-	 */
 	const megaMenuItems: {
 		solutions: { title: string; description: string; href: string; target?: string }[];
 	} = {

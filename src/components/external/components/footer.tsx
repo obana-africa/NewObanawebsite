@@ -18,13 +18,6 @@ import { emailSchema } from "@/schemas";
 import { EmailFormData } from "@/types";
 import useNewsletter from "@/hooks/use-newsletter";
 
-/* Financing lives on the marketplace, which answers on a different address in
-   each environment: staging.shop.obana.africa on staging,
-   marketplace.obana.africa on production.
-
-   Set NEXT_PUBLIC_MARKETPLACE_URL on the staging deployment. Production needs
-   nothing — the default is production, so a missing variable sends people to
-   the live marketplace rather than nowhere. */
 const MARKETPLACE_URL = (process.env.NEXT_PUBLIC_MARKETPLACE_URL || "https://marketplace.obana.africa").replace(/\/+$/, "");
 
 const Footer = () => {
@@ -44,18 +37,7 @@ const Footer = () => {
     reset();
   };
 
-  /* ── Nav columns ──
-   *
-   * Grouped by what a reader is trying to do, not by how the company is
-   * organised. Products are the four the ecosystem section names — Source,
-   * organised. Products are the four the ecosystem section names —
-   * Marketplace, Financing, Logistics, Thaja — in that same order and in the
-   * same words, matching the navbar exactly. A footer that renames them reads
-   * as a second company.
-   *
-   * Custom sourcing is not a product of its own: it is one of the ways of
-   * sourcing, so it sits under Support.
-   */
+
   const productsLinks = [
     { title: "Marketplace",          href: "https://marketplace.obana.africa/", target: "_blank" },
     { title: "Financing (ONPSS)",    href: `${MARKETPLACE_URL}/obana-pss`, target: "_blank" },
