@@ -12,7 +12,7 @@ export const stakeholders = [
 	{
 		title: "Fashion Business Owners",
 		description:
-			"For fashion business owners, Taja provides a complete system to manage sales, organize products, track orders, and reach more customers — helping you grow your business smoothly within the Obana ecosystem with structure and ease.",
+			"For fashion business owners, Thaja provides a complete system to manage sales, organize products, track orders, and reach more customers — helping you grow your business smoothly within the Obana ecosystem with structure and ease.",
 		imageSrc: vendor,
 	},
 	{

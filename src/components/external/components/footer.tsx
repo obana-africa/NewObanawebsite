@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import logoImage from "@/app/assets/images/logos/obana-footer-logo.png";
+import logoImage from "@/app/assets/images/logos/obana-footer-logo-wordmark.png";
 import {
   Facebook,
   Instagram,
@@ -18,13 +18,6 @@ import { emailSchema } from "@/schemas";
 import { EmailFormData } from "@/types";
 import useNewsletter from "@/hooks/use-newsletter";
 
-/* Financing lives on the marketplace, which answers on a different address in
-   each environment: staging.shop.obana.africa on staging,
-   marketplace.obana.africa on production.
-
-   Set NEXT_PUBLIC_MARKETPLACE_URL on the staging deployment. Production needs
-   nothing — the default is production, so a missing variable sends people to
-   the live marketplace rather than nowhere. */
 const MARKETPLACE_URL = (process.env.NEXT_PUBLIC_MARKETPLACE_URL || "https://marketplace.obana.africa").replace(/\/+$/, "");
 
 const Footer = () => {
@@ -44,18 +37,7 @@ const Footer = () => {
     reset();
   };
 
-  /* ── Nav columns ──
-   *
-   * Grouped by what a reader is trying to do, not by how the company is
-   * organised. Products are the four the ecosystem section names — Source,
-   * organised. Products are the four the ecosystem section names —
-   * Marketplace, Financing, Logistics, Thaja — in that same order and in the
-   * same words, matching the navbar exactly. A footer that renames them reads
-   * as a second company.
-   *
-   * Custom sourcing is not a product of its own: it is one of the ways of
-   * sourcing, so it sits under Support.
-   */
+
   const productsLinks = [
     { title: "Marketplace",          href: "https://marketplace.obana.africa/", target: "_blank" },
     { title: "Financing (ONPSS)",    href: `${MARKETPLACE_URL}/obana-pss`, target: "_blank" },
@@ -63,6 +45,8 @@ const Footer = () => {
     { title: "Distribution (Sales Partners)", href: "https://partners.obana.africa/", target: "_blank" },
     { title: "Logistics",            href: "https://logistics.obana.africa/", target: "_blank" },
   ];
+
+
 
 
 
@@ -165,9 +149,7 @@ const Footer = () => {
               <Image
                 src={logoImage}
                 alt="Obana Logo"
-                width={110}
-                height={40}
-                style={{ height: "auto" }}
+                className="h-auto w-[110px]"
               />
               <div className="flex gap-3">
                 {socialLinks.map((s, i) => (
@@ -197,9 +179,7 @@ const Footer = () => {
               <Image
                 src={logoImage}
                 alt="Obana Logo"
-                width={100}
-                height={36}
-                style={{ height: "auto" }}
+                className="h-auto w-[100px]"
               />
               <div className="flex gap-4">
                 {socialLinks.map((s, i) => (

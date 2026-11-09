@@ -16,7 +16,7 @@ const ECOSYSTEM_FEATURES = [
     title: "Finance",
     description: "Flexible credit, ONPSS for stock, and working capital tools built for fashion & beauty cash flows.",
     icon: Landmark,
-    href: "/obana-pss",
+    href: "https://shop.obana.africa/obana-pss",
   },
   {
     id: "deliver",
@@ -30,7 +30,7 @@ const ECOSYSTEM_FEATURES = [
     title: "Digitalise",
     description: "POS, online storefront, inventory management, and analytics — in one seamless dashboard.",
     icon: LayoutDashboard,
-    href: "http://taja.obana.africa", 
+    href: "http://thaja.africa", 
   },
 ];
 

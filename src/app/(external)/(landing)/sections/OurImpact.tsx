@@ -33,10 +33,10 @@ const PILLARS = [
 
 /* ── Key stats — bottom row ───────────────────────────────── */
 const STATS = [
-  { value: "50k+",  label: "Packages Delivered",   sub: "Across Nigeria & Africa"        },
-  { value: "20+",   label: "Brand Partners",        sub: "High street & African brands"   },
-  { value: "5k+",   label: "Active SMEs",           sub: "Registered on the platform"     },
-  { value: "500+",  label: "Sales Partners",        sub: "Earning across the network"     },
+  { value: "153+",  label: "Packages Delivered",   sub: "Across Nigeria & Africa"        },
+  { value: "171+",   label: "Active Brands",        sub: "High street & African brands"   },
+  { value: "47+",   label: "Active SMEs",           sub: "Actively trading on Obana"      },
+  { value: "90+",  label: "Sales Partners",        sub: "Earning across the network"     },
 ];
 
 export default function OurImpactSection() {
