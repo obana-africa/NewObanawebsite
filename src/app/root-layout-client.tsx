@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 
 import "./globals.css";
 import Header from "@/components/external/components/header";
-import { Bricolage_Grotesque, Inter } from "next/font/google";
 import Footer from "@/components/external/components/footer";
 import CookieConsent from "@/components/external/components/cookie-consent";
 import { ModalProvider } from "@/contexts/modal-context";
@@ -30,18 +29,6 @@ const queryClient = new QueryClient({
 	},
 });
 
-const bricolage = Bricolage_Grotesque({
-	subsets: ["latin"],
-	display: "swap",
-	variable: "--font-bricolage",
-});
-
-const inter = Inter({
-	subsets: ["latin"],
-	display: "swap",
-	variable: "--font-inter",
-});
-
 const ROUTES_WITHOUT_GLOBAL_HEADER = ["/custom-sourcing"];
 
 export default function RootLayout({
@@ -64,20 +51,16 @@ export default function RootLayout({
 	}, []);
 
 	return (
-		<html lang="en">
-			<body className={`${bricolage.variable} ${inter.variable}`}>
-				<QueryClientProvider client={queryClient}>
-					<ModalProvider>
-						{!hideGlobalHeader && <Header />}
-						<main>{children}</main>
-						<Footer />
-						<Toaster richColors duration={5000} />
-						{/* Last in the tree and fixed to the bottom, so it sits
-						    over the page without moving anything on it. */}
-						<CookieConsent />
-					</ModalProvider>
-				</QueryClientProvider>
-			</body>
-		</html>
+		<QueryClientProvider client={queryClient}>
+			<ModalProvider>
+				{!hideGlobalHeader && <Header />}
+				<main>{children}</main>
+				<Footer />
+				<Toaster richColors duration={5000} />
+				{/* Last in the tree and fixed to the bottom, so it sits
+				    over the page without moving anything on it. */}
+				<CookieConsent />
+			</ModalProvider>
+		</QueryClientProvider>
 	);
 }

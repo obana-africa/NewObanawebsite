@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Package, Search, Truck, MapPin, Calendar, CheckCircle, AlertCircle, Shield, Clock } from "lucide-react";
 import Button from "@/components/ui/button";
 import { termApi } from "@/app/api/(instances)/axiosInstance";
-import logoImage from "@/app/assets/images/logos/obana-logo.svg";
+import logoImage from "@/app/assets/images/logos/obana-logo.png";
 import Image from "next/image";
 
 // ... (keep all your interfaces exactly as they are) ...

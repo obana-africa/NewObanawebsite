@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Menu, X, ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
 import Button from "@/components/ui/button";
-import logoImage from "@/app/assets/images/logos/obana-logo.svg";
+import logoImage from "@/app/assets/images/logos/obana-logo-wordmark.png";
 import { useModal } from "@/contexts/modal-context";
 import { usePathname } from "next/navigation";
 
@@ -53,9 +53,7 @@ const Header: React.FC = () => {
 
 	const toggleMenu = (): void => {
 		setIsOpen(!isOpen);
-		if (isOpen) {
-			setActiveMobileDropdown(null);
-		}
+		if (isOpen) setActiveMobileDropdown(null);
 	};
 
 	const handleGetStarted = (): void => {
@@ -69,28 +67,10 @@ const Header: React.FC = () => {
 
 	const toggleMobileDropdown = (dropdown: string): void => {
 		setActiveMobileDropdown(activeMobileDropdown === dropdown ? null : dropdown);
-		if (activeMobileDropdown !== dropdown) {
-	
-		}
 	};
 
 
-	/* The same four as the ecosystem section on the home page, in the same
-	 * order: Source, Finance, Deliver, Digitalise.
-	 *
-	 * The section titles them by what they do for the business; here they
-	 * carry the names customers and partners already use for them — Buy in
-	 * Bulk, ONPSS, Request Shipment, Thaja — so someone clicking a menu item
-	 * recognises what they are getting. Same four, same order, familiar words.
-	 *
-	 * Thaja carries its plain description in brackets, as ONPSS does: the
-	 * brand name on its own tells a first-time visitor nothing.
-	 *
-	 * Nothing outside those four belongs here. Custom sourcing is one of the
-	 * ways of sourcing, and joining as a vendor or a sales partner is how
-	 * someone signs up rather than something they buy — those live in the
-	 * footer instead.
-	 */
+
 	const megaMenuItems = {
 		solutions: [
 			{
@@ -125,11 +105,14 @@ const Header: React.FC = () => {
 			>
 				<div className="container mx-auto px-6 md:px-10 py- md:py-">
 					<div className="flex items-center justify-between py-2">
-						<div className="shrink-0 pb-4">
-							<Link href="/" className="flex items-center">
-								<div className="relative h-12 w-30">
-									<Image src={logoImage} alt="Obana Logo" width={140} height={60} priority />
-								</div>
+						<div className="shrink-0">
+							<Link href="/" className="flex items-center" aria-label="Obana home">
+								<Image
+									src={logoImage}
+									alt="Obana Logo"
+									priority
+									className="h-8 w-auto md:h-9"
+								/>
 							</Link>
 						</div>
 
@@ -240,8 +223,8 @@ const Header: React.FC = () => {
 					aria-hidden={!isOpen}
 				>
 					<div className="p-4 flex justify-between items-center">
-						<div className="relative h-8 w-24">
-							<Image src={logoImage} alt="Obana Logo" width={100} height={40} priority />
+						<div className="flex items-center">
+							<Image src={logoImage} alt="Obana Logo" priority className="h-7 w-auto" />
 						</div>
 						<button className="text-gray-800 focus:outline-none" onClick={toggleMenu} aria-label="Close menu">
 							<X className="h-6 w-6" />
@@ -256,12 +239,14 @@ const Header: React.FC = () => {
 							Home
 						</Link>
 
-						{/* Mobile Solutions Dropdown (unchanged) */}
+						{/* Mobile Solutions dropdown — two submodules: Marketplace
+						    (expands to the offerings) and Webshop/POS (external). */}
 						<div className="border-b border-primary-light">
 							<button
 								className="flex items-center justify-between w-full py-3 text-gray-800"
 								onClick={() => toggleMobileDropdown("solutions")}
 								type="button"
+								aria-expanded={activeMobileDropdown === "solutions"}
 							>
 								<span>Solutions</span>
 								{activeMobileDropdown === "solutions" ? (
@@ -273,7 +258,7 @@ const Header: React.FC = () => {
 							<div
 								className={`ml-4 mb-2 transition-all duration-300 ${
 									activeMobileDropdown === "solutions"
-										? "max-h-[600px] opacity-100"
+										? "max-h-[800px] opacity-100"
 										: "max-h-0 opacity-0 overflow-hidden"
 								}`}
 							>

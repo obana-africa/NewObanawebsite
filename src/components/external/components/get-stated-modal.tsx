@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ChevronsRight, X } from "lucide-react";
-import logoImage from "@/app/assets/images/logos/obana-logo.svg";
+import logoImage from "@/app/assets/images/logos/obana-logo.png";
 import Button from "@/components/ui/button";
 
 interface GetStartedModalProps {

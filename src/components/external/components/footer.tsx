@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import logoImage from "@/app/assets/images/logos/obana-footer-logo.png";
+import logoImage from "@/app/assets/images/logos/obana-footer-logo-wordmark.png";
 import {
   Facebook,
   Instagram,
@@ -152,9 +152,7 @@ const Footer = () => {
               <Image
                 src={logoImage}
                 alt="Obana Logo"
-                width={110}
-                height={40}
-                style={{ height: "auto" }}
+                className="h-auto w-[110px]"
               />
               <div className="flex gap-3">
                 {socialLinks.map((s, i) => (
@@ -184,9 +182,7 @@ const Footer = () => {
               <Image
                 src={logoImage}
                 alt="Obana Logo"
-                width={100}
-                height={36}
-                style={{ height: "auto" }}
+                className="h-auto w-[100px]"
               />
               <div className="flex gap-4">
                 {socialLinks.map((s, i) => (

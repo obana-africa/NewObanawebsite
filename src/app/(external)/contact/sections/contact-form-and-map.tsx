@@ -3,75 +3,47 @@
 import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import dynamic from "next/dynamic";
-
-// Dynamically import our components to avoid SSR issues
-const ContactForm = dynamic(() => import("../components/contact-form"), {
-	ssr: false,
-});
+import ContactForm from "../components/contact-form";
 
 interface ContactFormWithMapProps {
-	defaultZoom?: number;
 	address?: string;
-	primary?: string;
-	secondary?: string;
 }
 
-const SPECIFIC_MAP_URL = process.env.GOOGLE_MAPS_URL;
+
+const mapUrlFor = (address: string) =>
+	process.env.NEXT_PUBLIC_GOOGLE_MAPS_URL ||
+	`https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`;
 
 const ContactFormWithMap: React.FC<ContactFormWithMapProps> = ({
-	primary = "bg-primary",
+	address = "77 Opebi Road, Ikeja Lagos",
 }) => {
-	// Initialize AOS
 	useEffect(() => {
-		AOS.init({
-			duration: 800,
-			once: true,
-		});
+		AOS.init({ duration: 800, once: true });
 	}, []);
 
+	const mapUrl = mapUrlFor(address);
+
 	return (
-		<div className="container mx-auto px-4 py-12 overflow-hidden">
-			<div className="flex flex-col lg:flex-row gap-8">
-				<div className="lg:w-1/2" data-aos="fade-right" data-aos-delay="100">
-					<ContactForm primary={primary} />
+		<section className="container mx-auto px-4 md:px-8 lg:px-12 pb-16">
+			<div className="grid gap-8 lg:grid-cols-2 lg:gap-12 lg:items-start">
+				<div data-aos="fade-right" data-aos-delay="100">
+					<ContactForm />
 				</div>
 
-				<div className="lg:w-1/2" data-aos="fade-left" data-aos-delay="200">
-					<div className="w-full px-4 md:px-6 lg:px-8 py-4 shadow-md rounded-lg h-full md:h-96 lg:h-full ">
-						<div className="relative rounded-2xl overflow-hidden shadow-lg">
-							<div className="md:hidden">
-								<iframe
-									title="Mobile Contact Map"
-									width="100%"
-									height="300"
-									className="block"
-									style={{ border: 0 }}
-									src={SPECIFIC_MAP_URL}
-									allowFullScreen
-									loading="lazy"
-									referrerPolicy="no-referrer-when-downgrade"
-								/>
-							</div>
-
-							<div className="hidden md:block">
-								<iframe
-									title="Desktop Contact Map"
-									width="100%"
-									height="690px"
-									className="block"
-									style={{ border: 0 }}
-									src={SPECIFIC_MAP_URL}
-									allowFullScreen
-									loading="lazy"
-									referrerPolicy="no-referrer-when-downgrade"
-								/>
-							</div>
-						</div>
+				<div data-aos="fade-left" data-aos-delay="200">
+					<div className="overflow-hidden rounded-2xl shadow-lg">
+						<iframe
+							title={`Map showing ${address}`}
+							src={mapUrl}
+							className="block w-full h-64 md:h-96 lg:h-[600px] border-0"
+							allowFullScreen
+							loading="lazy"
+							referrerPolicy="no-referrer-when-downgrade"
+						/>
 					</div>
 				</div>
 			</div>
-		</div>
+		</section>
 	);
 };
 
