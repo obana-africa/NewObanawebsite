@@ -8,6 +8,8 @@ import logoImage from "@/app/assets/images/logos/obana-logo-wordmark.png";
 import { useModal } from "@/contexts/modal-context";
 import { usePathname } from "next/navigation";
 
+const MARKETPLACE_URL = (process.env.NEXT_PUBLIC_MARKETPLACE_URL || "https://marketplace.obana.africa").replace(/\/+$/, "");
+
 const Header: React.FC = () => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [isScrolled, setIsScrolled] = useState<boolean>(false);
@@ -67,31 +69,45 @@ const Header: React.FC = () => {
 
 	const toggleMobileDropdown = (dropdown: string): void => {
 		setActiveMobileDropdown(activeMobileDropdown === dropdown ? null : dropdown);
+		if (activeMobileDropdown !== dropdown) {
+	
+		}
 	};
 
 
-
-	const megaMenuItems = {
+	const megaMenuItems: {
+		solutions: { title: string; description: string; href: string; target?: string }[];
+	} = {
 		solutions: [
 			{
-				title: "Buy in Bulk",
-				description: "Explore our Buy in Bulk deals and grow your hustle the easy way.",
-				href: "https://shop.obana.africa/",
+				title: "Marketplace",
+				description: "Aggregated supply from verified local and global manufacturers, so retailers source the inventory they need at competitive prices in one place.",
+				href: "https://marketplace.obana.africa/",
+				target: "_blank",
 			},
 			{
-				title: "Order Now, Pay Small Small (ONPSS)",
-				description: "Now you can — thanks to Obana's Order Now, Pay Small Small feature.",
-				href: "https://shop.obana.africa/obana-pss",
+				title: "Financing (ONPSS)",
+				description: "Working capital at the point of purchase. Order Now, Pay Small Small lets a retailer take stock today and pay for it over time.",
+				href: `${MARKETPLACE_URL}/obana-pss`,
+				target: "_blank",
 			},
 			{
-				title: "Request Shipment",
-				description: "From market to your doorstep — we'll make it happen.",
-				href: "/logistics",
+				title: "Thaja (Online/POS)",
+				description: "The retailer's operating system — point of sale, online storefront, inventory and analytics in a single dashboard.",
+				href: "https://thaja.africa/",
+				target: "_blank",
 			},
 			{
-				title: "Thaja (Online Store & POS)",
-				description: "POS, online storefront, inventory management, and analytics — in one seamless dashboard.",
-				href: "https://taja.obana.africa/",
+				title: "Distribution (Sales Partners)",
+				description: "Independent sales partners carry listed products to customers a brand cannot reach on its own — distribution without building a salesforce.",
+				href: "https://partners.obana.africa/",
+				target: "_blank",
+			},
+			{
+				title: "Logistics",
+				description: "Fulfilment across cities and across borders, tracked end to end and priced to move.",
+				href: "https://logistics.obana.africa/",
+				target: "_blank",
 			},
 		],
 	};
@@ -149,8 +165,8 @@ const Header: React.FC = () => {
   <Link
     key={idx}
     href={item.href || "#"}
-    target={item.href.startsWith("http") ? "_blank" : undefined}
-    rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+    target={item.target}
+    rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
     className="p-6 rounded-lg hover:bg-primary transition-colors group"
   >
     <h3 className="font-semibold text-primary mb-2 group-hover:text-white text-lg">
@@ -239,8 +255,7 @@ const Header: React.FC = () => {
 							Home
 						</Link>
 
-						{/* Mobile Solutions dropdown — two submodules: Marketplace
-						    (expands to the offerings) and Webshop/POS (external). */}
+						
 						<div className="border-b border-primary-light">
 							<button
 								className="flex items-center justify-between w-full py-3 text-gray-800"
@@ -266,8 +281,8 @@ const Header: React.FC = () => {
   <Link
     key={idx}
     href={item.href || "#"}
-    target={item.href.startsWith("http") ? "_blank" : undefined}
-    rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+    target={item.target}
+    rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
     className="block py-2 text-gray-700 hover:bg-primary hover:text-white hover:pl-2 transition-all duration-200"
   >
     {item.title}
