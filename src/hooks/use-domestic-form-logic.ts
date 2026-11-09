@@ -6,7 +6,7 @@ import { termApi } from "@/app/api/(instances)/axiosInstance";
 import { formatPhoneNumber } from "@/utils/phone-number-format";
 import { domesticFormSchema } from "@/schemas";
 import { z } from "zod";
-import logoImage from "@/app/assets/images/logos/obana-logo.svg";
+import logoImage from "@/app/assets/images/logos/obana-logo.png";
 
 
 type DomesticFormInputs = z.infer<typeof domesticFormSchema>;
