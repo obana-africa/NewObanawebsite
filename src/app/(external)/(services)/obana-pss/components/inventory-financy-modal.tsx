@@ -5,7 +5,7 @@ import Image from "next/image";
 import { X, CheckCircle, AlertCircle, ChevronsRight } from "lucide-react";
 import FormInput from "@/components/ui/form-input";
 import FormSelect from "@/components/ui/form-select";
-import logoImage from "@/app/assets/images/logos/obana-logo.svg";
+import logoImage from "@/app/assets/images/logos/obana-logo.png";
 import Button from "@/components/ui/button";
 import {
 	useGetCountries,

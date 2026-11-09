@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Menu, X, ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
 import Button from "@/components/ui/button";
-import logoImage from "@/app/assets/images/logos/obana-logo.svg";
+import logoImage from "@/app/assets/images/logos/obana-logo-wordmark.png";
 import { useModal } from "@/contexts/modal-context";
 import { usePathname } from "next/navigation";
 
@@ -105,11 +105,14 @@ const Header: React.FC = () => {
 			>
 				<div className="container mx-auto px-6 md:px-10 py- md:py-">
 					<div className="flex items-center justify-between py-2">
-						<div className="shrink-0 pb-4">
-							<Link href="/" className="flex items-center">
-								<div className="relative h-12 w-30">
-									<Image src={logoImage} alt="Obana Logo" width={140} height={60} priority />
-								</div>
+						<div className="shrink-0">
+							<Link href="/" className="flex items-center" aria-label="Obana home">
+								<Image
+									src={logoImage}
+									alt="Obana Logo"
+									priority
+									className="h-8 w-auto md:h-9"
+								/>
 							</Link>
 						</div>
 
@@ -220,8 +223,8 @@ const Header: React.FC = () => {
 					aria-hidden={!isOpen}
 				>
 					<div className="p-4 flex justify-between items-center">
-						<div className="relative h-8 w-24">
-							<Image src={logoImage} alt="Obana Logo" width={100} height={40} priority />
+						<div className="flex items-center">
+							<Image src={logoImage} alt="Obana Logo" priority className="h-7 w-auto" />
 						</div>
 						<button className="text-gray-800 focus:outline-none" onClick={toggleMenu} aria-label="Close menu">
 							<X className="h-6 w-6" />
