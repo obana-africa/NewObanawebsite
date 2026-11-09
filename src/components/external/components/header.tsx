@@ -255,8 +255,7 @@ const Header: React.FC = () => {
 							Home
 						</Link>
 
-						{/* Mobile Solutions dropdown — two submodules: Marketplace
-						    (expands to the offerings) and Webshop/POS (external). */}
+						
 						<div className="border-b border-primary-light">
 							<button
 								className="flex items-center justify-between w-full py-3 text-gray-800"
